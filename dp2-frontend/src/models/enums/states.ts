@@ -1,0 +1,4 @@
+export enum EXAMPLE_STATES {
+  INTIAL = 'ESTADO_INICIAL',
+  FIN = 'ESTADO_FIN'
+}
