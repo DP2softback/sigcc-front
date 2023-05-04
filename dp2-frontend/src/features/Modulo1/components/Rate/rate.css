@@ -1,0 +1,67 @@
+:root {
+    --rate-star-size: 1.5rem;
+}
+
+.rating-control {
+    border: none;
+    text-align: end;
+    transform: rotate(180deg);
+    height: var(--rate-star-size);
+}
+.rating-control-small {
+    height: calc(var(--rate-star-size) * .5);
+}
+
+.rating-control:not(:checked)>input {
+    display: none;
+}
+
+.rating-control:not(:checked)>label {
+    width: var(--rate-star-size);
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: var(--rate-star-size);
+    color: #ccc;
+    transform: rotate(180deg);
+}
+
+.rating-control-small:not(:checked)>label {
+    width: calc(var(--rate-star-size) * .5);
+    font-size: calc(var(--rate-star-size) * .5);
+}
+.rating-control:not(:checked)>label:before {
+    content: '★ ';
+}
+
+.rating-control>input:checked~label {
+    color: #ffc700;
+}
+
+.rating-control:not(:checked)>label:hover,
+.rating-control:not(:checked)>label:hover~label {
+    color: #deb217;
+}
+
+.rating-control>input:checked+label:hover,
+.rating-control>input:checked+label:hover~label,
+.rating-control>input:checked~label:hover,
+.rating-control>input:checked~label:hover~label,
+.rating-control>label:hover~input:checked~label {
+    color: #c59b08;
+}
+
+.rating-control>input:checked~label:hover {
+    animation: zoom-in-zoom-out 1s ease;
+}
+@keyframes zoom-in-zoom-out {
+    0% {
+      transform: rotate(180deg) scale(1, 1);
+    }
+    50% {
+      transform: rotate(180deg) scale(1.25, 1.25);
+    }
+    100% {
+      transform: rotate(180deg) scale(1, 1);
+    }
+  }

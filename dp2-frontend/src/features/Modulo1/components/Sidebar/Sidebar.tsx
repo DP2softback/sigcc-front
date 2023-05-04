@@ -57,7 +57,7 @@ class Sidebar extends Component<Props, State>
                                     })
                                 }
                             </ul>
-                            <div className="dropdown border-top">
+                            <div className="dropdown">
                                 <a href="#" className="d-flex align-items-center justify-content-center p-3 link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src="https://github.com/mdo.png" alt="mdo" width="24" height="24" className="rounded-circle" />
                                 </a>
