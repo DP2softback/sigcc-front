@@ -10,7 +10,7 @@ const Loader = (Component) => (props) =>
 );
 
 const ListExample = Loader(
-  lazy(() => import('@features/ExampleModule/features/ListExample'))
+  lazy(() => import('@features/Modulo3/index'))
 );
 
 const RegisterExample = Loader(
