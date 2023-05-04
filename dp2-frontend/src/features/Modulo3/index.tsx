@@ -2,6 +2,7 @@ import Employee from '@features/Modulo3/components/Employee/Employee'
 import JobPosition from '@features/Modulo3/components/JobPosition/JobPosition';
 import Promotion from '@features/Modulo3/components/Promotion/Promotion';
 import PieChart from '@features/Modulo3/components/Graphs/PieChart';
+import Linechart from './components/Charts/Linechart';
 const ListExample = () => {
  
   return (
@@ -55,6 +56,7 @@ const ListExample = () => {
         email={'carlos.eduardo@empresa.com'}
         characteristics={['Habilidades blandas', 'Backend avanzado', 'Frontend medio']}
       />
+      <Linechart/>
     </>
   );
 }
