@@ -3,6 +3,8 @@ import JobPosition from '@features/Modulo3/components/JobPosition/JobPosition';
 import Promotion from '@features/Modulo3/components/Promotion/Promotion';
 import PieChart from '@features/Modulo3/components/Graphs/PieChart';
 import Linechart from './components/Charts/Linechart';
+import Comparator from './components/Comparator/Comparator';
+
 const ListExample = () => {
  
   return (
@@ -57,6 +59,7 @@ const ListExample = () => {
         characteristics={['Habilidades blandas', 'Backend avanzado', 'Frontend medio']}
       />
       <Linechart/>
+      <Comparator image={''} imageStyle={''} name={''} items={[]} position={''} matchRate={0} />
     </>
   );
 }
