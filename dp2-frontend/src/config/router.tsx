@@ -17,12 +17,15 @@ const RegisterExample = Loader(
   lazy(() => import('@features/ExampleModule/features/ListExample'))
 );
 
+const Modulo1 = Loader(
+  lazy(() => import('@features/Modulo1'))
+);
+
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
 const routes: RouteObject[] = [
   {
     path: '',
-    element: <Navigate to="/example/list" replace />
   },
   {
     path: 'example',
@@ -55,6 +58,25 @@ const routes: RouteObject[] = [
       },
       {
         path: 'submodulo1',
+        children: [
+          {
+            path: 'list',
+            element: <ListExample />
+          },
+          {
+            path: 'register',
+            element: <ListExample />
+          },
+        ]
+      },
+    ]
+  },
+  {
+    path: 'modulo1',
+    element: <Modulo1 />,
+    children: [
+      {
+        path: 'submodulo0',
         children: [
           {
             path: 'list',
