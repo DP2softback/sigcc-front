@@ -1,0 +1,122 @@
+.comparator-container{
+    background-color: white;
+    border-radius: 4px;
+    overflow: hidden;
+    font-family: 'Roboto';
+  }
+  
+  .comparator-header{
+    padding: 20px 20px 0px 20px;
+  }
+  
+  .comparator-headerLine{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    padding-bottom: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .comparator-imageContainer{
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+  }
+  
+  .comparator-image{
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    overflow: hidden;
+  }
+  
+  .comparator-headerInfo{
+    margin-top: auto;
+    margin-bottom: auto;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+  }
+  
+  .comparator-title{
+    font-size: 22px;
+    font-weight: 500;
+  }
+  
+  .comparator-subtitle{
+    font-size: 18px;
+    opacity: 0.5;
+  }
+  
+  .comparator-body{
+    padding: 0px 20px 20px 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .comparator-row{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .comparator-icon{
+    font-size: 20px;
+    /*margin-right: 20px; */
+  }
+  
+  .comparator-text{
+    font-size: 18px;
+    flex: 1;
+    margin-right: 20px;
+  }
+  
+  .comparator-aditional{
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    width: fit-content;
+    margin-top: 20px;
+  }
+  
+  .comparator-badge{
+    font-size: 14px;
+    font-weight: 400;
+    padding: 4.2px 7.8px;
+    margin-right: 10px;
+    border-radius: 4px;
+    color: white;
+  }
+  
+  .comparator-promotion{
+    display: flex;
+    flex-direction: row;
+    font-size: 18px;
+  }
+  
+  .comparator-promotionIcon{
+    margin-right: 4px;
+    justify-content: center;
+  }
+  
+  .comparator-promotionPositions{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .comparator-promtionText{
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .comparator-promtionIndicator{
+    width: 28px;
+  }
