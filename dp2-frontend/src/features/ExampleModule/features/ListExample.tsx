@@ -1,12 +1,8 @@
 import React from 'react'
 
-
 const ListExample = () => {
   return (
-    <div>
-      {/* ListExample */}
-      
-    </div>
+    <div>ListExample</div>
   )
 }
 
