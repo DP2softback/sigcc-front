@@ -1,0 +1,28 @@
+body {
+  overflow: hidden;
+}
+
+.sidebar {
+  overflow: hidden;
+}
+
+.sidebar .nav-link {
+  color: #FFF;
+  text-align: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.sidebar .nav-link:hover {
+  color: #EEE;
+}
+
+.topbar {
+  width: calc(100% - 5rem);
+  right: 0;
+  position: fixed;
+}
+
+.main {
+  margin-top: 3.75rem;
+}
