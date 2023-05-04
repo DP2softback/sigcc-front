@@ -1,10 +1,21 @@
 import Employee from '@features/Modulo3/components/Employee/Employee'
 import JobPosition from '@features/Modulo3/components/JobPosition/JobPosition';
 import Promotion from '@features/Modulo3/components/Promotion/Promotion';
-
+import PieChart from '@features/Modulo3/components/Graphs/PieChart';
 const ListExample = () => {
+ 
   return (
     <>
+    
+      <PieChart labels={['Red', 'Blue', 'Yellow']} datasets={[
+    {
+      label: 'My First Dataset',
+      data: [300, 50, 100],
+      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+      hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+    },
+  ]}/>
+    
       <Employee
         id={'19972036'}
         name={'Ángela Quispe Ramírez'}
