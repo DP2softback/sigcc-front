@@ -1,5 +1,5 @@
 import './BasicCard.css'
-import Destination from '../../assets/icons/Destination.svg'
+import Destination from '@features/Modulo3/assets/icons/Destination.svg'
 
 type BasicCardProps = {
   image: string, 
@@ -48,6 +48,9 @@ const BasicCard = ({ image, imageStyle, title, items, subtitle, from, to }: Basi
   }
 
   function badgesRow (item) {
+    if (!item.list)
+      return <></>;
+
     return (
       <div className="basicCard-row">
         {item.list.map((element, index) => {
@@ -97,7 +100,7 @@ const BasicCard = ({ image, imageStyle, title, items, subtitle, from, to }: Basi
   }
 
   return (
-    <div className='basicCard-container' style={{width: '477px'}}>
+    <div className='basicCard-container'>
       <div className='basicCard-header'>
         <div className="basicCard-headerLine">
           <div className='basicCard-imageContainer'>{imageComp}</div>

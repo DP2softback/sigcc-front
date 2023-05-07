@@ -1,0 +1,8 @@
+.ec-indexFilters{
+  display: flex;
+  flex-direction: row;
+}
+
+.ec-indexFilterElement{
+  margin-left: 20px;
+}

@@ -1,7 +1,20 @@
 import BasicCard from '../BasicCard/BasicCard'
 import { Building, PersonVcard, Clock, Briefcase, EnvelopeAt, Clipboard } from 'react-bootstrap-icons'
 
-const Employee = ({id, name, photoURL, position, lastEvaluation, lastEvaluationUnit, area, email, matchRate, characteristics}) => {
+type EmployeeProps = {
+  id: string,
+  name: string,
+  photoURL: string,
+  position: string,
+  lastEvaluation: string,
+  lastEvaluationUnit: string,
+  area: string,
+  email: string,
+  matchRate?: string,
+  characteristics?: string[]
+}
+
+const Employee = ({ id, name, photoURL, position, lastEvaluation, lastEvaluationUnit, area, email, matchRate, characteristics } : EmployeeProps) => {
   const rows = [
     {
       icon: <Clock/>,
