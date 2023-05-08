@@ -6,6 +6,7 @@ import { Search } from 'react-bootstrap-icons'
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import Employee from '@features/Modulo3/components/Cards/Employee/Employee';
 import employees from '@features/Modulo3/jsons/Employees';
+import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
 
 const examplePhoto = 'https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg?b=1&s=170667a&w=0&k=20&c=0aBawAGIMPymGUppOgw1HmV8MNXB1536B3sX_PP9_SQ='
 
@@ -26,26 +27,68 @@ const Index = () => {
     </Form>
   );
 
+  const firstTwoEmployees = (
+    <div className='ec-indexFirstTwoEmployees col-md-4'>
+      {employees.slice(0, 2).map((employee) => {
+        return (
+          <div key={employee.id} className='mb-32px'>
+            <Employee
+              id={employee.id}
+              name={employee.name}
+              photoURL={examplePhoto}
+              position={employee.position}
+              lastEvaluation={employee.lastEvaluation}
+              lastEvaluationUnit={employee.lastEvaluationUnit}
+              area={employee.area}
+              email={employee.email}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  const restEmployees = employees.slice(2).map((employee) => {
+    return (
+      <div key={employee.id} className='col-md-4 mb-32px'>
+        <Employee
+          id={employee.id}
+          name={employee.name}
+          photoURL={examplePhoto}
+          position={employee.position}
+          lastEvaluation={employee.lastEvaluation}
+          lastEvaluationUnit={employee.lastEvaluationUnit}
+          area={employee.area}
+          email={employee.email}
+        />
+      </div>
+    );
+  });
+
+  const chart = (
+    <div className='col-md-8 mb-32px'>
+      <PieChart
+        title={"Evaluaciones continuas"}
+        labels={["Red", "Blue", "Yellow"]}
+        datasets={[
+          {
+            label: "My First Dataset",
+            data: [300, 50, 100],
+            backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+            hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+          },
+        ]}
+      />
+    </div>
+  );
+
   const content = (
     <>
-    {employees.map((employee) => {
-      return (
-        <div key={employee.id} className='col-md-4'>
-          <Employee
-            id={employee.id}
-            name={employee.name}
-            photoURL={examplePhoto}
-            position={employee.position}
-            lastEvaluation={employee.lastEvaluation}
-            lastEvaluationUnit={employee.lastEvaluationUnit}
-            area={employee.area}
-            email={employee.email}
-          />
-        </div>
-      );
-    })}
+    {firstTwoEmployees}
+    {chart}
+    {restEmployees}
     </>
-  );
+  )
 
   const body = (
     <Section title={'Trabajadores'} content={content} filters={filters}/>

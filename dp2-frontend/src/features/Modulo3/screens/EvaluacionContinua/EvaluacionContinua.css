@@ -6,3 +6,12 @@
 .ec-indexFilterElement{
   margin-left: 20px;
 }
+
+.ec-indexFirstTwoEmployees{
+  display: flex;
+  flex-direction: column;
+}
+
+.mb-32px{
+  margin-bottom: 32px;
+}
