@@ -17,9 +17,18 @@ const RegisterExample = Loader(
   lazy(() => import('@features/ExampleModule/features/ListExample'))
 );
 
-const Modulo1 = Loader(
-  lazy(() => import('@features/Modulo1'))
+const Modulo1LP = Loader(
+  lazy(() => import('@features/Modulo1/pages/LearningPath'))
 );
+
+const Modulo1CapC = Loader(
+  lazy(() => import('@features/Modulo1/index2'))
+);
+
+const Modulo1CapP = Loader(
+  lazy(() => import('@features/Modulo1/pages/Training'))
+);
+
 
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
@@ -73,20 +82,15 @@ const routes: RouteObject[] = [
   },
   {
     path: 'modulo1',
-    element: <Modulo1 />,
+    // element: <Modulo1CapC />,
     children: [
       {
-        path: 'submodulo0',
-        children: [
-          {
-            path: 'list',
-            element: <ListExample />
-          },
-          {
-            path: 'register',
-            element: <ListExample />
-          },
-        ]
+        path: 'rutadeaprendizaje',
+        element: <Modulo1LP />
+      },
+      {
+        path: 'capacitacion',
+        element: <Modulo1CapP />
       },
     ]
   },

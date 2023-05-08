@@ -2,6 +2,8 @@ import Sidebar from '@features/Modulo1/components/Sidebar'
 import sidebarItems from '@features/Modulo1/utils/sidebarItems'
 import { Fragment, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import TrainingCard from '@features/Modulo1/components/Training/TrainingCard';
+import './training.css';
 
 const typeTra = [
     { id: 1, type: "Todos" },
@@ -16,9 +18,20 @@ const typeCreation = [
     { id: 4, type: "Virtual Asincrono" },
 ]
 
+// type TrainingObj = {
+//     id: number;
+//     name: string;
+//     description: string;
+//     startDate: string;
+//     endDate: string;
+//     numEmployees: number;
+//     type: string;
+// }
+
 type TrainingObj = {
     id: number;
     name: string;
+    photoURL: string,
     description: string;
     startDate: string;
     endDate: string;
@@ -26,52 +39,117 @@ type TrainingObj = {
     type: string;
 }
 
+// const datos: TrainingObj[] = [
+//     {
+//         "id": 1,
+//         "name": "Seguridad de Información",
+//         "description": "Lorem ipsum",
+//         "startDate": "2023-05-11",
+//         "endDate": "2023-05-11",
+//         "numEmployees": 10,
+//         "type": "Presencial"
+//     },
+//     {
+//         "id": 2,
+//         "name": "ABC",
+//         "description": "Lorem ipsum",
+//         "startDate": "2023-05-11",
+//         "endDate": "2023-05-11",
+//         "numEmployees": 15,
+//         "type": "Presencial"
+//     },
+//     {
+//         "id": 3,
+//         "name": "ABC",
+//         "description": "Lorem ipsum",
+//         "startDate": "2023-05-11",
+//         "endDate": "2023-05-11",
+//         "numEmployees": 15,
+//         "type": "Presencial"
+//     },
+//     {
+//         "id": 4,
+//         "name": "ABC",
+//         "description": "Lorem ipsum",
+//         "startDate": "2023-05-11",
+//         "endDate": "2023-05-11",
+//         "numEmployees": 15,
+//         "type": "Presencial"
+//     },
+// ]
+
 const datos: TrainingObj[] = [
     {
         "id": 1,
         "name": "Seguridad de Información",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
-        "startDate": "2023-05-11",
-        "endDate": "2023-05-11",
+        "startDate": "06/05/2023",
+        "endDate": "06/05/2023",
         "numEmployees": 10,
         "type": "Presencial"
     },
     {
         "id": 2,
         "name": "ABC",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
-        "startDate": "2023-05-11",
-        "endDate": "2023-05-11",
+        "startDate": "06/05/2023",
+        "endDate": "10/05/2023",
         "numEmployees": 15,
-        "type": "Presencial"
+        "type": "Sincrono"
     },
     {
         "id": 3,
         "name": "ABC",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
-        "startDate": "2023-05-11",
-        "endDate": "2023-05-11",
+        "startDate": "06/05/2023",
+        "endDate": "11/05/2023",
         "numEmployees": 15,
-        "type": "Presencial"
+        "type": "Asincrono"
     },
     {
         "id": 4,
         "name": "ABC",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
-        "startDate": "2023-05-11",
-        "endDate": "2023-05-11",
+        "startDate": "06/05/2023",
+        "endDate": "12/05/2023",
         "numEmployees": 15,
         "type": "Presencial"
     },
 ]
 
+function padTo2Digits(num: number) {
+    return num.toString().padStart(2, '0');
+}
+
+function formatDate(date: Date) {
+    return (
+        [
+            padTo2Digits(date.getDate()),
+            padTo2Digits(date.getMonth() + 1),
+            date.getFullYear()
+        ].join('/')
+    );
+}
+
+
 const Training = () => {
 
-    const [training, setTraining] = useState<TrainingObj[]>([])
-    const [trainingFilter, setTrainingFilter] = useState<TrainingObj[]>(datos)
+    // const [training, setTraining] = useState<TrainingObj[]>(datos)
+    const today = new Date();
+    const now = formatDate(new Date())
+    const now7 = formatDate(new Date(today.setDate(today.getDate() + 7)));
 
-    const [startDate, setStarDate] = useState("")
-    const [endDate, setEndDate] = useState("")
+    const [trainingFilter, setTrainingFilter] = useState<TrainingObj[]>(datos)
+    const [trainingTime, setTrainingTime] = useState<TrainingObj[]>(datos.filter((item: any) => item.endDate >= now && item.endDate <= now7))
+
+    const [startDate, setStarDate] = useState("0001-01-01")
+    const [endDate, setEndDate] = useState("9999-12-31")
+    const [typeTraining, setTypeTraining] = useState("Todos")
+    var filtered;
 
     /* TRAINING DETAIL INPUTS */
     const refTrName = useRef<HTMLInputElement>(null);
@@ -86,10 +164,14 @@ const Training = () => {
     /* TRAINING FILTERS */
     const handleFilter = (e: any) => {
         const searchTerm = e.target.value;
-        const filtered = training.filter((item: any) =>
-            item.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setTrainingFilter(filtered);
+        if (searchTerm === '')
+            setTrainingFilter(datos);
+        else {
+            filtered = trainingFilter.filter((item: any) =>
+                item.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setTrainingFilter(filtered);
+        }
     };
 
     const handleChangeStartDate = (e: any) => {
@@ -101,12 +183,32 @@ const Training = () => {
     }
 
     const handleChangeType = (e: any) => {
-
+        setTypeTraining(e.target.value)
     }
+
+    const search = (e: any) => {
+        if (typeTraining === "Todos" && (startDate === "0001-01-01" || startDate === "") && (endDate === "9999-12-31" || endDate === ""))
+            setTrainingFilter(datos);
+        else {
+            console.log(startDate)
+            console.log(endDate)
+            if (typeTraining === "Todos") {
+                filtered = datos.filter((item: any) =>
+                    item.endDate >= formatDate(new Date(startDate + ' 00:00:00')) && item.endDate <= formatDate(new Date(endDate + ' 00:00:00'))
+                );
+                setTrainingFilter(filtered);
+            }else{
+                filtered = datos.filter((item: any) =>
+                    item.endDate >= formatDate(new Date(startDate + ' 00:00:00')) && item.endDate <= formatDate(new Date(endDate + ' 00:00:00')) && item.type === typeTraining
+                );
+                setTrainingFilter(filtered);
+            }        
+        }
+    }
+
     /* TRAINING FILTERS */
 
-    const createTraining = () =>
-    {
+    const createTraining = () => {
         const data = {
             nombre: refTrName.current?.value,
             descripcion: refTrDescription.current?.value,
@@ -119,7 +221,7 @@ const Training = () => {
 
         console.log(data)
     }
-    
+
     return (
         <>
             <Sidebar items={sidebarItems} active='capacitacion'>
@@ -128,7 +230,7 @@ const Training = () => {
                         <h1>Capacitaciones</h1>
                         <p><small className='opacity-50'>Lista de capacitaciones creadas que los empleados pueden asistir para adquirir habilidades y competencias específicas.</small></p>
                     </div>
-                    <div style={{flex: '0 0 15rem'}} className='col text-end'>
+                    <div style={{ flex: '0 0 15rem' }} className='col text-end'>
                         {/* Button trigger modal */}
                         <button type='button' className='btn btn-primary' data-bs-target='#createTrainingModal' data-bs-toggle='modal'>
                             <span className='me-3'>Crear capacitación</span>
@@ -142,55 +244,171 @@ const Training = () => {
                 </div>
                 <div className='row'>
                     <div className='col-5'>
-                        <input className='form-control' type='text' placeholder='Buscar capacitaciones' onChange={handleFilter}/>
-                    </div>  
+                        <input className='form-control' type='text' placeholder='Buscar capacitaciones' onChange={handleFilter} />
+                    </div>
                     <div className='col-2'>
                         <select className="form-select" aria-label=".form-select-sm example" onChange={handleChangeType}>
                             <option hidden>Tipo</option>
                             {typeTra.map((t) => {
-                                return(
+                                return (
                                     <option key={t.id} value={t.type}>{t.type}</option>
                                 )
                             })}
                         </select>
                     </div>
                     <div className='col'>
-                        <input className='form-control' type='date' id='start_date' onChange={handleChangeStartDate}/>
-                    </div> 
+                        <input className='form-control' type='date' id='start_date' onChange={handleChangeStartDate} />
+                    </div>
                     <div className='col'>
-                        <input className='form-control' type='date' id='end_date' onChange={handleChangeEndDate}/>
-                    </div> 
+                        <input className='form-control' type='date' id='end_date' onChange={handleChangeEndDate} />
+                    </div>
                     <div className='col-1 text-end'>
-                        <button className='btn btn-primary' type='button' /*onClick={search}*/>Buscar</button>
+                        <button className='btn btn-primary' type='button' onClick={search}>Buscar</button>
                     </div>
                 </div>
-                <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 py-3 px-0 mx-0'>
+
+                {trainingFilter == datos &&
+                    <div>
+                        <div className='pt-3'>
+                            <h5>
+                                Próximos 7 días
+                            </h5>
+                        </div>
+
+                        {trainingTime.length > 0 ?
+                            <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
+                                {
+                                    trainingTime.map((tr) => {
+                                        return (
+                                            // <Fragment key={tr.id}>
+                                            //     <div className='cols'>
+                                            //         <div className="card">
+                                            //             <div className="card-body">
+                                            //                 <h6 className="card-title">{tr.name}</h6>
+                                            //                 <p className="card-text opacity-50"><small>{tr.description}</small></p>
+                                            //                 <p className="card-text opacity-50"><small>Fecha de inicio: {tr.startDate}</small></p>
+                                            //                 <p className="card-text opacity-50"><small>Fecha de fin: {tr.endDate}</small></p>
+                                            //                 <p className="card-text opacity-50"><small>Cantidad de empleados: {tr.numEmployees}</small></p>
+                                            //                 <div className="d-flex gap-2 w-100 justify-content-between">
+                                            //                     <span></span>
+                                            //                     {/* <Link to={`/capacitacion/detalle/${tr.id}`} className="btn btn-primary float-right">Detalles</Link> */}
+                                            //                     <button className="btn btn-primary float-right">Detalles</button>
+                                            //                 </div>
+                                            //             </div>
+                                            //         </div>
+                                            //     </div>
+                                            // </Fragment>
+                                            <TrainingCard key={tr.id}
+                                                id={tr.id}
+                                                name={tr.name}
+                                                photoURL={tr.photoURL}
+                                                description={tr.description}
+                                                creationDate={tr.startDate}
+                                                eventDate={tr.endDate}
+                                                employees={tr.numEmployees}
+                                            />
+
+                                        )
+                                    })
+                                }
+                            </div>
+                            :
+                            <div>
+                                <h6>
+                                    No hay proximas capacidades
+                                </h6>
+                            </div>
+                        }
+
+
+                    </div>
+
+                }
+
+
+
+                <div>
+                    <div className='pt-3'>
+                        <h5>
+                            Capacitaciones creadas
+                        </h5>
+                    </div>
+
+                    <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
+                        {
+                            trainingFilter.map((tr) => {
+                                return (
+                                    // <Fragment key={tr.id}>
+                                    //     <div className='cols'>
+                                    //         <div className="card">
+                                    //             <div className="card-body">
+                                    //                 <h6 className="card-title">{tr.name}</h6>
+                                    //                 <p className="card-text opacity-50"><small>{tr.description}</small></p>
+                                    //                 <p className="card-text opacity-50"><small>Fecha de inicio: {tr.startDate}</small></p>
+                                    //                 <p className="card-text opacity-50"><small>Fecha de fin: {tr.endDate}</small></p>
+                                    //                 <p className="card-text opacity-50"><small>Cantidad de empleados: {tr.numEmployees}</small></p>
+                                    //                 <div className="d-flex gap-2 w-100 justify-content-between">
+                                    //                     <span></span>
+                                    //                     {/* <Link to={`/capacitacion/detalle/${tr.id}`} className="btn btn-primary float-right">Detalles</Link> */}
+                                    //                     <button className="btn btn-primary float-right">Detalles</button>
+                                    //                 </div>
+                                    //             </div>
+                                    //         </div>
+                                    //     </div>
+                                    // </Fragment>
+                                    <TrainingCard key={tr.id}
+                                        id={tr.id}
+                                        name={tr.name}
+                                        photoURL={tr.photoURL}
+                                        description={tr.description}
+                                        creationDate={tr.startDate}
+                                        eventDate={tr.endDate}
+                                        employees={tr.numEmployees}
+                                    />
+
+                                )
+                            })
+                        }
+                    </div>
+                </div>
+
+                {/* <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 py-3 px-0 mx-0 cards'>
                     {
                         trainingFilter.map((tr) => {
                             return (
-                                <Fragment key={tr.id}>
-                                    <div className='cols'>
-                                        <div className="card">
-                                            <div className="card-body">
-                                                <h6 className="card-title">{tr.name}</h6>
-                                                <p className="card-text opacity-50"><small>{tr.description}</small></p>
-                                                <p className="card-text opacity-50"><small>Fecha de inicio: {tr.startDate}</small></p>
-                                                <p className="card-text opacity-50"><small>Fecha de fin: {tr.endDate}</small></p>
-                                                <p className="card-text opacity-50"><small>Cantidad de empleados: {tr.numEmployees}</small></p>
-                                                <div className="d-flex gap-2 w-100 justify-content-between">
-                                                    <span></span>
-                                                    {/* <Link to={`/capacitacion/detalle/${tr.id}`} className="btn btn-primary float-right">Detalles</Link> */}
-                                                    <button className="btn btn-primary float-right">Detalles</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Fragment>
+                                // <Fragment key={tr.id}>
+                                //     <div className='cols'>
+                                //         <div className="card">
+                                //             <div className="card-body">
+                                //                 <h6 className="card-title">{tr.name}</h6>
+                                //                 <p className="card-text opacity-50"><small>{tr.description}</small></p>
+                                //                 <p className="card-text opacity-50"><small>Fecha de inicio: {tr.startDate}</small></p>
+                                //                 <p className="card-text opacity-50"><small>Fecha de fin: {tr.endDate}</small></p>
+                                //                 <p className="card-text opacity-50"><small>Cantidad de empleados: {tr.numEmployees}</small></p>
+                                //                 <div className="d-flex gap-2 w-100 justify-content-between">
+                                //                     <span></span>                                //                     
+                                //                     <button className="btn btn-primary float-right">Detalles</button>
+                                //                 </div>
+                                //             </div>
+                                //         </div>
+                                //     </div>
+                                // </Fragment>
+                                <TrainingCard key={tr.id}
+                                    id={tr.id}
+                                    name={tr.name}
+                                    photoURL={tr.photoURL}
+                                    description={tr.description}
+                                    creationDate={tr.startDate}
+                                    eventDate={tr.endDate}
+                                    employees={tr.numEmployees}
+                                />
+
                             )
                         })
                     }
+                </div> */}
 
-                </div>
+
                 {
                     trainingFilter.length === 0 && <>
                         <div className='row align-items-stretch g-3 py-3'>
@@ -249,7 +467,7 @@ const Training = () => {
                                         <select className="form-select" aria-label=".form-select-sm example" ref={refTrTypes}>
                                             <option hidden>Seleccionar</option>
                                             {typeCreation.map((t) => {
-                                                return(
+                                                return (
                                                     <option key={t.id} value={t.type}>{t.type}</option>
                                                 )
                                             })}
@@ -263,7 +481,7 @@ const Training = () => {
                                     </div>
                                     <div className='col'>
                                         <label htmlFor="exampleFormControlInput1" className="form-label">Aforo máximo</label>
-                                        <input type="number" className="form-control" ref={refTrCapacity} min={'0'}/>
+                                        <input type="number" className="form-control" ref={refTrCapacity} min={'0'} />
                                     </div>
                                 </div>
                                 <div className='row'>
@@ -280,7 +498,7 @@ const Training = () => {
                         </div>
                     </div>
                 </div>
-            </Sidebar>
+            </Sidebar >
         </>
     )
 }

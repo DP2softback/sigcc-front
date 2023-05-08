@@ -62,7 +62,7 @@ function LearningPath (props: any)
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='capacitacion'>
+            <Sidebar items={sidebarItems} active='rutadeaprendizaje'>
                 <div className='row mt-3'>
                     <div className='col'>
                         <h1>Rutas de aprendizaje</h1>
