@@ -14,55 +14,72 @@ type EmployeeProps = {
   characteristics?: string[]
 }
 
-const Employee = ({ id, name, photoURL, position, lastEvaluation, lastEvaluationUnit, area, email, matchRate, characteristics } : EmployeeProps) => {
+const Employee = ({
+  id,
+  name,
+  photoURL,
+  position,
+  lastEvaluation,
+  lastEvaluationUnit,
+  area,
+  email,
+  matchRate,
+  characteristics,
+}: EmployeeProps) => {
+  
+  const matchRateItem = {
+    icon: <Clipboard />,
+    text: "Porcentaje de coincidencia",
+    aditional: {
+      text: `${matchRate} %`,
+      backgroundColor: "#0D6EFD",
+    },
+  };
+
   const rows = [
     {
-      icon: <Clock/>,
-      text: 'Última evaluación de desempeño',
+      icon: <Clock />,
+      text: "Última evaluación de desempeño",
       aditional: {
         text: `${lastEvaluation} ${lastEvaluationUnit}`,
-        backgroundColor: '#DC3545'
-      }
+        backgroundColor: "#DC3545",
+      },
     },
     {
-      icon: <Clipboard/>,
-      text: 'Porcentaje de coincidencia',
-      aditional: {
-        text: `${matchRate} %`,
-        backgroundColor: '#0D6EFD'
-      }
+      icon: <PersonVcard />,
+      text: id,
     },
     {
-      icon: <PersonVcard/>,
-      text: id
+      icon: <Building />,
+      text: area,
     },
     {
-      icon: <Building/>,
-      text: area
+      icon: <Briefcase />,
+      text: position,
     },
     {
-      icon: <Briefcase/>,
-      text: position
-    },
-    {
-      icon: <EnvelopeAt/>,
-      text: email
+      icon: <EnvelopeAt />,
+      text: email,
     },
     {
       list: characteristics,
-      backgroundColor: '#DC3545'
-    }
-  ]
+      backgroundColor: "#DC3545",
+    },
+  ];
+
+  if (matchRate) {
+    rows.splice(1, 0, matchRateItem)
+  }
 
   return (
     <BasicCard
       image={photoURL}
-      imageStyle={'100px'}
+      imageStyle={"100px"}
       title={name}
       subtitle={position}
       items={rows}
     />
   );
-}
+};
 
 export default Employee
