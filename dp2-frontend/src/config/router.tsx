@@ -10,8 +10,8 @@ const Loader = (Component) => (props) =>
 );
 
 
-const Modulo1 = Loader(
-  lazy(() => import('@features/Modulo1'))
+const Modulo1LP = Loader(
+  lazy(() => import('@features/Modulo1/pages/LearningPath'))
 );
 
 const M1ListLearningPath = Loader(
@@ -34,7 +34,7 @@ const routes: RouteObject[] = [
     children: [
       {
         path: '',
-        element: <Modulo1 />
+        element: <Modulo1LP />
       },
       {
         path: 'rutadeaprendizaje',
