@@ -21,6 +21,14 @@ const Modulo1 = Loader(
   lazy(() => import('@features/Modulo1'))
 );
 
+const M1ListTraining = Loader(
+  lazy(() => import('@features/Modulo1/pages/Training'))
+);
+
+const M1TrainingDetails = Loader(
+  lazy(() => import('@features/Modulo1/pages/Training/Details'))
+);
+
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
 const routes: RouteObject[] = [
@@ -85,6 +93,19 @@ const routes: RouteObject[] = [
           {
             path: 'register',
             element: <ListExample />
+          },
+        ]
+      },
+      {
+        path: 'capacitacion',
+        children: [
+          {
+            path: '',
+            element: <M1ListTraining />
+          },
+          {
+            path: 'detalle/:trainingID',
+            element: <M1TrainingDetails />
           },
         ]
       },
