@@ -1,0 +1,9 @@
+.cards{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+
+.prueba{
+    background-color: #000000;
+}

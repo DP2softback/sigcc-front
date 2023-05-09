@@ -1,7 +1,3 @@
-:root {
-    --rate-star-size: 1.5rem;
-}
-
 .rating-control {
     border: none;
     text-align: end;

@@ -20,9 +20,20 @@ const typeCreation = [
     { id: 4, type: "Virtual Asincrono" },
 ]
 
+// type TrainingObj = {
+//     id: number;
+//     name: string;
+//     description: string;
+//     startDate: string;
+//     endDate: string;
+//     numEmployees: number;
+//     type: string;
+// }
+
 type TrainingObj = {
     id: number;
     name: string;
+    photoURL: string,
     description: string;
     startDate: string;
     endDate: string;
@@ -33,13 +44,53 @@ type TrainingObj = {
     //topics: string; //FALTO CONSIDERAR PERO COMO SE TRAERA O LLEVARA A LA BD?
 }
 
+// const datos: TrainingObj[] = [
+//     {
+//         "id": 1,
+//         "name": "Seguridad de Información",
+//         "description": "Lorem ipsum",
+//         "startDate": "2023-05-11",
+//         "endDate": "2023-05-11",
+//         "numEmployees": 10,
+//         "type": "Presencial"
+//     },
+//     {
+//         "id": 2,
+//         "name": "ABC",
+//         "description": "Lorem ipsum",
+//         "startDate": "2023-05-11",
+//         "endDate": "2023-05-11",
+//         "numEmployees": 15,
+//         "type": "Presencial"
+//     },
+//     {
+//         "id": 3,
+//         "name": "ABC",
+//         "description": "Lorem ipsum",
+//         "startDate": "2023-05-11",
+//         "endDate": "2023-05-11",
+//         "numEmployees": 15,
+//         "type": "Presencial"
+//     },
+//     {
+//         "id": 4,
+//         "name": "ABC",
+//         "description": "Lorem ipsum",
+//         "startDate": "2023-05-11",
+//         "endDate": "2023-05-11",
+//         "numEmployees": 15,
+//         "type": "Presencial"
+//     },
+// ]
+
 const datos: TrainingObj[] = [
     {
         "id": 1,
         "name": "Seguridad de Información",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
-        "startDate": "2023-05-11",
-        "endDate": "2023-05-11",
+        "startDate": "06/05/2023",
+        "endDate": "06/05/2023",
         "numEmployees": 10,
         "type": "Presencial",
         "capacity": 20,
@@ -48,9 +99,10 @@ const datos: TrainingObj[] = [
     {
         "id": 2,
         "name": "ABC",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
-        "startDate": "2023-05-11",
-        "endDate": "2023-05-11",
+        "startDate": "06/05/2023",
+        "endDate": "10/05/2023",
         "numEmployees": 15,
         "type": "Sincrono",
         "capacity": 20,
@@ -59,9 +111,10 @@ const datos: TrainingObj[] = [
     {
         "id": 3,
         "name": "ABC",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
-        "startDate": "2023-05-11",
-        "endDate": "2023-05-11",
+        "startDate": "06/05/2023",
+        "endDate": "11/05/2023",
         "numEmployees": 15,
         "type": "Asincrono",
         "capacity": 20,
@@ -70,9 +123,10 @@ const datos: TrainingObj[] = [
     {
         "id": 4,
         "name": "ABC",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
-        "startDate": "2023-05-11",
-        "endDate": "2023-05-11",
+        "startDate": "06/05/2023",
+        "endDate": "12/05/2023",
         "numEmployees": 15,
         "type": "Presencial",
         "capacity": 20,
@@ -80,13 +134,35 @@ const datos: TrainingObj[] = [
     },
 ]
 
+function padTo2Digits(num: number) {
+    return num.toString().padStart(2, '0');
+}
+
+function formatDate(date: Date) {
+    return (
+        [
+            padTo2Digits(date.getDate()),
+            padTo2Digits(date.getMonth() + 1),
+            date.getFullYear()
+        ].join('/')
+    );
+}
+
+
 const Training = () => {
 
-    const [training, setTraining] = useState<TrainingObj[]>([])
-    const [trainingFilter, setTrainingFilter] = useState<TrainingObj[]>(datos)
+    // const [training, setTraining] = useState<TrainingObj[]>(datos)
+    const today = new Date();
+    const now = formatDate(new Date())
+    const now7 = formatDate(new Date(today.setDate(today.getDate() + 7)));
 
-    const [startDate, setStarDate] = useState("")
-    const [endDate, setEndDate] = useState("")
+    const [trainingFilter, setTrainingFilter] = useState<TrainingObj[]>(datos)
+    const [trainingTime, setTrainingTime] = useState<TrainingObj[]>(datos.filter((item: any) => item.endDate >= now && item.endDate <= now7))
+
+    const [startDate, setStarDate] = useState("0001-01-01")
+    const [endDate, setEndDate] = useState("9999-12-31")
+    const [typeTraining, setTypeTraining] = useState("Todos")
+    var filtered;
 
     const navigate = useNavigate();
 
@@ -103,10 +179,14 @@ const Training = () => {
     /* TRAINING FILTERS */
     const handleFilter = (e: any) => {
         const searchTerm = e.target.value;
-        const filtered = training.filter((item: any) =>
-            item.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setTrainingFilter(filtered);
+        if (searchTerm === '')
+            setTrainingFilter(datos);
+        else {
+            filtered = trainingFilter.filter((item: any) =>
+                item.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setTrainingFilter(filtered);
+        }
     };
 
     const handleChangeStartDate = (e: any) => {
@@ -118,12 +198,32 @@ const Training = () => {
     }
 
     const handleChangeType = (e: any) => {
-
+        setTypeTraining(e.target.value)
     }
+
+    const search = (e: any) => {
+        if (typeTraining === "Todos" && (startDate === "0001-01-01" || startDate === "") && (endDate === "9999-12-31" || endDate === ""))
+            setTrainingFilter(datos);
+        else {
+            console.log(startDate)
+            console.log(endDate)
+            if (typeTraining === "Todos") {
+                filtered = datos.filter((item: any) =>
+                    item.endDate >= formatDate(new Date(startDate + ' 00:00:00')) && item.endDate <= formatDate(new Date(endDate + ' 00:00:00'))
+                );
+                setTrainingFilter(filtered);
+            }else{
+                filtered = datos.filter((item: any) =>
+                    item.endDate >= formatDate(new Date(startDate + ' 00:00:00')) && item.endDate <= formatDate(new Date(endDate + ' 00:00:00')) && item.type === typeTraining
+                );
+                setTrainingFilter(filtered);
+            }        
+        }
+    }
+
     /* TRAINING FILTERS */
 
-    const createTraining = () =>
-    {
+    const createTraining = () => {
         const data = {
             nombre: refTrName.current?.value,
             descripcion: refTrDescription.current?.value,
@@ -173,7 +273,7 @@ const Training = () => {
                         <h1>Capacitaciones</h1>
                         <p><small className='opacity-50'>Lista de capacitaciones creadas que los empleados pueden asistir para adquirir habilidades y competencias específicas.</small></p>
                     </div>
-                    <div style={{flex: '0 0 15rem'}} className='col text-end'>
+                    <div style={{ flex: '0 0 15rem' }} className='col text-end'>
                         {/* Button trigger modal */}
                         <button type='button' className='btn btn-primary' data-bs-target='#createTrainingModal' data-bs-toggle='modal'>
                             <span className='me-3'>Crear capacitación</span>
@@ -187,26 +287,26 @@ const Training = () => {
                 </div>
                 <div className='row'>
                     <div className='col-5'>
-                        <input className='form-control' type='text' placeholder='Buscar capacitaciones' onChange={handleFilter}/>
-                    </div>  
+                        <input className='form-control' type='text' placeholder='Buscar capacitaciones' onChange={handleFilter} />
+                    </div>
                     <div className='col-2'>
                         <select className="form-select" aria-label=".form-select-sm example" onChange={handleChangeType}>
                             <option hidden>Tipo</option>
                             {typeTra.map((t) => {
-                                return(
+                                return (
                                     <option key={t.id} value={t.type}>{t.type}</option>
                                 )
                             })}
                         </select>
                     </div>
                     <div className='col'>
-                        <input className='form-control' type='date' id='start_date' onChange={handleChangeStartDate}/>
-                    </div> 
+                        <input className='form-control' type='date' id='start_date' onChange={handleChangeStartDate} />
+                    </div>
                     <div className='col'>
-                        <input className='form-control' type='date' id='end_date' onChange={handleChangeEndDate}/>
-                    </div> 
+                        <input className='form-control' type='date' id='end_date' onChange={handleChangeEndDate} />
+                    </div>
                     <div className='col-1 text-end'>
-                        <button className='btn btn-primary' type='button' /*onClick={search}*/>Buscar</button>
+                        <button className='btn btn-primary' type='button' onClick={search}>Buscar</button>
                     </div>
                 </div>
 
@@ -352,7 +452,7 @@ const Training = () => {
                                         <select className="form-select" aria-label=".form-select-sm example" ref={refTrTypes}>
                                             <option hidden>Seleccionar</option>
                                             {typeCreation.map((t) => {
-                                                return(
+                                                return (
                                                     <option key={t.id} value={t.type}>{t.type}</option>
                                                 )
                                             })}
@@ -382,7 +482,7 @@ const Training = () => {
                         </div>
                     </div>
                 </div>
-            </Sidebar>
+            </Sidebar >
         </>
     )
 }

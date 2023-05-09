@@ -9,16 +9,21 @@ const Loader = (Component) => (props) =>
   </Suspense>
 );
 
-const ListExample = Loader(
-  lazy(() => import('@features/ExampleModule/features/ListExample'))
+
+const Modulo1LP = Loader(
+  lazy(() => import('@features/Modulo1/pages/LearningPath'))
 );
 
-const RegisterExample = Loader(
-  lazy(() => import('@features/ExampleModule/features/ListExample'))
+const M1ListLearningPath = Loader(
+  lazy(() => import('@features/Modulo1/pages/LearningPath'))
 );
 
-const Modulo1 = Loader(
-  lazy(() => import('@features/Modulo1'))
+const M1LearningPathDetails = Loader(
+  lazy(() => import('@features/Modulo1/pages/LearningPath/Details'))
+);
+
+const M1AddCourse = Loader(
+  lazy(() => import('@features/Modulo1/pages/Course/AddCourse'))
 );
 
 const M1ListTraining = Loader(
@@ -33,66 +38,31 @@ const M1TrainingDetails = Loader(
 
 const routes: RouteObject[] = [
   {
-    path: '',
-  },
-  {
-    path: 'example',
-    children: [
-      {
-        path: 'list',
-        element: <ListExample />
-      },
-      {
-        path: 'register',
-        element: <RegisterExample />
-      },
-    ]
-  },
-  {
-    path: 'modulo0',
-    children: [
-      {
-        path: 'submodulo0',
-        children: [
-          {
-            path: 'list',
-            element: <ListExample />
-          },
-          {
-            path: 'register',
-            element: <ListExample />
-          },
-        ]
-      },
-      {
-        path: 'submodulo1',
-        children: [
-          {
-            path: 'list',
-            element: <ListExample />
-          },
-          {
-            path: 'register',
-            element: <ListExample />
-          },
-        ]
-      },
-    ]
-  },
-  {
     path: 'modulo1',
-    element: <Modulo1 />,
     children: [
       {
-        path: 'submodulo0',
+        path: '',
+        element: <Modulo1LP />
+      },
+      {
+        path: 'rutadeaprendizaje',
         children: [
           {
-            path: 'list',
-            element: <ListExample />
+            path: '',
+            element: <M1ListLearningPath />
           },
           {
-            path: 'register',
-            element: <ListExample />
+            path: 'detalle/:learningPathId',
+            element: <M1LearningPathDetails />
+          },
+        ]
+      },
+      {
+        path: 'curso',
+        children: [
+          {
+            path: 'agregar/:learningPathId',
+            element: <M1AddCourse />
           },
         ]
       },
