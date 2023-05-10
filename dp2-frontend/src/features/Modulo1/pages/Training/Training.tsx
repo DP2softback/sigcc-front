@@ -1,9 +1,12 @@
 import Sidebar from '@features/Modulo1/components/Sidebar'
 import sidebarItems from '@features/Modulo1/utils/sidebarItems'
-import { Fragment, useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import TrainingCard from '@features/Modulo1/components/Training/TrainingCard';
 import './training.css';
+import PictureUpload from '@features/Modulo1/components/PictureUpload';
+import '../../basic.css';
+import axiosInt from '@config/axios';
 
 const typeTra = [
     { id: 1, type: "Todos" },
@@ -37,6 +40,9 @@ type TrainingObj = {
     endDate: string;
     numEmployees: number;
     type: string;
+    capacity: number;
+    location: string;
+    //topics: string; //FALTO CONSIDERAR PERO COMO SE TRAERA O LLEVARA A LA BD?
 }
 
 // const datos: TrainingObj[] = [
@@ -87,37 +93,45 @@ const datos: TrainingObj[] = [
         "startDate": "06/05/2023",
         "endDate": "06/05/2023",
         "numEmployees": 10,
-        "type": "Presencial"
+        "type": "Presencial",
+        "capacity": 20,
+        "location": "Av. Universitaria 1305 - San Miguel"
     },
     {
         "id": 2,
-        "name": "ABC",
+        "name": "ABC S",
         "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
         "startDate": "06/05/2023",
         "endDate": "10/05/2023",
         "numEmployees": 15,
-        "type": "Sincrono"
+        "type": "Sincrono",
+        "capacity": 20,
+        "location": "Av. Universitaria 1305 - San Miguel"
     },
     {
         "id": 3,
-        "name": "ABC",
+        "name": "ABC A",
         "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
         "startDate": "06/05/2023",
         "endDate": "11/05/2023",
         "numEmployees": 15,
-        "type": "Asincrono"
+        "type": "Asincrono",
+        "capacity": 20,
+        "location": "Av. Universitaria 1305 - San Miguel"
     },
     {
         "id": 4,
-        "name": "ABC",
+        "name": "ABC P",
         "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
         "startDate": "06/05/2023",
         "endDate": "12/05/2023",
         "numEmployees": 15,
-        "type": "Presencial"
+        "type": "Presencial",
+        "capacity": 20,
+        "location": "Av. Universitaria 1305 - San Miguel"
     },
 ]
 
@@ -150,6 +164,8 @@ const Training = () => {
     const [endDate, setEndDate] = useState("9999-12-31")
     const [typeTraining, setTypeTraining] = useState("Todos")
     var filtered;
+
+    const navigate = useNavigate();
 
     /* TRAINING DETAIL INPUTS */
     const refTrName = useRef<HTMLInputElement>(null);
@@ -190,8 +206,6 @@ const Training = () => {
         if (typeTraining === "Todos" && (startDate === "0001-01-01" || startDate === "") && (endDate === "9999-12-31" || endDate === ""))
             setTrainingFilter(datos);
         else {
-            console.log(startDate)
-            console.log(endDate)
             if (typeTraining === "Todos") {
                 filtered = datos.filter((item: any) =>
                     item.endDate >= formatDate(new Date(startDate + ' 00:00:00')) && item.endDate <= formatDate(new Date(endDate + ' 00:00:00'))
@@ -220,25 +234,54 @@ const Training = () => {
         }
 
         console.log(data)
+
+        axiosInt.post('RUTA API', data)
+            .then(function (response)
+            {
+                //navigate(`/modulo1/capacitacion/detalle/${response.data.id}`);
+            })
+            .catch(function (error)
+            {
+                console.log(error);
+            });
     }
+
+    const loadTrainings = () =>
+    {
+        axiosInt.get('RUTA API')
+            .then(function (response)
+            {
+                //setTrainingFilter(response.data);
+            })
+            .catch(function (error)
+            {
+                console.log(error);
+            });
+    }
+
+    useEffect(() =>
+    {
+        //loadTrainings();
+    }, []);
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='capacitacion'>
+            <Sidebar items={sidebarItems} active='/modulo1/capacitacion'>
                 <div className='row mt-3'>
                     <div className='col'>
-                        <h1>Capacitaciones</h1>
-                        <p><small className='opacity-50'>Lista de capacitaciones creadas que los empleados pueden asistir para adquirir habilidades y competencias específicas.</small></p>
+                        <h1 className='screenTitle'>Capacitaciones</h1>
+                        <p><small className='subtitle'>Lista de capacitaciones creadas que los empleados pueden asistir para adquirir habilidades y competencias específicas.</small></p>
                     </div>
                     <div style={{ flex: '0 0 15rem' }} className='col text-end'>
                         {/* Button trigger modal */}
                         <button type='button' className='btn btn-primary' data-bs-target='#createTrainingModal' data-bs-toggle='modal'>
-                            <span className='me-3'>Crear capacitación</span>
-                            <i className="bi bi-0-square"></i>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                            </svg>
+                            <div style={{display: "flex", alignItems: "center"}}>
+                                <span className='me-3'>Crear capacitación</span>                            
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                </svg>
+                            </div>                            
                         </button>
                     </div>
                 </div>
@@ -271,7 +314,7 @@ const Training = () => {
                     <div>
                         <div className='pt-3'>
                             <h5>
-                                Próximos 7 días
+                                Próximos a iniciar
                             </h5>
                         </div>
 
@@ -280,24 +323,6 @@ const Training = () => {
                                 {
                                     trainingTime.map((tr) => {
                                         return (
-                                            // <Fragment key={tr.id}>
-                                            //     <div className='cols'>
-                                            //         <div className="card">
-                                            //             <div className="card-body">
-                                            //                 <h6 className="card-title">{tr.name}</h6>
-                                            //                 <p className="card-text opacity-50"><small>{tr.description}</small></p>
-                                            //                 <p className="card-text opacity-50"><small>Fecha de inicio: {tr.startDate}</small></p>
-                                            //                 <p className="card-text opacity-50"><small>Fecha de fin: {tr.endDate}</small></p>
-                                            //                 <p className="card-text opacity-50"><small>Cantidad de empleados: {tr.numEmployees}</small></p>
-                                            //                 <div className="d-flex gap-2 w-100 justify-content-between">
-                                            //                     <span></span>
-                                            //                     {/* <Link to={`/capacitacion/detalle/${tr.id}`} className="btn btn-primary float-right">Detalles</Link> */}
-                                            //                     <button className="btn btn-primary float-right">Detalles</button>
-                                            //                 </div>
-                                            //             </div>
-                                            //         </div>
-                                            //     </div>
-                                            // </Fragment>
                                             <TrainingCard key={tr.id}
                                                 id={tr.id}
                                                 name={tr.name}
@@ -319,13 +344,8 @@ const Training = () => {
                                 </h6>
                             </div>
                         }
-
-
                     </div>
-
                 }
-
-
 
                 <div>
                     <div className='pt-3'>
@@ -338,24 +358,6 @@ const Training = () => {
                         {
                             trainingFilter.map((tr) => {
                                 return (
-                                    // <Fragment key={tr.id}>
-                                    //     <div className='cols'>
-                                    //         <div className="card">
-                                    //             <div className="card-body">
-                                    //                 <h6 className="card-title">{tr.name}</h6>
-                                    //                 <p className="card-text opacity-50"><small>{tr.description}</small></p>
-                                    //                 <p className="card-text opacity-50"><small>Fecha de inicio: {tr.startDate}</small></p>
-                                    //                 <p className="card-text opacity-50"><small>Fecha de fin: {tr.endDate}</small></p>
-                                    //                 <p className="card-text opacity-50"><small>Cantidad de empleados: {tr.numEmployees}</small></p>
-                                    //                 <div className="d-flex gap-2 w-100 justify-content-between">
-                                    //                     <span></span>
-                                    //                     {/* <Link to={`/capacitacion/detalle/${tr.id}`} className="btn btn-primary float-right">Detalles</Link> */}
-                                    //                     <button className="btn btn-primary float-right">Detalles</button>
-                                    //                 </div>
-                                    //             </div>
-                                    //         </div>
-                                    //     </div>
-                                    // </Fragment>
                                     <TrainingCard key={tr.id}
                                         id={tr.id}
                                         name={tr.name}
@@ -365,7 +367,6 @@ const Training = () => {
                                         eventDate={tr.endDate}
                                         employees={tr.numEmployees}
                                     />
-
                                 )
                             })
                         }
@@ -376,38 +377,28 @@ const Training = () => {
                     {
                         trainingFilter.map((tr) => {
                             return (
-                                // <Fragment key={tr.id}>
-                                //     <div className='cols'>
-                                //         <div className="card">
-                                //             <div className="card-body">
-                                //                 <h6 className="card-title">{tr.name}</h6>
-                                //                 <p className="card-text opacity-50"><small>{tr.description}</small></p>
-                                //                 <p className="card-text opacity-50"><small>Fecha de inicio: {tr.startDate}</small></p>
-                                //                 <p className="card-text opacity-50"><small>Fecha de fin: {tr.endDate}</small></p>
-                                //                 <p className="card-text opacity-50"><small>Cantidad de empleados: {tr.numEmployees}</small></p>
-                                //                 <div className="d-flex gap-2 w-100 justify-content-between">
-                                //                     <span></span>                                //                     
-                                //                     <button className="btn btn-primary float-right">Detalles</button>
-                                //                 </div>
-                                //             </div>
-                                //         </div>
-                                //     </div>
-                                // </Fragment>
-                                <TrainingCard key={tr.id}
-                                    id={tr.id}
-                                    name={tr.name}
-                                    photoURL={tr.photoURL}
-                                    description={tr.description}
-                                    creationDate={tr.startDate}
-                                    eventDate={tr.endDate}
-                                    employees={tr.numEmployees}
-                                />
-
+                                <Fragment key={tr.id}>
+                                    <div className='cols'>
+                                        <div className="card">
+                                            <div className="card-body">
+                                                <h6 className="card-title">{tr.name}</h6>
+                                                <p className="card-text opacity-50"><small>{tr.description}</small></p>
+                                                <p className="card-text opacity-50"><small>Fecha de inicio: {tr.startDate}</small></p>
+                                                <p className="card-text opacity-50"><small>Fecha de fin: {tr.endDate}</small></p>
+                                                <p className="card-text opacity-50"><small>Cantidad de empleados: {tr.numEmployees}</small></p>
+                                                <div className="d-flex gap-2 w-100 justify-content-between">
+                                                    <span></span>
+                                                    <Link to={`/capacitacion/detalle/${tr.id}`} className="btn btn-primary float-right">Detalles</Link>
+                                                    <button className="btn btn-primary float-right">Detalles</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Fragment>
                             )
                         })
                     }
                 </div> */}
-
 
                 {
                     trainingFilter.length === 0 && <>
@@ -426,6 +417,8 @@ const Training = () => {
                         </div>
                     </>
                 }
+                
+                {/* CREATE TRAINING MODAL */}
                 <div className="modal fade" id="createTrainingModal" aria-hidden="true" aria-labelledby="createTrainingModal" tabIndex={-1}>
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
@@ -434,36 +427,28 @@ const Training = () => {
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
-                                <div className="mb-3">
-                                    <label htmlFor="exampleFormControlInput1" className="form-label">Nombre</label>
-                                    <input ref={refTrName} type="text" className="form-control" />
-                                </div>
-                                <div>
-                                    <label htmlFor="exampleFormControlInput1" className="form-label">Descripción</label>
-                                    <textarea ref={refTrDescription} className="form-control" />
-                                </div>
-                            </div>
-                            <div className="modal-footer">
-                                <button className="btn btn-primary" data-bs-target="#detailNewTraining" data-bs-toggle="modal">Continuar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="modal fade" id="detailNewTraining" aria-hidden="true" aria-labelledby="createNewTraining" tabIndex={-1}>
-                    <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h1 className="modal-title fs-5" id="detailNewTraining">Detalle de la capacitación</h1>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div className="modal-body">
                                 <div className='row mb-3'>
+                                    <div className='col' style={{ flex: '0 0 8rem' }}>
+                                        <PictureUpload />
+                                    </div>
                                     <div className='col'>
-                                        <label htmlFor="exampleFormControlInput1" className="form-label">Fecha de la capacitación</label>
+                                        <div className="mb-3">
+                                            <label className="form-label">Nombre</label>
+                                            <input ref={refTrName} type="text" className="form-control" />
+                                        </div>
+                                        <div>
+                                            <label className="form-label">Descripción</label>
+                                            <textarea ref={refTrDescription} className="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='row mb-3 border-top pt-3 mt-3'>
+                                    <div className='col'>
+                                        <label className="form-label">Fecha de la capacitación</label>
                                         <input className='form-control' type='date' id='start_date_creation' ref={refTrDate} /*onChange={handleChangeDateTraining}*/ />
                                     </div>
                                     <div className='col'>
-                                        <label htmlFor="exampleFormControlInput1" className="form-label">Tipo</label>
+                                        <label className="form-label">Tipo</label>
                                         <select className="form-select" aria-label=".form-select-sm example" ref={refTrTypes}>
                                             <option hidden>Seleccionar</option>
                                             {typeCreation.map((t) => {
@@ -476,23 +461,22 @@ const Training = () => {
                                 </div>
                                 <div className='row mb-3'>
                                     <div className='col'>
-                                        <label htmlFor="exampleFormControlInput1" className="form-label">Ubicación</label>
+                                        <label className="form-label">Ubicación</label>
                                         <input ref={refTrLocation} type="text" className="form-control" />
                                     </div>
                                     <div className='col'>
-                                        <label htmlFor="exampleFormControlInput1" className="form-label">Aforo máximo</label>
+                                        <label className="form-label">Aforo máximo</label>
                                         <input type="number" className="form-control" ref={refTrCapacity} min={'0'} />
                                     </div>
                                 </div>
-                                <div className='row'>
+                                <div className='row mb-3'>
                                     <div>
-                                        <label htmlFor="exampleFormControlInput1" className="form-label">Temas de la capacitación</label>
+                                        <label className="form-label">Temas de la capacitación</label>
                                         <textarea ref={refTrTopics} className="form-control" />
                                     </div>
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button className="btn btn-outline-primary" data-bs-target="#createTrainingModal" data-bs-toggle="modal">Atrás</button>
                                 <button className="btn btn-primary" data-bs-dismiss="modal" onClick={createTraining}>Crear</button>
                             </div>
                         </div>

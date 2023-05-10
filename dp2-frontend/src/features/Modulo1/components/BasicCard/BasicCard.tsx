@@ -16,9 +16,8 @@ class BasicCard extends Component<Props>
 
     render() {
 
-
-
         let imageComp = null;
+        let widthC = '460px';
 
         if (this.props.image != null) {
             imageComp = (
@@ -29,6 +28,10 @@ class BasicCard extends Component<Props>
                 />
             );
         }
+
+        if(this.props.widthC != null) widthC = `${this.props.widthC}`;
+            
+        
 
         function showIcon(icon) {
             if (icon == null)
@@ -72,7 +75,7 @@ class BasicCard extends Component<Props>
 
         return (
             <>
-                <div className='basicCard-container' style={{ width: '460px' }}>
+                <div className='basicCard-container' style={{ width: widthC }}>
                     <div className='basicCard-header'>
                         <div className="basicCard-headerLine">
                             <div className='basicCard-imageContainer'>{imageComp}</div>
@@ -115,7 +118,9 @@ class BasicCard extends Component<Props>
 
                     <div className={`${this.props.button2 == 'SI' ? 'basicCard-footer-2b' : 'basicCard-footer-1b'}`}>
                         {(this.props.button1 == 'SI') &&
-                            <button type="button" className="btn btn-primary btn1">{this.props.button1Text}</button>
+                            <Link to={this.props.button1Link}>
+                                <button type="button" className="btn btn-primary btn1" style={{backgroundColor: this.props.button1Color, border: "none"}} >{this.props.button1Text}</button>
+                            </Link>                            
                         }
 
                         {(this.props.button2 == 'SI') &&
