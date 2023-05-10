@@ -6,8 +6,13 @@ export type Props = {
     subtitle?: string,
     button1?: string,
     button1Text?:string,
+    button1Link?:string,
+    button1Color?: string,
     button2?: string,
     button2Text?:string,
-    options?: string
+    button2Link?:string,
+    button2Color?: string,
+    options?: string,
+    widthC?: string
 }
 

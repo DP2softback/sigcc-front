@@ -32,6 +32,8 @@ const Training = ({id, name, photoURL, description, creationDate, eventDate, emp
     }    
   ]
 
+  const ruta = `/modulo1/capacitacion/detalle/${id}`
+
   return (
     <BasicCard
       image={photoURL}
@@ -41,6 +43,7 @@ const Training = ({id, name, photoURL, description, creationDate, eventDate, emp
       items={rows}
       button1='SI'
       button1Text='Detalle'
+      button1Link= {ruta}
       button2='NO'
       button2Text='Agregar'
       options='SI'

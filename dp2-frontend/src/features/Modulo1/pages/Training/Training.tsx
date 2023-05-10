@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import TrainingCard from '@features/Modulo1/components/Training/TrainingCard';
 import './training.css';
 import PictureUpload from '@features/Modulo1/components/PictureUpload';
+import '../../basic.css';
 import axiosInt from '@config/axios';
 
 const typeTra = [
@@ -98,7 +99,7 @@ const datos: TrainingObj[] = [
     },
     {
         "id": 2,
-        "name": "ABC",
+        "name": "ABC S",
         "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
         "startDate": "06/05/2023",
@@ -110,7 +111,7 @@ const datos: TrainingObj[] = [
     },
     {
         "id": 3,
-        "name": "ABC",
+        "name": "ABC A",
         "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
         "startDate": "06/05/2023",
@@ -122,7 +123,7 @@ const datos: TrainingObj[] = [
     },
     {
         "id": 4,
-        "name": "ABC",
+        "name": "ABC P",
         "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
         "startDate": "06/05/2023",
@@ -205,8 +206,6 @@ const Training = () => {
         if (typeTraining === "Todos" && (startDate === "0001-01-01" || startDate === "") && (endDate === "9999-12-31" || endDate === ""))
             setTrainingFilter(datos);
         else {
-            console.log(startDate)
-            console.log(endDate)
             if (typeTraining === "Todos") {
                 filtered = datos.filter((item: any) =>
                     item.endDate >= formatDate(new Date(startDate + ' 00:00:00')) && item.endDate <= formatDate(new Date(endDate + ' 00:00:00'))
@@ -262,7 +261,7 @@ const Training = () => {
 
     useEffect(() =>
     {
-        loadTrainings();
+        //loadTrainings();
     }, []);
 
     return (
@@ -270,18 +269,19 @@ const Training = () => {
             <Sidebar items={sidebarItems} active='/modulo1/capacitacion'>
                 <div className='row mt-3'>
                     <div className='col'>
-                        <h1>Capacitaciones</h1>
-                        <p><small className='opacity-50'>Lista de capacitaciones creadas que los empleados pueden asistir para adquirir habilidades y competencias específicas.</small></p>
+                        <h1 className='screenTitle'>Capacitaciones</h1>
+                        <p><small className='subtitle'>Lista de capacitaciones creadas que los empleados pueden asistir para adquirir habilidades y competencias específicas.</small></p>
                     </div>
                     <div style={{ flex: '0 0 15rem' }} className='col text-end'>
                         {/* Button trigger modal */}
                         <button type='button' className='btn btn-primary' data-bs-target='#createTrainingModal' data-bs-toggle='modal'>
-                            <span className='me-3'>Crear capacitación</span>
-                            <i className="bi bi-0-square"></i>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                            </svg>
+                            <div style={{display: "flex", alignItems: "center"}}>
+                                <span className='me-3'>Crear capacitación</span>                            
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                </svg>
+                            </div>                            
                         </button>
                     </div>
                 </div>
