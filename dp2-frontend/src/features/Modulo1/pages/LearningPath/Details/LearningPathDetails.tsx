@@ -16,7 +16,7 @@ function LearningPathDetails (props: any)
 
     const loadsCourses = () =>
     {
-        axiosInt.get(`curso/learning_path/${learningPathId}/course/`)
+        axiosInt.get(`capacitaciones/learning_path/${learningPathId}/course/`)
             .then(function (response)
             {
                 setLPName(response.data.nombre);
@@ -36,7 +36,7 @@ function LearningPathDetails (props: any)
 
     const handleRemoveCard = (id: number) =>
     {
-        axiosInt.delete(`curso/learning_path/${learningPathId}/course/detail/${id}`)
+        axiosInt.delete(`capacitaciones/learning_path/${learningPathId}/course/detail/${id}`)
             .then(function (response)
             {
                 const updatedCourses = courses.filter((course: any) => course.id !== id);

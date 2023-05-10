@@ -24,7 +24,7 @@ function LearningPath (props: any)
             descripcion: refLpDescription.current?.value,
         }
 
-        axiosInt.post('curso/learning_path/', data)
+        axiosInt.post('capacitaciones/learning_path/', data)
             .then(function (response)
             {
                 navigate(`/modulo1/rutadeaprendizaje/detalle/${response.data.id}`);
@@ -36,7 +36,7 @@ function LearningPath (props: any)
     }
     const loadLPs = () =>
     {
-        axiosInt.get('curso/learning_path/')
+        axiosInt.get('capacitaciones/learning_path/')
             .then(function (response)
             {
                 setLps(response.data);

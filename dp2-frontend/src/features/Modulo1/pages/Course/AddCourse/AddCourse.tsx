@@ -22,7 +22,7 @@ function AddCourse (props: any)
 
     const loadsCourses = () =>
     {
-        axiosInt.get(`curso/learning_path/${learningPathId}/course/`)
+        axiosInt.get(`capacitaciones/learning_path/${learningPathId}/course/`)
             .then(function (response)
             {
                 setLPName(response.data.nombre);
@@ -42,7 +42,7 @@ function AddCourse (props: any)
     {
         setLoadingDetailsModal(true);
         setBasicDetailsModal(course);
-        axiosInt.post('curso/udemy/detail/', {
+        axiosInt.post('capacitaciones/udemy/detail/', {
             url: course.url,
         })
             .then(function (response)
@@ -70,7 +70,7 @@ function AddCourse (props: any)
     {
         setLoading(true);
         // Flag 1 oculta cursos que ya están en el LP
-        axiosInt.get(`curso/learning_path/${learningPathId}/udemy/${query}/0`)
+        axiosInt.get(`capacitaciones/learning_path/${learningPathId}/udemy/${query}/0`)
             .then(function (response)
             {
                 setLoading(false);
@@ -88,9 +88,11 @@ function AddCourse (props: any)
             udemy_id: course_id,
             course_udemy_detail: courses[index],
             duracion: "PT5H30M",
+            descripcion: courses[index].title,
+            nombre: courses[index].headline,
         }
 
-        axiosInt.post(`curso/learning_path/${learningPathId}/course/`, data)
+        axiosInt.post(`capacitaciones/learning_path/${learningPathId}/course/`, data)
             .then(function (response)
             {
                 console.log(response.data);
