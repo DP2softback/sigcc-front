@@ -15,3 +15,12 @@
 .mb-32px{
   margin-bottom: 32px;
 }
+
+.ec-createDropdowns{
+  display: flex;
+  flex-direction: row;
+}
+
+.ec-createDropdown{
+  margin-right: 128px;
+}

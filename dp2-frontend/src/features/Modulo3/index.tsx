@@ -5,6 +5,8 @@ import Linechart from "@features/Modulo3/components/Charts/Linechart/Linechart";
 import Comparator from "@features/Modulo3/components/Comparator/Comparator";
 import PieChart from "@features/Modulo3/components/Charts/Piechart/PieChart";
 import Index from "@features/Modulo3/screens/EvaluacionContinua/Index";
+import Matrix from "./components/Matrix/Matrix";
+import Create from "./screens/EvaluacionContinua/Create";
 
 const ListExample = () => {
   return (
@@ -77,7 +79,26 @@ const ListExample = () => {
     //   />
     // </>
     <>
-    <Index/>
+      <Create
+        employee={{
+          id: 1,
+          FullName: "Angela Quispe Ramirez",
+        }}
+        categories={[
+          { id: 1, name: "Calidad del Trabajo" },
+          { id: 2, name: "Habilidades Blandas" },
+          { id: 3, name: "Conocimientos" },
+          { id: 4, name: "Productividad" },
+          { id: 5, name: "Creatividad y Iniciativa" },
+        ]}
+        projects={[
+          { id: 1, name: "BLF-KC-0012"} ,
+          { id: 2, name: "BLF-KC-0013"} ,
+          { id: 3, name: "BLF-KC-0014"} ,
+          { id: 4, name: "BLF-KC-0015"} ,
+          { id: 5, name: "BLF-KC-0016"} ,
+        ]}
+      />
     </>
   );
 };
