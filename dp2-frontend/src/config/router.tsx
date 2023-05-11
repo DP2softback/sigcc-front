@@ -123,16 +123,16 @@ const routes: RouteObject[] = [
             />
           }
         ]
-      }
-    ]
-  },
-  {
-    path: 'promotions',
-    children: [
-      {
-        path: 'candidates',
-        element: <AscensosCandidatos promotionPosition='UX/UI Designer'/>
       },
+      {
+        path: 'promotions',
+        children: [
+          {
+            path: 'candidates',
+            element: <AscensosCandidatos promotionPosition='UX/UI Designer'/>
+          },
+        ]
+      }
     ]
   }
 ]
