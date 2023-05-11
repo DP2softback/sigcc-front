@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Table } from 'react-bootstrap';
 import './TableHistoryContinua.css';
-import { IoIosArrowDroprightCircle } from 'react-icons/io';
+import { ArrowRightCircleFill } from 'react-bootstrap-icons';
 
 type TableProps = {
 
@@ -30,7 +30,7 @@ export default function TableHistoryContinua ({rows}) {
                             <td>{row.nivel}</td>
                             <td>{row.fechaRegistro}</td>
                             <td className="icono">
-                            <IoIosArrowDroprightCircle />
+                            <ArrowRightCircleFill />
                             </td>
                     </tr>
                 ))
