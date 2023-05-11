@@ -12,10 +12,29 @@ function LearningPath (props: any)
 {
     const [lps, setLps] = useState([]);
     const [lpsFiltered, setLpsFiltered] = useState([]);
+    const [assessmentSettings, setAssessmentSettings] = useState(true);
+    const [assessmentParameters, setAssessmentParameters] = useState({
+        courseTriedNumber: 3,
+        minimumPassingScore: 11,
+        courseTriedNumberFE: 3,
+        minimumPassingScoreFE: 11,
+    });
+    const [assessmentTempParameters, setAssessmentTempParameters] = useState({
+        courseTriedNumber: 3,
+        minimumPassingScore: 11,
+        courseTriedNumberFE: 3,
+        minimumPassingScoreFE: 11,
+    });
+    const [assessmentTuning, setAssessmentTuning] = useState(false);
     const navigate = useNavigate();
 
     const refLpName = useRef<HTMLInputElement>(null);
     const refLpDescription = useRef<HTMLTextAreaElement>(null);
+
+    const courseTriedNumberRef =  useRef(null);
+    const minimumPassingScoreRef =  useRef(null);
+    const courseTriedNumberFERef =  useRef(null);
+    const minimumPassingScoreFERef =  useRef(null);
 
     const createLP = () =>
     {
@@ -24,7 +43,7 @@ function LearningPath (props: any)
             descripcion: refLpDescription.current?.value,
         }
 
-        axiosInt.post('curso/learning_path/', data)
+        axiosInt.post('capacitaciones/learning_path/', data)
             .then(function (response)
             {
                 navigate(`/modulo1/rutadeaprendizaje/detalle/${response.data.id}`);
@@ -36,7 +55,7 @@ function LearningPath (props: any)
     }
     const loadLPs = () =>
     {
-        axiosInt.get('curso/learning_path/')
+        axiosInt.get('capacitaciones/learning_path/')
             .then(function (response)
             {
                 setLps(response.data);
@@ -61,6 +80,35 @@ function LearningPath (props: any)
         );
         setLpsFiltered(filtered);
     };
+
+
+    const handleCourseType = (e: any) =>
+    {
+        const type = e.target.id;
+        type === 'udemyRadio' ? setAssessmentSettings(true) : setAssessmentSettings(false);
+    };
+
+    const handleAssesmentTuning = () =>
+    {
+        setAssessmentTuning(!assessmentTuning);
+    }
+
+    const handleAssesmentSaveSettings = () =>
+    {
+        setAssessmentParameters(assessmentTempParameters);
+        setAssessmentTuning(!assessmentTuning);
+    }
+
+    const handleAssesmentParameters = () =>
+    {
+        setAssessmentTempParameters({
+            courseTriedNumber: courseTriedNumberRef.current.value,
+            minimumPassingScore: minimumPassingScoreRef.current.value,
+            courseTriedNumberFE: courseTriedNumberFERef.current.value,
+            minimumPassingScoreFE: minimumPassingScoreFERef.current.value,
+        })
+    }
+
 
     return (
         <>
@@ -167,7 +215,7 @@ function LearningPath (props: any)
 
 
             <div className="modal fade" id="createLPModal" aria-hidden="true" aria-labelledby="createLPModal" tabIndex={-1}>
-                <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-dialog modal-lg modal-dialog-centered">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h1 className="modal-title fs-5">Crear ruta de aprendizaje</h1>
@@ -189,27 +237,88 @@ function LearningPath (props: any)
                                     </div>
                                 </div>
                             </div>
-                            <div className='row border-top pt-3 mt-3'>
-                                <div className='col'>
-                                    <h6>Configuración de cursos</h6>
-                                    <div className="form-check">
-                                        <input className="form-check-input" type="radio" name="courseConfig" id="trainingRadio" />
-                                        <label className="form-check-label" htmlFor="trainingRadio">
-                                            Capacitaciones
-                                        </label>
+                            {
+                                assessmentTuning ? <>
+                                    <div className='row border-top pt-3 mt-3'>
+                                        <div className='col'>
+                                            <h6>Evaluaciones</h6>
+                                            <div className="row mb-3">
+                                                <label htmlFor="courseTriedNumber" className="col-sm-8 col-form-label">Número de intentos</label>
+                                                <div className="col-sm-4">
+                                                    <input ref={courseTriedNumberRef} type="number" className="form-control" id="courseTriedNumber" defaultValue={assessmentParameters.courseTriedNumber} onChange={handleAssesmentParameters} />
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <label htmlFor="minimumPassingScore" className="col-sm-8 col-form-label">Nota mínima aprobatoria</label>
+                                                <div className="col-sm-4">
+                                                    <input ref={minimumPassingScoreRef} type="number" className="form-control" id="minimumPassingScore" defaultValue={assessmentParameters.minimumPassingScore}  onChange={handleAssesmentParameters}/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='col'>
+                                            <h6>Evaluación final</h6>
+                                            <div className="row mb-3">
+                                                <label htmlFor="courseTriedNumberFE" className="col-sm-8 col-form-label">Número de intentos</label>
+                                                <div className="col-sm-4">
+                                                    <input ref={courseTriedNumberFERef} type="number" className="form-control" id="courseTriedNumberFE" defaultValue={assessmentParameters.courseTriedNumberFE} onChange={handleAssesmentParameters} />
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <label htmlFor="minimumPassingScoreFE" className="col-sm-8 col-form-label">Nota mínima aprobatoria</label>
+                                                <div className="col-sm-4">
+                                                    <input ref={minimumPassingScoreFERef} type="number" className="form-control" id="minimumPassingScoreFE" defaultValue={assessmentParameters.minimumPassingScoreFE} onChange={handleAssesmentParameters} />
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="form-check">
-                                        <input className="form-check-input" type="radio" name="courseConfig" id="udemyRadio" defaultChecked />
-                                        <label className="form-check-label" htmlFor="udemyRadio">
-                                            Cursos de Udemy
-                                        </label>
+                                </> : <>
+                                    <div className='row border-top pt-3 mt-3'>
+                                        <div className='col'>
+                                            <h6>Tipo</h6>
+                                            <div className="form-check">
+                                                <input className="form-check-input" type="radio" name="courseConfig" id="trainingRadio" onClick={handleCourseType} />
+                                                <label className="form-check-label" htmlFor="trainingRadio">
+                                                    Capacitaciones
+                                                </label>
+                                            </div>
+                                            <div className="form-check">
+                                                <input className="form-check-input" type="radio" name="courseConfig" id="udemyRadio" defaultChecked onClick={handleCourseType} />
+                                                <label className="form-check-label" htmlFor="udemyRadio">
+                                                    Cursos de Udemy
+                                                </label>
+                                            </div>
+                                        </div>
+                                        {
+                                            assessmentSettings ? <>
+                                                <div className='col opacity-50'>
+                                                    <h6>Parámetros de evaluación</h6>
+                                                    <div>
+                                                        <p className='mb-0'>Número de intentos: <span className='fw-bold'>{assessmentParameters.courseTriedNumber} EP</span> - <span className='fw-bold'>{assessmentParameters.courseTriedNumberFE} EF</span></p>
+                                                    </div>
+                                                    <div>
+                                                        <p className='mb-0'>Nota mínima aprobatoria: <span className='fw-bold'>{assessmentParameters.minimumPassingScore} EP</span> - <span className='fw-bold'>{assessmentParameters.minimumPassingScoreFE} EF</span></p>
+                                                    </div>
+                                                </div>
+                                            </> : <></>
+                                        }
                                     </div>
+                                </>
+                            }
+                        </div>
+                        {
+                            assessmentTuning ? <>
+                                <div className="modal-footer d-flex justify-content-between">
+                                    <button className="btn btn-primary" onClick={handleAssesmentTuning} >Cancelar</button>
+                                    <button className="btn btn-primary" onClick={handleAssesmentSaveSettings}>Guardar</button>
                                 </div>
-                            </div>
-                        </div>
-                        <div className="modal-footer">
-                            <button className="btn btn-primary" data-bs-target="#createLPModal" data-bs-toggle="modal" onClick={createLP}>Crear</button>
-                        </div>
+                            </> :
+                                <>
+                                    <div className="modal-footer d-flex justify-content-between">
+                                        <button className="btn btn-primary" onClick={handleAssesmentTuning} >Configurar</button>
+                                        <button className="btn btn-primary" data-bs-target="#createLPModal" data-bs-toggle="modal" onClick={createLP}>Crear</button>
+                                    </div>
+                                </>
+                        }
                     </div>
                 </div>
             </div>
