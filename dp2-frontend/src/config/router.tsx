@@ -1,8 +1,6 @@
 import { Suspense, lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import { RouteObject } from 'react-router';
-import EvaluacionContinuaIndex from '@features/Modulo3/screens/EvaluacionContinua/Index';
-import EvaluacionContinuaCreate from '@features/Modulo3/screens/EvaluacionContinua/Create';
 
 const Loader = (Component) => (props) =>
 (
@@ -12,11 +10,23 @@ const Loader = (Component) => (props) =>
 );
 
 const ListExample = Loader(
-  lazy(() => import('@features/Modulo3/screens/EvaluacionContinua/History'))
+  lazy(() => import('@features/ExampleModule/features/ListExample'))
 );
 
 const RegisterExample = Loader(
   lazy(() => import('@features/ExampleModule/features/ListExample'))
+);
+
+const EvaluacionContinuaIndex = Loader(
+  lazy(() => import('@features/Modulo3/screens/EvaluacionContinua/Index'))
+);
+
+const EvaluacionContinuaHistory = Loader(
+  lazy(() => import('@features/Modulo3/screens/EvaluacionContinua/History'))
+);
+
+const EvaluacionContinuaCreate = Loader(
+  lazy(() => import('@features/Modulo3/screens/EvaluacionContinua/Create'))
 );
 
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
@@ -79,6 +89,10 @@ const routes: RouteObject[] = [
           {
             path: 'index',
             element: <EvaluacionContinuaIndex/>
+          },
+          {
+            path: 'history',
+            element: <EvaluacionContinuaHistory/>
           },
           {
             path: 'create',
