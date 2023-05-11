@@ -29,6 +29,10 @@ const EvaluacionContinuaCreate = Loader(
   lazy(() => import('@features/Modulo3/screens/EvaluacionContinua/Create'))
 );
 
+const AscensosCandidatos = Loader(
+  lazy(() => import('@features/Modulo3/screens/Ascensos/Candidates'))
+);
+
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
 const routes: RouteObject[] = [
@@ -120,6 +124,15 @@ const routes: RouteObject[] = [
           }
         ]
       }
+    ]
+  },
+  {
+    path: 'promotions',
+    children: [
+      {
+        path: 'candidates',
+        element: <AscensosCandidatos promotionPosition='UX/UI Designer'/>
+      },
     ]
   }
 ]
