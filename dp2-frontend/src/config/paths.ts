@@ -9,5 +9,6 @@ export const LIST_SOMETHING = '/something/list';
 export const CONTINUOS_EVALUATION_INDEX = '/skillManagement/continuousEvaluation/index';
 export const CONTINUOS_EVALUATION_HISTORY = '/skillManagement/continuousEvaluation/history';
 export const CONTINUOS_EVALUATION_CREATE = '/skillManagement/continuousEvaluation/create';
+export const CONTINUOS_EVALUATION_DETAIL = '/skillManagement/continuousEvaluation/detail';
 
 export const PROMOTIONS_CANDIDATES = '/skillManagement/promotions/candidates';

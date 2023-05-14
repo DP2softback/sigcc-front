@@ -13,7 +13,7 @@ const Section = ({ title, content, filters, sectionStyle, titleStyle, contentSty
   const titleComponent = (
     <div className='titleAndFilters' style={titleStyle}>
       <div className="title">{title}</div>
-      {filters ? <div className='filters'>{filters}</div> : <></>}
+      {filters && <div className='filters'>{filters}</div>}
     </div>
   );
 

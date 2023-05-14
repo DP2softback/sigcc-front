@@ -8,6 +8,14 @@
   background-color: white;
 }
 
+.matrixWhiteReadOnly{
+  background-color: #E9ECEF !important;
+}
+
+.matrixBlueReadOnly{
+  background-color: #E7F1FF !important;
+}
+
 .matrixHeaderItem{
   flex: 1;
   text-align: center;
@@ -18,6 +26,14 @@
   height: 54px;
   display: flex;
   flex-direction: row;
+}
+
+.matrixRowBGBlue{
+  background-color: #E7F1FF;
+}
+
+.matrixRowBGWhite{
+  background-color: white;
 }
 
 .matrixRowName{

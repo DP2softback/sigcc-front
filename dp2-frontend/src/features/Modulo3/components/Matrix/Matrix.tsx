@@ -1,23 +1,59 @@
 import "./Matrix.css";
 import RadioButton from "../RadioButton/RadioButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type MatrixProps = {
   header: string[];
   rows: string[];
+  evaluation?: number[];
+  isReadOnly?: boolean;
 };
 
-const Matrix = ({ header, rows }: MatrixProps) => {
-  const [evaluation, setEvaluation] = useState([]);
+const Matrix = ({ header, rows, evaluation, isReadOnly }: MatrixProps) => {
+  const [newEvaluation, setEvaluation] = useState(evaluation != null ? evaluation : []);
 
-  function changeEvaluation (index: number, value: number) {
-    let newEvaluation = [...evaluation];
-    newEvaluation[index] = value;
-    setEvaluation(newEvaluation);
+  const headerStyle = `matrixHeader ${isReadOnly ? 'matrixWhiteReadOnly' : ''}`;
+
+  function changeEvaluation(index: number, value: number) {
+    let modEvaluation = [...newEvaluation];
+    modEvaluation[index] = value;
+    setEvaluation(modEvaluation);
+  }
+
+  function getBackgroundColor(categoryIndex: number) {
+    return isReadOnly
+      ? categoryIndex % 2 == 0
+        ? "matrixBlueReadOnly"
+        : "matrixWhiteReadOnly"
+      : categoryIndex % 2 == 0
+        ? "matrixRowBGBlue"
+        : "matrixRowBGWhite";
+  }
+
+  function displayRow(categoryIndex: number, row: string, header: string[], changeEvaluation: (index: number, value: number) => void) {
+    const rowStyle = `matrixRow ${getBackgroundColor(categoryIndex)}`;
+    return (
+      <div key={categoryIndex} className={rowStyle}>
+        <div className="matrixRowName">{row}</div>
+        {header.map((item, optionIndex) => {
+          return (
+            <div className="matrixRowRadio" key={item}>
+              <RadioButton
+                parentIndex={categoryIndex}
+                optionIndex={optionIndex}
+                value={newEvaluation[categoryIndex] == optionIndex}
+                handleClick={changeEvaluation}
+                isReadOnly={isReadOnly}
+              />
+            </div>
+          );
+        })}
+      </div>
+    );
   }
 
   const headerComponent = (
-    <div className="matrixHeader">
+    <div className={headerStyle}>
       {header.map((item) => {
         return (
           <div className="matrixHeaderItem" key={item}>
@@ -31,30 +67,14 @@ const Matrix = ({ header, rows }: MatrixProps) => {
   const bodyComponent = (
     <div className="matrixBody">
       {rows.map((row, categoryIndex) => {
-        return (
-          <div key={categoryIndex}
-            className="matrixRow"
-            style={{
-              backgroundColor: categoryIndex % 2 == 0 ? "#E7F1FF" : "white",
-            }}>
-            <div className="matrixRowName">{row}</div>
-            {header.map((item, optionIndex) => {
-              return (
-                <div className="matrixRowRadio" key={item}>
-                  <RadioButton
-                    parentIndex={categoryIndex}
-                    optionIndex={optionIndex}
-                    value={evaluation[categoryIndex] == optionIndex}
-                    handleClick={changeEvaluation}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        );
+        return displayRow(categoryIndex, row, header, changeEvaluation);
       })}
     </div>
   );
+
+  useEffect(() => {
+    if(!isReadOnly) setEvaluation([]);
+  }, [rows])
 
   return (
     <div>
@@ -65,3 +85,4 @@ const Matrix = ({ header, rows }: MatrixProps) => {
 };
 
 export default Matrix;
+

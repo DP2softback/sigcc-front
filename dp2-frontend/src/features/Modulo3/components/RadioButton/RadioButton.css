@@ -30,3 +30,13 @@
 .radioButton:checked::before {
   transform: scale(1);
 }
+
+.radioButtonReadOnly{
+  color: #6EA8FE !important;
+  border: 2px solid #6EA8FE !important;
+  cursor: default !important;
+}
+
+.radioButtonReadOnly::before{
+  background-color: #6EA8FE !important;
+}

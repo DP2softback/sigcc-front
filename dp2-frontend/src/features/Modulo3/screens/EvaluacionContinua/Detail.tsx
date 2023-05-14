@@ -1,10 +1,23 @@
-import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './EvaluacionContinua.css';
+import BaseForm from './BaseForm';
 
-const Detail = () => {
+type DetailProps = {
+  employee: any;
+  categories: any;
+  projects: any;
+  form: any;
+}
+
+const Detail = ({employee, categories, projects, form} : DetailProps) => {  
   return (
-    <div>
-      
-    </div>
+    <BaseForm
+      employee={employee}
+      categories={categories}
+      projects={projects}
+      form={form}
+      isReadOnly={true}
+    />
   );
 };
 
