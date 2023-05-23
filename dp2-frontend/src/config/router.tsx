@@ -9,62 +9,96 @@ const Loader = (Component) => (props) =>
   </Suspense>
 );
 
-const ListExample = Loader(
-  lazy(() => import('@features/ExampleModule/features/ListExample'))
+
+const Modulo1LP = Loader(
+  lazy(() => import('@features/Modulo1/pages/LearningPath'))
 );
 
-const RegisterExample = Loader(
-  lazy(() => import('@features/ExampleModule/features/ListExample'))
+const M1ListLearningPath = Loader(
+  lazy(() => import('@features/Modulo1/pages/LearningPath'))
+);
+
+const M1LearningPathDetails = Loader(
+  lazy(() => import('@features/Modulo1/pages/LearningPath/Details'))
+);
+
+const M1AddCourse = Loader(
+  lazy(() => import('@features/Modulo1/pages/Course/AddCourse'))
+);
+
+const M1ListTraining = Loader(
+  lazy(() => import('@features/Modulo1/pages/Training'))
+);
+
+const M1TrainingDetails = Loader(
+  lazy(() => import('@features/Modulo1/pages/Training/Details'))
+);
+
+const M1TrainingAssignment = Loader(
+  lazy(() => import('@features/Modulo1/pages/Training/Assignment'))
+);
+
+const ConfigSelectionProcess = Loader(
+  lazy(() => import('@features/Modulo4/pages/ConfigSelectionProcess'))
 );
 
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
 const routes: RouteObject[] = [
   {
-    path: '',
-    element: <Navigate to="/example/list" replace />
-  },
-  {
-    path: 'example',
+    path: 'modulo1',
     children: [
       {
-        path: 'list',
-        element: <ListExample />
+        path: '',
+        element: <Modulo1LP />
       },
       {
-        path: 'register',
-        element: <RegisterExample />
+        path: 'rutadeaprendizaje',
+        children: [
+          {
+            path: '',
+            element: <M1ListLearningPath />
+          },
+          {
+            path: 'detalle/:learningPathId',
+            element: <M1LearningPathDetails />
+          },
+        ]
+      },
+      {
+        path: 'curso',
+        children: [
+          {
+            path: 'agregar/:learningPathId',
+            element: <M1AddCourse />
+          },
+        ]
+      },
+      {
+        path: 'capacitacion',
+        children: [
+          {
+            path: '',
+            element: <M1ListTraining />
+          },
+          {
+            path: 'detalle/:trainingID',
+            element: <M1TrainingDetails />
+          },
+          {
+            path: 'asignacion/:trainingID',
+            element: <M1TrainingAssignment />
+          },
+        ]
       },
     ]
   },
   {
-    path: 'modulo0',
+    path: 'modulo1',
     children: [
       {
-        path: 'submodulo0',
-        children: [
-          {
-            path: 'list',
-            element: <ListExample />
-          },
-          {
-            path: 'register',
-            element: <ListExample />
-          },
-        ]
-      },
-      {
-        path: 'submodulo1',
-        children: [
-          {
-            path: 'list',
-            element: <ListExample />
-          },
-          {
-            path: 'register',
-            element: <ListExample />
-          },
-        ]
+        path: 'configurar-proceso-seleccion',
+        element: <ConfigSelectionProcess />
       },
     ]
   },
