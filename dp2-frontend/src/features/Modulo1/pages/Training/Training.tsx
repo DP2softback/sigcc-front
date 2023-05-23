@@ -1,4 +1,4 @@
-import Sidebar from '@features/Modulo1/components/Sidebar'
+import Sidebar from '@components/Sidebar'
 import sidebarItems from '@features/Modulo1/utils/sidebarItems'
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';

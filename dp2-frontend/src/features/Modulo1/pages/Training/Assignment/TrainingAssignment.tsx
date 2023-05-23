@@ -1,5 +1,5 @@
 import axiosInt from '@config/axios';
-import Sidebar from '@features/Modulo1/components/Sidebar'
+import Sidebar from '@components/Sidebar'
 import sidebarItems from '@features/Modulo1/utils/sidebarItems'
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
