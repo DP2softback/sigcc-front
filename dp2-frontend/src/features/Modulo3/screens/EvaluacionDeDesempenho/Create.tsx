@@ -1,10 +1,21 @@
-import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './EvaluacionDeDesempenho.css';
+import BaseForm from './BaseForm';
 
-const Create = () => {
+type CreateProps = {
+  employee: any;
+  categories: any;
+  projects: any;
+}
+
+const Create = ({employee, categories, projects} : CreateProps) => {  
   return (
-    <div>
-      
-    </div>
+    <BaseForm 
+      employee={employee} 
+      categories={categories} 
+      projects={projects}
+      isReadOnly={false}
+    />
   );
 };
 

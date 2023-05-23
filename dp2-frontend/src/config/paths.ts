@@ -11,4 +11,13 @@ export const CONTINUOS_EVALUATION_HISTORY = '/skillManagement/continuousEvaluati
 export const CONTINUOS_EVALUATION_CREATE = '/skillManagement/continuousEvaluation/create';
 export const CONTINUOS_EVALUATION_DETAIL = '/skillManagement/continuousEvaluation/detail';
 
+export const PERFORMANCE_EVALUATION_INDEX = '/skillManagement/performanceEvaluation/index';
+export const PERFORMANCE_EVALUATION_HISTORY = '/skillManagement/performanceEvaluation/history';
+export const PERFORMANCE_EVALUATION_CREATE = '/skillManagement/performanceEvaluation/create';
+export const PERFORMANCE_EVALUATION_DETAIL = '/skillManagement/performanceEvaluation/detail';
+
+export const EVALUATION_TEMPLATE_INDEX = '/skillManagement/evaluationTemplate/index';
+export const EVALUATION_TEMPLATE_CREATE = '/skillManagement/evaluationTemplate/create';
+export const EVALUATION_TEMPLATE_EDIT = '/skillManagement/evaluationTemplate/edit';
+
 export const PROMOTIONS_CANDIDATES = '/skillManagement/promotions/candidates';
