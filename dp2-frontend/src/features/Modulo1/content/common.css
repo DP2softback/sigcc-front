@@ -1,0 +1,10 @@
+.vertical-align-parent {
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+
+.vertical-align-child {
+    display: table-cell;
+    vertical-align: middle;
+}

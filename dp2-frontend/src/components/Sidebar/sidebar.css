@@ -1,0 +1,64 @@
+.app-menu-btn {
+    margin: .75rem;
+    color: #ffffff;
+    width: 3.5rem;
+}
+
+.app-menu-btn:hover {
+    color: #eee;
+    background: rgba(255, 255, 255, .25);
+}
+
+.app-sidebar {
+    background: #0d6efd;
+}
+
+.app-sidebar .nav-link {
+    color: #ffffff;
+}
+
+.app-sidebar .nav-link svg {
+    margin-left: .4rem;
+}
+
+.app-sidebar .nav-item {
+    margin: 0 .5rem .5rem .5rem;
+    border-radius: .5rem;
+}
+
+.app-sidebar .nav-item:hover {
+    background: rgba(255, 255, 255, .25);
+}
+
+.app-sidebar .nav-item .active {
+    background: #ffffff;
+    color: #0d6efd;
+}
+
+.app-sidebar .nav-item .nav-item-label {
+    display: none;
+    line-height: var(--bs-body-font-size);
+}
+
+.sidebar-container {
+    position: fixed;
+    width: 5rem;
+    z-index: 100;
+}
+
+.main-container {
+    padding: 1rem;
+    transition: margin-left .5s;
+    margin-left: 5rem;
+}
+
+.expanded .sidebar-container {
+	width: 15rem;
+}
+
+.expanded .main-container {
+  margin-left: 15rem;
+}
+.expanded .app-sidebar .nav-item .nav-item-label {
+    display: initial;
+}

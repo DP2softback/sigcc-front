@@ -1,0 +1,32 @@
+.picture-input-label {
+    display: inline-block;
+    background-color: #eee;
+    padding: 3.85rem 2.8rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+    border: dotted 2px #ced4da;
+}
+
+.picture-input-label-icon {
+    height: 100%;
+}
+
+.picture-selected .picture-input-label {
+    height: auto;
+    padding: .5rem;
+}
+
+.picture-selected .picture-input-label-icon {
+    height: 1.5rem;
+    margin-right: 1rem;
+}
+
+.picture-selected .picture-input-preview {
+    object-fit: cover;
+    width: 8rem;
+    height: 8rem;
+    margin-top: .4rem;
+    border-radius: .5rem;
+}
