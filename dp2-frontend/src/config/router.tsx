@@ -9,60 +9,81 @@ const Loader = (Component) => (props) =>
   </Suspense>
 );
 
-const ListExample = Loader(
-  lazy(() => import('@features/ExampleModule/features/ListExample'))
+
+const Modulo1LP = Loader(
+  lazy(() => import('@features/Modulo1/pages/LearningPath'))
 );
 
-const RegisterExample = Loader(
-  lazy(() => import('@features/ExampleModule/features/ListExample'))
+const M1ListLearningPath = Loader(
+  lazy(() => import('@features/Modulo1/pages/LearningPath'))
+);
+
+const M1LearningPathDetails = Loader(
+  lazy(() => import('@features/Modulo1/pages/LearningPath/Details'))
+);
+
+const M1AddCourse = Loader(
+  lazy(() => import('@features/Modulo1/pages/Course/AddCourse'))
+);
+
+const M1ListTraining = Loader(
+  lazy(() => import('@features/Modulo1/pages/Training'))
+);
+
+const M1TrainingDetails = Loader(
+  lazy(() => import('@features/Modulo1/pages/Training/Details'))
+);
+
+const M1TrainingAssignment = Loader(
+  lazy(() => import('@features/Modulo1/pages/Training/Assignment'))
 );
 
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
 const routes: RouteObject[] = [
   {
-    path: '',
-    element: <Navigate to="/example/list" replace />
-  },
-  {
-    path: 'example',
+    path: 'modulo1',
     children: [
       {
-        path: 'list',
-        element: <ListExample />
+        path: '',
+        element: <Modulo1LP />
       },
       {
-        path: 'register',
-        element: <RegisterExample />
-      },
-    ]
-  },
-  {
-    path: 'modulo0',
-    children: [
-      {
-        path: 'submodulo0',
+        path: 'rutadeaprendizaje',
         children: [
           {
-            path: 'list',
-            element: <ListExample />
+            path: '',
+            element: <M1ListLearningPath />
           },
           {
-            path: 'register',
-            element: <ListExample />
+            path: 'detalle/:learningPathId',
+            element: <M1LearningPathDetails />
           },
         ]
       },
       {
-        path: 'submodulo1',
+        path: 'curso',
         children: [
           {
-            path: 'list',
-            element: <ListExample />
+            path: 'agregar/:learningPathId',
+            element: <M1AddCourse />
+          },
+        ]
+      },
+      {
+        path: 'capacitacion',
+        children: [
+          {
+            path: '',
+            element: <M1ListTraining />
           },
           {
-            path: 'register',
-            element: <ListExample />
+            path: 'detalle/:trainingID',
+            element: <M1TrainingDetails />
+          },
+          {
+            path: 'asignacion/:trainingID',
+            element: <M1TrainingAssignment />
           },
         ]
       },

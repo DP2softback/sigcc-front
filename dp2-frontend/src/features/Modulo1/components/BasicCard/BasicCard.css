@@ -1,0 +1,133 @@
+.basicCard-container{
+  background-color: white;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.basicCard-header{
+  padding: 18px 18px 0px 20px;
+}
+
+.basicCard-headerLine{
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  padding-bottom: 18px;
+  display: flex;
+  flex-direction: row;
+}
+
+.basicCard-imageContainer{
+  width: 80px;
+  height: 80px;
+  margin-right: 14px;
+  overflow: hidden;
+}
+
+.basicCard-image{
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.basicCard-headerInfo{
+  margin-top: auto;
+  margin-bottom: auto;
+  justify-content: center;
+  flex: 1;
+}
+
+.basicCard-title{
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.basicCard-subtitle{
+  font-size: 16px;
+  opacity: 0.5;
+}
+
+.basicCard-body{
+  padding: 0px 20px 30px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.basicCard-row{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.basicCard-icon{
+  font-size: 20px;
+  margin-right: 20px;
+}
+
+.basicCard-text{
+  font-size: 16px;
+  flex: 1;
+  margin-right: 20px;
+}
+
+.basicCard-aditional{
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.basicCard-badge{
+  font-size: 14px;
+  font-weight: 400;
+  padding: 4.2px 7.8px;
+  margin-right: 10px;
+  border-radius: 4px;
+  color: white;
+}
+
+.basicCard-promotion{
+  display: flex;
+  flex-direction: row;
+  font-size: 18px;
+}
+
+.basicCard-promotionIcon{
+  margin-right: 4px;
+  justify-content: center;
+}
+
+.basicCard-promotionPositions{
+  display: flex;
+  flex-direction: column;
+}
+
+.basicCard-promtionText{
+  display: flex;
+  flex-direction: row;
+}
+
+.basicCard-promtionIndicator{
+  width: 28px;
+}
+
+.basicCard-footer-2b{
+  padding: 0px 20px 20px 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.basicCard-footer-1b{
+  padding: 0px 20px 20px 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.basicCard-dots{
+  transform: rotate(90deg);
+}
