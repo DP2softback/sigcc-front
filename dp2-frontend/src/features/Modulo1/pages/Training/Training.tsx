@@ -274,7 +274,7 @@ const Training = () => {
                     </div>
                     <div style={{ flex: '0 0 15rem' }} className='col text-end'>
                         {/* Button trigger modal */}
-                        <button type='button' className='btn btn-primary' data-bs-target='#createTrainingModal' data-bs-toggle='modal'>
+                        <button type='button' className='btn' style={{backgroundColor: "rgb(8, 66, 152)", color: "white"}} data-bs-target='#createTrainingModal' data-bs-toggle='modal'>
                             <div style={{display: "flex", alignItems: "center"}}>
                                 <span className='me-3'>Crear capacitación</span>                            
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -285,7 +285,7 @@ const Training = () => {
                         </button>
                     </div>
                 </div>
-                <div className='row'>
+                <div className='row' style={{paddingBottom: "32px"}}>
                     <div className='col-5'>
                         <input className='form-control' type='text' placeholder='Buscar capacitaciones' onChange={handleFilter} />
                     </div>
@@ -312,7 +312,7 @@ const Training = () => {
 
                 {trainingFilter == datos &&
                     <div>
-                        <div className='pt-3'>
+                        <div>
                             <h5>
                                 Próximos a iniciar
                             </h5>
@@ -348,7 +348,7 @@ const Training = () => {
                 }
 
                 <div>
-                    <div className='pt-3'>
+                    <div className='pt-4'>
                         <h5>
                             Capacitaciones creadas
                         </h5>

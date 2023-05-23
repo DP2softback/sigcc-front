@@ -37,6 +37,7 @@ const LearningPath = ({id, name, photoURL, description, creationDate, eventDate,
 
   return (
     <BasicCard
+      id={id}
       image={photoURL}
       imageStyle={'100px'}
       title={name}

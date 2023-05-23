@@ -1,4 +1,5 @@
 export type Props = {
+    id: string,
     image: string, 
     imageStyle: string, 
     title: string, 
@@ -13,6 +14,8 @@ export type Props = {
     button2Link?:string,
     button2Color?: string,
     options?: string,
-    widthC?: string
+    widthC?: string,
+    option?: Function,
+    typeCard?: string
 }
 

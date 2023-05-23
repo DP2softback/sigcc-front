@@ -13,6 +13,8 @@ class BasicCard extends Component<Props>
         this.refRoot = createRef();
     }
 
+    
+
 
     render() {
 
@@ -30,7 +32,33 @@ class BasicCard extends Component<Props>
         }
 
         if(this.props.widthC != null) widthC = `${this.props.widthC}`;
-            
+        
+        type Employee = {
+            id: string;
+            name: string;
+            code: string;
+            area: string;
+            position: string;
+            image: string;
+        }
+
+        const employees: Employee[] = [
+            {
+                id: this.props.id,
+                name: this.props.title,
+                code: this.props.items[0].text,
+                area: this.props.subtitle,
+                position: this.props.items[1].text,
+                image: this.props.image,
+            }
+        ]
+        
+
+        const handleClick = (e: any) => {
+            if(this.props.button1Text === "Agregar" && this.props.typeCard === "Empleado"){
+                this.props.option(employees)
+            }
+        }
         
 
         function showIcon(icon) {
@@ -75,7 +103,7 @@ class BasicCard extends Component<Props>
 
         return (
             <>
-                <div className='basicCard-container' style={{ width: widthC }}>
+                <div className='basicCard-container' style={{ width: widthC}}>
                     <div className='basicCard-header'>
                         <div className="basicCard-headerLine">
                             <div className='basicCard-imageContainer'>{imageComp}</div>
@@ -118,9 +146,16 @@ class BasicCard extends Component<Props>
 
                     <div className={`${this.props.button2 == 'SI' ? 'basicCard-footer-2b' : 'basicCard-footer-1b'}`}>
                         {(this.props.button1 == 'SI') &&
-                            <Link to={this.props.button1Link}>
-                                <button type="button" className="btn btn-primary btn1" style={{backgroundColor: this.props.button1Color, border: "none"}} >{this.props.button1Text}</button>
-                            </Link>                            
+                            <>
+                                {(this.props.button1Link != "") ?
+                                    <Link to={this.props.button1Link}>
+                                        <button type="button" className="btn btn-primary btn1" style={{backgroundColor: this.props.button1Color, border: "none"}}  onClick={handleClick}>{this.props.button1Text}</button>
+                                    </Link>  
+                                    :
+                                    <button type="button" className="btn btn-primary btn1" style={{backgroundColor: this.props.button1Color, border: "none"}}  onClick={handleClick}>{this.props.button1Text}</button>
+                                }                                
+                            </>
+                                                      
                         }
 
                         {(this.props.button2 == 'SI') &&
