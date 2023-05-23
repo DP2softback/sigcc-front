@@ -38,6 +38,10 @@ const M1TrainingAssignment = Loader(
   lazy(() => import('@features/Modulo1/pages/Training/Assignment'))
 );
 
+const ConfigSelectionProcess = Loader(
+  lazy(() => import('@features/Modulo4/pages/ConfigSelectionProcess'))
+);
+
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
 const routes: RouteObject[] = [
@@ -86,6 +90,15 @@ const routes: RouteObject[] = [
             element: <M1TrainingAssignment />
           },
         ]
+      },
+    ]
+  },
+  {
+    path: 'modulo1',
+    children: [
+      {
+        path: 'configurar-proceso-seleccion',
+        element: <ConfigSelectionProcess />
       },
     ]
   },
