@@ -42,6 +42,11 @@ const ConfigSelectionProcess = Loader(
   lazy(() => import('@features/Modulo4/pages/ConfigSelectionProcess'))
 );
 
+const ConfigOfertaLaboral = Loader(
+  lazy(() => import('@features/Modulo4/pages/ConfigOfertaLaboral'))
+);
+
+
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
 const routes: RouteObject[] = [
@@ -99,6 +104,10 @@ const routes: RouteObject[] = [
       {
         path: 'configurar-proceso-seleccion',
         element: <ConfigSelectionProcess />
+      },
+      {
+        path: 'configurar-oferta-laboral',
+        element: <ConfigOfertaLaboral />
       },
     ]
   },
