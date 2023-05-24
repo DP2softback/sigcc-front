@@ -3,13 +3,14 @@
 
 import axios from 'axios';
 
-const baseUrl = import.meta.env.VITE_BASE_URL;
+//const baseUrl = import.meta.env.VITE_BASE_URL;
+const baseUrl = 'http://localhost:8000/api/';
 
 const axiosInt = axios.create({
   baseURL: baseUrl
 });
 
-axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+// axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
 axiosInt.interceptors.response.use(
   (response) => response,
