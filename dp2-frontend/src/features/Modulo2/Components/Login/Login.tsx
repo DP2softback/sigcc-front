@@ -42,7 +42,7 @@ const Login = () => {
               <input type="text" id="username" className="form-control" value={username} onChange={handleUsernameChange} />
             </div>
             <div className="mb-3">
-              <label htmlFor="password" className="form-label">Contraseña:</label>git
+              <label htmlFor="password" className="form-label">Contraseña:</label>
               <input type="password" id="password" className="form-control" value={password} onChange={handlePasswordChange} />
             </div>
             <div className="mb-3 form-check">
