@@ -1,0 +1,9 @@
+.container-Pie{
+    height: 99%;
+    width: 99%;
+    background-color: white;
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 30px;
+    max-height: 774px;
+}
