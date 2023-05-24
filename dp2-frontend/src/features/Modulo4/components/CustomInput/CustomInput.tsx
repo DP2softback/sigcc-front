@@ -8,7 +8,7 @@ const CustomInput = ({ placeholder, onChange }) => {
             rows={3} // Ajusta el número de filas según tus necesidades
             placeholder={placeholder}
             onChange={onChange}
-            style={{ width: "400px", height: "160px" }} // Ajusta el tamaño según tus necesidades
+            style={{ width: "420px", height: "160px" }} // Ajusta el tamaño según tus necesidades
         />
     );
 };

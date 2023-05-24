@@ -19,6 +19,7 @@ import Sidebar from "@components/Sidebar";
 import sidebarItems from "../../utils/sidebarItems";
 import PhotoCard from "@features/Modulo4/components/PhotoCard";
 import CustomInput from "@features/Modulo4/components/CustomInput";
+import { TextCenter } from "react-bootstrap-icons";
 
 function ConfigOfertaLaboral(props: any) {
     const createLP = () => {
@@ -152,6 +153,18 @@ function ConfigOfertaLaboral(props: any) {
         } else {
             setPreviewUrl(null);
         }
+        inputRef.current?.files &&
+            setUploadedFileName(
+                inputRef.current.files[0].name.substring(0, 10) + "..."
+            );
+    };
+    const [uploadedFileName, setUploadedFileName] = useState<string | null>(
+        null
+    );
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    const handleUpload = () => {
+        inputRef.current?.click();
     };
 
     // TABLA DE ETAPAS DEL PROCESO DE SELECCIÓN
@@ -336,7 +349,7 @@ function ConfigOfertaLaboral(props: any) {
             </div>
             <div className="row">
                 {/* FILA   ------- */}
-                <div className="col-8">
+                <div className="col-8" style={{ marginRight: "14px" }}>
                     <div style={stylesSelect}>
                         <span style={{ width: "23%" }}>
                             Nombre del puesto: (*)
@@ -456,7 +469,10 @@ function ConfigOfertaLaboral(props: any) {
                         }}
                     >
                         <h5>
-                            <small className="opacity-90">
+                            <small
+                                className="opacity-90"
+                                style={{ marginTop: "100px" }}
+                            >
                                 Etapas del proceso de selección.
                             </small>
                         </h5>
@@ -472,7 +488,14 @@ function ConfigOfertaLaboral(props: any) {
                         </div>
                     </div>
 
-                    <div style={{ maxHeight: "300px", overflowY: "auto" }}>
+                    <div
+                        style={{
+                            border: "1px solid #ddd",
+                            borderRadius: "4px",
+                            maxHeight: "340px",
+                            overflowY: "auto",
+                        }}
+                    >
                         <Table striped={true} bordered>
                             <thead
                                 style={{
@@ -682,7 +705,7 @@ function ConfigOfertaLaboral(props: any) {
 
                 <div className="col-3">
                     {/* FILA   ------- */}
-                    <span>Imagen de referencia:</span>
+                    <span>Imagen referencial:</span>
                     <div className="image-upload">
                         <div>
                             <PhotoCard
@@ -693,22 +716,38 @@ function ConfigOfertaLaboral(props: any) {
                         </div>
                         <input
                             type="file"
+                            ref={inputRef}
                             onChange={handleImageUpload}
+                            className="d-none"
                             accept="image/*"
-                            className="image-upload__input"
                         />
+                        <button
+                            style={{
+                                width: "140px",
+                                height: "40px",
+                                marginBottom: "0.78rem",
+                            }}
+                            onClick={handleUpload}
+                            className={`btn btn-outline-${
+                                uploadedFileName ? "success" : "primary"
+                            }`}
+                        >
+                            {uploadedFileName
+                                ? uploadedFileName
+                                : "Subir imagen"}
+                        </button>
                     </div>
                     {/* FILA   ------- */}
 
                     <span>Descripción de la oferta laboral:</span>
-                    <div>
+                    <div style={{ marginBottom: "0.78rem" }}>
                         <CustomInput
                             placeholder="Descripción de la oferta"
                             onChange={handleInputChangeDescripcion}
                         />
                     </div>
                     <span>Descripción de las responsabilidades:</span>
-                    <div>
+                    <div style={{ marginBottom: "0.78rem" }}>
                         <CustomInput
                             placeholder="Descripción de las responsabilidades"
                             onChange={handleInputChangeResponsa}
@@ -718,15 +757,29 @@ function ConfigOfertaLaboral(props: any) {
 
                 <div></div>
             </div>
-            {/* Botón Eliminar */}
-            <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
-                Eliminar
-            </Button>
-
-            {/* Botón Guardar Cambios */}
-            <Button variant="primary" onClick={() => setShowSaveModal(true)}>
-                Guardar Cambios
-            </Button>
+            <div
+                className="row"
+                style={{ marginBottom: "0.78rem", marginTop: "0.78rem" }}
+            >
+                <div className="col">
+                    {/* Botón Eliminar */}
+                    <Button
+                        variant="danger"
+                        onClick={() => setShowDeleteModal(true)}
+                    >
+                        Eliminar
+                    </Button>
+                </div>
+                <div className="col text-end">
+                    {/* Botón Guardar Cambios */}
+                    <Button
+                        variant="primary"
+                        onClick={() => setShowSaveModal(true)}
+                    >
+                        Guardar Cambios
+                    </Button>
+                </div>
+            </div>
 
             {/* Modal para Eliminar */}
             <Modal
@@ -737,7 +790,7 @@ function ConfigOfertaLaboral(props: any) {
                     <Modal.Title>Confirmar Eliminación</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    ¿Estás seguro de que deseas eliminar este elemento?
+                    ¿Estás seguro de que deseas eliminar esta oferta laboral?
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
@@ -757,7 +810,9 @@ function ConfigOfertaLaboral(props: any) {
                 <Modal.Header closeButton>
                     <Modal.Title>Guardar Cambios</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>¿Deseas guardar los cambios realizados?</Modal.Body>
+                <Modal.Body>
+                    ¿Deseas guardar los cambios realizados en la oferta laboral?
+                </Modal.Body>
                 <Modal.Footer>
                     <Button
                         variant="secondary"
@@ -771,20 +826,22 @@ function ConfigOfertaLaboral(props: any) {
                 </Modal.Footer>
             </Modal>
 
-            <p>
-                Opción seleccionada:{" "}
-                {selectedNombreOferta +
-                    " " +
-                    selectedAreaTrabajo +
-                    " " +
-                    selectedTipoPuesto +
-                    " " +
-                    selectedTipoJornada +
-                    " " +
-                    selectedGradoExp +
-                    " " +
-                    rows}
-            </p>
+            <div>
+                <p>
+                    Opción seleccionada:{" "}
+                    {selectedNombreOferta +
+                        " " +
+                        selectedAreaTrabajo +
+                        " " +
+                        selectedTipoPuesto +
+                        " " +
+                        selectedTipoJornada +
+                        " " +
+                        selectedGradoExp +
+                        " " +
+                        rows}
+                </p>
+            </div>
         </Sidebar>
     );
 }
