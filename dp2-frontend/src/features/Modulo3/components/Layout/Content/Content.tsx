@@ -1,5 +1,6 @@
 import './Content.css';
-
+import Sidebar from '@components/Sidebar';
+import sidebarItems from '../../../utils/sidebarItems'
 type LayoutProps = {
   title: string,
   body: any,
@@ -15,10 +16,13 @@ const Layout = ({title, body, subtitle} : LayoutProps) => {
   )
 
   return (
+    <Sidebar items={sidebarItems} active='/skillManagement/evaluationTemplate/edit'>
     <div className='content'>
       {header}
       {body}
     </div>
+    </Sidebar>
+
   );
 };
 
