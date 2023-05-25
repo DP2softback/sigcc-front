@@ -1,0 +1,30 @@
+.ec-indexFilters{
+  display: flex;
+  flex-direction: row;
+}
+
+.ec-indexFilterElement{
+  margin-left: 20px;
+}
+
+.ec-indexFirstTwoEmployees{
+  display: flex;
+  flex-direction: column;
+}
+
+.mb-32px{
+  margin-bottom: 32px;
+}
+
+.ec-createDropdowns{
+  display: flex;
+  flex-direction: row;
+}
+
+.ec-createDropdown{
+  margin-right: 128px;
+}
+
+.mt-32{
+  margin-top: 32px;
+}

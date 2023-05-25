@@ -3,7 +3,7 @@ import './learning-path.css';
 import '../../content/common.css';
 import axiosInt from '@config/axios';
 import { Fragment, useEffect, useRef, useState } from 'react';
-import Sidebar from '@features/Modulo1/components/Sidebar';
+import Sidebar from '@components/Sidebar';
 import sidebarItems from '../../utils/sidebarItems';
 import PictureUpload from '@features/Modulo1/components/PictureUpload';
 import Rate from '@features/Modulo1/components/Rate';

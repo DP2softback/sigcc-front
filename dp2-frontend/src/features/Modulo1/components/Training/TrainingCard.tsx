@@ -36,6 +36,7 @@ const Training = ({id, name, photoURL, description, creationDate, eventDate, emp
 
   return (
     <BasicCard
+      id={id}
       image={photoURL}
       imageStyle={'100px'}
       title={name}

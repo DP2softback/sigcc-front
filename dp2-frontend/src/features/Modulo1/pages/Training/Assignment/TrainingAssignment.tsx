@@ -1,5 +1,5 @@
 import axiosInt from '@config/axios';
-import Sidebar from '@features/Modulo1/components/Sidebar'
+import Sidebar from '@components/Sidebar'
 import sidebarItems from '@features/Modulo1/utils/sidebarItems'
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
@@ -84,21 +84,40 @@ const employees: Employee[] = [
 const TrainingAssignment = () => {
     const { trainingID } = useParams();
     const [training, setTraining] = useState<any>(datos);
-    const [trainingFilter, setTrainingFilter] = useState<Employee[]>(employees)
+    const [employeeFilter, setemployeeFilter] = useState<Employee[]>(employees)
+    const [addedEmployees, setAddedEmployees] = useState<Employee[]>([])
+    const [addedEmployee, setAddedEmployee] = useState<Employee>()
     const [typeArea, setTypeArea] = useState("Todos")
 
     const botonEmployee = "Agregar";
     var filtered;
 
+
     const handleFilter = (e: any) => {
         const searchTerm = e.target.value;
-        if (searchTerm === '')
-            setTrainingFilter(employees);
-        else {
-            filtered = trainingFilter.filter((item: any) =>
-                item.name.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            setTrainingFilter(filtered);
+        if (searchTerm === ''){        
+            if(addedEmployees.length){
+                filtered = employees.filter((item: any) => {                
+                    return addedEmployees.every((added) => {                      
+                        return added[0].id != item.id
+                    })
+                });
+                setemployeeFilter(filtered);
+            }
+            else setemployeeFilter(employees);
+        }else {
+            if(addedEmployees.length){
+                filtered = employeeFilter.filter((item: any) => {                
+                    return addedEmployees.every((added) => {                      
+                        return added[0].id != item.id
+                    }) && item.name.toLowerCase().includes(searchTerm.toLowerCase())
+                });
+            }else{
+                filtered = employeeFilter.filter((item: any) =>
+                    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }            
+            setemployeeFilter(filtered);
         }
     };
 
@@ -108,12 +127,12 @@ const TrainingAssignment = () => {
 
     const search = (e: any) => {
         if (typeArea === "Todos")
-            setTrainingFilter(employees);
+            setemployeeFilter(employees);
         else {
             filtered = employees.filter((item: any) =>
                 item.area === typeArea
             );
-            setTrainingFilter(filtered);
+            setemployeeFilter(filtered);
         }
     }
 
@@ -132,9 +151,35 @@ const TrainingAssignment = () => {
         */
     }
 
+
+ 
+    useEffect(() => {        
+        async function AddEmployee(){
+            var aux = addedEmployees;
+            aux.push(addedEmployee)
+            setAddedEmployees(aux)
+        }
+        async function UpdateFilter(){            
+              var filtered2 = employeeFilter.filter((item: any) => {                
+                return addedEmployees.every((added) => {                      
+                    return added[0].id != item.id
+                })
+            }               
+            );
+            setemployeeFilter(filtered2);
+        }
+
+        if(addedEmployee != undefined){            
+            AddEmployee()          
+            UpdateFilter()
+        }
+    }, [addedEmployee]);
+
     useEffect(() => {
         loadTrainingDetails();
     }, []);
+
+
 
     return (
         <>
@@ -179,10 +224,10 @@ const TrainingAssignment = () => {
 
                         <div className='row'>
 
-                            {trainingFilter.length ?
+                            {employeeFilter.length ?
                                 <div>
                                     <div className="employees-list cards">
-                                        {trainingFilter.map((employee) => (
+                                        {employeeFilter.map((employee) => (
                                             <EmployeeCard key={employee.id}
                                                 id={employee.id}
                                                 name={employee.name}
@@ -192,6 +237,7 @@ const TrainingAssignment = () => {
                                                 codigo={employee.code}
                                                 boton1={botonEmployee}
                                                 boton1Color={"#084298"}
+                                                option={setAddedEmployee}
                                             />
                                         ))}
                                     </div>

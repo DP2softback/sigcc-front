@@ -2,15 +2,16 @@
   background-color: white;
   border-radius: 4px;
   overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .basicCard-header{
-  padding: 20px 20px 0px 20px;
+  padding: 18px 18px 0px 20px;
 }
 
 .basicCard-headerLine{
   border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-  padding-bottom: 20px;
+  padding-bottom: 18px;
   display: flex;
   flex-direction: row;
 }
@@ -18,7 +19,7 @@
 .basicCard-imageContainer{
   width: 80px;
   height: 80px;
-  margin-right: 20px;
+  margin-right: 14px;
   overflow: hidden;
 }
 
@@ -37,7 +38,7 @@
 }
 
 .basicCard-title{
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 500;
 }
 
@@ -47,7 +48,7 @@
 }
 
 .basicCard-body{
-  padding: 0px 20px 20px 20px;
+  padding: 0px 20px 30px 20px;
   display: flex;
   flex-direction: column;
 }
@@ -66,14 +67,14 @@
 }
 
 .basicCard-text{
-  font-size: 18px;
+  font-size: 16px;
   flex: 1;
   margin-right: 20px;
 }
 
 .basicCard-aditional{
   color: white;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
   padding: 4px 8px;
   border-radius: 4px;

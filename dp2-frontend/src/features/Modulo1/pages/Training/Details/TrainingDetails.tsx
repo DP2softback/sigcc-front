@@ -1,5 +1,5 @@
 import axiosInt from '@config/axios';
-import Sidebar from '@features/Modulo1/components/Sidebar'
+import Sidebar from '@components/Sidebar'
 import sidebarItems from '@features/Modulo1/utils/sidebarItems'
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
@@ -113,12 +113,12 @@ const TrainingDetails = () => {
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/capacitacion'>
+            <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
                 <div className='container row mt-3'>
 
                     <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
                         <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
-                            <Link to={`/modulo1/capacitacion`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
+                            <Link to={`/modulo1/cursoempresa`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
                         </div>
 
                         <div className='col'>
@@ -145,7 +145,7 @@ const TrainingDetails = () => {
                                 <div className='col'>
                                     <div className="card">
                                         <div className="card-header">
-                                            <JournalBookmarkFill /><b style={{ paddingLeft: "0.5rem" }}>Temas de la capacitación</b>
+                                            <JournalBookmarkFill /><b style={{ paddingLeft: "0.5rem" }}>Temas del curso</b>
                                         </div>
                                         <div className="card-body">
                                             {/*DEFINIR COMO SERA ACA*/}
@@ -155,7 +155,7 @@ const TrainingDetails = () => {
                                 <div className='col'>
                                     <div className="card">
                                         <div className="card-header">
-                                            <InfoCircleFill /><b style={{ paddingLeft: "0.5rem" }}>Información de la capacitación</b>
+                                            <InfoCircleFill /><b style={{ paddingLeft: "0.5rem" }}>Información del curso</b>
                                         </div>
                                         <div className="card-body">
                                             <p className="card-text"><Calendar2EventFill /><b style={{ paddingLeft: "0.5rem" }}>Fecha del evento:</b> {training.startDate}</p>
@@ -210,6 +210,7 @@ const TrainingDetails = () => {
                                                 codigo={employee.code}
                                                 boton1={botonEmployee}
                                                 boton1Color={"#B02A37"}
+                                                option={{}}
                                             />
                                         ))}
                                         {(employeesToShow.length != 3) &&

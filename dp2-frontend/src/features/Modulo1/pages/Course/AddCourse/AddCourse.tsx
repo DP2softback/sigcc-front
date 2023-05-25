@@ -3,7 +3,7 @@ import { Fragment, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import './add-course.css';
 import axiosInt from '@config/axios';
-import Sidebar from '@features/Modulo1/components/Sidebar';
+import Sidebar from '@components/Sidebar';
 import sidebarItems from '@features/Modulo1/utils/sidebarItems';
 
 function AddCourse (props: any)
