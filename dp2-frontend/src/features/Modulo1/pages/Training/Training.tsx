@@ -3,9 +3,10 @@ import sidebarItems from '@features/Modulo1/utils/sidebarItems'
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import TrainingCard from '@features/Modulo1/components/Training/TrainingCard';
-import './training.css';
+import Pagination from '@features/Modulo1/components/Pagination';
 import PictureUpload from '@features/Modulo1/components/PictureUpload';
 import '../../basic.css';
+import './training.css';
 import axiosInt from '@config/axios';
 
 const typeTra = [
@@ -87,7 +88,7 @@ type TrainingObj = {
 const datos: TrainingObj[] = [
     {
         "id": 1,
-        "name": "Seguridad de Información",
+        "name": "Seguridad de Información 1",
         "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
         "startDate": "06/05/2023",
@@ -99,7 +100,7 @@ const datos: TrainingObj[] = [
     },
     {
         "id": 2,
-        "name": "ABC S",
+        "name": "ABC S 1",
         "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
         "startDate": "06/05/2023",
@@ -111,7 +112,7 @@ const datos: TrainingObj[] = [
     },
     {
         "id": 3,
-        "name": "ABC A",
+        "name": "ABC A 1",
         "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
         "startDate": "06/05/2023",
@@ -123,7 +124,151 @@ const datos: TrainingObj[] = [
     },
     {
         "id": 4,
-        "name": "ABC P",
+        "name": "ABC P 1",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
+        "description": "Lorem ipsum",
+        "startDate": "06/05/2023",
+        "endDate": "12/05/2023",
+        "numEmployees": 15,
+        "type": "Presencial",
+        "capacity": 20,
+        "location": "Av. Universitaria 1305 - San Miguel"
+    },
+    {
+        "id": 5,
+        "name": "Seguridad de Información 1.1",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
+        "description": "Lorem ipsum",
+        "startDate": "06/05/2023",
+        "endDate": "06/05/2023",
+        "numEmployees": 10,
+        "type": "Presencial",
+        "capacity": 20,
+        "location": "Av. Universitaria 1305 - San Miguel"
+    },
+    {
+        "id": 6,
+        "name": "ABC S 1.2",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
+        "description": "Lorem ipsum",
+        "startDate": "06/05/2023",
+        "endDate": "10/05/2023",
+        "numEmployees": 15,
+        "type": "Sincrono",
+        "capacity": 20,
+        "location": "Av. Universitaria 1305 - San Miguel"
+    },
+    {
+        "id": 7,
+        "name": "ABC A 2",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
+        "description": "Lorem ipsum",
+        "startDate": "06/05/2023",
+        "endDate": "11/05/2023",
+        "numEmployees": 15,
+        "type": "Asincrono",
+        "capacity": 20,
+        "location": "Av. Universitaria 1305 - San Miguel"
+    },
+    {
+        "id": 8,
+        "name": "ABC P 2",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
+        "description": "Lorem ipsum",
+        "startDate": "06/05/2023",
+        "endDate": "12/05/2023",
+        "numEmployees": 15,
+        "type": "Presencial",
+        "capacity": 20,
+        "location": "Av. Universitaria 1305 - San Miguel"
+    },
+    {
+        "id": 9,
+        "name": "Seguridad de Información 2",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
+        "description": "Lorem ipsum",
+        "startDate": "06/05/2023",
+        "endDate": "06/05/2023",
+        "numEmployees": 10,
+        "type": "Presencial",
+        "capacity": 20,
+        "location": "Av. Universitaria 1305 - San Miguel"
+    },
+    {
+        "id": 10,
+        "name": "ABC S 2",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
+        "description": "Lorem ipsum",
+        "startDate": "06/05/2023",
+        "endDate": "10/05/2023",
+        "numEmployees": 15,
+        "type": "Sincrono",
+        "capacity": 20,
+        "location": "Av. Universitaria 1305 - San Miguel"
+    },
+    {
+        "id": 11,
+        "name": "ABC A 2",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
+        "description": "Lorem ipsum",
+        "startDate": "06/05/2023",
+        "endDate": "11/05/2023",
+        "numEmployees": 15,
+        "type": "Asincrono",
+        "capacity": 20,
+        "location": "Av. Universitaria 1305 - San Miguel"
+    },
+    {
+        "id": 12,
+        "name": "ABC P 2.1",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
+        "description": "Lorem ipsum",
+        "startDate": "06/05/2023",
+        "endDate": "12/05/2023",
+        "numEmployees": 15,
+        "type": "Presencial",
+        "capacity": 20,
+        "location": "Av. Universitaria 1305 - San Miguel"
+    },
+    {
+        "id": 13,
+        "name": "Seguridad de Información 3",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
+        "description": "Lorem ipsum",
+        "startDate": "06/05/2023",
+        "endDate": "06/05/2023",
+        "numEmployees": 10,
+        "type": "Presencial",
+        "capacity": 20,
+        "location": "Av. Universitaria 1305 - San Miguel"
+    },
+    {
+        "id": 14,
+        "name": "ABC S 3",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
+        "description": "Lorem ipsum",
+        "startDate": "06/05/2023",
+        "endDate": "10/05/2023",
+        "numEmployees": 15,
+        "type": "Sincrono",
+        "capacity": 20,
+        "location": "Av. Universitaria 1305 - San Miguel"
+    },
+    {
+        "id": 15,
+        "name": "ABC A 3",
+        "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
+        "description": "Lorem ipsum",
+        "startDate": "06/05/2023",
+        "endDate": "11/05/2023",
+        "numEmployees": 15,
+        "type": "Asincrono",
+        "capacity": 20,
+        "location": "Av. Universitaria 1305 - San Miguel"
+    },
+    {
+        "id": 16,
+        "name": "ABC P 3",
         "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
         "description": "Lorem ipsum",
         "startDate": "06/05/2023",
@@ -158,12 +303,31 @@ const Training = () => {
     const now7 = formatDate(new Date(today.setDate(today.getDate() + 7)));
 
     const [trainingFilter, setTrainingFilter] = useState<TrainingObj[]>(datos)
-    const [trainingTime, setTrainingTime] = useState<TrainingObj[]>(datos.filter((item: any) => item.endDate >= now && item.endDate <= now7))
+    const [upcomingCourse, setUpcomingCourse] = useState<TrainingObj[]>(datos.filter((item: any) => item.endDate >= now && item.endDate <= now7))
+    const [currentCourse, setCurrentCourse] = useState<TrainingObj[]>(datos.filter((item: any) => item.endDate > now7))
+    const [finishedCourse, setFinishedCourse] = useState<TrainingObj[]>(datos.filter((item: any) => item.endDate < now))
 
     const [startDate, setStarDate] = useState("0001-01-01")
     const [endDate, setEndDate] = useState("9999-12-31")
     const [typeTraining, setTypeTraining] = useState("Todos")
     var filtered;
+    var mostrar = 6;
+
+    const [pageF, setPageF] = useState(1)
+    const totalPagesF = Math.ceil(finishedCourse.length / mostrar);
+    const [positionF, setPositionF] = useState(0);
+    const finishedCourseShow = finishedCourse.slice(positionF, positionF + mostrar);
+
+    const [pageC, setPageC] = useState(1)
+    const totalPagesC = Math.ceil(currentCourse.length / mostrar);
+    const [positionC, setPositionC] = useState(0);
+    const currentCourseShow = currentCourse.slice(positionC, positionC + mostrar);
+
+    const [pageU, setPageU] = useState(1)
+    const totalPagesU = Math.ceil(upcomingCourse.length / mostrar);
+    const [positionU, setPositionU] = useState(0);
+    const upcomingCourseShow = upcomingCourse.slice(positionU, positionU + mostrar);
+
 
     const navigate = useNavigate();
 
@@ -183,7 +347,7 @@ const Training = () => {
         if (searchTerm === '')
             setTrainingFilter(datos);
         else {
-            filtered = trainingFilter.filter((item: any) =>
+            filtered = datos.filter((item: any) =>
                 item.name.toLowerCase().includes(searchTerm.toLowerCase())
             );
             setTrainingFilter(filtered);
@@ -211,12 +375,12 @@ const Training = () => {
                     item.endDate >= formatDate(new Date(startDate + ' 00:00:00')) && item.endDate <= formatDate(new Date(endDate + ' 00:00:00'))
                 );
                 setTrainingFilter(filtered);
-            }else{
+            } else {
                 filtered = datos.filter((item: any) =>
                     item.endDate >= formatDate(new Date(startDate + ' 00:00:00')) && item.endDate <= formatDate(new Date(endDate + ' 00:00:00')) && item.type === typeTraining
                 );
                 setTrainingFilter(filtered);
-            }        
+            }
         }
     }
 
@@ -236,32 +400,26 @@ const Training = () => {
         console.log(data)
 
         axiosInt.post('RUTA API', data)
-            .then(function (response)
-            {
+            .then(function (response) {
                 //navigate(`/modulo1/capacitacion/detalle/${response.data.id}`);
             })
-            .catch(function (error)
-            {
+            .catch(function (error) {
                 console.log(error);
             });
     }
 
-    const loadTrainings = () =>
-    {
+    const loadTrainings = () => {
         axiosInt.get('RUTA API')
-            .then(function (response)
-            {
+            .then(function (response) {
                 //setTrainingFilter(response.data);
             })
-            .catch(function (error)
-            {
+            .catch(function (error) {
                 console.log(error);
             });
     }
 
-    useEffect(() =>
-    {
-        //loadTrainings();
+    useEffect(() => {
+        //loadTrainings();       
     }, []);
 
     return (
@@ -269,23 +427,23 @@ const Training = () => {
             <Sidebar items={sidebarItems} active='/modulo1/capacitacion'>
                 <div className='row mt-3'>
                     <div className='col'>
-                        <h1 className='screenTitle'>Capacitaciones</h1>
-                        <p><small className='subtitle'>Lista de capacitaciones creadas que los empleados pueden asistir para adquirir habilidades y competencias específicas.</small></p>
+                        <h1 className='screenTitle'>Curso Empresa</h1>
+                        <p><small className='subtitle'>Lista de cursos empresa creados que los empleados pueden asistir para adquirir habilidades y competencias específicas.</small></p>
                     </div>
                     <div style={{ flex: '0 0 15rem' }} className='col text-end'>
                         {/* Button trigger modal */}
-                        <button type='button' className='btn' style={{backgroundColor: "rgb(8, 66, 152)", color: "white"}} data-bs-target='#createTrainingModal' data-bs-toggle='modal'>
-                            <div style={{display: "flex", alignItems: "center"}}>
-                                <span className='me-3'>Crear capacitación</span>                            
+                        <button type='button' className='btn' style={{ backgroundColor: "rgb(8, 66, 152)", color: "white" }} data-bs-target='#createTrainingModal' data-bs-toggle='modal'>
+                            <div style={{ display: "flex", alignItems: "center" }}>
+                                <span className='me-3'>Crear capacitación</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
                                 </svg>
-                            </div>                            
+                            </div>
                         </button>
                     </div>
                 </div>
-                <div className='row' style={{paddingBottom: "32px"}}>
+                <div className='row' style={{ paddingBottom: "32px" }}>
                     <div className='col-5'>
                         <input className='form-control' type='text' placeholder='Buscar capacitaciones' onChange={handleFilter} />
                     </div>
@@ -310,98 +468,223 @@ const Training = () => {
                     </div>
                 </div>
 
-                {trainingFilter == datos &&
+                {trainingFilter == datos ?
                     <div>
                         <div>
-                            <h5>
-                                Próximos a iniciar
-                            </h5>
+                            <div>
+                                <h5>
+                                    Próximos a iniciar
+                                </h5>
+                            </div>
+
+                            {upcomingCourse.length > 0 ?
+                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                    <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
+                                        {
+                                            upcomingCourseShow.map((tr) => {
+                                                return (
+                                                    <TrainingCard key={tr.id}
+                                                        id={tr.id}
+                                                        name={tr.name}
+                                                        photoURL={tr.photoURL}
+                                                        description={tr.description}
+                                                        creationDate={tr.startDate}
+                                                        eventDate={tr.endDate}
+                                                        employees={tr.numEmployees}
+                                                    />
+
+                                                )
+                                            })
+                                        }
+                                    </div>
+
+                                    <div>
+                                        <div>
+                                            <Pagination
+                                                page={pageU}
+                                                totalPages={totalPagesU}
+                                                handlePagination={setPageU}
+                                                setPosition={setPositionU}
+                                                position={positionU}
+                                                mostrar={mostrar}
+                                            />
+                                        </div>
+                                    </div>    
+
+                                </div>
+                                :
+                                <div>
+                                    <h6 style={{ display: "flex", justifyContent: "center" }}>
+                                        No hay proximos cursos
+                                    </h6>
+                                </div>
+                            }
                         </div>
 
-                        {trainingTime.length > 0 ?
-                            <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
-                                {
-                                    trainingTime.map((tr) => {
-                                        return (
-                                            <TrainingCard key={tr.id}
-                                                id={tr.id}
-                                                name={tr.name}
-                                                photoURL={tr.photoURL}
-                                                description={tr.description}
-                                                creationDate={tr.startDate}
-                                                eventDate={tr.endDate}
-                                                employees={tr.numEmployees}
+
+                        <div>
+                            <div className='pt-5'>
+                                <h5>
+                                    Curso Empresa vigentes
+                                </h5>
+                            </div>
+
+                            {currentCourse.length > 0 ?
+                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                    <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
+                                        {
+                                            currentCourseShow.map((tr) => {
+                                                return (
+                                                    <TrainingCard key={tr.id}
+                                                        id={tr.id}
+                                                        name={tr.name}
+                                                        photoURL={tr.photoURL}
+                                                        description={tr.description}
+                                                        creationDate={tr.startDate}
+                                                        eventDate={tr.endDate}
+                                                        employees={tr.numEmployees}
+                                                    />
+
+                                                )
+                                            })
+                                        }
+                                    </div>
+
+                                    <div>
+                                        <div>
+                                            <Pagination
+                                                page={pageC}
+                                                totalPages={totalPagesC}
+                                                handlePagination={setPageC}
+                                                setPosition={setPositionC}
+                                                position={positionC}
+                                                mostrar={mostrar}
                                             />
-
-                                        )
-                                    })
-                                }
-                            </div>
-                            :
-                            <div>
-                                <h6>
-                                    No hay proximas capacidades
-                                </h6>
-                            </div>
-                        }
-                    </div>
-                }
-
-                <div>
-                    <div className='pt-4'>
-                        <h5>
-                            Capacitaciones creadas
-                        </h5>
-                    </div>
-
-                    <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
-                        {
-                            trainingFilter.map((tr) => {
-                                return (
-                                    <TrainingCard key={tr.id}
-                                        id={tr.id}
-                                        name={tr.name}
-                                        photoURL={tr.photoURL}
-                                        description={tr.description}
-                                        creationDate={tr.startDate}
-                                        eventDate={tr.endDate}
-                                        employees={tr.numEmployees}
-                                    />
-                                )
-                            })
-                        }
-                    </div>
-                </div>
-
-                {/* <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 py-3 px-0 mx-0 cards'>
-                    {
-                        trainingFilter.map((tr) => {
-                            return (
-                                <Fragment key={tr.id}>
-                                    <div className='cols'>
-                                        <div className="card">
-                                            <div className="card-body">
-                                                <h6 className="card-title">{tr.name}</h6>
-                                                <p className="card-text opacity-50"><small>{tr.description}</small></p>
-                                                <p className="card-text opacity-50"><small>Fecha de inicio: {tr.startDate}</small></p>
-                                                <p className="card-text opacity-50"><small>Fecha de fin: {tr.endDate}</small></p>
-                                                <p className="card-text opacity-50"><small>Cantidad de empleados: {tr.numEmployees}</small></p>
-                                                <div className="d-flex gap-2 w-100 justify-content-between">
-                                                    <span></span>
-                                                    <Link to={`/capacitacion/detalle/${tr.id}`} className="btn btn-primary float-right">Detalles</Link>
-                                                    <button className="btn btn-primary float-right">Detalles</button>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
-                                </Fragment>
-                            )
-                        })
-                    }
-                </div> */}
+
+                                </div>
+                                :
+                                <div>
+                                    <h6 style={{ display: "flex", justifyContent: "center" }}>
+                                        No hay más cursos vigentes
+                                    </h6>
+                                </div>
+                            }
+
+
+
+
+
+
+                        </div>
+
+
+
+                        <div>
+                            <div className='pt-5'>
+                                <h5>
+                                    Curso Empresa finalizados
+                                </h5>
+                            </div>
+
+                            {finishedCourse.length > 0 ?
+                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                    <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
+                                        {
+                                            finishedCourseShow.map((tr) => {
+                                                return (
+                                                    <TrainingCard key={tr.id}
+                                                        id={tr.id}
+                                                        name={tr.name}
+                                                        photoURL={tr.photoURL}
+                                                        description={tr.description}
+                                                        creationDate={tr.startDate}
+                                                        eventDate={tr.endDate}
+                                                        employees={tr.numEmployees}
+                                                    />
+                                                )
+                                            })
+
+                                        }
+
+                                    </div>
+
+                                    <div>
+                                        <div>
+                                            <Pagination
+                                                page={pageF}
+                                                totalPages={totalPagesF}
+                                                handlePagination={setPageF}
+                                                setPosition={setPositionF}
+                                                position={positionF}
+                                                mostrar={mostrar}
+                                            />
+                                        </div>
+                                    </div>
+
+                                </div>
+                                :
+                                <div>
+                                    <h6 style={{ display: "flex", justifyContent: "center" }}>
+                                        No hay más cursos finalizados
+                                    </h6>
+                                </div>
+                            }
+
+
+                        </div>
+
+                    </div>
+
+                    :
+
+                    <div>
+
+                        <div>
+                            <div>
+                                <h5>
+                                    Curso Empresa creadas
+                                </h5>
+                            </div>
+
+                            {trainingFilter.length > 0 ?
+                                <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
+                                    {
+                                        trainingFilter.map((tr) => {
+                                            return (
+                                                <TrainingCard key={tr.id}
+                                                    id={tr.id}
+                                                    name={tr.name}
+                                                    photoURL={tr.photoURL}
+                                                    description={tr.description}
+                                                    creationDate={tr.startDate}
+                                                    eventDate={tr.endDate}
+                                                    employees={tr.numEmployees}
+                                                />
+
+                                            )
+                                        })
+                                    }
+                                </div>
+                                :
+                                <div>
+                                    <h6 style={{ display: "flex", justifyContent: "center" }}>
+                                        No hay cursos creados para la búsqueda realizada
+                                    </h6>
+                                </div>
+                            }
+
+                        </div>
+
+
+                    </div>
+
+                }
+
 
                 {
-                    trainingFilter.length === 0 && <>
+                    datos.length === 0 && <>
                         <div className='row align-items-stretch g-3 py-3'>
                             <div className='col'>
                                 <div className='card'>
@@ -417,7 +700,7 @@ const Training = () => {
                         </div>
                     </>
                 }
-                
+
                 {/* CREATE TRAINING MODAL */}
                 <div className="modal fade" id="createTrainingModal" aria-hidden="true" aria-labelledby="createTrainingModal" tabIndex={-1}>
                     <div className="modal-dialog modal-dialog-centered">
