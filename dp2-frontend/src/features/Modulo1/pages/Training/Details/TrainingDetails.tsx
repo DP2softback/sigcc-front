@@ -210,6 +210,7 @@ const TrainingDetails = () => {
                                                 codigo={employee.code}
                                                 boton1={botonEmployee}
                                                 boton1Color={"#B02A37"}
+                                                option={{}}
                                             />
                                         ))}
                                         {(employeesToShow.length != 3) &&
