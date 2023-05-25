@@ -102,7 +102,7 @@ class Pagination extends Component<Props>
                             <button
                                 onClick={() => this.props.handlePagination(this.props.page)}
                                 type="button"
-                                className="pageItem sides"
+                                className="pageItem active"
                             >
                                 {this.props.page}
                             </button>
