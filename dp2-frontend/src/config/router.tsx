@@ -38,6 +38,14 @@ const M1TrainingAssignment = Loader(
   lazy(() => import('@features/Modulo1/pages/Training/Assignment'))
 );
 
+const ConfigSelectionProcess = Loader(
+  lazy(() => import('@features/Modulo4/pages/ConfigSelectionProcess'))
+);
+
+const ConfigOfertaLaboral = Loader(
+  lazy(() => import('@features/Modulo4/pages/ConfigOfertaLaboral'))
+);
+
 const EvaluacionContinuaIndex = Loader(
   lazy(() => import('@features/Modulo3/screens/EvaluacionContinua/Index'))
 );
