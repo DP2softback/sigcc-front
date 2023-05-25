@@ -18,12 +18,12 @@ const svgImageReferencial = (
 const rutaImageReferencial =
     "./src/features/Modulo4/components/PhotoCard/cardImage.svg";
 
-const ImageCard = ({ imageSrc = logo, width, height }) => {
+const ImageCard = ({ imageSrc, width, height }) => {
     return (
         <Card style={{ width: `${width}px`, height: `${height}px` }}>
             <Card.Img
                 variant="top"
-                src={imageSrc}
+                src={imageSrc || logo}
                 style={{ objectFit: "cover", width: "100%", height: "100%" }}
             />
         </Card>

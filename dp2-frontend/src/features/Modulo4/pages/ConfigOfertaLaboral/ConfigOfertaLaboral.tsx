@@ -492,7 +492,7 @@ function ConfigOfertaLaboral(props: any) {
                         style={{
                             border: "1px solid #ddd",
                             borderRadius: "4px",
-                            maxHeight: "340px",
+                            maxHeight: "300px",
                             overflowY: "auto",
                         }}
                     >
