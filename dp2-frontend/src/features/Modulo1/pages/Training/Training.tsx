@@ -43,47 +43,7 @@ type TrainingObj = {
     type: string;
     capacity: number;
     location: string;
-    //topics: string; //FALTO CONSIDERAR PERO COMO SE TRAERA O LLEVARA A LA BD?
 }
-
-// const datos: TrainingObj[] = [
-//     {
-//         "id": 1,
-//         "name": "Seguridad de Información",
-//         "description": "Lorem ipsum",
-//         "startDate": "2023-05-11",
-//         "endDate": "2023-05-11",
-//         "numEmployees": 10,
-//         "type": "Presencial"
-//     },
-//     {
-//         "id": 2,
-//         "name": "ABC",
-//         "description": "Lorem ipsum",
-//         "startDate": "2023-05-11",
-//         "endDate": "2023-05-11",
-//         "numEmployees": 15,
-//         "type": "Presencial"
-//     },
-//     {
-//         "id": 3,
-//         "name": "ABC",
-//         "description": "Lorem ipsum",
-//         "startDate": "2023-05-11",
-//         "endDate": "2023-05-11",
-//         "numEmployees": 15,
-//         "type": "Presencial"
-//     },
-//     {
-//         "id": 4,
-//         "name": "ABC",
-//         "description": "Lorem ipsum",
-//         "startDate": "2023-05-11",
-//         "endDate": "2023-05-11",
-//         "numEmployees": 15,
-//         "type": "Presencial"
-//     },
-// ]
 
 const datos: TrainingObj[] = [
     {
@@ -334,18 +294,12 @@ const Training = () => {
     const [positionFi, setPositionFi] = useState(0);
     const filterCourseShow = trainingFilter.slice(positionFi, positionFi + mostrarF);
 
-
-
     const navigate = useNavigate();
 
     /* TRAINING DETAIL INPUTS */
     const refTrName = useRef<HTMLInputElement>(null);
     const refTrDescription = useRef<HTMLTextAreaElement>(null);
-    const refTrLocation = useRef<HTMLInputElement>(null);
-    const refTrTopics = useRef<HTMLTextAreaElement>(null);
     const refTrTypes = useRef<HTMLSelectElement>(null);
-    const refTrDate = useRef<HTMLInputElement>(null);
-    const refTrCapacity = useRef<HTMLInputElement>(null);
     /* TRAINING DETAIL INPUTS */
 
     /* TRAINING FILTERS */
@@ -397,18 +351,17 @@ const Training = () => {
         const data = {
             nombre: refTrName.current?.value,
             descripcion: refTrDescription.current?.value,
-            ubicacion: refTrLocation.current?.value,
-            fecha: refTrDate.current?.value,
             tipo: refTrTypes.current?.value,
-            capacidad: refTrCapacity.current?.value,
-            temas: refTrTopics.current?.value
         }
 
         console.log(data)
 
+        /* RUTA HARDCODEADA*/
+        navigate(`/modulo1/cursoempresa/creacion/1`);
+
         axiosInt.post('RUTA API', data)
             .then(function (response) {
-                //navigate(`/modulo1/capacitacion/detalle/${response.data.id}`);
+                //navigate(`/modulo1/cursoempresa/creacion/${response.data.id}`);
             })
             .catch(function (error) {
                 console.log(error);
@@ -431,7 +384,7 @@ const Training = () => {
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/capacitacion'>
+            <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
                 <div className='row mt-3'>
                     <div className='col'>
                         <h1 className='screenTitle'>Curso Empresa</h1>
@@ -441,7 +394,7 @@ const Training = () => {
                         {/* Button trigger modal */}
                         <button type='button' className='btn' style={{ backgroundColor: "rgb(8, 66, 152)", color: "white" }} data-bs-target='#createTrainingModal' data-bs-toggle='modal'>
                             <div style={{ display: "flex", alignItems: "center" }}>
-                                <span className='me-3'>Crear capacitación</span>
+                                <span className='me-3'>Crear curso</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
@@ -452,7 +405,7 @@ const Training = () => {
                 </div>
                 <div className='row' style={{ paddingBottom: "32px" }}>
                     <div className='col-5'>
-                        <input className='form-control' type='text' placeholder='Buscar capacitaciones' onChange={handleFilter} />
+                        <input className='form-control' type='text' placeholder='Buscar curso' onChange={handleFilter} />
                     </div>
                     <div className='col-2'>
                         <select className="form-select" aria-label=".form-select-sm example" onChange={handleChangeType}>
@@ -723,7 +676,7 @@ const Training = () => {
                                     <div className='card-body'>
                                         <div className='vertical-align-parent' style={{ height: '10rem' }}>
                                             <div className='vertical-align-child'>
-                                                <h5 className='opacity-50 text-center'>Crea una capacitación para empezar</h5>
+                                                <h5 className='opacity-50 text-center'>Crea un curso para empezar</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -738,56 +691,34 @@ const Training = () => {
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h1 className="modal-title fs-5" id="createTrainingModal">Crear nueva capacitación</h1>
+                                <h1 className="modal-title fs-5" id="createTrainingModal">Crear nuevo curso</h1>
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
+                                <div className="mb-3">
+                                    <label className="form-label">Nombre</label>
+                                    <input ref={refTrName} type="text" className="form-control" />
+                                </div>
                                 <div className='row mb-3'>
                                     <div className='col' style={{ flex: '0 0 8rem' }}>
                                         <PictureUpload />
                                     </div>
                                     <div className='col'>
                                         <div className="mb-3">
-                                            <label className="form-label">Nombre</label>
-                                            <input ref={refTrName} type="text" className="form-control" />
-                                        </div>
-                                        <div>
                                             <label className="form-label">Descripción</label>
                                             <textarea ref={refTrDescription} className="form-control" />
                                         </div>
-                                    </div>
-                                </div>
-                                <div className='row mb-3 border-top pt-3 mt-3'>
-                                    <div className='col'>
-                                        <label className="form-label">Fecha de la capacitación</label>
-                                        <input className='form-control' type='date' id='start_date_creation' ref={refTrDate} /*onChange={handleChangeDateTraining}*/ />
-                                    </div>
-                                    <div className='col'>
-                                        <label className="form-label">Tipo</label>
-                                        <select className="form-select" aria-label=".form-select-sm example" ref={refTrTypes}>
-                                            <option hidden>Seleccionar</option>
-                                            {typeCreation.map((t) => {
-                                                return (
-                                                    <option key={t.id} value={t.type}>{t.type}</option>
-                                                )
-                                            })}
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className='row mb-3'>
-                                    <div className='col'>
-                                        <label className="form-label">Ubicación</label>
-                                        <input ref={refTrLocation} type="text" className="form-control" />
-                                    </div>
-                                    <div className='col'>
-                                        <label className="form-label">Aforo máximo</label>
-                                        <input type="number" className="form-control" ref={refTrCapacity} min={'0'} />
-                                    </div>
-                                </div>
-                                <div className='row mb-3'>
-                                    <div>
-                                        <label className="form-label">Temas de la capacitación</label>
-                                        <textarea ref={refTrTopics} className="form-control" />
+                                        <div>
+                                            <label className="form-label">Tipo</label>
+                                            <select className="form-select" ref={refTrTypes}>
+                                                <option hidden>Seleccionar</option>
+                                                {typeCreation.map((t) => {
+                                                    return (
+                                                        <option key={t.id} value={t.type}>{t.type}</option>
+                                                    )
+                                                })}
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
