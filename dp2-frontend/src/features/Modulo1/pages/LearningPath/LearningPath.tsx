@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './learning-path.css';
+import '../../content/common.css';
 import axiosInt from '@config/axios';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import Sidebar from '@features/Modulo1/components/Sidebar';
