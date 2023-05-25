@@ -9,6 +9,7 @@ import { Form, InputGroup, Button } from 'react-bootstrap';
 import Employee from '@features/Modulo3/components/Cards/Employee/Employee';
 import employees from '@features/Modulo3/jsons/Employees';
 import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
+import Linechart from '@features/Modulo3/components/Charts/Linechart/Linechart';
 
 const examplePhoto = 'https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg?b=1&s=170667a&w=0&k=20&c=0aBawAGIMPymGUppOgw1HmV8MNXB1536B3sX_PP9_SQ='
 
@@ -79,7 +80,7 @@ const Index = () => {
 
   const chart = (
     <div className='col-md-8 mb-32px'>
-      <PieChart
+      {/* <PieChart
         title={"Evaluaciones continuas"}
         labels={["Red", "Blue", "Yellow"]}
         datasets={[
@@ -90,7 +91,17 @@ const Index = () => {
             hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
           },
         ]}
-      />
+      /> */}
+      <Linechart
+        colorsLine={[ 'rgba(251,227,142,0.7)', 'rgba(154,137,255,0.7)','rgba(254,208,238,0.7)','rgba(208,232,255,0.7)','rgba(169,244,208,0.7)']}
+        labelsX={['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio']}
+        dataInfoprops={[{descripcion : 'Precisión y exactitud en el trabajo realizado', values: [3, 2, 2, 1, 5, 5] },
+        {descripcion : 'Cumplimiento de los estándares de calidad', values: [1, 3, 2, 2, 3, 5] }, 
+        {descripcion : 'Trabajo completo y bien organizado', values: [4, 1, 3, 5, 3, 4] }, 
+        {descripcion : 'Identificación y corrección de errores y problemas', values: [2, 5, 1, 2, 3, 4] }, 
+        {descripcion : 'Cumplimiento de los plazos establecidos', values: [5, 3, 4, 3, 2, 5] }
+        ]}
+      ></Linechart>
     </div>
   );
 
