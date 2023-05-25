@@ -1,6 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
+import { CONTINUOS_EVALUATION_HISTORY } from '@config/paths';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons'
 import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
@@ -10,6 +11,8 @@ import TableHistoryContinua from '@features/Modulo3/components/Tables/TableHisto
 import registros from '@features/Modulo3/jsons/HistoryContinua';
 
 const History = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const employeeId = urlParams.get('id');
 
   const filters = (
     <Form>
@@ -70,6 +73,7 @@ const History = () => {
       <Layout
         title={'Evaluación continua - Angela Quispe Ramírez'}
         body={body}
+        route={CONTINUOS_EVALUATION_HISTORY}
         subtitle='Evaluaciones continuas de Angela Quispe Ramírez.'
       />
     </div>

@@ -1,13 +1,15 @@
 import './Content.css';
 import Sidebar from '@components/Sidebar';
-import sidebarItems from '../../../utils/sidebarItems'
+import sidebarItems from '@utils/sidebarItems';
+
 type LayoutProps = {
   title: string,
   body: any,
+  route: string,
   subtitle?: string
 }
 
-const Layout = ({title, body, subtitle} : LayoutProps) => {
+const Layout = ({title, body, subtitle, route} : LayoutProps) => {
   const header = (
     <div className='header'>
       <div className='screenTitle'>{title}</div>
@@ -16,11 +18,11 @@ const Layout = ({title, body, subtitle} : LayoutProps) => {
   )
 
   return (
-    <Sidebar items={sidebarItems} active='/skillManagement/evaluationTemplate/edit'>
-    <div className='content'>
-      {header}
-      {body}
-    </div>
+    <Sidebar items={sidebarItems} active={route}>
+      <div className='content'>
+        {header}
+        {body}
+      </div>
     </Sidebar>
 
   );
