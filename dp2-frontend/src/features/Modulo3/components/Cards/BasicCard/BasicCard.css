@@ -2,30 +2,31 @@
   background-color: white;
   border-radius: 4px;
   overflow: hidden;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  font-family: 'Roboto';
+  height: 100%;
 }
 
 .basicCard-header{
-  padding: 18px 18px 0px 20px;
+  padding: 20px 20px 0px 20px;
 }
 
 .basicCard-headerLine{
   border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-  padding-bottom: 18px;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: row;
 }
 
 .basicCard-imageContainer{
-  width: 80px;
-  height: 80px;
-  margin-right: 14px;
+  width: 70px;
+  height: 70px;
+  margin-right: 20px;
   overflow: hidden;
 }
 
 .basicCard-image{
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   object-fit: cover;
   overflow: hidden;
 }
@@ -48,7 +49,7 @@
 }
 
 .basicCard-body{
-  padding: 0px 20px 30px 20px;
+  padding: 0px 20px 20px 20px;
   display: flex;
   flex-direction: column;
 }
@@ -62,7 +63,7 @@
 }
 
 .basicCard-icon{
-  font-size: 20px;
+  font-size: 18px;
   margin-right: 20px;
 }
 
@@ -82,7 +83,7 @@
 }
 
 .basicCard-badge{
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   padding: 4.2px 7.8px;
   margin-right: 10px;
@@ -93,7 +94,7 @@
 .basicCard-promotion{
   display: flex;
   flex-direction: row;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .basicCard-promotionIcon{
@@ -113,22 +114,4 @@
 
 .basicCard-promtionIndicator{
   width: 28px;
-}
-
-.basicCard-footer-2b{
-  padding: 0px 20px 20px 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.basicCard-footer-1b{
-  padding: 0px 20px 20px 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-}
-
-.basicCard-dots{
-  transform: rotate(90deg);
 }
