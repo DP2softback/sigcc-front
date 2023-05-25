@@ -30,6 +30,10 @@ const M1ListTraining = Loader(
   lazy(() => import('@features/Modulo1/pages/Training'))
 );
 
+const M1TrainingCreate = Loader(
+  lazy(() => import('@features/Modulo1/pages/Training/Create'))
+);
+
 const M1TrainingDetails = Loader(
   lazy(() => import('@features/Modulo1/pages/Training/Details'))
 );
@@ -119,11 +123,15 @@ const routes: RouteObject[] = [
         ]
       },
       {
-        path: 'capacitacion',
+        path: 'cursoempresa',
         children: [
           {
             path: '',
             element: <M1ListTraining />
+          },
+          {
+            path: 'creacion/:trainingID',
+            element: <M1TrainingCreate />
           },
           {
             path: 'detalle/:trainingID',
