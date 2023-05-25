@@ -1,6 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionDeDesempenho.css';
+import { PERFORMANCE_EVALUATION_INDEX } from '@config/paths';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons'
 import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
@@ -53,18 +54,23 @@ const History = () => {
     <>
     {table}
     {chart}
-
+    <div className="text-end mt-32 mb-4">
+      <Button >
+        Agregar nueva evaluación
+      </Button>
+    </div>
     </>
   )
 
   const body = (
-    <Section title={'Trabajadores'} content={content} filters={filters}/>
+    <Section title={'Evaluaciones'} content={content} filters={filters}/>
   );
   return (
     <div>
       <Layout
         title={'Evaluación continua - Angela Quispe Ramírez'}
         body={body}
+        route={PERFORMANCE_EVALUATION_INDEX}
         subtitle='Evaluaciones continuas de Angela Quispe Ramírez.'
       />
     </div>
