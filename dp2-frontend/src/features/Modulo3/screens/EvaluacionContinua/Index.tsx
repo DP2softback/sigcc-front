@@ -36,7 +36,7 @@ const Index = () => {
         return (
           <div
             key={employee.id}
-            className="mb-32px"
+            className="mb-32px cursor-pointer"
             onClick={() => {
               navigateTo(CONTINUOS_EVALUATION_HISTORY, {id:1});
             }}>
@@ -60,7 +60,7 @@ const Index = () => {
     return (
       <div
         key={employee.id}
-        className="col-md-4 mb-32px"
+        className="col-md-4 mb-32px cursor-pointer"
         onClick={() => {
           navigateTo(CONTINUOS_EVALUATION_HISTORY);
         }}>

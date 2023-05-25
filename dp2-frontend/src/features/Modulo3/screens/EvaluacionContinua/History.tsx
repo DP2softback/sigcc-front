@@ -1,7 +1,8 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
-import { CONTINUOS_EVALUATION_INDEX } from '@config/paths';
+import { CONTINUOS_EVALUATION_CREATE, CONTINUOS_EVALUATION_INDEX } from '@config/paths';
+import { navigateTo } from '@features/Modulo3/utils/functions.jsx';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons'
 import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
@@ -57,7 +58,9 @@ const History = () => {
     {table}
     {chart}
     <div className="text-end mt-32 mb-4">
-      <Button >
+      <Button onClick={() => {
+        navigateTo(CONTINUOS_EVALUATION_CREATE);
+      }}>
         Agregar nueva evaluación
       </Button>
     </div>

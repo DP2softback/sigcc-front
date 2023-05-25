@@ -29,7 +29,7 @@ const Index = () => {
   );
 
   const firstTwoEmployees = (
-    <div className='ec-indexFirstTwoEmployees col-md-4'>
+    <div className='ec-indexFirstTwoEmployees col-md-4 cursor-pointer'>
       {employees.slice(0, 2).map((employee) => {
         return (
           <div key={employee.id} className='mb-32px'>
@@ -51,7 +51,7 @@ const Index = () => {
 
   const restEmployees = employees.slice(2).map((employee) => {
     return (
-      <div key={employee.id} className='col-md-4 mb-32px'>
+      <div key={employee.id} className='col-md-4 mb-32px cursor-pointer'>
         <Employee
           id={employee.id}
           name={employee.name}
