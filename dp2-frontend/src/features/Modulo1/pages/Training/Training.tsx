@@ -312,6 +312,7 @@ const Training = () => {
     const [typeTraining, setTypeTraining] = useState("Todos")
     var filtered;
     var mostrar = 6;
+    var mostrarF = 9;
 
     const [pageF, setPageF] = useState(1)
     const totalPagesF = Math.ceil(finishedCourse.length / mostrar);
@@ -327,6 +328,12 @@ const Training = () => {
     const totalPagesU = Math.ceil(upcomingCourse.length / mostrar);
     const [positionU, setPositionU] = useState(0);
     const upcomingCourseShow = upcomingCourse.slice(positionU, positionU + mostrar);
+
+    const [pageFi, setPageFi] = useState(1)
+    const totalPagesFi = Math.ceil(trainingFilter.length / mostrarF);
+    const [positionFi, setPositionFi] = useState(0);
+    const filterCourseShow = trainingFilter.slice(positionFi, positionFi + mostrarF);
+
 
 
     const navigate = useNavigate();
@@ -496,20 +503,22 @@ const Training = () => {
                                                 )
                                             })
                                         }
-                                    </div>
+                                    </div>       
 
-                                    <div>
+                                    {upcomingCourse.length >= mostrar &&
                                         <div>
-                                            <Pagination
-                                                page={pageU}
-                                                totalPages={totalPagesU}
-                                                handlePagination={setPageU}
-                                                setPosition={setPositionU}
-                                                position={positionU}
-                                                mostrar={mostrar}
-                                            />
+                                            <div>
+                                                <Pagination
+                                                    page={pageU}
+                                                    totalPages={totalPagesU}
+                                                    handlePagination={setPageU}
+                                                    setPosition={setPositionU}
+                                                    position={positionU}
+                                                    mostrar={mostrar}
+                                                />
+                                            </div>
                                         </div>
-                                    </div>    
+                                    }
 
                                 </div>
                                 :
@@ -550,18 +559,20 @@ const Training = () => {
                                         }
                                     </div>
 
-                                    <div>
+                                    {currentCourse.length >= mostrar &&
                                         <div>
-                                            <Pagination
-                                                page={pageC}
-                                                totalPages={totalPagesC}
-                                                handlePagination={setPageC}
-                                                setPosition={setPositionC}
-                                                position={positionC}
-                                                mostrar={mostrar}
-                                            />
+                                            <div>
+                                                <Pagination
+                                                    page={pageC}
+                                                    totalPages={totalPagesC}
+                                                    handlePagination={setPageC}
+                                                    setPosition={setPositionC}
+                                                    position={positionC}
+                                                    mostrar={mostrar}
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
+                                    }
 
                                 </div>
                                 :
@@ -610,18 +621,20 @@ const Training = () => {
 
                                     </div>
 
-                                    <div>
+                                    {finishedCourse.length >= mostrar &&
                                         <div>
-                                            <Pagination
-                                                page={pageF}
-                                                totalPages={totalPagesF}
-                                                handlePagination={setPageF}
-                                                setPosition={setPositionF}
-                                                position={positionF}
-                                                mostrar={mostrar}
-                                            />
+                                            <div>
+                                                <Pagination
+                                                    page={pageF}
+                                                    totalPages={totalPagesF}
+                                                    handlePagination={setPageF}
+                                                    setPosition={setPositionF}
+                                                    position={positionF}
+                                                    mostrar={mostrar}
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
+                                    }
 
                                 </div>
                                 :
@@ -649,23 +662,42 @@ const Training = () => {
                             </div>
 
                             {trainingFilter.length > 0 ?
-                                <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
-                                    {
-                                        trainingFilter.map((tr) => {
-                                            return (
-                                                <TrainingCard key={tr.id}
-                                                    id={tr.id}
-                                                    name={tr.name}
-                                                    photoURL={tr.photoURL}
-                                                    description={tr.description}
-                                                    creationDate={tr.startDate}
-                                                    eventDate={tr.endDate}
-                                                    employees={tr.numEmployees}
-                                                />
+                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                    <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
+                                        {
+                                            filterCourseShow.map((tr) => {
+                                                return (
+                                                    <TrainingCard key={tr.id}
+                                                        id={tr.id}
+                                                        name={tr.name}
+                                                        photoURL={tr.photoURL}
+                                                        description={tr.description}
+                                                        creationDate={tr.startDate}
+                                                        eventDate={tr.endDate}
+                                                        employees={tr.numEmployees}
+                                                    />
 
-                                            )
-                                        })
+                                                )
+                                            })
+                                        }
+                                    </div>
+
+                                    {trainingFilter.length >= mostrarF &&
+                                        <div>
+                                            <div>
+                                                <Pagination
+                                                    page={pageFi}
+                                                    totalPages={totalPagesFi}
+                                                    handlePagination={setPageFi}
+                                                    setPosition={setPositionFi}
+                                                    position={positionFi}
+                                                    mostrar={mostrarF}
+                                                />
+                                            </div>
+                                        </div>
                                     }
+
+
                                 </div>
                                 :
                                 <div>
