@@ -1,0 +1,38 @@
+ .ec-indexFilters{
+    display: flex;
+    flex-direction: row;
+    width: "100%";
+    gap: 16px;
+  }
+  
+  .ec-indexFilterDate{
+    /* margin-left: 20px; */
+    margin-top: 20px;
+    width: 140px;
+    height: 38px;
+  }
+  
+  .ec-indexButton{
+    margin-top: 20px;
+    width: 180px;
+    height: 38px;
+  }
+
+  .ec-buttonBuscar{
+    /* width: 96px; */
+    margin-top: 20px;
+    height: 38px;
+  }
+
+  .ec-buttonExportar{
+    /* width: 167px; */
+    margin-top: 20px;
+    /* height: 38px; */
+  }
+
+  .ec-buttonChangeMode{
+    margin-top: 20px;
+    width: 212px;
+    /* height: 38px; */
+  }
+
