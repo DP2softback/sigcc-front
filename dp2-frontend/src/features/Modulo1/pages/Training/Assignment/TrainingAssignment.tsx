@@ -191,12 +191,12 @@ const TrainingAssignment = () => {
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/capacitacion'>
+            <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
                 <div className='container row mt-3'>
 
                     <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
                         <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
-                            <Link to={`/modulo1/capacitacion/detalle/${training.id}`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
+                            <Link to={`/modulo1/cursoempresa/detalle/${training.id}`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
                         </div>
 
                         <div className='col'>
