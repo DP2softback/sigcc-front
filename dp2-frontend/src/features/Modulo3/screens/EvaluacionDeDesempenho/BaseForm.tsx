@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Button } from 'react-bootstrap';
 import { useState } from 'react';
+import { PERFORMANCE_EVALUATION_INDEX } from '@config/paths';
 
 type BaseFormProps = {
   employee: any;
@@ -122,6 +123,7 @@ const BaseForm = ({employee, categories, projects, form, isReadOnly} : BaseFormP
       <Layout
         title={`Evaluación continua - ${employee.FullName}`}
         body={body}
+        route={PERFORMANCE_EVALUATION_INDEX}
         subtitle='Evaluaciones continuas de trabajadores de los que te encuentras a cargo.'
       />
     </div>

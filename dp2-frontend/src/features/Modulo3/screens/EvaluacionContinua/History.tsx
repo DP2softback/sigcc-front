@@ -1,7 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
-import { CONTINUOS_EVALUATION_HISTORY } from '@config/paths';
+import { CONTINUOS_EVALUATION_INDEX } from '@config/paths';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons'
 import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
@@ -73,7 +73,7 @@ const History = () => {
       <Layout
         title={'Evaluación continua - Angela Quispe Ramírez'}
         body={body}
-        route={CONTINUOS_EVALUATION_HISTORY}
+        route={CONTINUOS_EVALUATION_INDEX}
         subtitle='Evaluaciones continuas de Angela Quispe Ramírez.'
       />
     </div>
