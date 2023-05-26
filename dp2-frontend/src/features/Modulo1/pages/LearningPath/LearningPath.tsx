@@ -7,6 +7,7 @@ import Sidebar from '@components/Sidebar';
 import sidebarItems from '../../utils/sidebarItems';
 import PictureUpload from '@features/Modulo1/components/PictureUpload';
 import Rate from '@features/Modulo1/components/Rate';
+import { ThreeDots } from 'react-bootstrap-icons'
 
 
 function LearningPath (props: any)
@@ -148,10 +149,17 @@ function LearningPath (props: any)
                                 return <Fragment key={i}>
                                     <div className='col'>
                                         <div className="card">
-                                            <img src={'https://i.pcmag.com/imagery/reviews/05LfIOxtkYAZ4BIOXwOnZJs-24.fit_scale.size_760x427.v1626447626.png'} className="card-img-top" alt="..." />
+                                            <div className="card-header justify-content-between d-flex px-2">
+                                                <img className="rounded-circle border lp-thumb me-3" src={'https://i.pcmag.com/imagery/reviews/05LfIOxtkYAZ4BIOXwOnZJs-24.fit_scale.size_760x427.v1626447626.png'} alt="..." />
+                                                <div className="align-self-center">
+                                                    <h6 className="card-title">{lp.nombre}</h6>
+                                                </div>
+                                                <button className='btn btn-link'>
+                                                    <ThreeDots className='basicCard-dots' />
+                                                </button>
+                                            </div>
                                             <div className="card-body">
-                                                <h6 className="card-title">{lp.nombre}</h6>
-                                                <p className="card-text text-truncate line-clamp-3 opacity-50"><small>{lp.descripcion}</small></p>
+                                                <p className="card-text text-truncate text-nowrap line-clamp-3 opacity-50"><small>{lp.descripcion}</small></p>
                                                 <div className='d-flex justify-content-between'>
                                                     <div>
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-calendar-event me-3" viewBox="0 0 16 16">
@@ -281,7 +289,7 @@ function LearningPath (props: any)
                                             <div className="form-check">
                                                 <input className="form-check-input" type="radio" name="courseConfig" id="trainingRadio" onClick={handleCourseType} />
                                                 <label className="form-check-label" htmlFor="trainingRadio">
-                                                    Capacitaciones
+                                                    Cursos de la empresa
                                                 </label>
                                             </div>
                                             <div className="form-check">
