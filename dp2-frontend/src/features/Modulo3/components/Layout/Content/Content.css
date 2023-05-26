@@ -1,0 +1,17 @@
+.content{
+  padding-left: 198px;
+  padding-right: 146px;
+}
+
+.screenTitle{
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.header{
+  padding: 30px 0px 50px 0px;
+}
+
+.subtitle{
+  opacity: 50%;
+}
