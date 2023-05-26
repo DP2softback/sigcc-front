@@ -7,7 +7,11 @@ import axios from 'axios';
 const baseUrl = 'http://localhost:8000/api/';
 
 const axiosInt = axios.create({
-  baseURL: baseUrl
+  baseURL: baseUrl,
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Token a3a137a49d06ec183aaa0bd93cabe5e5d3373257',
+  }
 });
 
 // axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
