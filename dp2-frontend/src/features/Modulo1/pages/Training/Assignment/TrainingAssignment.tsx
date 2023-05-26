@@ -260,8 +260,19 @@ const TrainingAssignment = () => {
                                 <div>
                                     {addedEmployees.length ?
                                         <>
-                                            <div style={{backgroundColor: "#E9ECEF"}}>
-                                                <h4>HOLA</h4>
+                                            <div style={{backgroundColor: "#E9ECEF", paddingLeft: "1rem"}}>
+
+                                                <h4>Empleados asignados</h4>
+
+                                                <div>
+                                                    {addedEmployees.map((employee) => (                                                        
+                                                        <div key={employee[0].id}>                                                            
+                                                            <h4 style={{fontSize: "12px"}}>{employee[0].name}</h4>
+                                                        </div>
+                                                    ))
+                                                        
+                                                    }
+                                                </div>
                                             </div>
                                         </>
                                     :
