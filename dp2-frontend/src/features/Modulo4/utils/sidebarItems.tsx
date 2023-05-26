@@ -1,6 +1,6 @@
 const sidebarItems = [
     {
-        to: "/modulo1/configurar-oferta-laboral",
+        to: "/modulo4/configurar-oferta-laboral",
         label: "Ruta de aprendizaje",
         icon: (
             <svg
@@ -17,7 +17,7 @@ const sidebarItems = [
         ),
     },
     {
-        to: "/modulo1/configurar-proceso-seleccion",
+        to: "/modulo4/configurar-proceso-seleccion",
         label: "Capacitación",
         icon: (
             <svg
