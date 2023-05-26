@@ -94,6 +94,10 @@ const AscensosCandidatos = Loader(
 
 const routes: RouteObject[] = [
   {
+    path: '/',
+   element: <Modulo1LP />
+  },
+  {
     path: 'modulo1',
     children: [
       {

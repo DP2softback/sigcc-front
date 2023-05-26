@@ -32,7 +32,7 @@ const Training = ({id, name, photoURL, description, creationDate, eventDate, emp
     }    
   ]
 
-  const ruta = `/modulo1/capacitacion/detalle/${id}`
+  const ruta = `/modulo1/cursoempresa/detalle/${id}`
 
   return (
     <BasicCard

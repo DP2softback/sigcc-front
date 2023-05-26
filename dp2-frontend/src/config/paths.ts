@@ -6,6 +6,7 @@ export const LIST_SOMETHING = '/something/list';
 
 /* Gestión de Competencias y Ascensos */
 
+export const CONTINUOS_EVALUATION = '/skillManagement/continuousEvaluation';
 export const CONTINUOS_EVALUATION_INDEX = '/skillManagement/continuousEvaluation/index';
 export const CONTINUOS_EVALUATION_HISTORY = '/skillManagement/continuousEvaluation/history';
 export const CONTINUOS_EVALUATION_CREATE = '/skillManagement/continuousEvaluation/create';
