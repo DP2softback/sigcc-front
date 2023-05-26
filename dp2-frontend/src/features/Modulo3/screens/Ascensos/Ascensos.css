@@ -1,0 +1,35 @@
+.asc-firstColum{
+    display: flex;
+}
+
+.asc-candidates{
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+}
+
+.asc-candidates::-webkit-scrollbar{
+    /* display: none; */
+    height: 8px;
+    background-color: rgb(201, 200, 200);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:horizontal{
+    background: #0a58ca;
+    border-radius: 10px;
+}
+
+.asc-candidates-2{
+    margin-left: 10px;
+    overflow-x: hidden;
+}
+
+.asc-content{
+    display: flex;
+    flex-direction: row;
+}
+
+.asc-m10px{
+    margin-right: 10px;
+}

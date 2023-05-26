@@ -1,0 +1,49 @@
+.matrixHeader{
+  padding-left: 240px;
+  padding-right: 40px;
+  height: 54px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: white;
+}
+
+.matrixWhiteReadOnly{
+  background-color: #E9ECEF !important;
+}
+
+.matrixBlueReadOnly{
+  background-color: #E7F1FF !important;
+}
+
+.matrixHeaderItem{
+  flex: 1;
+  text-align: center;
+}
+
+.matrixRow{
+  padding: 0px 40px 0px 16px;
+  height: 54px;
+  display: flex;
+  flex-direction: row;
+}
+
+.matrixRowBGBlue{
+  background-color: #E7F1FF;
+}
+
+.matrixRowBGWhite{
+  background-color: white;
+}
+
+.matrixRowName{
+  width: 224px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.matrixRowRadio{
+  flex: 1;
+  margin-top: auto;
+  margin-bottom: auto;
+}
