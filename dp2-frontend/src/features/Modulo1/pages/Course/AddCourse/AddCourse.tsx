@@ -43,12 +43,12 @@ function AddCourse (props: any)
         setLoadingDetailsModal(true);
         setBasicDetailsModal(course);
         axiosInt.post('capacitaciones/udemy/detail/', {
-            url: course.url,
+            udemy_id: course.id,
         })
             .then(function (response)
             {
                 setLoadingDetailsModal(false);
-                setDetailsModalData(response.data);
+                setDetailsModalData(response.data.detail);
             })
             .catch(function (error)
             {
@@ -213,24 +213,16 @@ function AddCourse (props: any)
                             <h5>Contenido del curso</h5>
                             <div className="card">
                                 <div className="card-body">
+                                    <ul className='px-3'>
                                     {
                                         !loadingDetailsModal && detailsModalData.map((chapter: any, i: number) =>
                                         {
                                             return <Fragment key={`chapter-${i}`}>
-                                                <h6>{chapter.title}</h6>
-                                                {
-                                                    chapter.topics.map((topic: any, j: number) =>
-                                                    {
-                                                        return <Fragment key={`topic-${i}-${j}`}>
-                                                            <ul>
-                                                                <li><small>{topic}</small></li>
-                                                            </ul>
-                                                        </Fragment>
-                                                    })
-                                                }
+                                                <li>{chapter}</li>
                                             </Fragment>
                                         })
                                     }
+                                    </ul>
                                     {
                                         loadingDetailsModal && <>
                                             <div className='vertical-align-parent' style={{ height: '10rem' }}>
