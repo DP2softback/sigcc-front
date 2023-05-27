@@ -70,6 +70,10 @@ const EvaluacionDeDesempenhoDetail = Loader(
   lazy(() => import('@features/Modulo3/screens/EvaluacionDeDesempenho/Detail'))
 );
 
+const VisualizacionBrechasEmpleado = Loader(
+  lazy(() => import('@features/Modulo2/Components/VisualizacionBrechasEmpleado/Read'))
+);
+
 const EvaluationTemplateIndex = Loader(
   lazy(() => import('@features/Modulo3/screens/Plantillas/Index'))
 );
@@ -268,6 +272,15 @@ const routes: RouteObject[] = [
             ),
           },
         ],
+      },
+      {
+        path: 'employeesGaps',
+        children: [
+          {
+            path: 'index',
+            element: <VisualizacionBrechasEmpleado/>
+          }
+        ]
       },
       {
         path: 'performanceEvaluation',
