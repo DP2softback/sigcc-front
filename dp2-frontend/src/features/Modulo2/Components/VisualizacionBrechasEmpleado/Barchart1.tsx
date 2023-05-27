@@ -108,7 +108,7 @@ const BarChart1 = () => {
 
     return (
         <div className='chart'>
-            <Bar data={dataBar} options={optionsBar} />
+            <Bar data={dataBar} options={optionsBar} style={{display: 'flex'}} />
         </div>
     )
 }

@@ -1,0 +1,8 @@
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: #E7F1FF;
+ }
+
+ .container-view{
+  padding: 30px 150px 0px;
+ }
