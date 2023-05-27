@@ -108,11 +108,11 @@ const ReporteEvaluacionDesempenho = Loader(
 
 const routes: RouteObject[] = [
   {
-    path: '/',
-   element: <Modulo1LP />
+    path: "/",
+    element: <Modulo1LP />,
   },
   {
-    path: 'modulo1',
+    path: "modulo1",
     children: [
       {
         path: "",
@@ -231,17 +231,17 @@ const routes: RouteObject[] = [
         ],
       },
       {
-        path: 'report',
+        path: "report",
         children: [
           {
-            path: 'continuousEvaluation',
-            element: <ReporteEvaluacionContinua/>
+            path: "continuousEvaluation",
+            element: <ReporteEvaluacionContinua />,
           },
           {
-            path: 'performanceEvaluation',
-            element: <ReporteEvaluacionDesempenho/>
+            path: "performanceEvaluation",
+            element: <ReporteEvaluacionDesempenho />,
           },
-        ]
+        ],
       },
     ],
   },
