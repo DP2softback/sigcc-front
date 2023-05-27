@@ -84,3 +84,7 @@ button.small-button {
 .table-bordered td {
     border: 1px solid #dee2e6;
 }
+
+.custom {
+    width: 200px !important;
+}
