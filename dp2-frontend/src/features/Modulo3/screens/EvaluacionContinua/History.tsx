@@ -53,13 +53,18 @@ const History = () => {
     <>
     {table}
     {chart}
-
+    <div className="text-end mt-32 mb-4">
+      <Button >
+        Agregar nueva evaluación
+      </Button>
+    </div>
     </>
   )
 
   const body = (
-    <Section title={'Trabajadores'} content={content} filters={filters}/>
-  );
+    <Section title={'Evaluaciones'} content={content} filters={filters}/>
+  )
+
   return (
     <div>
       <Layout

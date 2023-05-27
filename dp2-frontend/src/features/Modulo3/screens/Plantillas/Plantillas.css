@@ -1,0 +1,56 @@
+.ec-indexFilters{
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .ec-indexFilterElement{
+    margin-left: 100px;
+  }
+  
+  .ec-indexFirstTwoEmployees{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mb-32px{
+    margin-bottom: 32px;
+  }
+  
+  .ec-createDropdowns{
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .ec-createDropdown{
+    margin-right: 128px;
+  }
+  
+  .mt-32{
+    margin-top: 32px;
+  }
+
+  .accordionPlantilla {
+    &__flow {
+
+        &-flows {
+            margin: 1em 0 !important;
+
+            &-item {
+                margin: 0.75em 0;
+                justify-content: center;
+            }
+            &-name {
+                background: #e9ecef;
+                display:flex;
+                border: 1px solid #ced4da;
+                border-radius: 0 5px 5px 0;
+                width: calc(100% - 150px);
+                justify-content: center;
+                & span {
+                    align-self: center;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+}
