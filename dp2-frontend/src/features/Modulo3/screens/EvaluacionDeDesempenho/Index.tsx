@@ -9,7 +9,7 @@ import { Form, InputGroup, Button } from 'react-bootstrap';
 import Employee from '@features/Modulo3/components/Cards/Employee/Employee';
 import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
 import { useEffect, useState } from 'react';
-import { getPersonasACargo } from '@features/Modulo3/services/continuousEvaluation';
+import { getEmployees } from '@features/Modulo3/services/continuousEvaluation';
 
 const examplePhoto = 'https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg?b=1&s=170667a&w=0&k=20&c=0aBawAGIMPymGUppOgw1HmV8MNXB1536B3sX_PP9_SQ='
 
@@ -18,7 +18,7 @@ const Index = () => {
 
   useEffect(() => {
     (async () => {
-      setEmployees(await getPersonasACargo());
+      setEmployees(await getEmployees(1));
     })();
   }, []);
 
@@ -48,6 +48,7 @@ const Index = () => {
               name={employee.name}
               photoURL={examplePhoto}
               position={employee.position}
+              code={employee.id}
               lastEvaluation={employee.lastEvaluation}
               lastEvaluationUnit={employee.lastEvaluationUnit}
               area={employee.area}
@@ -67,6 +68,7 @@ const Index = () => {
           name={employee.name}
           photoURL={examplePhoto}
           position={employee.position}
+          code={employee.id}
           lastEvaluation={employee.lastEvaluation}
           lastEvaluationUnit={employee.lastEvaluationUnit}
           area={employee.area}
