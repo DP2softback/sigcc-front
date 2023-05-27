@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Form, FormControl, InputGroup, Button, Table, Modal  } from 'react-bootstrap';
+import { Form, FormControl, InputGroup, Button, Table, Modal, Row  } from 'react-bootstrap';
 import AgregarCompetencia from './Create';
+import './Read.css';
 const CompetenciasListar = () => {
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [tipoOrden, setTipoOrden] = useState('ascendente');
@@ -173,58 +174,71 @@ const CompetenciasListar = () => {
       };
 
   return (
-    <div>
+    <div className="pantalla">
+      <div className='titles'>
       <h2>Gestión de Competencias</h2>
       <p className="text-muted">Agrega, edita y desactiva competencias.</p>
+      </div>
+    
 
-      <Form className="mb-3">
-        <InputGroup>
-          <FormControl
-            placeholder="Ingrese palabras clave, código o nombre de las competencias"
-            aria-label="Buscar competencias"
-            aria-describedby="buscar-icono"
-            value={palabrasClave}
-            onChange={(e) => setPalabrasClave(e.target.value)}
-          />
-          <Button variant="outline-secondary" id="buscar-icono" onClick={() => setBusquedaRealizada(true)}>
-            <i className="bi bi-search"></i>
-          </Button>
-        </InputGroup>
+      
+      <Form className="FormComp">
+        <div className= "container-fluid">
+            <div className='row'>
+            <InputGroup className="col basicSearch">
+              <FormControl
+                placeholder="Ingrese palabras clave, código o nombre de las competencias"
+                aria-label="Buscar competencias"
+                aria-describedby="buscar-icono"
+                value={palabrasClave}
+                onChange={(e) => setPalabrasClave(e.target.value)}
+              />
+              <Button variant="outline-secondary" id="buscar-icono" onClick={() => setBusquedaRealizada(true)}>
+                <i className="bi bi-search"></i>
+              </Button>
+            </InputGroup>
 
-        <Form.Group className="mb-3" controlId="filtroTipoCompetencia">
-          <Form.Label>Tipo de competencia</Form.Label>
-          <Form.Control as="select" value={tipoCompetencia} onChange={(e) => setTipoCompetencia(e.target.value)}>
-            <option value="">Todos</option>
-            <option value="Técnico">Técnico</option>
-            <option value="Habilidades blandas">Habilidades blandas</option>
-            <option value="Conocimiento">Conocimiento</option>
-            {/* Agregar más opciones de tipo de competencia aquí */}
-          </Form.Control>
-        </Form.Group>
+            <Form.Group className="col-sm-3" controlId="filtrFoTipoCompetencia">
+              <Form.Label>Tipo de competencia</Form.Label>
+              <Form.Control as="select" value={tipoCompetencia} onChange={(e) => setTipoCompetencia(e.target.value)}>
+                <option value="">Todos</option>
+                <option value="Técnico">Técnico</option>
+                <option value="Habilidades blandas">Habilidades blandas</option>
+                <option value="Conocimiento">Conocimiento</option>
+                {/* Agregar más opciones de tipo de competencia aquí */}
+              </Form.Control>
+            </Form.Group>
+            
 
-        <div className="d-flex justify-content-end">
-          <Button variant="outline-secondary" className="me-2" onClick={limpiarFiltros}>
-            Limpiar Filtros
-          </Button>
-          <Button variant="primary">Buscar</Button>
+            <div className="col-sm-3 botones">
+              <Button variant="outline-secondary" className="me-2" onClick={limpiarFiltros}>
+                Limpiar Filtros
+              </Button>
+              <Button variant="primary">Buscar</Button>
+            </div>
+          </div>
         </div>
       </Form>
+      
+     <div className='container-fluid'>
+      <div className='row descargas'>
+        <div className="col-sm-3 botones">
+          <Button variant="primary" className="me-2">
+            <i className="bi bi-upload"></i> Importar lista
+          </Button>
+          <p className="text-muted">Maximum file size 2MB</p>
+        </div>
 
-      <div className="d-flex align-items-center mb-3">
-        <Button variant="outline-secondary" className="me-2">
-          <i className="bi bi-upload"></i> Importar lista
-        </Button>
-        <p className="text-muted">Maximum file size 2MB</p>
-      </div>
+        <div className="col-sm-3 botones">
+          <Button variant="primary">
+            <i className="bi bi-download"></i> Exportar lista
+          </Button>
+          <p className="text-muted">Maximum file size 2MB</p>
+        </div>
+      
+     
 
-      <div className="d-flex align-items-center mb-3">
-        <Button variant="outline-secondary">
-          <i className="bi bi-download"></i> Exportar lista
-        </Button>
-        <p className="text-muted">Maximum file size 2MB</p>
-      </div>
-
-      <Form.Group className="mb-3" controlId="filtroEstado">
+      <Form.Group className="col-sm-3" controlId="filtroEstado">
         <Form.Label>Estado</Form.Label>
         <Form.Control as="select" value={estado} onChange={(e) => setEstado(e.target.value)}>
           <option value="">Todos</option>
@@ -232,12 +246,19 @@ const CompetenciasListar = () => {
           <option value="Inactivo">Inactivo</option>
         </Form.Control>
       </Form.Group>
+      
+     
 
-      <div className="d-flex justify-content-end mb-3">
+      <div className="col botones">
         <div className="pop-up">
             <Button className="btn btn-primary" variant="primary"  onClick={handleMostrarPopUp}>Agregar Competencia</Button>
         </div>
       </div>
+
+      </div>
+      </div>
+
+      <div className='container-fluid'>
       {mostrarPopUp  && (
         <Modal show={mostrarPopUp} onHide={handleCerrarPopUp}>
             <Modal.Header closeButton>
@@ -249,6 +270,7 @@ const CompetenciasListar = () => {
         </Modal>
       )}
       {renderTablaCompetencias()}
+      </div>
     </div>
   );
 };

@@ -5,11 +5,11 @@ import sidebarItems from '@utils/sidebarItems';
 type LayoutProps = {
   title: string,
   body: any,
-  route: string,
+  route?: string,
   subtitle?: string
 }
 
-const Layout = ({title, body, subtitle, route} : LayoutProps) => {
+const Layout = ({title, body, subtitle, route=''} : LayoutProps) => {
   const header = (
     <div className='header'>
       <div className='screenTitle'>{title}</div>
