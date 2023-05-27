@@ -256,7 +256,11 @@ function ConfigOfertaLaboral(props: any) {
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                     <div className="col-9">
                         <Form.Group as={Row} controlId="validationCustom01">
-                            <Col sm="9">
+                            <Form.Group
+                                xs={10}
+                                as={Col}
+                                controlId="formGridCity"
+                            >
                                 <Form.Label>
                                     Nombre del proceso de seleccion: (*)
                                 </Form.Label>
@@ -270,7 +274,8 @@ function ConfigOfertaLaboral(props: any) {
                                             required
                                             onChange={handleNombreOferta}
                                             rows={3}
-                                            readOnly // Hace que el input sea de solo lectura
+                                            //disabled
+                                            //readOnly // Hace que el input sea de solo lectura
                                             className={
                                                 !isSelectedNombreOfertaValid
                                                     ? "is-invalid"
@@ -289,43 +294,37 @@ function ConfigOfertaLaboral(props: any) {
                                         </Button>
                                     </Col>
                                 </Row>
-                            </Col>
-                            <Col>
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formGridCity">
                                 <Form.Label>Imagen referencial:</Form.Label>
-                                <span></span>
-                                <div className="image-upload">
-                                    <div>
-                                        <PhotoCard
-                                            imageSrc={previewUrl}
-                                            width={100}
-                                            height={80}
-                                        />
-                                    </div>
-                                    <input
-                                        type="file"
-                                        ref={inputRef}
-                                        onChange={handleImageUpload}
-                                        className="d-none"
-                                        accept="image/*"
-                                    />
-                                    <button
-                                        style={{
-                                            width: "8rem",
-                                            height: "2.5rem",
-                                        }}
-                                        onClick={handleUpload}
-                                        className={`btn btn-outline-${
-                                            uploadedFileName
-                                                ? "success"
-                                                : "primary"
-                                        }`}
-                                    >
-                                        {uploadedFileName
-                                            ? uploadedFileName
-                                            : "Subir imagen"}
-                                    </button>
-                                </div>
-                            </Col>
+                                <PhotoCard
+                                    imageSrc={previewUrl}
+                                    width={7}
+                                    height={5}
+                                />
+                                <input
+                                    style={{ width: "100%", maxWidth: "10rem" }}
+                                    type="file"
+                                    ref={inputRef}
+                                    onChange={handleImageUpload}
+                                    className="d-none"
+                                    accept="image/*"
+                                />
+                                <button
+                                    style={{
+                                        width: "8rem",
+                                        height: "2.5rem",
+                                    }}
+                                    onClick={handleUpload}
+                                    className={`btn btn-outline-${
+                                        uploadedFileName ? "success" : "primary"
+                                    }`}
+                                >
+                                    {uploadedFileName
+                                        ? uploadedFileName
+                                        : "Subir imagen"}
+                                </button>
+                            </Form.Group>
                         </Form.Group>
                         <Row>
                             <Form.Group className="mb-3">
