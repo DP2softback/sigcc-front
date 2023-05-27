@@ -11,10 +11,10 @@ import '../training.css';
 
 const data = {
     id: 1,
-    name: "Ejemplo de Creación",
-    photoURL: 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
-    description: "Esto es un ejemplo de creación de un curso empresa",
-    type: "Asincrono"
+    nombre: "Ejemplo de Creación",
+    url_foto: 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
+    descripcion: "Esto es un ejemplo de creación de un curso empresa",
+    tipo: "A"
 }
 
 type Supplier = {
@@ -25,18 +25,22 @@ type Supplier = {
     category: string;
 }
 
-type SessionObj = {
+type TopicObj = {
     id?: number;
-    name: string;
-    description: string;
-    startDate: string;
-    limitDate: string;
-    numEmployees?: number;
-    location: string;
-    urlVideo: string;
-    topics: string[];
+    nombre: string;
 }
 
+type SessionObj = {
+    curso_empresa_id: number;
+    nombre: string;
+    descripcion: string;
+    fecha_inicio: string;
+    fecha_limite?: string;
+    ubicacion?: string;
+    aforo_maximo?: number;
+    url_video?: string;
+    temas: TopicObj[];
+}
 
 const suppliers: Supplier[] = [
     {
@@ -69,27 +73,22 @@ const typeTra = [
     { id: 4, type: "Seguridad" },
 ]
 
-const typeCreation = [
-    { id: 1, type: "Presencial" },
-    { id: 3, type: "Virtual Sincrono" },
-    { id: 4, type: "Virtual Asincrono" },
-]
-
 let sessionsData: SessionObj[] = []
 
 const TrainingCreate = () => {
-    const location = useLocation();
+    const [loading, setLoading] = useState(false);
     const { trainingID } = useParams();
-    //const [training, setTraining] = useState<any>(location.state.data);
+    /* CAMBIAR CON LA API */ 
     const [training, setTraining] = useState<any>(data);
-    const [nombreT, setNombreT] = useState(data.name)
-    const [descripcionT, setDescripcionT] = useState(data.description)
-
-    const [nombreAuxT, setNombreAuxT] = useState(data.name)
-    const [descripcionAuxT, setDescripcionAuxT] = useState(data.description)
+    const [nombreT, setNombreT] = useState(training.nombre)
+    const [descripcionT, setDescripcionT] = useState(training.descripcion)
+    /* CAMBIAR CON LA API */ 
+    
+    const [nombreAuxT, setNombreAuxT] = useState(training.nombre)
+    const [descripcionAuxT, setDescripcionAuxT] = useState(training.descripcion)
 
     const [classSessions, setClassSessions] = useState<SessionObj[]>(sessionsData)
-    const [addedTopics, setAddedTopics] = useState<string[]>([])
+    const [addedTopics, setAddedTopics] = useState<TopicObj[]>([])
 
     const [supplierFilter, setSupplierFilter] = useState<Supplier[]>(suppliers)
     const [typeArea, setTypeArea] = useState("Todos")
@@ -122,7 +121,6 @@ const TrainingCreate = () => {
         }
     }
 
-
     /* TRAINING SESSION DETAIL INPUTS */
     const refTrName = useRef<HTMLInputElement>(null);
     const refTrDescription = useRef<HTMLTextAreaElement>(null);
@@ -130,12 +128,21 @@ const TrainingCreate = () => {
     const refTrTopics = useRef<HTMLInputElement>(null);
     const refTrDateStart = useRef<HTMLInputElement>(null);
     const refTrDateEnd = useRef<HTMLInputElement>(null);
+    const refTrCapacity = useRef<HTMLInputElement>(null);
     /* TRAINING SESSION DETAIL INPUTS */
 
+    /* MANAGEMENT TOPICS */
     const addTopic = (e: React.FormEvent) => {
         e.preventDefault();
+        let topicSession: TopicObj = {
+            nombre: '',
+        }
+
         if (refTrTopics.current?.value !== "") {
-            setAddedTopics([...addedTopics, refTrTopics.current?.value])
+            topicSession = {
+                nombre: refTrTopics.current?.value
+            }
+            setAddedTopics([...addedTopics, topicSession])
             console.log(addedTopics)
             refTrTopics.current.value = ""
         }
@@ -165,7 +172,7 @@ const TrainingCreate = () => {
                     <h6><b>{index + 1}.</b></h6>
                 </div>
                 <div className='col-10'>
-                    <p>{element}</p>
+                    <p>{element.nombre}</p>
                 </div>
                 <div className='col-1'>
                     <Trash onClick={() => deleteTopic(index)} />
@@ -173,22 +180,47 @@ const TrainingCreate = () => {
             </div>
         )
     }
+    /* MANAGEMENT TOPICS */
 
+    /* CREATE NEW SESSION */
     const createSession = () => {
         let dataSession: SessionObj = {
-            name: refTrName.current?.value,
-            description: refTrDescription.current?.value,
-            startDate: refTrDateStart.current?.value,
-            limitDate: refTrDateEnd.current?.value,
-            location: refTrLocation.current?.value,
-            urlVideo: null,
-            topics: addedTopics
-            //responsable:
+            curso_empresa_id: 0,
+            nombre: '',
+            descripcion: '',
+            fecha_inicio: '',
+            temas: []
         }
 
+        let fecha_ini = new Date(refTrDateStart.current?.value).toISOString()
+        
+        if(training.tipo === "A"){
+            let fecha_lim = new Date(refTrDateEnd.current?.value).toISOString()
+
+            dataSession = {
+                curso_empresa_id: parseInt(trainingID),
+                nombre: refTrName.current?.value,
+                descripcion: refTrDescription.current?.value,
+                fecha_inicio: fecha_ini,
+                fecha_limite: fecha_lim,
+                temas: addedTopics
+            }
+        }
+        else{
+            dataSession = {
+                curso_empresa_id: parseInt(trainingID),
+                nombre: refTrName.current?.value,
+                descripcion: refTrDescription.current?.value,
+                fecha_inicio: fecha_ini,
+                ubicacion: refTrLocation.current?.value,
+                aforo_maximo: parseInt(refTrCapacity.current?.value),
+                temas: addedTopics
+            }
+        }
+        
         setClassSessions([...classSessions, dataSession])
         
-        console.log(classSessions)
+        console.log(dataSession)
 
         /* Clear inputs */
         
@@ -197,24 +229,25 @@ const TrainingCreate = () => {
         refTrDateStart.current.value = "";
         setAddedTopics([]);
 
-        if(training.type === "Virtual Asincrono"){
+        if(training.tipo === "A"){
             refTrDateEnd.current.value = "";
         }
         else{
             refTrLocation.current.value = "";
+            refTrCapacity.current.value = "";
         }
 
         /*
-        axiosInt.post('RUTA API', dataSession)
+        axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/sesion_course_company/ ', dataSession)
             .then(function (response) {
-                //navigate(`/modulo1/cursoempresa/detalle/${response.data.id}`);
+
             })
             .catch(function (error) {
                 console.log(error);
             });
         */
     }
-
+    /* CREATE NEW SESSION */
 
     const verificaciones = () => {
         if (nombreT === "") {
@@ -244,240 +277,296 @@ const TrainingCreate = () => {
         }
     }
 
+    /* LOAD TRAINING DETAILS */
+    const loadTrainingDetails = () =>
+    {
+        setLoading(true);
+        axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/course_company_course/${trainingID}`)
+            .then(function (response)
+            {
+                console.log(response.data)
+/*
+                setTraining(response.data);
+                setNombreT(response.data.nombre)
+                setDescripcionT(response.data.descripcion)
+*/
+                setLoading(false);
+            })
+            .catch(function (error)
+            {
+                console.log(error);
+                setLoading(false);
+            });
+    }
+    /* LOAD TRAINING DETAILS */
+    
+    useEffect(() =>
+    {
+        loadTrainingDetails();
+    }, []);
+
 
     return (
         <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
-            <div className='container row mt-3'>
-                {/* TRAINING DATA */}
-                <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
-                    <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
-                        <Link to={`/modulo1/cursoempresa`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
-                    </div>
-
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                        <div style={{ paddingRight: "2rem" }}>
-                            <img src={training.photoURL} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>
-                        </div>
-                        <div>
-                            <h1 className='screenTitle'>{nombreT}</h1>
-                            <p><small className='subtitle'>{descripcionT}.</small></p>
-                            <p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: {training.type}</small><People style={{ opacity: "50%" }} /></p>
+            {
+                loading ?
+                (
+                    <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                        <div className='vertical-align-child'>
+                            <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                <span className="visually-hidden">Loading...</span>
+                            </div>
                         </div>
                     </div>
+                )
+                :
+                (<>
+                    <div className='container row mt-3'>
+                        {/* TRAINING DATA */}
+                        <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
+                            <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
+                                <Link to={`/modulo1/cursoempresa`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
+                            </div>
 
-                    <div style={{ marginLeft: "20px", position: "relative", top: "-2.2rem" }}>
-                        <PencilFill color='cornflowerblue' className='editar' data-bs-target='#editTrainingModal' data-bs-toggle='modal' />
-                    </div>
-                </div>
-
-            {/* SESSION */}
-            <div className='row mt-3' style={{ marginLeft: "54px" }}>
-                    <div className='col'>
-                        <h4 className='mb-3 mt-3 subarea'>Sesiones</h4>
-                    </div>
-                    <div style={{ flex: '0 0 15rem' }} className='col text-end'>
-                        {/* Button trigger modal */}
-                        <button type='button' className='btn btn-primary' data-bs-target='#createSessionModal' data-bs-toggle='modal'>
                             <div style={{ display: "flex", alignItems: "center" }}>
-                                <span className='me-3'>Nueva sesión</span>
-                            <PlusCircle/>
-                        </div>
-                    </button>
-                </div>
-
-                <div className='mt-3'>
-                    {classSessions.length > 0 ?
-                        (<SessionAccordion sessions={classSessions}/>)
-                        :
-                        (<>
-                            <h6 style={{ display: "flex", justifyContent: "center" }}>
-                                Crea una sesión para comenzar
-                            </h6>
-                        </>)
-                    }
-                </div>
-                    
-
-            </div>
-
-        </div>
-        {/* CREATE SESSION MODAL */}
-        <div className="modal fade" id="createSessionModal" aria-hidden="true" aria-labelledby="createSessionModal" tabIndex={-1}>
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="createSessionModal">Crear nueva sesión</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-                            <div className="mb-3">
-                                <label className="form-label">Nombre</label>
-                                <input ref={refTrName} type="text" className="form-control" />
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">Descripción</label>
-                                <textarea ref={refTrDescription} className="form-control" />
-                            </div>
-
-                            {
-                                training.type === "Virtual Asincrono" ?
-                                (<div className='row mb-3'>
-                                    <div className='col'>
-                                        <label className="form-label">Fecha de inicio</label>
-                                        <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
-                                    </div>
-                                    <div className='col'>
-                                        <label className="form-label">Fecha limite</label>
-                                        <input className='form-control' type='date' id='end_date_creation' ref={refTrDateEnd} />
-                                    </div>
-                                </div>)
-                                :
-                                (<>
-                                    <div className='mb-3'>
-                                        <label className="form-label">Fecha de la sesión</label>
-                                        <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
-                                    </div>
-                                    <div className='mb-3'>
-                                        <label className="form-label">Ubicación</label>
-                                            <input ref={refTrLocation} type="text" className="form-control" />
-                                    </div>
-                                </>)
-                            }
-                        
-                            <div className='row mb-3'>
-                                <label className="form-label">Temas de la sesión</label>
-                                <div className='col-10'>
-                                    <input ref={refTrTopics} type="text" className="form-control" />
+                                <div style={{ paddingRight: "2rem" }}>
+                                    <img src={training.url_foto} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>
                                 </div>
-                                <div className='col text-end'>
-                                    <button type='submit' className='btn btn-primary' onClick={addTopic}><Check /></button>
+                                <div>
+                                    <h1 className='screenTitle'>{nombreT}</h1>
+                                    <p><small className='subtitle'>{descripcionT}.</small></p>
+                                    <p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: {training.tipo}</small><People style={{ opacity: "50%" }} /></p>
                                 </div>
                             </div>
 
-                            {
-                                addedTopics.length > 0 ?
-                                    (addedTopics.map((element, i) => {
-                                        return (
-                                            <div key={i}>
-                                                {getTopics(i, element)}
-                                            </div>
-                                        )
-                                    }))
-                                    :
-                                    (<></>)
-                            }
+                            <div style={{ marginLeft: "20px", position: "relative", top: "-2.2rem" }}>
+                                <PencilFill color='cornflowerblue' className='editar' data-bs-target='#editTrainingModal' data-bs-toggle='modal' />
+                            </div>
                         </div>
-                        <div className="modal-footer">
-                            <button className="btn btn-primary" data-bs-target="#assignResponsible" data-bs-toggle="modal">Continuar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            {/* MODAL ASSING RESPONSIBLE */}
-            <div className="modal fade" id="assignResponsible" aria-hidden="true" aria-labelledby="assignResponsible" tabIndex={-1}>
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="assignResponsible">Asignar responsable</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body" style={{ paddingLeft: "4rem" }}>
+                        {/* SESSION */}
+                        <div className='row mt-3' style={{ marginLeft: "54px" }}>
+                            <div className='col'>
+                                <h4 className='mt-3 subarea'>Sesiones</h4>
+                            </div>
+                            <div style={{ flex: '0 0 15rem' }} className='col text-end'>
+                                {/* Button trigger modal */}
+                                <button type='button' className='btn btn-primary' data-bs-target='#createSessionModal' data-bs-toggle='modal'>
+                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                        <span className='me-3'>Nueva sesión</span>
+                                        <PlusCircle/>
+                                    </div>
+                                </button>
+                            </div>
 
                             <div>
-                                <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
-                                    <div className='col-5'>
-                                        <input className='form-control' type='text' placeholder='Buscar responsables' onChange={handleFilter} />
-                                    </div>
-                                    <div className='col-2'>
-                                        <select className="form-select" aria-label=".form-select-sm example" onChange={handleChangeType}>
-                                            <option hidden>Categoría</option>
-                                            {typeTra.map((t) => {
-                                                return (
-                                                    <option key={t.id} value={t.type}>{t.type}</option>
-                                                )
-                                            })}
-                                        </select>
-                                    </div>
-                                    <div className='col-1 text-end'>
-                                        <button className='btn btn-primary' type='button' onClick={search}>Buscar</button>
-                                    </div>
-                                </div>
-
-                                <div >
-                                    {suppliers.length ?
-                                        <>
-                                            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "10px" }}>
-                                                {
-                                                    supplierFilter.map((tr) => {
-                                                        return (
-                                                            <SupplierCard key={tr.id}
-                                                                id={tr.id}
-                                                                name={tr.name}
-                                                                image={tr.image}
-                                                                capacities={tr.capacities}
-                                                                button='Asignar'
-                                                                buttonColor={"rgb(8, 66, 152)"}
-                                                            />
-
-                                                        )
-                                                    })
-                                                }
-                                            </div>
-
-                                            {supplierFilter.length == 0 &&
-                                                <div style={{display: "flex", justifyContent: "center"}}>
-                                                    No hay resultados de responsables para la búsqueda
+                                {classSessions.length > 0 ?
+                                    (<SessionAccordion trainingType={training.tipo} sessions={classSessions}/>)
+                                    :
+                                    (
+                                        <div className='row align-items-stretch g-3 py-3'>
+                                            <div className='col'>
+                                                <div className='card'>
+                                                    <div className='card-body'>
+                                                        <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                            <div className='vertical-align-child'>
+                                                                <h5 className='opacity-50 text-center'>Crea una sesión para comenzar</h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            }
-                                        </>
-                                        :
-                                        <div>
-                                            No hay responsables disponibles
+                                            </div>
                                         </div>
-                                    }
-                                </div>
+                                    )
+                                }
                             </div>
-
-                        </div>
-                        <div className="modal-footer">
-                            <button className="btn btn-primary" data-bs-dismiss="modal" onClick={createSession}>Crear</button>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            {/* EDIT TRAINING MODAL */}
-            <div className="modal fade" id="editTrainingModal" aria-hidden="true" aria-labelledby="editTrainingModal" tabIndex={-1}>
-                <div className="modal-dialog modal-dialog-centered">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="createTrainingModal">Editar curso</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-                            <div className="mb-3">
-                                <label className="form-label">Nombre</label>
-                                <input value={nombreAuxT} type="text" className="form-control" onChange={e => setNombreAuxT(e.target.value)} />
-                            </div>
-                            <div className='row mb-3'>
-                                {/* <div className='col' style={{ flex: '0 0 8rem' }}>
-                                        <PictureUpload />
-                                    </div> */}
-                                <div className='col'>
+                    {/* CREATE SESSION MODAL */}
+                    <div className="modal fade" id="createSessionModal" aria-hidden="true" aria-labelledby="createSessionModal" tabIndex={-1}>
+                        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h1 className="modal-title fs-5" id="createSessionModal">Crear nueva sesión</h1>
+                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div className="modal-body">
+                                    <div className="mb-3">
+                                        <label className="form-label">Nombre</label>
+                                        <input ref={refTrName} type="text" className="form-control" />
+                                    </div>
                                     <div className="mb-3">
                                         <label className="form-label">Descripción</label>
-                                        <textarea value={descripcionAuxT} className="form-control" onChange={e => setDescripcionAuxT(e.target.value)} />
+                                        <textarea ref={refTrDescription} className="form-control" />
                                     </div>
+
+                                    {
+                                        training.tipo === "A" ?
+                                        (<div className='row mb-3'>
+                                            <div className='col'>
+                                                <label className="form-label">Fecha de inicio</label>
+                                                <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
+                                            </div>
+                                            <div className='col'>
+                                                <label className="form-label">Fecha limite</label>
+                                                <input className='form-control' type='date' id='end_date_creation' ref={refTrDateEnd} />
+                                            </div>
+                                        </div>)
+                                        :
+                                        (<>
+                                            <div className='row mb-3'>
+                                                <div className='col'>
+                                                    <label className="form-label">Fecha de la sesión</label>
+                                                    <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
+                                                </div>
+                                                <div className='col'>
+                                                    <label className="form-label">Aforo máximo</label>
+                                                    <input type="number" className="form-control" ref={refTrCapacity} min={'0'} />
+                                                </div>
+                                            </div>
+                                            <div className='mb-3'>
+                                                <label className="form-label">Ubicación</label>
+                                                    <input ref={refTrLocation} type="text" className="form-control" />
+                                            </div>
+                                        </>)
+                                    }
+                                
+                                    <div className='row mb-3'>
+                                        <label className="form-label">Temas de la sesión</label>
+                                        <div className='col-10'>
+                                            <input ref={refTrTopics} type="text" className="form-control" />
+                                        </div>
+                                        <div className='col text-end'>
+                                            <button type='submit' className='btn btn-primary' onClick={addTopic}><Check /></button>
+                                        </div>
+                                    </div>
+
+                                    {
+                                        addedTopics.length > 0 ?
+                                            (addedTopics.map((element, i) => {
+                                                return (
+                                                    <div key={i}>
+                                                        {getTopics(i, element)}
+                                                    </div>
+                                                )
+                                            }))
+                                            :
+                                            (<></>)
+                                    }
+                                </div>
+                                <div className="modal-footer">
+                                    <button className="btn btn-primary" data-bs-target="#assignResponsible" data-bs-toggle="modal">Continuar</button>
                                 </div>
                             </div>
                         </div>
-                        <div className="modal-footer">
-                            <button className="btn btn-primary" data-bs-dismiss="modal" onClick={editTraining}>Guardar</button>
+                    </div>
+
+                    {/* MODAL ASSING RESPONSIBLE */}
+                    <div className="modal fade" id="assignResponsible" aria-hidden="true" aria-labelledby="assignResponsible" tabIndex={-1}>
+                        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h1 className="modal-title fs-5" id="assignResponsible">Asignar responsable</h1>
+                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div className="modal-body" style={{ paddingLeft: "4rem" }}>
+
+                                    <div>
+                                        <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
+                                            <div className='col-5'>
+                                                <input className='form-control' type='text' placeholder='Buscar responsables' onChange={handleFilter} />
+                                            </div>
+                                            <div className='col-2'>
+                                                <select className="form-select" aria-label=".form-select-sm example" onChange={handleChangeType}>
+                                                    <option hidden>Categoría</option>
+                                                    {typeTra.map((t) => {
+                                                        return (
+                                                            <option key={t.id} value={t.type}>{t.type}</option>
+                                                        )
+                                                    })}
+                                                </select>
+                                            </div>
+                                            <div className='col-1 text-end'>
+                                                <button className='btn btn-primary' type='button' onClick={search}>Buscar</button>
+                                            </div>
+                                        </div>
+
+                                        <div >
+                                            {suppliers.length ?
+                                                <>
+                                                    <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "10px" }}>
+                                                        {
+                                                            supplierFilter.map((tr) => {
+                                                                return (
+                                                                    <SupplierCard key={tr.id}
+                                                                        id={tr.id}
+                                                                        name={tr.name}
+                                                                        image={tr.image}
+                                                                        capacities={tr.capacities}
+                                                                        button='Asignar'
+                                                                        buttonColor={"rgb(8, 66, 152)"}
+                                                                    />
+
+                                                                )
+                                                            })
+                                                        }
+                                                    </div>
+
+                                                    {supplierFilter.length == 0 &&
+                                                        <div style={{display: "flex", justifyContent: "center"}}>
+                                                            No hay resultados de responsables para la búsqueda
+                                                        </div>
+                                                    }
+                                                </>
+                                                :
+                                                <div>
+                                                    No hay responsables disponibles
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div className="modal-footer">
+                                    <button className="btn btn-primary" data-bs-dismiss="modal" onClick={createSession}>Crear</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+
+                    {/* EDIT TRAINING MODAL */}
+                    <div className="modal fade" id="editTrainingModal" aria-hidden="true" aria-labelledby="editTrainingModal" tabIndex={-1}>
+                        <div className="modal-dialog modal-dialog-centered">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h1 className="modal-title fs-5" id="createTrainingModal">Editar curso</h1>
+                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div className="modal-body">
+                                    <div className="mb-3">
+                                        <label className="form-label">Nombre</label>
+                                        <input value={nombreAuxT} type="text" className="form-control" onChange={e => setNombreAuxT(e.target.value)} />
+                                    </div>
+                                    <div className='row mb-3'>
+                                        {/* <div className='col' style={{ flex: '0 0 8rem' }}>
+                                                <PictureUpload />
+                                            </div> */}
+                                        <div className='col'>
+                                            <div className="mb-3">
+                                                <label className="form-label">Descripción</label>
+                                                <textarea value={descripcionAuxT} className="form-control" onChange={e => setDescripcionAuxT(e.target.value)} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <button className="btn btn-primary" data-bs-dismiss="modal" onClick={editTraining}>Guardar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>)
+            }
         </Sidebar >
     )
 }

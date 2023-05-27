@@ -7,6 +7,7 @@ import { GeoFill, JournalBookmarkFill, InfoCircleFill, PeopleFill, DoorClosedFil
 import EmployeeCard from '@features/Modulo1/components/EmployeeCard/EmployeeCard';
 import '../../../basic.css';
 import '../training.css';
+import SessionAccordion from '@features/Modulo1/components/SessionAccordion';
 
 type Employee = {
     id: string;
@@ -19,15 +20,35 @@ type Employee = {
 
 const datos = {
     id: 1,
-    name: "Seguridad de Información",
-    photoURL: 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
-    description: "Lorem ipsum",
-    startDate: "06/05/2023",
-    endDate: "06/05/2023",
-    numEmployees: 10,
-    type: "Presencial",
-    capacity: 20,
-    location: "Av. Universitaria 1305 - San Miguel"
+    nombre: "Seguridad de Información 1",
+    url_foto: 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
+    descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
+    fecha_creacion: "06/05/2023",
+    fecha_primera_sesion: "06/05/2023",
+    cantidad_empleados: 10,
+    tipo: "Presencial",
+    sesiones: [
+        {
+            id: 1,
+            temas: [
+                {
+                    id: 1,
+                    nombre: "Tema Sesion 1"
+                },
+                {
+                    id: 2,
+                    nombre: "Tema 2 Sesion 1"
+                }
+            ],
+            nombre: "Sesion 1",
+            descripcion: "asdasd",
+            fecha_inicio: "2023-05-10T00:00:00-05:00",
+            fecha_limite: "2023-09-10T00:00:00-05:00",
+            url_video: null,
+            ubicacion: null,
+            aforo_maximo: 20
+        }
+    ]
 }
 
 const employees: Employee[] = [
@@ -73,10 +94,43 @@ const employees: Employee[] = [
     }
 ];
 
+type TopicObj = {
+    id?: number;
+    nombre: string;
+}
+
+type SessionObj = {
+    curso_empresa_id: number;
+    nombre: string;
+    descripcion: string;
+    fecha_inicio: string;
+    fecha_limite?: string;
+    ubicacion?: string;
+    aforo_maximo?: number;
+    url_video?: string;
+    temas: TopicObj[];
+}
+
+type TrainingObj = {
+    id: number;
+    nombre: string;
+    url_foto: string,
+    descripcion: string;
+    fecha_creacion: string;
+    fecha_primera_sesion: string;
+    numEmployees: number;
+    tipo: string;
+    sesiones: SessionObj[];
+}
+
+let sessionsData: SessionObj[] = []
 
 const TrainingDetails = () => {
     const { trainingID } = useParams();
     const [training, setTraining] = useState<any>(datos);
+    const [loading, setLoading] = useState(false);
+    const [classSessions, setClassSessions] = useState<SessionObj[]>([])
+
     const [position, setPosition] = useState(0);
     const employeesToShow = employees.slice(position, position + 3);
     const botonEmployee = "Quitar";
@@ -94,17 +148,18 @@ const TrainingDetails = () => {
     };
 
     const loadTrainingDetails = () => {
-        /*
-        axiosInt.get(`curso/training/${trainingID}`)
+        setLoading(true);
+        axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/course_company_course/${trainingID}`)
             .then(function (response)
             {
-                setTraining(response.data)
+                //setTraining(response.data);
+                setLoading(false);
             })
             .catch(function (error)
             {
                 console.log(error);
+                setLoading(false);
             });
-        */
     }
 
     useEffect(() => {
@@ -122,8 +177,8 @@ const TrainingDetails = () => {
                         </div>
 
                         <div className='col'>
-                            <h1 className='screenTitle'>{training.name}</h1>
-                            <p><small className='subtitle'>{training.description}.</small></p>
+                            <h1 className='screenTitle'>{training.nombre}</h1>
+                            <p><small className='subtitle'>{training.descripcion}.</small></p>
                         </div>
                     </div>
 
@@ -131,51 +186,41 @@ const TrainingDetails = () => {
                     <div className='col' style={{ marginLeft: "60px" }}>
                         <div className='row row-center'>
                             <div className='col text-end'>
-                                <img src={training.photoURL} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>
+                                <img src={training.url_foto} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>
                             </div>
                             <div className='col'>
-                                <p><Calendar /><b style={{ paddingLeft: "0.5rem" }}>Fecha de creación:</b> {training.startDate}</p>
-                                <p><Calendar2Event /><b style={{ paddingLeft: "0.5rem" }}>Fecha del evento:</b> {training.startDate}</p>
-                                <p><People /><b style={{ paddingLeft: "0.5rem" }}>Cant. Empleados:</b> {training.numEmployees}</p>
+                                <p><Calendar /><b style={{ paddingLeft: "0.5rem" }}>Fecha de creación:</b> {training.fecha_creacion}</p>
+                                <p><People /><b style={{ paddingLeft: "0.5rem" }}>Cant. Empleados:</b> {training.cantidad_empleados}</p>
+                                <p className="card-text"><DoorClosedFill /><b style={{ paddingLeft: "0.5rem" }}>Modalidad:</b> {training.tipo}</p>
                             </div>
                         </div>
                         <div className="row">
-                            <h4 className='mt-3 mb-3 subarea'>Detalles importantes</h4>
-                            <div className='row'>
-                                <div className='col'>
-                                    <div className="card">
-                                        <div className="card-header">
-                                            <JournalBookmarkFill /><b style={{ paddingLeft: "0.5rem" }}>Temas del curso</b>
+                            <h4 className='mt-3 mb-3 subarea'>Sesiones</h4>
+                            
+                            <div>
+                                {classSessions.length > 0 ?
+                                    (<SessionAccordion sessions={classSessions}/>)
+                                    :
+                                    (
+                                        <div className='row align-items-stretch g-3 py-3'>
+                                            <div className='col'>
+                                                <div className='card'>
+                                                    <div className='card-body'>
+                                                        <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                            <div className='vertical-align-child'>
+                                                                <h5 className='opacity-50 text-center'>No cuenta con sesiones creadas</h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="card-body">
-                                            {/*DEFINIR COMO SERA ACA*/}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='col'>
-                                    <div className="card">
-                                        <div className="card-header">
-                                            <InfoCircleFill /><b style={{ paddingLeft: "0.5rem" }}>Información del curso</b>
-                                        </div>
-                                        <div className="card-body">
-                                            <p className="card-text"><Calendar2EventFill /><b style={{ paddingLeft: "0.5rem" }}>Fecha del evento:</b> {training.startDate}</p>
-                                            <p className="card-text"><DoorClosedFill /><b style={{ paddingLeft: "0.5rem" }}>Tipo:</b> {training.type}</p>
-                                            <p className="card-text"><GeoFill /><b style={{ paddingLeft: "0.5rem" }}>Ubicación:</b> {training.location}</p>
-                                            <p className="card-text"><PeopleFill /><b style={{ paddingLeft: "0.5rem" }}>Aforo máximo:</b> {training.capacity}</p>
-                                        </div>
-                                    </div>
-                                </div>
+                                    )
+                                }
                             </div>
                         </div>
                         <div className='row'>
-                            {/*TRES ESCENARIOS:
-                           1. DETALLE CUANDO SE CREA ASINCRONO 
-                            1.1. OPCION PARA SUBIR EL VIDEO O VIDEOS
-                            1.2. EMPLEADOS ASIGNADOS
-                           2. DETALLE CUANDO SE CREA SINCRONO O PRESENCIAL
-                            2.1. DETALLE CON EMPLEADOS                            
-                        */}
-                            <div className='mt-5 mb-3' style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                            <div className='mt-3 mb-3' style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                 <h4 className='subarea'>Empleados asignados</h4>
                                 <Link to={`/modulo1/cursoempresa/asignacion/${training.id}`}>
                                     <button className='btn btn-primary' style={{ marginRight: "23px" }}>
@@ -187,11 +232,8 @@ const TrainingDetails = () => {
                                             </svg>
                                         </div>
                                     </button>
-
                                 </Link>
-
                             </div>
-
 
                             {employees.length ?
                                 <div style={{ display: "flex", alignItems: "center" }}>
@@ -243,10 +285,6 @@ const TrainingDetails = () => {
                                     <h5 style={{ display: "flex", justifyContent: "center" }}>Sin empleados asignados</h5>
                                 </div>
                             }
-
-
-
-
                         </div>
                     </div>
                 </div>
