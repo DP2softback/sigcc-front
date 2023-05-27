@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Table } from 'react-bootstrap';
-import { formatDate, navigateTo } from '@features/Modulo3/utils/functions.jsx';
+import { formatDate, navigateTo } from '@features/Modulo3/utils/functions';
 import './TableHistoryContinua.css';
 import { ArrowRightCircleFill } from 'react-bootstrap-icons';
 import { CONTINUOS_EVALUATION_DETAIL } from '@config/paths';

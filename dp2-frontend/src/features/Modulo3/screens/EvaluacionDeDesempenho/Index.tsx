@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionDeDesempenho.css';
 import { PERFORMANCE_EVALUATION_INDEX } from '@config/paths';
-import { noDataFound } from '@features/Modulo3/utils/constants';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import { Search } from 'react-bootstrap-icons'
@@ -9,8 +8,8 @@ import { Form, InputGroup, Button } from 'react-bootstrap';
 import Employee from '@features/Modulo3/components/Cards/Employee/Employee';
 import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
 import { useEffect, useState } from 'react';
-import { getEmployees } from '@features/Modulo3/services/continuousEvaluation';
-import { loadingScreen, DAYS_UNIT } from '@features/Modulo3/utils/constants.jsx';
+import { getEmployees } from '@features/Modulo3/services/performanceEvaluation';
+import { noDataFound, loadingScreen, DAYS_UNIT } from '@features/Modulo3/utils/constants';
 import employeesJson from '@features/Modulo3/jsons/Employees';
 
 const examplePhoto = 'https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg?b=1&s=170667a&w=0&k=20&c=0aBawAGIMPymGUppOgw1HmV8MNXB1536B3sX_PP9_SQ='
@@ -20,11 +19,15 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // setIsLoading(true);
-    // (async () => {
-    //   setEmployees(await getEmployees(1));
-    // })();
-    setIsLoading(false);
+    setIsLoading(true);
+    (async () => {
+      const response = await getEmployees(2);
+      
+      if(!response) setEmployees(employeesJson);
+      else setEmployees(response);
+
+      setIsLoading(false);
+    })();
   }, []);
 
   const filters = (
