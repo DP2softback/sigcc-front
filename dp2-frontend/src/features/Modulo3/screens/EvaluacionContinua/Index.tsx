@@ -1,5 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
+import { CONTINUOS_EVALUATION_INDEX, CONTINUOS_EVALUATION_HISTORY } from '@config/paths';
+import { navigateTo } from '@features/Modulo3/utils/functions.jsx';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import { Search } from 'react-bootstrap-icons'
@@ -31,7 +33,12 @@ const Index = () => {
     <div className='ec-indexFirstTwoEmployees col-md-4'>
       {employees.slice(0, 2).map((employee) => {
         return (
-          <div key={employee.id} className='mb-32px'>
+          <div
+            key={employee.id}
+            className="mb-32px"
+            onClick={() => {
+              navigateTo(CONTINUOS_EVALUATION_HISTORY, {id:1});
+            }}>
             <Employee
               id={employee.id}
               name={employee.name}
@@ -50,7 +57,12 @@ const Index = () => {
 
   const restEmployees = employees.slice(2).map((employee) => {
     return (
-      <div key={employee.id} className='col-md-4 mb-32px'>
+      <div
+        key={employee.id}
+        className="col-md-4 mb-32px"
+        onClick={() => {
+          navigateTo(CONTINUOS_EVALUATION_HISTORY);
+        }}>
         <Employee
           id={employee.id}
           name={employee.name}
@@ -95,13 +107,12 @@ const Index = () => {
   );
 
   return (
-    <div>
-      <Layout
-        title={'Evaluación continua'}
-        body={body}
-        subtitle='Evaluaciones continuas de trabajadores de los que te encuentras a cargo.'
-      />
-    </div>
+    <Layout
+      title={'Evaluación continua'}
+      body={body}
+      subtitle='Evaluaciones continuas de trabajadores de los que te encuentras a cargo.'
+      route={CONTINUOS_EVALUATION_INDEX}
+    />
   );
 };
 

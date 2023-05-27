@@ -4,7 +4,7 @@ import sidebarItems from '@features/Modulo1/utils/sidebarItems'
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { GeoFill, JournalBookmarkFill, InfoCircleFill, PeopleFill, DoorClosedFill, Calendar2EventFill, Calendar, Calendar2Event, People, ArrowLeftCircle, ArrowLeftCircleFill, ArrowRightCircle } from 'react-bootstrap-icons'
-import EmployeeCard from '@features/Modulo1/components/EmployeeCard/EmployeeCard';
+import EmployeeCard2 from '@features/Modulo1/components/EmployeeCard2/EmployeeCard2';
 import '../../../basic.css';
 import '../training.css';
 
@@ -40,7 +40,7 @@ const datos = {
 const employees: Employee[] = [
     {
         id: "1",
-        name: "John Doe",
+        name: "John Doe Johnson",
         code: "123456789",
         area: "Área de Base de datos",
         position: "Manager",
@@ -48,7 +48,7 @@ const employees: Employee[] = [
     },
     {
         id: "2",
-        name: "Jane Smith",
+        name: "Jane Smith Jackson",
         code: "123456789",
         area: "Área de Base de datos",
         position: "Developer",
@@ -56,7 +56,7 @@ const employees: Employee[] = [
     },
     {
         id: "3",
-        name: "Bob Johnson",
+        name: "Bob Johnson Doe",
         code: "123456789",
         area: "Área de Base de datos",
         position: "Designer",
@@ -64,7 +64,7 @@ const employees: Employee[] = [
     },
     {
         id: "4",
-        name: "Sarah Lee",
+        name: "Sarah Lee Lee",
         code: "123456789",
         area: "Área de Base de datos",
         position: "Tester",
@@ -72,7 +72,15 @@ const employees: Employee[] = [
     },
     {
         id: "5",
-        name: "Tom Jackson",
+        name: "Tom Jackson Smith",
+        code: "123456789",
+        area: "Área de Base de datos",
+        position: "Analyst",
+        image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
+    },
+    {
+        id: "6",
+        name: "Rodrigo Alonso Ortega Bocanegra",
         code: "123456789",
         area: "Área de Base de datos",
         position: "Analyst",
@@ -95,28 +103,28 @@ const TrainingAssignment = () => {
 
     const handleFilter = (e: any) => {
         const searchTerm = e.target.value;
-        if (searchTerm === ''){        
-            if(addedEmployees.length){
-                filtered = employees.filter((item: any) => {                
-                    return addedEmployees.every((added) => {                      
+        if (searchTerm === '') {
+            if (addedEmployees.length) {
+                filtered = employees.filter((item: any) => {
+                    return addedEmployees.every((added) => {
                         return added[0].id != item.id
                     })
                 });
                 setemployeeFilter(filtered);
             }
             else setemployeeFilter(employees);
-        }else {
-            if(addedEmployees.length){
-                filtered = employeeFilter.filter((item: any) => {                
-                    return addedEmployees.every((added) => {                      
+        } else {
+            if (addedEmployees.length) {
+                filtered = employeeFilter.filter((item: any) => {
+                    return addedEmployees.every((added) => {
                         return added[0].id != item.id
                     }) && item.name.toLowerCase().includes(searchTerm.toLowerCase())
                 });
-            }else{
+            } else {
                 filtered = employeeFilter.filter((item: any) =>
                     item.name.toLowerCase().includes(searchTerm.toLowerCase())
                 );
-            }            
+            }
             setemployeeFilter(filtered);
         }
     };
@@ -152,25 +160,25 @@ const TrainingAssignment = () => {
     }
 
 
- 
-    useEffect(() => {        
-        async function AddEmployee(){
+
+    useEffect(() => {
+        async function AddEmployee() {
             var aux = addedEmployees;
             aux.push(addedEmployee)
             setAddedEmployees(aux)
         }
-        async function UpdateFilter(){            
-              var filtered2 = employeeFilter.filter((item: any) => {                
-                return addedEmployees.every((added) => {                      
+        async function UpdateFilter() {
+            var filtered2 = employeeFilter.filter((item: any) => {
+                return addedEmployees.every((added) => {
                     return added[0].id != item.id
                 })
-            }               
+            }
             );
             setemployeeFilter(filtered2);
         }
 
-        if(addedEmployee != undefined){            
-            AddEmployee()          
+        if (addedEmployee != undefined) {
+            AddEmployee()
             UpdateFilter()
         }
     }, [addedEmployee]);
@@ -183,12 +191,12 @@ const TrainingAssignment = () => {
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/capacitacion'>
+            <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
                 <div className='container row mt-3'>
 
                     <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
                         <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
-                            <Link to={`/modulo1/capacitacion/detalle/${training.id}`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
+                            <Link to={`/modulo1/cursoempresa/detalle/${training.id}`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
                         </div>
 
                         <div className='col'>
@@ -203,7 +211,7 @@ const TrainingAssignment = () => {
 
 
                     <div className='col' style={{ marginLeft: "60px" }}>
-                        <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "10px" }}>
+                        <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
                             <div className='col-5'>
                                 <input className='form-control' type='text' placeholder='Buscar empleados' onChange={handleFilter} />
                             </div>
@@ -224,29 +232,56 @@ const TrainingAssignment = () => {
 
                         <div className='row'>
 
-                            {employeeFilter.length ?
-                                <div>
-                                    <div className="employees-list cards">
-                                        {employeeFilter.map((employee) => (
-                                            <EmployeeCard key={employee.id}
-                                                id={employee.id}
-                                                name={employee.name}
-                                                photoURL={employee.image}
-                                                area={employee.area}
-                                                puesto={employee.position}
-                                                codigo={employee.code}
-                                                boton1={botonEmployee}
-                                                boton1Color={"#084298"}
-                                                option={setAddedEmployee}
-                                            />
-                                        ))}
+                            <div style={{ display: "flex" }}>
+                                {employeeFilter.length ?
+                                    <div>
+                                        <div className="employees-list cards">
+                                            {employeeFilter.map((employee) => (
+                                                <EmployeeCard2 key={employee.id}
+                                                    id={employee.id}
+                                                    name={employee.name}
+                                                    photoURL={employee.image}
+                                                    area={employee.area}
+                                                    puesto={employee.position}
+                                                    codigo={employee.code}
+                                                    boton1={botonEmployee}
+                                                    boton1Color={"#084298"}
+                                                    option={setAddedEmployee}
+                                                />
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                                :
+                                    :
+                                    <div>
+                                        <h5 style={{ display: "flex", justifyContent: "center", paddingTop: "20px" }}>Sin empleados para asignar</h5>
+                                    </div>
+                                }
+
                                 <div>
-                                    <h5 style={{ display: "flex", justifyContent: "center", paddingTop: "20px" }}>Sin empleados para asignar</h5>
+                                    {addedEmployees.length ?
+                                        <>
+                                            <div style={{backgroundColor: "#E9ECEF", paddingLeft: "1rem"}}>
+
+                                                <h4>Empleados asignados</h4>
+
+                                                <div>
+                                                    {addedEmployees.map((employee) => (                                                        
+                                                        <div key={employee[0].id}>                                                            
+                                                            <h4 style={{fontSize: "12px"}}>{employee[0].name}</h4>
+                                                        </div>
+                                                    ))
+                                                        
+                                                    }
+                                                </div>
+                                            </div>
+                                        </>
+                                    :
+                                    <></>
+                                    }
                                 </div>
-                            }
+
+                            </div>
+
                         </div>
                     </div>
                 </div>

@@ -254,18 +254,53 @@ function formatDate(date: Date) {
     );
 }
 
+function compararFechas(fecha1: string, fecha2: string, fecha3: string, tipo: number): boolean {
+    const fecha1Parts = fecha1.split('/');
+    const dia1 = parseInt(fecha1Parts[0], 10);
+    const mes1 = parseInt(fecha1Parts[1], 10) - 1; // Restamos 1 al mes para que coincida con el rango de 0 a 11 en la clase Date
+    const anio1 = parseInt(fecha1Parts[2], 10);
+  
+    const fecha2Parts = fecha2.split('/');
+    const dia2 = parseInt(fecha2Parts[0], 10);
+    const mes2 = parseInt(fecha2Parts[1], 10) - 1; // Restamos 1 al mes para que coincida con el rango de 0 a 11 en la clase Date
+    const anio2 = parseInt(fecha2Parts[2], 10);
+
+    const fecha1Comparar = new Date(anio1, mes1, dia1);
+    const fecha2Comparar = new Date(anio2, mes2, dia2);
+
+    if(fecha3 != ''){
+        const fecha3Parts = fecha3.split('/');
+        const dia3 = parseInt(fecha3Parts[0], 10);
+        const mes3 = parseInt(fecha3Parts[1], 10) - 1; // Restamos 1 al mes para que coincida con el rango de 0 a 11 en la clase Date
+        const anio3 = parseInt(fecha3Parts[2], 10);
+        const fecha3Comparar = new Date(anio3, mes3, dia3);
+
+        return fecha1Comparar.getTime() >= fecha2Comparar.getTime() && fecha1Comparar.getTime() <= fecha3Comparar.getTime();
+    }
+
+
+    switch (tipo){
+        case 2:
+            return fecha1Comparar.getTime() > fecha2Comparar.getTime();
+        case 3:
+            return fecha1Comparar.getTime() < fecha2Comparar.getTime();
+    }
+  
+    
+  }
+
 
 const Training = () => {
 
     // const [training, setTraining] = useState<TrainingObj[]>(datos)
     const today = new Date();
-    const now = formatDate(new Date())
-    const now7 = formatDate(new Date(today.setDate(today.getDate() + 7)));
+    const now = formatDate(new Date());
+    var now7 = formatDate(new Date(today.setDate(today.getDate() + 7)));
 
     const [trainingFilter, setTrainingFilter] = useState<TrainingObj[]>(datos)
-    const [upcomingCourse, setUpcomingCourse] = useState<TrainingObj[]>(datos.filter((item: any) => item.endDate >= now && item.endDate <= now7))
-    const [currentCourse, setCurrentCourse] = useState<TrainingObj[]>(datos.filter((item: any) => item.endDate > now7))
-    const [finishedCourse, setFinishedCourse] = useState<TrainingObj[]>(datos.filter((item: any) => item.endDate < now))
+    const [upcomingCourse, setUpcomingCourse] = useState<TrainingObj[]>(datos.filter((item: any) => compararFechas(item.endDate, now, now7, 1)))
+    const [currentCourse, setCurrentCourse] = useState<TrainingObj[]>(datos.filter((item: any) => compararFechas(item.endDate, now7, '', 2)))
+    const [finishedCourse, setFinishedCourse] = useState<TrainingObj[]>(datos.filter((item: any) => compararFechas(item.endDate, now, '', 3)))
 
     const [startDate, setStarDate] = useState("0001-01-01")
     const [endDate, setEndDate] = useState("9999-12-31")
@@ -382,7 +417,7 @@ const Training = () => {
     }
 
     useEffect(() => {
-        //loadTrainings();       
+        //loadTrainings();    
     }, []);
 
     return (

@@ -177,7 +177,7 @@ const TrainingDetails = () => {
                         */}
                             <div className='mt-5 mb-3' style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                 <h4 className='subarea'>Empleados asignados</h4>
-                                <Link to={`/modulo1/capacitacion/asignacion/${training.id}`}>
+                                <Link to={`/modulo1/cursoempresa/asignacion/${training.id}`}>
                                     <button className='btn btn-primary' style={{ marginRight: "23px" }}>
                                         <div style={{display: "flex", alignItems: "center"}}>
                                             <span className='me-3'>Asignar empleados</span>                                        
