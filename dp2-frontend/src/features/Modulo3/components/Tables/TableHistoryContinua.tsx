@@ -26,15 +26,15 @@ export default function TableHistoryContinua ({rows}) {
         </thead>
         <tbody>
           {rows.map((row, index) => (
-            <tr key={index}>
-              <td>{row.categoria}</td>
-              <td>{row.nivel}</td>
-              <td>{row.fechaRegistro}</td>
+            <tr key={row.EvaluationId}>
+              <td>{row.CategoryName}</td>
+              <td>{row.score}</td>
+              <td>{row.evaluationDate}</td>
               <td className="icono">
                 <ArrowRightCircleFill
                   className="cursor-pointer"
                   onClick={() => {
-                    navigateTo(CONTINUOS_EVALUATION_DETAIL, { id: 1 });
+                    navigateTo(CONTINUOS_EVALUATION_DETAIL, { id: row.EvaluationId });
                   }}
                 />
               </td>

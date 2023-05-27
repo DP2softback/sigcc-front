@@ -6,6 +6,7 @@ export const LIST_SOMETHING = '/something/list';
 
 /* Gestión de Competencias y Ascensos */
 
+export const CONTINUOS_EVALUATION = '/skillManagement/continuousEvaluation';
 export const CONTINUOS_EVALUATION_INDEX = '/skillManagement/continuousEvaluation/index';
 export const CONTINUOS_EVALUATION_HISTORY = '/skillManagement/continuousEvaluation/history';
 export const CONTINUOS_EVALUATION_CREATE = '/skillManagement/continuousEvaluation/create';
@@ -22,5 +23,8 @@ export const PERFORMANCE_EVALUATION_DETAIL = '/skillManagement/performanceEvalua
 export const EVALUATION_TEMPLATE_INDEX = '/skillManagement/evaluationTemplate/index';
 export const EVALUATION_TEMPLATE_CREATE = '/skillManagement/evaluationTemplate/create';
 export const EVALUATION_TEMPLATE_EDIT = '/skillManagement/evaluationTemplate/edit';
+
+export const REPORT_CONTINUOS_EVALUATION_INDEX = '/skillManagement/report/continuousEvaluation';
+export const REPORT_PERFORMANCE_EVALUATION_INDEX = '/skillManagement/report/performanceEvaluation';
 
 export const PROMOTIONS_CANDIDATES = '/skillManagement/promotions/candidates';
