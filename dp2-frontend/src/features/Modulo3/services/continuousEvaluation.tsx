@@ -6,7 +6,7 @@ export const getEmployees = async (bossId, fechaInicio? : Date, fechaFin? : Date
     method: 'GET',
     url: BACKEND_URL + 'api/v1/employees',
     headers:{
-      Authorization: `Token d2ac8a51b8501fc272c3878e4bd3a5338be44188`
+      Authorization: `Token ${localStorage.getItem('token')}`
     },
     body: {
       id: bossId,
@@ -23,7 +23,7 @@ export const getEvaluationsHistory = async (employeeId, nivel? : number, fechaIn
     method: 'GET',
     url: BACKEND_URL + 'api/v1/evaluations',
     headers:{
-      Authorization: `Token d2ac8a51b8501fc272c3878e4bd3a5338be44188`
+      Authorization: `Token ${localStorage.getItem('token')}`
     },
     body: {
       id: employeeId,
@@ -41,9 +41,9 @@ export const getEmployeesEvaluationDashboard = async () => {
     method: 'GET',
     url: BACKEND_URL + 'api/v1/LineChartEvaluaciones',
     headers:{
-      Authorization: `Token d2ac8a51b8501fc272c3878e4bd3a5338be44188`
+      Authorization: `Token ${localStorage.getItem('token')}`
     },
-    params: {
+    body: {
       evaluationType: CONTINUOS_EVALUATION_TYPE,
     }
   }
@@ -55,7 +55,7 @@ export const getEmployeeEvaluationDashboard = async (employeeId) => {
     method: 'GET',
     url: BACKEND_URL + 'api/v1/LineChartEvaluacione',
     headers:{
-      Authorization: `Token d2ac8a51b8501fc272c3878e4bd3a5338be44188`
+      Authorization: `Token ${localStorage.getItem('token')}`
     },
     body: {
       id: employeeId,
