@@ -109,25 +109,25 @@ const ReporteEvaluacionDesempenho = Loader(
 const routes: RouteObject[] = [
   {
     path: '/',
-    element: <Modulo1LP />,
+    element: <Modulo1LP />
   },
   {
     path: 'modulo1',
     children: [
       {
         path: '',
-        element: <Modulo1LP />,
+        element: <Modulo1LP />
       },
       {
         path: 'rutadeaprendizaje',
         children: [
           {
             path: '',
-            element: <M1ListLearningPath />,
+            element: <M1ListLearningPath />
           },
           {
             path: 'detalle/:learningPathId',
-            element: <M1LearningPathDetails />,
+            element: <M1LearningPathDetails />
           },
         ],
       },
@@ -136,28 +136,28 @@ const routes: RouteObject[] = [
         children: [
           {
             path: 'agregar/:learningPathId',
-            element: <M1AddCourse />,
+            element: <M1AddCourse />
           },
         ],
       },
       {
-        path: 'capacitacion',
+        path: 'cursoempresa',
         children: [
           {
             path: '',
-            element: <M1ListTraining />,
+            element: <M1ListTraining />
           },
           {
             path: 'detalle/:trainingID',
-            element: <M1TrainingDetails />,
+            element: <M1TrainingDetails />
           },
           {
             path: 'asignacion/:trainingID',
-            element: <M1TrainingAssignment />,
+            element: <M1TrainingAssignment />
           },
-        ],
+        ]
       },
-    ],
+    ]
   },
   {
     path: 'skillManagement',
