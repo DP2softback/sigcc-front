@@ -28,3 +28,8 @@
 .mt-32{
   margin-top: 32px;
 }
+
+.noDataFoundIcon{
+  width: 45%;
+  height: 45%;
+}
