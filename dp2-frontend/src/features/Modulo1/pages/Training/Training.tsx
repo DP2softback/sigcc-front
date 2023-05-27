@@ -392,10 +392,7 @@ const Training = () => {
         console.log(data)
 
         /* RUTA HARDCODEADA*/
-        navigate(`/modulo1/cursoempresa/creacion/1`,
-                {
-                    state: {data}
-                });
+        navigate(`/modulo1/cursoempresa/creacion/1`);
 
         axiosInt.post('RUTA API', data)
             .then(function (response) {

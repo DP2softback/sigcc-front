@@ -77,88 +77,11 @@ const typeCreation = [
 
 let sessionsData: SessionObj[] = []
 
-/*
-const sessionsData: SessionObj[] = [
-    {
-        "id": 1,
-        "name": "Sesión de introducción",
-        "description": "Introduccion a este nuevo curso de empresa",
-        "startDate": "06/05/2023",
-        "limitDate": "20/05/2023",
-        "numEmployees": 0,
-        "location": null,
-        "urlVideo": null,
-        "topics": [
-            {
-                "id": 1,
-                "name": "Tema de la sesión 1"
-            },
-            {
-                "id": 2,
-                "name": "Tema de la sesión 2"
-            },
-            {
-                "id": 3,
-                "name": "Tema de la sesión 3"
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "name": "Sesión 1",
-        "description": "Descripción de la sesión 1",
-        "startDate": "07/05/2023",
-        "limitDate": "20/05/2023",
-        "numEmployees": 0,
-        "location": null,
-        "urlVideo": null,
-        "topics": [
-            {
-                "id": 1,
-                "name": "Tema de la sesión 1"
-            },
-            {
-                "id": 2,
-                "name": "Tema de la sesión 2"
-            },
-            {
-                "id": 3,
-                "name": "Tema de la sesión 3"
-            }
-        ]
-    },
-    {
-        "id": 3,
-        "name": "Sesión 2",
-        "description": "Descripción de la sesión 2",
-        "startDate": "08/05/2023",
-        "limitDate": "20/05/2023",
-        "numEmployees": 0,
-        "location": null,
-        "urlVideo": null,
-        "topics": [
-            {
-                "id": 1,
-                "name": "Tema de la sesión 1"
-            },
-            {
-                "id": 2,
-                "name": "Tema de la sesión 2"
-            },
-            {
-                "id": 3,
-                "name": "Tema de la sesión 3"
-            }
-        ]
-    }
-]
-*/
-
 const TrainingCreate = () => {
     const location = useLocation();
     const { trainingID } = useParams();
-    const [training, setTraining] = useState<any>(location.state.data);
-    //const [training, setTraining] = useState<any>(data);
+    //const [training, setTraining] = useState<any>(location.state.data);
+    const [training, setTraining] = useState<any>(data);
     const [nombreT, setNombreT] = useState(data.name)
     const [descripcionT, setDescripcionT] = useState(data.description)
 
@@ -348,8 +271,8 @@ const TrainingCreate = () => {
                 </div>
 
             {/* SESSION */}
-            <div className='row mt-3'>
-                    <div className='col' style={{ marginLeft: "54px" }}>
+            <div className='row mt-3' style={{ marginLeft: "54px" }}>
+                    <div className='col'>
                         <h4 className='mb-3 mt-3 subarea'>Sesiones</h4>
                     </div>
                     <div style={{ flex: '0 0 15rem' }} className='col text-end'>
