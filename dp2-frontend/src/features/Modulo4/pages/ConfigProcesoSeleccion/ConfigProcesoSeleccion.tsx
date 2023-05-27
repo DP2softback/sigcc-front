@@ -668,16 +668,6 @@ function ConfigProcesoSeleccion(props: any) {
                     onSelect={handleOptionSelectBuscador}
                 />
             )}
-            <div>
-                <p>
-                    Opción seleccionada:
-                    {selectedPuestoSeleecionado +
-                        " " +
-                        cantVacantes +
-                        " " +
-                        rows}
-                </p>
-            </div>
         </Sidebar>
     );
 }
@@ -688,7 +678,11 @@ export default ConfigProcesoSeleccion;
 <div>
                 <p>
                     Opción seleccionada:
-                    { selectedPuestoSeleecionado + " " + " " + rows}
+                    {selectedPuestoSeleecionado +
+                        " " +
+                        cantVacantes +
+                        " " +
+                        rows}
                 </p>
             </div>
 */
