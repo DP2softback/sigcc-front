@@ -5,7 +5,6 @@ import { CONTINUOS_EVALUATION_CREATE, CONTINUOS_EVALUATION_INDEX } from '@config
 import { navigateTo } from '@features/Modulo3/utils/functions.jsx';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons'
-import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import TableHistoryContinua from '@features/Modulo3/components/Tables/TableHistoryContinua';
@@ -18,12 +17,15 @@ const History = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const employeeId = urlParams.get('id');
   const [evaluations, setEvaluations] = useState(newReg);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     setEvaluations(await getEvaluationsHistory(employeeId));
-  //   })();
-  // }, []);
+  useEffect(() => {
+    // setIsLoading(true);
+    // (async () => {
+    //   setEvaluations(await getEvaluationsHistory(employeeId));
+    // })();
+    setIsLoading(false);
+  }, []);
 
   const filters = (
     <Form>
@@ -79,7 +81,7 @@ const History = () => {
 
   const content = (
     <>
-      {evaluations.length > 0 ? (
+      {evaluations && evaluations.length > 0 ? (
         <>
           {table}
           {chart}
@@ -98,8 +100,12 @@ const History = () => {
   );
 
   const body = (
-    <Section title={'Evaluaciones'} content={content} filters={filters}/>
-  )
+    <Section
+      title={"Evaluaciones"}
+      content={isLoading ? <></> : content}
+      filters={filters}
+    />
+  );
 
   return (
     <div>

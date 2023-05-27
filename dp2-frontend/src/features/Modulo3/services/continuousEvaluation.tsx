@@ -8,7 +8,7 @@ export const getEmployees = async (bossId, fechaInicio? : Date, fechaFin? : Date
     method: 'GET',
     url: env.BACKEND_URL + 'api/v1/employees',
     headers:{
-      
+      Authorization: `Token d2ac8a51b8501fc272c3878e4bd3a5338be44188`
     },
     params: {
       id: bossId,
@@ -25,7 +25,7 @@ export const getEvaluationsHistory = async (employeeId, nivel? : number, fechaIn
     method: 'GET',
     url: env.BACKEND_URL + 'api/v1/evaluations',
     headers:{
-      
+      Authorization: `Token d2ac8a51b8501fc272c3878e4bd3a5338be44188`
     },
     params: {
       id: employeeId,

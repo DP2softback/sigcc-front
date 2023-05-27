@@ -115,16 +115,6 @@ const ReporteEvaluacionDesempenho = Loader(
   lazy(() => import('@features/Modulo3/screens/Reportes/IndexEvaluacionDesempenho'))
 );
 
-const ReporteEvaluacionContinua = Loader(
-  lazy(() => import('@features/Modulo3/screens/Reportes/IndexEvaluacionContinua'))
-);
-
-const ReporteEvaluacionDesempenho = Loader(
-  lazy(() => import('@features/Modulo3/screens/Reportes/IndexEvaluacionDesempenho'))
-);
-
-/** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
-
 const routes: RouteObject[] = [
   {
     path: 'modulo1',

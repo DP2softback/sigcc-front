@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Table } from 'react-bootstrap';
-import { navigateTo } from '@features/Modulo3/utils/functions.jsx';
+import { formatDate, navigateTo } from '@features/Modulo3/utils/functions.jsx';
 import './TableHistoryContinua.css';
 import { ArrowRightCircleFill } from 'react-bootstrap-icons';
 import { CONTINUOS_EVALUATION_DETAIL } from '@config/paths';
@@ -15,7 +15,7 @@ type TableProps = {
 export default function TableHistoryContinua ({rows}) {
 
     return (
-      <Table striped bordered hover className="TableHistoryContinua">
+      <Table striped bordered className="TableHistoryContinua">
         <thead>
           <tr>
             <th>Categoría</th>
@@ -29,7 +29,7 @@ export default function TableHistoryContinua ({rows}) {
             <tr key={row.EvaluationId}>
               <td>{row.CategoryName}</td>
               <td>{row.score}</td>
-              <td>{row.evaluationDate}</td>
+              <td>{formatDate(row.evaluationDate)}</td>
               <td className="icono">
                 <ArrowRightCircleFill
                   className="cursor-pointer"
