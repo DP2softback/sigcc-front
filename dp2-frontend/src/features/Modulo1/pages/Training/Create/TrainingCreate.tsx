@@ -15,7 +15,7 @@ const data = {
     name: "Ejemplo de Creación",
     photoURL: 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
     description: "Esto es un ejemplo de creación de un curso empresa",
-    type: "Presencial"
+    type: "Asincrono"
 }
 
 type Supplier = {
@@ -23,6 +23,7 @@ type Supplier = {
     name: string;
     image: string;
     capacities: any[];
+    category: string;
 }
 
 type SessionObj = {
@@ -44,19 +45,22 @@ const suppliers: Supplier[] = [
         id: "1",
         name: "John Doe Johnson",
         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-        capacities: [{ text: "Front" }, { text: "React" }]
+        capacities: [{ text: "Front" }, { text: "React" }],
+        category: "Software"
     },
     {
         id: "2",
         name: "Jane Smith Jackson",
         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-        capacities: [{ text: "Back" }, { text: "Python" }]
+        capacities: [{ text: "Back" }, { text: "Python" }],
+        category: "Salud"
     },
     {
         id: "3",
         name: "Bob Johnson Doe",
         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-        capacities: [{ text: "ML" }, { text: "Udemy" }]
+        capacities: [{ text: "ML" }, { text: "Udemy" }],
+        category: "Seguridad"
     }
 ];
 
@@ -114,7 +118,7 @@ const TrainingCreate = () => {
             setSupplierFilter(suppliers);
         else {
             filtered = suppliers.filter((item: any) =>
-                item.area === typeArea
+                item.category === typeArea
             );
             setSupplierFilter(filtered);
         }
@@ -403,11 +407,11 @@ const TrainingCreate = () => {
                             <div>
                                 <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
                                     <div className='col-5'>
-                                        <input className='form-control' type='text' placeholder='Buscar empleados' onChange={handleFilter} />
+                                        <input className='form-control' type='text' placeholder='Buscar responsables' onChange={handleFilter} />
                                     </div>
                                     <div className='col-2'>
                                         <select className="form-select" aria-label=".form-select-sm example" onChange={handleChangeType}>
-                                            <option hidden>Área</option>
+                                            <option hidden>Categoría</option>
                                             {typeTra.map((t) => {
                                                 return (
                                                     <option key={t.id} value={t.type}>{t.type}</option>
@@ -422,23 +426,31 @@ const TrainingCreate = () => {
 
                                 <div >
                                     {suppliers.length ?
-                                        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "10px" }}>
-                                            {
-                                                supplierFilter.map((tr) => {
-                                                    return (
-                                                        <SupplierCard key={tr.id}
-                                                            id={tr.id}
-                                                            name={tr.name}
-                                                            image={tr.image}
-                                                            capacities={tr.capacities}
-                                                            button='Asignar'
-                                                            buttonColor={"rgb(8, 66, 152)"}
-                                                        />
+                                        <>
+                                            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "10px" }}>
+                                                {
+                                                    supplierFilter.map((tr) => {
+                                                        return (
+                                                            <SupplierCard key={tr.id}
+                                                                id={tr.id}
+                                                                name={tr.name}
+                                                                image={tr.image}
+                                                                capacities={tr.capacities}
+                                                                button='Asignar'
+                                                                buttonColor={"rgb(8, 66, 152)"}
+                                                            />
 
-                                                    )
-                                                })
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+
+                                            {supplierFilter.length == 0 &&
+                                                <div style={{display: "flex", justifyContent: "center"}}>
+                                                    No hay resultados de responsables para la búsqueda
+                                                </div>
                                             }
-                                        </div>
+                                        </>
                                         :
                                         <div>
                                             No hay responsables disponibles

@@ -50,7 +50,7 @@ const datos: TrainingObj[] = [
         "id": 1,
         "name": "Seguridad de Información 1",
         "photoURL": 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
-        "description": "Lorem ipsum",
+        "description": "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
         "startDate": "06/05/2023",
         "endDate": "06/05/2023",
         "numEmployees": 10,
@@ -493,7 +493,7 @@ const Training = () => {
                                         }
                                     </div>       
 
-                                    {upcomingCourse.length >= mostrar &&
+                                    {upcomingCourse.length > mostrar &&
                                         <div>
                                             <div>
                                                 <Pagination
@@ -547,7 +547,7 @@ const Training = () => {
                                         }
                                     </div>
 
-                                    {currentCourse.length >= mostrar &&
+                                    {currentCourse.length > mostrar &&
                                         <div>
                                             <div>
                                                 <Pagination
@@ -609,7 +609,7 @@ const Training = () => {
 
                                     </div>
 
-                                    {finishedCourse.length >= mostrar &&
+                                    {finishedCourse.length > mostrar &&
                                         <div>
                                             <div>
                                                 <Pagination
