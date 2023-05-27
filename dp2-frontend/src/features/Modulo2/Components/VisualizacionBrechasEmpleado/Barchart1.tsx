@@ -40,12 +40,45 @@ const dataBar = {
     
 };
 const optionsBar = {
+    responsive: true,
+    plugins: {
+        legend: {
+          position: 'top' as const,
+        },
+        title: {
+          display: true,
+          text: 'Adecuación a las competencias',
+        },
+      },
     scales: {
         y: {
             beginAtZero: true,
         },
     },
 };
+
+const hardcode = [
+    { nombre: 'Programación en Java',  nivelActual: 1, nivelRequerido: 2 },
+    { nombre: 'Liderazgo',  nivelActual: 3, nivelRequerido: 3},
+    { nombre: 'Programación modular',  nivelActual: 2, nivelRequerido: 3},
+    { nombre: 'Uso de Microsoft Word',  nivelActual: 3, nivelRequerido: 3 },
+    { nombre: 'Innovación', nivelActual: 2, nivelRequerido: 2 },
+    { nombre: 'Gestión del Tiempo',  nivelActual: 1, nivelRequerido: 2 },
+    { nombre: 'Pensamiento Analítico', nivelActual: 3, nivelRequerido: 3 },
+    { nombre: 'Negociación',  nivelActual: 1, nivelRequerido: 2 },
+    { nombre: 'Planificación Estratégica',  nivelActual: 3, nivelRequerido: 2 },
+    { nombre: 'Comunicación Interpersonal',  nivelActual: 1, nivelRequerido: 3},
+    { nombre: 'Resiliencia',  nivelActual: 2, nivelRequerido: 3 },
+    { nombre: 'Adaptabilidad',  nivelActual: 1, nivelRequerido: 2 },
+    { nombre: 'Comunicación Escrita',  nivelActual: 2, nivelRequerido: 2 },
+    { nombre: 'Habilidades de Presentación',  nivelActual: 2, nivelRequerido: 3 },
+    { nombre: 'Resolución de Conflictos',  nivelActual: 1, nivelRequerido: 3 },
+    { nombre: 'Pensamiento Crítico',  nivelActual: 1, nivelRequerido: 2 },
+    { nombre: 'Empatía',  nivelActual: 3, nivelRequerido: 3 },
+    { nombre: 'Toma de Decisiones',  nivelActual: 2, nivelRequerido: 2 },
+    { nombre: 'Trabajo Bajo Presión',  nivelActual: 1, nivelRequerido: 3  },
+];
+
 const BarChart1 = () => {
 
     const dataInfo = [{ descripcion: 'C1', values: [3, 2, 2, 1, 5, 5] },
