@@ -2,7 +2,7 @@
     border: none;
     text-align: end;
     transform: rotate(180deg);
-    height: var(--rate-star-size);
+    height: var(--rate--size);
 }
 .rating-control-small {
     height: calc(var(--rate-star-size) * .5);

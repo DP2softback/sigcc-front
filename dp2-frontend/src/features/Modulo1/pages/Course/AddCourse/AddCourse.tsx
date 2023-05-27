@@ -12,6 +12,7 @@ function AddCourse (props: any)
     const { learningPathId } = useParams();
     const [courses, setCourses] = useState<any>([]);
     const [loading, setLoading] = useState<any>(false);
+    const [loadingInit, setLoadingInit] = useState<any>(false);
     const [loadingDetailsModal, setLoadingDetailsModal] = useState<any>(false);
     const [basicDetailsModal, setBasicDetailsModal] = useState<any>();
     const [detailsModalData, setDetailsModalData] = useState<any>([]);
@@ -22,14 +23,17 @@ function AddCourse (props: any)
 
     const loadsCourses = () =>
     {
+        setLoadingInit(true);
         axiosInt.get(`capacitaciones/learning_path/${learningPathId}/course/`)
             .then(function (response)
             {
                 setLPName(response.data.nombre);
+                setLoadingInit(false);
             })
             .catch(function (error)
             {
                 console.log(error);
+                setLoadingInit(false);
             });
     }
 
@@ -43,12 +47,12 @@ function AddCourse (props: any)
         setLoadingDetailsModal(true);
         setBasicDetailsModal(course);
         axiosInt.post('capacitaciones/udemy/detail/', {
-            url: course.url,
+            udemy_id: course.id,
         })
             .then(function (response)
             {
                 setLoadingDetailsModal(false);
-                setDetailsModalData(response.data);
+                setDetailsModalData(response.data.detail);
             })
             .catch(function (error)
             {
@@ -108,65 +112,79 @@ function AddCourse (props: any)
     return (
         <>
             <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'>
-                <div className='row'>
-                    <div className='col'>
-                        <h1>Agregar cursos a "{lpName}"</h1>
-                        <p><small className='opacity-50'>Escribe para buscar en miles de cursos de Udemy.</small></p>
-                    </div>
+                {
+                    loadingInit ?
+                        <>
+                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                                <div className='vertical-align-child'>
+                                    <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                        <span className="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </> :
+                        <>
+                            <div className='row'>
+                                <div className='col'>
+                                    <h1>Agregar cursos a "{lpName}"</h1>
+                                    <p><small className='opacity-50'>Escribe para buscar en miles de cursos de Udemy.</small></p>
+                                </div>
 
-                    <div className="row px-0 mx-0">
-                        <div className="col">
-                            <input className="form-control" type="text" placeholder="Buscar" onKeyUp={(e) => keyUpEvent(e)} />
-                        </div>
-                    </div>
-                    <div className="row row-cols-1 row-cols-md-3 align-items-stretch g-3 py-3 px-0 mx-0">
-                        {
-                            !loading && courses && courses.map((course: any, i: number) =>
-                            {
-                                return <Fragment key={i}>
+                                <div className="row px-0 mx-0">
                                     <div className="col">
-                                        <div className="card h-100 px-0">
-                                            <img src={course.image_480x270} className="card-img-top" alt="" />
-                                            <div className="card-body">
-                                                <h5 className="card-title">{course.title}</h5>
-                                                <p className="card-text">{course.headline}</p>
-                                            </div>
-                                            <div className="card-body">
-                                                <div className="row">
-                                                    <div className="col">
-                                                        {
-                                                            course.is_used ? <>
-                                                                <button style={{ width: '100%' }} className="btn btn-secondary">Quitar</button>
-                                                            </> :
-                                                                <>
-                                                                    <button style={{ width: '100%' }} className="btn btn-primary" onClick={() => addCourse(course.id, i)}>Añadir</button>
-                                                                </>
-                                                        }
+                                        <input className="form-control" type="text" placeholder="Buscar" onKeyUp={(e) => keyUpEvent(e)} />
+                                    </div>
+                                </div>
+                                <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 align-items-stretch pt-0 pb-3 px-0 mx-0 g-3">
+                                    {
+                                        !loading && courses && courses.map((course: any, i: number) =>
+                                        {
+                                            return <Fragment key={i}>
+                                                <div className="col">
+                                                    <div className="card h-100 px-0">
+                                                        <img src={course.image_480x270} className="card-img-top" alt="" />
+                                                        <div className="card-body">
+                                                            <h5 className="card-title">{course.title}</h5>
+                                                            <p className="card-text">{course.headline}</p>
+                                                        </div>
+                                                        <div className="card-body">
+                                                            <div className="row">
+                                                                <div className="col">
+                                                                    {
+                                                                        course.is_used ? <>
+                                                                            <button style={{ width: '100%' }} className="btn btn-secondary">Quitar</button>
+                                                                        </> :
+                                                                            <>
+                                                                                <button style={{ width: '100%' }} className="btn btn-primary" onClick={() => addCourse(course.id, i)}>Añadir</button>
+                                                                            </>
+                                                                    }
+                                                                </div>
+                                                                <div className="col">
+                                                                    <button style={{ width: '100%' }} type="button" className="btn btn-light" data-bs-toggle="modal" data-bs-target="#detailsModal" onClick={() => handleDetailsModalOpen(course)}>Detalle</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div className="col">
-                                                        <button style={{ width: '100%' }} type="button" className="btn btn-light" data-bs-toggle="modal" data-bs-target="#detailsModal" onClick={() => handleDetailsModalOpen(course)}>Detalle</button>
+                                                </div>
+
+                                            </Fragment>
+                                        })
+                                    }
+                                    {
+                                        loading && <>
+                                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 15rem)' }}>
+                                                <div className='vertical-align-child'>
+                                                    <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                                        <span className="visually-hidden">Loading...</span>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-
-                                </Fragment>
-                            })
-                        }
-                        {
-                            loading && <>
-                                <div className='vertical-align-parent' style={{ height: 'calc(100vh - 8.15rem)' }}>
-                                    <div className='vertical-align-child'>
-                                        <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
-                                            <span className="visually-hidden">Loading...</span>
-                                        </div>
-                                    </div>
+                                        </>
+                                    }
                                 </div>
-                            </>
-                        }
-                    </div>
-                </div>
+                            </div>
+                        </>
+                }
             </Sidebar>
 
             <div className="modal fade" id="detailsModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -213,24 +231,16 @@ function AddCourse (props: any)
                             <h5>Contenido del curso</h5>
                             <div className="card">
                                 <div className="card-body">
-                                    {
-                                        !loadingDetailsModal && detailsModalData.map((chapter: any, i: number) =>
+                                    <ul className='px-3'>
                                         {
-                                            return <Fragment key={`chapter-${i}`}>
-                                                <h6>{chapter.title}</h6>
-                                                {
-                                                    chapter.topics.map((topic: any, j: number) =>
-                                                    {
-                                                        return <Fragment key={`topic-${i}-${j}`}>
-                                                            <ul>
-                                                                <li><small>{topic}</small></li>
-                                                            </ul>
-                                                        </Fragment>
-                                                    })
-                                                }
-                                            </Fragment>
-                                        })
-                                    }
+                                            !loadingDetailsModal && detailsModalData.map((chapter: any, i: number) =>
+                                            {
+                                                return <Fragment key={`chapter-${i}`}>
+                                                    <li>{chapter}</li>
+                                                </Fragment>
+                                            })
+                                        }
+                                    </ul>
                                     {
                                         loadingDetailsModal && <>
                                             <div className='vertical-align-parent' style={{ height: '10rem' }}>

@@ -15,13 +15,14 @@ class Rate extends Component<Props, State>
         rate: 3,
         disabled: false,
         size: 'medium',
+        className: '',
     }
 
     render ()
     {
         return (
             <>
-                <fieldset style={{scale: .5}} className={`rating-control ${this.props.size === 'small' ? 'rating-control-small' : ''}`} defaultValue={this.props.rate}>
+                <fieldset style={{scale: .5}} className={`${this.props.className} rating-control ${this.props.size === 'small' ? 'rating-control-small' : ''}`} defaultValue={this.props.rate}>
                     <input title='5 estrellas' type='radio' id={`star5-${this.uuid}`} name={`rating-${this.uuid}`} value={5} defaultChecked={this.props.rate === 5} disabled={this.props.disabled} />
                     <label htmlFor={`star5-${this.uuid}`} title=''></label>
                     <input title='4 estrellas' type='radio' id={`star4-${this.uuid}`} name={`rating-${this.uuid}`} value={4} defaultChecked={this.props.rate === 4} disabled={this.props.disabled} />
