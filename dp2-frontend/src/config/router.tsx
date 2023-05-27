@@ -87,6 +87,10 @@ const EvaluacionDeDesempenhoDetail = Loader(
     )
 );
 
+const VisualizacionBrechasEmpleado = Loader(
+  lazy(() => import('@features/Modulo2/Components/VisualizacionBrechasEmpleado/Read'))
+);
+
 const EvaluationTemplateIndex = Loader(
     lazy(() => import("@features/Modulo3/screens/Plantillas/Index"))
 );
