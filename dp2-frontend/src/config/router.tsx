@@ -171,7 +171,15 @@ const routes: RouteObject[] = [
             },
         ],
     },
-
+    {
+        path: 'employeesGaps',
+        children: [
+          {
+            path: 'index',
+            element: <VisualizacionBrechasEmpleado/>
+          }
+        ]
+    },
     {
         path: "skillManagement",
         children: [
