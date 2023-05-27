@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
 import { CONTINUOS_EVALUATION_CREATE, CONTINUOS_EVALUATION_INDEX } from '@config/paths';
@@ -10,10 +10,12 @@ import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import TableHistoryContinua from '@features/Modulo3/components/Tables/TableHistoryContinua';
 import registros from '@features/Modulo3/jsons/HistoryContinua';
+import { noDataFound } from '@features/Modulo3/utils/constants';
 
 const History = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const employeeId = urlParams.get('id');
+  const [evaluations, setEvaluations] = useState([]);
 
   const filters = (
     <Form>
@@ -53,19 +55,22 @@ const History = () => {
       <TableHistoryContinua rows ={registros}></TableHistoryContinua>
     </div>
   );
+
   const content = (
     <>
-    {table}
-    {chart}
-    <div className="text-end mt-32 mb-4">
-      <Button onClick={() => {
-        navigateTo(CONTINUOS_EVALUATION_CREATE);
-      }}>
-        Agregar nueva evaluación
-      </Button>
-    </div>
+      {evaluations.length > 0 ? (
+        <>
+          {table}
+          {chart}
+        </>
+      ) : (
+        noDataFound
+      )}
+      <div className="text-end mt-32 mb-4">
+        <Button>Agregar nueva evaluación</Button>
+      </div>
     </>
-  )
+  );
 
   const body = (
     <Section title={'Evaluaciones'} content={content} filters={filters}/>
