@@ -254,7 +254,7 @@ function ConfigOfertaLaboral(props: any) {
             </div>
             <div className="row">
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                    <div className="col-8">
+                    <div className="col-9">
                         <Form.Group as={Row} controlId="validationCustom01">
                             <Col sm="9">
                                 <Form.Label>
@@ -277,7 +277,7 @@ function ConfigOfertaLaboral(props: any) {
                                                     : ""
                                             }
                                         />
-                                        <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+                                        <Form.Control.Feedback></Form.Control.Feedback>
                                     </Col>
                                     <Col>
                                         <Button
@@ -285,12 +285,12 @@ function ConfigOfertaLaboral(props: any) {
                                                 handleShowBuscadorFromButtom
                                             }
                                         >
-                                            Buscar proceso
+                                            Buscar proceso selección
                                         </Button>
                                     </Col>
                                 </Row>
                             </Col>
-                            <Col sm="3">
+                            <Col>
                                 <Form.Label>Imagen referencial:</Form.Label>
                                 <span></span>
                                 <div className="image-upload">

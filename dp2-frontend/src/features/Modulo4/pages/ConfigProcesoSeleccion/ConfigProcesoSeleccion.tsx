@@ -291,6 +291,12 @@ function ConfigProcesoSeleccion(props: any) {
                             >
                                 Buscar puesto
                             </Button>
+                            {showModalBuscador && (
+                                <SearchInput
+                                    onClose={handleCloseBuscadorFromButtom}
+                                    onSelect={handleOptionSelectBuscador}
+                                />
+                            )}
                         </div>
                     </div>
 
