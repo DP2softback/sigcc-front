@@ -10,6 +10,7 @@ import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import TableHistoryContinua from '@features/Modulo3/components/Tables/TableHistoryContinua';
 import registros from '@features/Modulo3/jsons/HistoryContinua';
+import Linechart from '@features/Modulo3/components/Charts/Linechart/Linechart';
 import { noDataFound } from '@features/Modulo3/utils/constants';
 
 const History = () => {
@@ -34,8 +35,8 @@ const History = () => {
   );
 
   const chart = (
-    <div className='col-md-6 mb-32px'>
-      <PieChart
+    <div className='col-md-7 mb-32px'>
+      {/* <PieChart
         title={"Evaluaciones continuas"}
         labels={["Red", "Blue", "Yellow"]}
         datasets={[
@@ -46,12 +47,25 @@ const History = () => {
             hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
           },
         ]}
-      />
+      /> */}
+      <div className='container-mt-32px'>
+      <Linechart
+        colorsLine={[ 'rgba(251,227,142,0.7)', 'rgba(154,137,255,0.7)','rgba(254,208,238,0.7)','rgba(208,232,255,0.7)','rgba(169,244,208,0.7)']}
+        labelsX={['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio']}
+        dataInfoprops={[{descripcion : 'Precisión y exactitud en el trabajo realizado', values: [3, 2, 2, 1, 5, 5] },
+        {descripcion : 'Cumplimiento de los estándares de calidad', values: [1, 3, 2, 2, 3, 5] }, 
+        {descripcion : 'Trabajo completo y bien organizado', values: [4, 1, 3, 5, 3, 4] }, 
+        {descripcion : 'Identificación y corrección de errores y problemas', values: [2, 5, 1, 2, 3, 4] }, 
+        {descripcion : 'Cumplimiento de los plazos establecidos', values: [5, 3, 4, 3, 2, 5] }
+        ]}
+      ></Linechart>
+      </div>
+
     </div>
   );
 
   const table =(
-    <div className='col-md-6'>
+    <div className='col-md-5'>
       <TableHistoryContinua rows ={registros}></TableHistoryContinua>
     </div>
   );
@@ -66,7 +80,7 @@ const History = () => {
       ) : (
         noDataFound
       )}
-      <div className="text-end mt-32 mb-4">
+      <div className="text-end mb-4">
         <Button>Agregar nueva evaluación</Button>
       </div>
     </>
