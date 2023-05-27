@@ -156,9 +156,7 @@ const CompetenciasListar = () => {
                   <td>{competencia.asignadoAPuesto}</td>
                   <td>{competencia.estado}</td>
                   <td>
-                    <Button variant="link" size="sm">
-                      <i className="bi bi-box-arrow-in-right"></i>
-                    </Button>
+          
                     <Button variant="link" size="sm">
                       <i className="bi bi-pencil"></i>
                     </Button>
