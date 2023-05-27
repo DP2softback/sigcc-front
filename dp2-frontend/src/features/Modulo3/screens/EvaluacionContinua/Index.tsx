@@ -20,7 +20,7 @@ const Index = () => {
 
   useEffect(() => {
     (async () => {
-      setEmployees(await getPersonasACargo());
+      setEmployees(await getPersonasACargo(2));
     })();
   }, []);
   
