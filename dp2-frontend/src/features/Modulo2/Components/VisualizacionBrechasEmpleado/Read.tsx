@@ -130,7 +130,7 @@ const Read = () => {
     }
 
     return (
-        <div>
+        <div className='container-fluid'>
             <h2>Consolidado de competencias</h2>
             <p className="text-muted">Agrega, edita y desactiva competencias</p>
             <Form className="mb-3">
