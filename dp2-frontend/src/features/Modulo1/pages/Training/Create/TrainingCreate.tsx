@@ -66,17 +66,34 @@ const suppliers: Supplier[] = [
     }
 ];
 
-const typeTra = [
-    { id: 1, type: "Todos" },
-    { id: 2, type: "Software" },
-    { id: 3, type: "Salud" },
-    { id: 4, type: "Seguridad" },
+type typeTraI = {
+    id: number,
+    type: string
+}
+
+type typeComI = {
+    id: number,
+    rs: string,
+    email?: string
+}
+
+const typeTra: typeTraI[] = [
+    // { id: 1, type: "Todos" },
+    { id: 1, type: "Software" },
+    { id: 2, type: "Salud" },
+    { id: 3, type: "Seguridad" },
+]
+
+const typeCom: typeComI[] = [
+    // { id: 1, type: "Todos" },
+    { id: 1, rs: "Empresa 1" },
+    { id: 2, rs: "Empresa 2" },
+    { id: 3, rs: "Empresa 3" },
 ]
 
 let sessionsData: SessionObj[] = []
 
 const TrainingCreate = () => {
-    const [loading, setLoading] = useState(false);
     const { trainingID } = useParams();
     /* CAMBIAR CON LA API */ 
     const [training, setTraining] = useState<any>(data);
@@ -92,7 +109,30 @@ const TrainingCreate = () => {
 
     const [supplierFilter, setSupplierFilter] = useState<Supplier[]>(suppliers)
     const [typeArea, setTypeArea] = useState("Todos")
+    const [typeCompany, setTypeCompany] = useState("Todos")
     var filtered;
+    var mostrar = 6;
+
+    const [loading, setLoading] = useState(false);
+    const checkList = ["Desarrollo de Software", "Redes y seguridad", "Prueba 1", "Prueba 2"]
+    const [checked, setChecked] = useState([]);
+
+
+    const handleCheck = (event) => {
+
+        async function updateArray() {
+            var updatedList = [...checked];
+            if (event.target.checked) {
+                updatedList = [...checked, event.target.value];
+            } else {
+                updatedList.splice(checked.indexOf(event.target.value), 1);
+            }
+            setChecked(updatedList);
+        }
+
+        updateArray()  
+    };
+
 
     const handleFilter = (e: any) => {
         const searchTerm = e.target.value;
@@ -223,7 +263,7 @@ const TrainingCreate = () => {
         console.log(dataSession)
 
         /* Clear inputs */
-        
+
         refTrName.current.value = "";
         refTrDescription.current.value = "";
         refTrDateStart.current.value = "";
@@ -232,7 +272,7 @@ const TrainingCreate = () => {
         if(training.tipo === "A"){
             refTrDateEnd.current.value = "";
         }
-        else{
+        else {
             refTrLocation.current.value = "";
             refTrCapacity.current.value = "";
         }
@@ -305,6 +345,25 @@ const TrainingCreate = () => {
         loadTrainingDetails();
     }, []);
 
+    const handleCategory = (category: typeTraI) => {
+        setTypeArea(category.type)
+    }
+
+    const handleCompany = (company: typeComI) => {
+        setTypeCompany(company.rs)
+    }
+
+    const handleData = () => {
+        setTypeArea("Todos")
+        setTypeCompany("Todos")
+        setChecked([])
+    }
+
+    const checkedItems = checked.length
+        ? checked.reduce((total, item) => {
+            return total + ", " + item;
+        })
+        : "";
 
     return (
         <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
@@ -382,6 +441,7 @@ const TrainingCreate = () => {
                             </div>
                         </div>
                     </div>
+                    
                     {/* CREATE SESSION MODAL */}
                     <div className="modal fade" id="createSessionModal" aria-hidden="true" aria-labelledby="createSessionModal" tabIndex={-1}>
                         <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -455,67 +515,160 @@ const TrainingCreate = () => {
                                     }
                                 </div>
                                 <div className="modal-footer">
-                                    <button className="btn btn-primary" data-bs-target="#assignResponsible" data-bs-toggle="modal">Continuar</button>
-                                </div>
-                            </div>
+                            <button className="btn btn-primary" data-bs-target="#searchResponsible" data-bs-toggle="modal" onClick={handleData}>Continuar</button>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    {/* MODAL ASSING RESPONSIBLE */}
-                    <div className="modal fade" id="assignResponsible" aria-hidden="true" aria-labelledby="assignResponsible" tabIndex={-1}>
-                        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h1 className="modal-title fs-5" id="assignResponsible">Asignar responsable</h1>
-                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div className="modal-body" style={{ paddingLeft: "4rem" }}>
+            {/* MODAL SEARCH RESPONSIBLE */}
+            <div className="modal fade" id="searchResponsible" aria-hidden="true" aria-labelledby="searchResponsible" tabIndex={-1}>
+                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="searchResponsible">Buscar responsables</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
 
+                            <div>
+                                <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
                                     <div>
-                                        <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
-                                            <div className='col-5'>
-                                                <input className='form-control' type='text' placeholder='Buscar responsables' onChange={handleFilter} />
+                                        <h4 style={{ fontSize: "14px", fontWeight: "400" }}>Buscar por categoría</h4>
+                                    </div>
+                                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                        {typeTra.map((t) => {
+                                            return (
+                                                <button type='button' key={t.id} className='btn' style={{ backgroundColor: t.type == typeArea ? '#3f4b58' : '', color: t.type == typeArea ? '#FFF' : '#000', border: t.type == typeArea ? '' : '0.1rem solid #0d6efd' }} onClick={() => handleCategory(t)}>{t.type}</button>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            {typeArea != "Todos" &&
+                                <>
+                                    {loading ?
+                                        <>
+                                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                                                <div className='vertical-align-child'>
+                                                    <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                                        <span className="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div className='col-2'>
-                                                <select className="form-select" aria-label=".form-select-sm example" onChange={handleChangeType}>
-                                                    <option hidden>Categoría</option>
-                                                    {typeTra.map((t) => {
+                                        </>
+                                        :
+                                        <div>
+                                            <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
+                                                <div>
+                                                    <h4 style={{ fontSize: "14px", fontWeight: "400" }}>Buscar por empresa</h4>
+                                                </div>
+                                                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                                    {typeCom.map((t) => {
                                                         return (
-                                                            <option key={t.id} value={t.type}>{t.type}</option>
+                                                            <button type='button' key={t.id} className='btn' style={{ backgroundColor: t.rs == typeCompany ? '#3f4b58' : '', color: t.rs == typeCompany ? '#FFF' : '#000', border: t.rs == typeCompany ? '' : '0.1rem solid #0d6efd' }} onClick={() => handleCompany(t)}>{t.rs}</button>
                                                         )
                                                     })}
-                                                </select>
-                                            </div>
-                                            <div className='col-1 text-end'>
-                                                <button className='btn btn-primary' type='button' onClick={search}>Buscar</button>
+                                                </div>
                                             </div>
                                         </div>
+                                    }
+                                </>
+                            }
 
-                                        <div >
-                                            {suppliers.length ?
-                                                <>
-                                                    <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "10px" }}>
-                                                        {
-                                                            supplierFilter.map((tr) => {
-                                                                return (
-                                                                    <SupplierCard key={tr.id}
-                                                                        id={tr.id}
-                                                                        name={tr.name}
-                                                                        image={tr.image}
-                                                                        capacities={tr.capacities}
-                                                                        button='Asignar'
-                                                                        buttonColor={"rgb(8, 66, 152)"}
-                                                                    />
-
-                                                                )
-                                                            })
-                                                        }
+                            {typeCompany != "Todos" &&
+                                <>
+                                    {loading ?
+                                        <>
+                                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                                                <div className='vertical-align-child'>
+                                                    <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                                        <span className="visually-hidden">Loading...</span>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </>
+                                        :
+                                        <div>
+                                            <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
+                                                <div>
+                                                    <h4 style={{ fontSize: "14px", fontWeight: "400" }}>Buscar por habilidades</h4>
+                                                </div>
+                                                <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)"}}>
+                                                    {checkList.map((item, index) => {
+                                                        return (
+                                                            <div key={index}>
+                                                                <input value={item} type="checkbox" onChange={handleCheck} style={{marginRight: "0.5rem"}} />
+                                                                <span >{item}</span>
+                                                            </div>
+                                                        )
+                                                    })}
+                                                </div>
+                                                <div style={{paddingTop: "0.5rem"}}>
+                                                    {`Habilidades seleccionadas: ${checkedItems}`}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </>
+                            }
 
-                                                    {supplierFilter.length == 0 &&
-                                                        <div style={{display: "flex", justifyContent: "center"}}>
-                                                            No hay resultados de responsables para la búsqueda
-                                                        </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button className="btn btn-primary" data-bs-target="#assignResponsible" data-bs-toggle="modal">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* MODAL ASSING RESPONSIBLE */}
+            <div className="modal fade" id="assignResponsible" aria-hidden="true" aria-labelledby="assignResponsible" tabIndex={-1}>
+                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="assignResponsible">Asignar responsable</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body" style={{ paddingLeft: "4rem" }}>
+
+                            <div>
+                                <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
+                                    <div style={{ display: "flex" }}>
+                                        <input className='form-control' type='text' placeholder='Buscar responsables' onChange={handleFilter} />
+                                        <h5 style={{ display: "flex", fontSize: "14px" }}>Categoría: <p style={{ paddingLeft: "1px" }}> {typeArea}</p></h5>
+                                        <h5>Empresa: {typeCompany}</h5>
+                                    </div>
+                                </div>
+
+                                <div >
+                                    {suppliers.length ?
+                                        <>
+                                            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "10px" }}>
+                                                {
+                                                    supplierFilter.map((tr) => {
+                                                        return (
+                                                            <SupplierCard key={tr.id}
+                                                                id={tr.id}
+                                                                name={tr.name}
+                                                                image={tr.image}
+                                                                capacities={tr.capacities}
+                                                                button='Asignar'
+                                                                buttonColor={"rgb(8, 66, 152)"}
+                                                            />
+
+                                                        )
+                                                    })
+                                                }
+                                            </div>
+
+                                            {supplierFilter.length == 0 &&
+                                                <div style={{ display: "flex", justifyContent: "center" }}>
+                                                    No hay resultados de responsables para la búsqueda
+                                                </div>
+
+
                                                     }
                                                 </>
                                                 :
