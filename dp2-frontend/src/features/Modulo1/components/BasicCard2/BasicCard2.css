@@ -46,11 +46,12 @@
   font-size: 16px;
   opacity: 0.5;
   display: -webkit-box;
+  height: 72px;
   -webkit-line-clamp: 3; /* Número máximo de líneas */
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  /* text-align: justify; */
+  text-align: justify;
 }
 
 .basicCard-body{
