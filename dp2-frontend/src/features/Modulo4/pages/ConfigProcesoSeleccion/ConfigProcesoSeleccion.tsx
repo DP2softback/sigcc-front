@@ -250,6 +250,7 @@ function ConfigProcesoSeleccion(props: any) {
                         </p>
                     </div>
                 </div>
+
                 <div className="row">
                     {/* FILA   ------- */}
 
