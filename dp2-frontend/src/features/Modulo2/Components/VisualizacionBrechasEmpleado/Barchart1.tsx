@@ -79,6 +79,29 @@ const hardcode = [
     { nombre: 'Trabajo Bajo Presión',  nivelActual: 1, nivelRequerido: 3  },
 ];
 
+/**
+ * const hardcode = [
+    { nombre: 'Programación en Java',  nivelActual: 'Bajo', nivelRequerido: 'Medio' },
+    { nombre: 'Liderazgo',  nivelActual: 'Alto', nivelRequerido: 'Alto'},
+    { nombre: 'Programación modular',  nivelActual: 'Medio', nivelRequerido: 'Alto'},
+    { nombre: 'Uso de Microsoft Word',  nivelActual: 'Alto', nivelRequerido: 'Alto' },
+    { nombre: 'Innovación', nivelActual: 'Medio', nivelRequerido: 'Medio' },
+    { nombre: 'Gestión del Tiempo',  nivelActual: 'Bajo', nivelRequerido: 'Medio' },
+    { nombre: 'Pensamiento Analítico', nivelActual: 'Alto', nivelRequerido: 'Alto' },
+    { nombre: 'Negociación',  nivelActual: 'Bajo', nivelRequerido: 'Medio' },
+    { nombre: 'Planificación Estratégica',  nivelActual: 'Alto', nivelRequerido: 'Medio' },
+    { nombre: 'Comunicación Interpersonal',  nivelActual: 'Bajo', nivelRequerido: 'Alto'},
+    { nombre: 'Resiliencia',  nivelActual: 'Medio', nivelRequerido: 'Alto' },
+    { nombre: 'Adaptabilidad',  nivelActual: 'Bajo', nivelRequerido: 'Medio' },
+    { nombre: 'Comunicación Escrita',  nivelActual: 'Medio', nivelRequerido: 'Medio' },
+    { nombre: 'Habilidades de Presentación',  nivelActual: 'Medio', nivelRequerido: 'Alto' },
+    { nombre: 'Resolución de Conflictos',  nivelActual: 'Bajo', nivelRequerido: 'Alto' },
+    { nombre: 'Pensamiento Crítico',  nivelActual: 'Bajo', nivelRequerido: 'Medio' },
+    { nombre: 'Empatía',  nivelActual: 'Alto', nivelRequerido: 'Alto' },
+    { nombre: 'Toma de Decisiones',  nivelActual: 'Medio', nivelRequerido: 'Medio' },
+    { nombre: 'Trabajo Bajo Presión',  nivelActual: 'Bajo', nivelRequerido: 'Alto'  },
+];
+ */
 const BarChart1 = () => {
 
     const dataInfo = [{ descripcion: 'C1', values: [3, 2, 2, 1, 5, 5] },

@@ -91,6 +91,10 @@ const VisualizacionBrechasEmpleado = Loader(
   lazy(() => import('@features/Modulo2/Components/VisualizacionBrechasEmpleado/Read'))
 );
 
+const GestionDeCompetencias = Loader(
+    lazy(() => import('@features/Modulo2/Components/GestionDeCompetencias/Read'))
+  );
+
 const EvaluationTemplateIndex = Loader(
     lazy(() => import("@features/Modulo3/screens/Plantillas/Index"))
 );
@@ -548,6 +552,15 @@ const routes: RouteObject[] = [
                   {
                     path: 'index',
                     element: <VisualizacionBrechasEmpleado/>
+                  }
+                ]
+            },
+            {
+                path: 'showskills',
+                children: [
+                  {
+                    path: 'index',
+                    element: <GestionDeCompetencias/>
                   }
                 ]
             },
