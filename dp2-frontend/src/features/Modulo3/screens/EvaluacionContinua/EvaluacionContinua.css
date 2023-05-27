@@ -28,3 +28,7 @@
 .mt-32{
   margin-top: 32px;
 }
+
+.cursor-pointer{
+  cursor: pointer;
+}

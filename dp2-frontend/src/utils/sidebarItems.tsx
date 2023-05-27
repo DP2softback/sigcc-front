@@ -20,7 +20,7 @@ const sidebarItems = [
     ),
   },
   {
-    to: "/modulo1/cursoempresa",
+    to: "/modulo1/capacitacion",
     label: "Capacitación",
     icon: (
       <svg
