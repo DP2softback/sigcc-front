@@ -30,6 +30,10 @@ const M1ListTraining = Loader(
   lazy(() => import('@features/Modulo1/pages/Training'))
 );
 
+const M1TrainingCreate = Loader(
+  lazy(() => import('@features/Modulo1/pages/Training/Create'))
+);
+
 const M1TrainingDetails = Loader(
   lazy(() => import('@features/Modulo1/pages/Training/Details'))
 );
@@ -96,52 +100,60 @@ const AscensosCandidatos = Loader(
 
 const routes: RouteObject[] = [
   {
-    path: "modulo1",
+    path: '/',
+   element: <Modulo1LP />
+  },
+  {
+    path: 'modulo1',
     children: [
       {
-        path: "",
-        element: <Modulo1LP />,
+        path: '',
+        element: <Modulo1LP />
       },
       {
-        path: "rutadeaprendizaje",
+        path: 'rutadeaprendizaje',
         children: [
           {
-            path: "",
-            element: <M1ListLearningPath />,
+            path: '',
+            element: <M1ListLearningPath />
           },
           {
-            path: "detalle/:learningPathId",
-            element: <M1LearningPathDetails />,
+            path: 'detalle/:learningPathId',
+            element: <M1LearningPathDetails />
           },
-        ],
+        ]
       },
       {
-        path: "curso",
+        path: 'curso',
         children: [
           {
-            path: "agregar/:learningPathId",
-            element: <M1AddCourse />,
+            path: 'agregar/:learningPathId',
+            element: <M1AddCourse />
           },
-        ],
+        ]
       },
       {
-        path: "capacitacion",
+        path: 'cursoempresa',
         children: [
           {
-            path: "",
-            element: <M1ListTraining />,
+            path: '',
+            element: <M1ListTraining />
           },
           {
-            path: "detalle/:trainingID",
-            element: <M1TrainingDetails />,
+            path: 'creacion/:trainingID',
+            element: <M1TrainingCreate />
           },
           {
-            path: "asignacion/:trainingID",
-            element: <M1TrainingAssignment />,
+            path: 'detalle/:trainingID',
+            element: <M1TrainingDetails />
           },
-        ],
+          {
+            path: 'asignacion/:trainingID',
+            element: <M1TrainingAssignment />
+          },
+        ]
       },
-    ],
+    ]
   },
   {
     path: "skillManagement",
