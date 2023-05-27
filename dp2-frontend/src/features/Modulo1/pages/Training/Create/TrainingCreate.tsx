@@ -1,10 +1,11 @@
 import Sidebar from '@components/Sidebar'
 import sidebarItems from '@features/Modulo1/utils/sidebarItems'
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axiosInt from '@config/axios';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { ArrowLeftCircleFill, Check, PlusCircle, Trash } from 'react-bootstrap-icons';
 import { Card } from 'react-bootstrap';
+import SessionAccordion from '@features/Modulo1/components/SessionAccordion';
 
 const data = {
     id: 1,
@@ -15,36 +16,110 @@ const data = {
 }
 
 type SessionObj = {
-    id: number;
+    id?: number;
     name: string;
     description: string;
     startDate: string;
     limitDate: string;
-    numEmployees: number;
-    capacity: number;
+    numEmployees?: number;
     location: string;
     urlVideo: string;
+    topics: string[];
 }
 
-const sessionsData: SessionObj[] = [
+let sessionsData: SessionObj[] = []
 
+/*
+const sessionsData: SessionObj[] = [
+    {
+        "id": 1,
+        "name": "Sesión de introducción",
+        "description": "Introduccion a este nuevo curso de empresa",
+        "startDate": "06/05/2023",
+        "limitDate": "20/05/2023",
+        "numEmployees": 0,
+        "location": null,
+        "urlVideo": null,
+        "topics": [
+            {
+                "id": 1,
+                "name": "Tema de la sesión 1"
+            },
+            {
+                "id": 2,
+                "name": "Tema de la sesión 2"
+            },
+            {
+                "id": 3,
+                "name": "Tema de la sesión 3"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Sesión 1",
+        "description": "Descripción de la sesión 1",
+        "startDate": "07/05/2023",
+        "limitDate": "20/05/2023",
+        "numEmployees": 0,
+        "location": null,
+        "urlVideo": null,
+        "topics": [
+            {
+                "id": 1,
+                "name": "Tema de la sesión 1"
+            },
+            {
+                "id": 2,
+                "name": "Tema de la sesión 2"
+            },
+            {
+                "id": 3,
+                "name": "Tema de la sesión 3"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Sesión 2",
+        "description": "Descripción de la sesión 2",
+        "startDate": "08/05/2023",
+        "limitDate": "20/05/2023",
+        "numEmployees": 0,
+        "location": null,
+        "urlVideo": null,
+        "topics": [
+            {
+                "id": 1,
+                "name": "Tema de la sesión 1"
+            },
+            {
+                "id": 2,
+                "name": "Tema de la sesión 2"
+            },
+            {
+                "id": 3,
+                "name": "Tema de la sesión 3"
+            }
+        ]
+    }
 ]
+*/
 
 const TrainingCreate = () => {
+    const location = useLocation();
     const { trainingID } = useParams();
-    const [training, setTraining] = useState<any>(data);
+    const [training, setTraining] = useState<any>(location.state.data);
     const [classSessions, setClassSessions] = useState<SessionObj[]>(sessionsData)
-    const [addedTopics, setAddedTopics] = useState<String[]>([])
+    const [addedTopics, setAddedTopics] = useState<string[]>([])
 
     /* TRAINING SESSION DETAIL INPUTS */
     const refTrName = useRef<HTMLInputElement>(null);
     const refTrDescription = useRef<HTMLTextAreaElement>(null);
     const refTrLocation = useRef<HTMLInputElement>(null);
     const refTrTopics = useRef<HTMLInputElement>(null);
-    const refTrDateSession = useRef<HTMLInputElement>(null);
     const refTrDateStart = useRef<HTMLInputElement>(null);
     const refTrDateEnd = useRef<HTMLInputElement>(null);
-    const refTrCapacity = useRef<HTMLInputElement>(null);
     /* TRAINING SESSION DETAIL INPUTS */
 
     const addTopic = (e: React.FormEvent) => {
@@ -52,6 +127,7 @@ const TrainingCreate = () => {
         if(refTrTopics.current?.value !== ""){
             setAddedTopics([...addedTopics, refTrTopics.current?.value])
             console.log(addedTopics)
+            refTrTopics.current.value = ""
         }
     }
 
@@ -89,33 +165,36 @@ const TrainingCreate = () => {
     }
 
     const createSession = () => {
-        let dataSession = {}
+        let dataSession: SessionObj = {
+            name: refTrName.current?.value,
+            description: refTrDescription.current?.value,
+            startDate: refTrDateStart.current?.value,
+            limitDate: refTrDateEnd.current?.value,
+            location: refTrLocation.current?.value,
+            urlVideo: null,
+            topics: addedTopics
+            //responsable:
+        }
 
-        if(training.type === "Asincrono"){
-            dataSession = {
-                nombre: refTrName.current?.value,
-                descripcion: refTrDescription.current?.value,
-                fecha: refTrDateStart.current?.value,
-                fechaLimite: refTrDateEnd.current?.value,
-                //urlVideoGrabacion:
-                temas: addedTopics
-                //responsable:
-            }
+        setClassSessions([...classSessions, dataSession])
+        
+        console.log(classSessions)
+
+        /* Clear inputs */
+        
+        refTrName.current.value = "";
+        refTrDescription.current.value = "";
+        refTrDateStart.current.value = "";
+        setAddedTopics([]);
+
+        if(training.type === "Virtual Asincrono"){
+            refTrDateEnd.current.value = "";
         }
         else{
-            dataSession = {
-                nombre: refTrName.current?.value,
-                descripcion: refTrDescription.current?.value,
-                fecha: refTrDateSession.current?.value,
-                ubicacion: refTrLocation.current?.value,
-                capacidad: refTrCapacity.current?.value,
-                temas: addedTopics
-                //responsable: 
-            }
+            refTrLocation.current.value = "";
         }
 
-        console.log(dataSession)
-
+        /*
         axiosInt.post('RUTA API', dataSession)
             .then(function (response)
             {
@@ -125,6 +204,7 @@ const TrainingCreate = () => {
             {
                 console.log(error);
             });
+        */
     }
 
     return (
@@ -142,9 +222,9 @@ const TrainingCreate = () => {
                 </div>
             </div>
 
-            <div className='row mt-3'>
-                <div className='col' style={{ marginLeft: "54px" }}>
-                    <h4 className='mb-3'>Sesiones</h4>
+            <div className='row mt-3' style={{ marginLeft: "40px" }}>
+                <div className='col'>
+                    <h4>Sesiones</h4>
                 </div>
                 <div style={{ flex: '0 0 15rem' }} className='col text-end'>
                     {/* Button trigger modal */}
@@ -156,17 +236,18 @@ const TrainingCreate = () => {
                     </button>
                 </div>
 
-                {classSessions.length > 0 ?
-                (<>
-                
-                </>)
-                :
-                (<>
-                    <h6 style={{ display: "flex", justifyContent: "center" }}>
-                        Crea una sesión para comenzar
-                    </h6>
-                </>)
-                }
+                <div className='mt-3'>
+                    {classSessions.length > 0 ?
+                        (<SessionAccordion sessions={classSessions}/>)
+                        :
+                        (<>
+                            <h6 style={{ display: "flex", justifyContent: "center" }}>
+                                Crea una sesión para comenzar
+                            </h6>
+                        </>)
+                    }
+                </div>
+                    
 
             </div>
 
@@ -190,7 +271,7 @@ const TrainingCreate = () => {
                         </div>
                         
                         {
-                            training.type === "Asincrono" ?
+                            training.type === "Virtual Asincrono" ?
                             (<div className='row mb-3'>
                                 <div className='col'>
                                     <label className="form-label">Fecha de inicio</label>
@@ -205,17 +286,11 @@ const TrainingCreate = () => {
                             (<>
                                 <div className='mb-3'>
                                     <label className="form-label">Fecha de la sesión</label>
-                                    <input className='form-control' type='date' id='start_date_creation' ref={refTrDateSession} />
+                                    <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
                                 </div>
-                                <div className='row mb-3'>
-                                    <div className='col'>
-                                        <label className="form-label">Ubicación</label>
+                                <div className='mb-3'>
+                                    <label className="form-label">Ubicación</label>
                                         <input ref={refTrLocation} type="text" className="form-control" />
-                                    </div>
-                                    <div className='col'>
-                                        <label className="form-label">Aforo máximo</label>
-                                        <input type="number" className="form-control" ref={refTrCapacity} min={'0'} />
-                                    </div>
                                 </div>
                             </>)
                         }
@@ -259,7 +334,7 @@ const TrainingCreate = () => {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        ACA IRIAN LOS CARDS ? :D
+                        ACA IRAN LOS CARDS DE EMPLEADOS
                     </div>
                     <div className="modal-footer">
                         <button className="btn btn-primary" data-bs-dismiss="modal" onClick={createSession}>Crear</button>
