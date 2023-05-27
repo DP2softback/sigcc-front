@@ -78,6 +78,7 @@ const TrainingDetails = () => {
     const { trainingID } = useParams();
     const [training, setTraining] = useState<any>(datos);
     const [position, setPosition] = useState(0);
+    const [prueba, setPrueba] = useState(0);
     const employeesToShow = employees.slice(position, position + 3);
     const botonEmployee = "Quitar";
 
@@ -210,7 +211,7 @@ const TrainingDetails = () => {
                                                 codigo={employee.code}
                                                 boton1={botonEmployee}
                                                 boton1Color={"#B02A37"}
-                                                option={{}}
+                                                option={setPrueba}
                                             />
                                         ))}
                                         {(employeesToShow.length != 3) &&

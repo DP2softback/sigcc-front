@@ -14,7 +14,7 @@ const data = {
     name: "Ejemplo de Creación",
     photoURL: 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
     description: "Esto es un ejemplo de creación de un curso empresa",
-    type: "Asincrono"
+    type: "Presencial"
 }
 
 type Supplier = {
@@ -62,11 +62,29 @@ const suppliers: Supplier[] = [
     }
 ];
 
-const typeTra = [
-    { id: 1, type: "Todos" },
-    { id: 2, type: "Software" },
-    { id: 3, type: "Salud" },
-    { id: 4, type: "Seguridad" },
+type typeTraI = {
+    id: number,
+    type: string
+}
+
+type typeComI = {
+    id: number,
+    rs: string,
+    email?: string
+}
+
+const typeTra: typeTraI[] = [
+    // { id: 1, type: "Todos" },
+    { id: 1, type: "Software" },
+    { id: 2, type: "Salud" },
+    { id: 3, type: "Seguridad" },
+]
+
+const typeCom: typeComI[] = [
+    // { id: 1, type: "Todos" },
+    { id: 1, rs: "Empresa 1" },
+    { id: 2, rs: "Empresa 2" },
+    { id: 3, rs: "Empresa 3" },
 ]
 
 const typeCreation = [
@@ -93,7 +111,30 @@ const TrainingCreate = () => {
 
     const [supplierFilter, setSupplierFilter] = useState<Supplier[]>(suppliers)
     const [typeArea, setTypeArea] = useState("Todos")
+    const [typeCompany, setTypeCompany] = useState("Todos")
     var filtered;
+    var mostrar = 6;
+
+    const [loading, setLoading] = useState(false);
+    const checkList = ["Desarrollo de Software", "Redes y seguridad", "Prueba 1", "Prueba 2"]
+    const [checked, setChecked] = useState([]);
+
+
+    const handleCheck = (event) => {
+
+        async function updateArray() {
+            var updatedList = [...checked];
+            if (event.target.checked) {
+                updatedList = [...checked, event.target.value];
+            } else {
+                updatedList.splice(checked.indexOf(event.target.value), 1);
+            }
+            setChecked(updatedList);
+        }
+
+        updateArray()  
+    };
+
 
     const handleFilter = (e: any) => {
         const searchTerm = e.target.value;
@@ -187,20 +228,20 @@ const TrainingCreate = () => {
         }
 
         setClassSessions([...classSessions, dataSession])
-        
+
         console.log(classSessions)
 
         /* Clear inputs */
-        
+
         refTrName.current.value = "";
         refTrDescription.current.value = "";
         refTrDateStart.current.value = "";
         setAddedTopics([]);
 
-        if(training.type === "Virtual Asincrono"){
+        if (training.type === "Virtual Asincrono") {
             refTrDateEnd.current.value = "";
         }
-        else{
+        else {
             refTrLocation.current.value = "";
         }
 
@@ -244,6 +285,25 @@ const TrainingCreate = () => {
         }
     }
 
+    const handleCategory = (category: typeTraI) => {
+        setTypeArea(category.type)
+    }
+
+    const handleCompany = (company: typeComI) => {
+        setTypeCompany(company.rs)
+    }
+
+    const handleData = () => {
+        setTypeArea("Todos")
+        setTypeCompany("Todos")
+        setChecked([])
+    }
+
+    const checkedItems = checked.length
+        ? checked.reduce((total, item) => {
+            return total + ", " + item;
+        })
+        : "";
 
     return (
         <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
@@ -270,8 +330,8 @@ const TrainingCreate = () => {
                     </div>
                 </div>
 
-            {/* SESSION */}
-            <div className='row mt-3' style={{ marginLeft: "54px" }}>
+                {/* SESSION */}
+                <div className='row mt-3' style={{ marginLeft: "54px" }}>
                     <div className='col'>
                         <h4 className='mb-3 mt-3 subarea'>Sesiones</h4>
                     </div>
@@ -280,29 +340,29 @@ const TrainingCreate = () => {
                         <button type='button' className='btn btn-primary' data-bs-target='#createSessionModal' data-bs-toggle='modal'>
                             <div style={{ display: "flex", alignItems: "center" }}>
                                 <span className='me-3'>Nueva sesión</span>
-                            <PlusCircle/>
-                        </div>
-                    </button>
-                </div>
+                                <PlusCircle />
+                            </div>
+                        </button>
+                    </div>
 
-                <div className='mt-3'>
-                    {classSessions.length > 0 ?
-                        (<SessionAccordion sessions={classSessions}/>)
-                        :
-                        (<>
-                            <h6 style={{ display: "flex", justifyContent: "center" }}>
-                                Crea una sesión para comenzar
-                            </h6>
-                        </>)
-                    }
+                    <div className='mt-3'>
+                        {classSessions.length > 0 ?
+                            (<SessionAccordion sessions={classSessions} />)
+                            :
+                            (<>
+                                <h6 style={{ display: "flex", justifyContent: "center" }}>
+                                    Crea una sesión para comenzar
+                                </h6>
+                            </>)
+                        }
+                    </div>
+
+
                 </div>
-                    
 
             </div>
-
-        </div>
-        {/* CREATE SESSION MODAL */}
-        <div className="modal fade" id="createSessionModal" aria-hidden="true" aria-labelledby="createSessionModal" tabIndex={-1}>
+            {/* CREATE SESSION MODAL */}
+            <div className="modal fade" id="createSessionModal" aria-hidden="true" aria-labelledby="createSessionModal" tabIndex={-1}>
                 <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -321,29 +381,29 @@ const TrainingCreate = () => {
 
                             {
                                 training.type === "Virtual Asincrono" ?
-                                (<div className='row mb-3'>
-                                    <div className='col'>
-                                        <label className="form-label">Fecha de inicio</label>
-                                        <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
-                                    </div>
-                                    <div className='col'>
-                                        <label className="form-label">Fecha limite</label>
-                                        <input className='form-control' type='date' id='end_date_creation' ref={refTrDateEnd} />
-                                    </div>
-                                </div>)
-                                :
-                                (<>
-                                    <div className='mb-3'>
-                                        <label className="form-label">Fecha de la sesión</label>
-                                        <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
-                                    </div>
-                                    <div className='mb-3'>
-                                        <label className="form-label">Ubicación</label>
+                                    (<div className='row mb-3'>
+                                        <div className='col'>
+                                            <label className="form-label">Fecha de inicio</label>
+                                            <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
+                                        </div>
+                                        <div className='col'>
+                                            <label className="form-label">Fecha limite</label>
+                                            <input className='form-control' type='date' id='end_date_creation' ref={refTrDateEnd} />
+                                        </div>
+                                    </div>)
+                                    :
+                                    (<>
+                                        <div className='mb-3'>
+                                            <label className="form-label">Fecha de la sesión</label>
+                                            <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
+                                        </div>
+                                        <div className='mb-3'>
+                                            <label className="form-label">Ubicación</label>
                                             <input ref={refTrLocation} type="text" className="form-control" />
-                                    </div>
-                                </>)
+                                        </div>
+                                    </>)
                             }
-                        
+
                             <div className='row mb-3'>
                                 <label className="form-label">Temas de la sesión</label>
                                 <div className='col-10'>
@@ -368,11 +428,114 @@ const TrainingCreate = () => {
                             }
                         </div>
                         <div className="modal-footer">
-                            <button className="btn btn-primary" data-bs-target="#assignResponsible" data-bs-toggle="modal">Continuar</button>
+                            <button className="btn btn-primary" data-bs-target="#searchResponsible" data-bs-toggle="modal" onClick={handleData}>Continuar</button>
                         </div>
                     </div>
                 </div>
             </div>
+
+            {/* MODAL SEARCH RESPONSIBLE */}
+            <div className="modal fade" id="searchResponsible" aria-hidden="true" aria-labelledby="searchResponsible" tabIndex={-1}>
+                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="searchResponsible">Buscar responsables</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+
+                            <div>
+                                <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
+                                    <div>
+                                        <h4 style={{ fontSize: "14px", fontWeight: "400" }}>Buscar por categoría</h4>
+                                    </div>
+                                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                        {typeTra.map((t) => {
+                                            return (
+                                                <button type='button' key={t.id} className='btn' style={{ backgroundColor: t.type == typeArea ? '#3f4b58' : '', color: t.type == typeArea ? '#FFF' : '#000', border: t.type == typeArea ? '' : '0.1rem solid #0d6efd' }} onClick={() => handleCategory(t)}>{t.type}</button>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            {typeArea != "Todos" &&
+                                <>
+                                    {loading ?
+                                        <>
+                                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                                                <div className='vertical-align-child'>
+                                                    <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                                        <span className="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </>
+                                        :
+                                        <div>
+                                            <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
+                                                <div>
+                                                    <h4 style={{ fontSize: "14px", fontWeight: "400" }}>Buscar por empresa</h4>
+                                                </div>
+                                                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                                    {typeCom.map((t) => {
+                                                        return (
+                                                            <button type='button' key={t.id} className='btn' style={{ backgroundColor: t.rs == typeCompany ? '#3f4b58' : '', color: t.rs == typeCompany ? '#FFF' : '#000', border: t.rs == typeCompany ? '' : '0.1rem solid #0d6efd' }} onClick={() => handleCompany(t)}>{t.rs}</button>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </>
+                            }
+
+                            {typeCompany != "Todos" &&
+                                <>
+                                    {loading ?
+                                        <>
+                                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                                                <div className='vertical-align-child'>
+                                                    <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                                        <span className="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </>
+                                        :
+                                        <div>
+                                            <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
+                                                <div>
+                                                    <h4 style={{ fontSize: "14px", fontWeight: "400" }}>Buscar por habilidades</h4>
+                                                </div>
+                                                <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)"}}>
+                                                    {checkList.map((item, index) => {
+                                                        return (
+                                                            <div key={index}>
+                                                                <input value={item} type="checkbox" onChange={handleCheck} style={{marginRight: "0.5rem"}} />
+                                                                <span >{item}</span>
+                                                            </div>
+                                                        )
+                                                    })}
+                                                </div>
+                                                <div style={{paddingTop: "0.5rem"}}>
+                                                    {`Habilidades seleccionadas: ${checkedItems}`}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </>
+                            }
+
+                        </div>
+                        <div className="modal-footer">
+                            <button className="btn btn-primary" data-bs-target="#assignResponsible" data-bs-toggle="modal">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             {/* MODAL ASSING RESPONSIBLE */}
             <div className="modal fade" id="assignResponsible" aria-hidden="true" aria-labelledby="assignResponsible" tabIndex={-1}>
@@ -386,21 +549,10 @@ const TrainingCreate = () => {
 
                             <div>
                                 <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
-                                    <div className='col-5'>
+                                    <div style={{ display: "flex" }}>
                                         <input className='form-control' type='text' placeholder='Buscar responsables' onChange={handleFilter} />
-                                    </div>
-                                    <div className='col-2'>
-                                        <select className="form-select" aria-label=".form-select-sm example" onChange={handleChangeType}>
-                                            <option hidden>Categoría</option>
-                                            {typeTra.map((t) => {
-                                                return (
-                                                    <option key={t.id} value={t.type}>{t.type}</option>
-                                                )
-                                            })}
-                                        </select>
-                                    </div>
-                                    <div className='col-1 text-end'>
-                                        <button className='btn btn-primary' type='button' onClick={search}>Buscar</button>
+                                        <h5 style={{ display: "flex", fontSize: "14px" }}>Categoría: <p style={{ paddingLeft: "1px" }}> {typeArea}</p></h5>
+                                        <h5>Empresa: {typeCompany}</h5>
                                     </div>
                                 </div>
 
@@ -426,7 +578,7 @@ const TrainingCreate = () => {
                                             </div>
 
                                             {supplierFilter.length == 0 &&
-                                                <div style={{display: "flex", justifyContent: "center"}}>
+                                                <div style={{ display: "flex", justifyContent: "center" }}>
                                                     No hay resultados de responsables para la búsqueda
                                                 </div>
                                             }
