@@ -7,6 +7,8 @@ import axiosInt from '@config/axios';
 class PictureUpload extends Component<Props, State>
 {
   refPictureUploadContainer: any;
+
+  url: string | null;
   constructor(props: any)
   {
     super(props);
@@ -14,6 +16,7 @@ class PictureUpload extends Component<Props, State>
       previewImage: null,
     };
     this.refPictureUploadContainer = createRef();
+    this.url = null;
   }
 
   handlePictureChange = (event) =>
@@ -33,6 +36,15 @@ class PictureUpload extends Component<Props, State>
     const formData = new FormData();
     formData.append('file', file);
 
+    if (this.url)
+    {
+      axiosInt.post('capacitaciones/delete_file/', {
+        url: this.url,
+      }).then(response => {
+        console.log(response.data);
+      })
+    }
+
     axiosInt.post('capacitaciones/upload_file/', formData, {
       headers: {
         'content-type': 'multipart/form-data',
@@ -40,13 +52,18 @@ class PictureUpload extends Component<Props, State>
     })
       .then(response =>
       {
-        console.log(response.data);
+        this.url = response.data.url;
       })
       .catch(error =>
       {
         console.error(error);
       });
   };
+
+  getUrl ()
+  {
+    return this.url;
+  }
 
   render ()
   {
