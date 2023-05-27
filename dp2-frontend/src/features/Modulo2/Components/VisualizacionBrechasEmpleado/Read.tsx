@@ -1,6 +1,8 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Button, Form, FormControl, InputGroup, Table } from 'react-bootstrap'
-
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Bar } from "react-chartjs-2";
+import BarChart1 from './Barchart1';
 const Read = () => {
     const [palabrasClave, setPalabrasClave] = useState('');
     const [tipoOrden, setTipoOrden] = useState('ascendente');
@@ -8,7 +10,7 @@ const Read = () => {
     const [tipoCompetencia, setTipoCompetencia] = useState('');
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const hardcode = [
-        { nombre: 'Programación en Java', tipo: 'Técnico', nivelActual: 'Bajo', nivelRequerido: 'Medio', porcAdecuacion: 0.45},
+        { nombre: 'Programación en Java', tipo: 'Técnico', nivelActual: 'Bajo', nivelRequerido: 'Medio', porcAdecuacion: 0.45 },
         { nombre: 'Liderazgo', tipo: 'Habilidades blandas', nivelActual: 'Alto', nivelRequerido: 'Alto', porcAdecuacion: 1.00 },
         { nombre: 'Programación modular', tipo: 'Conocimiento', nivelActual: 'Medio', nivelRequerido: 'Alto', porcAdecuacion: 0.86 },
         { nombre: 'Uso de Microsoft Word', tipo: 'Técnico', nivelActual: 'Alto', nivelRequerido: 'Alto', porcAdecuacion: 1.00 },
@@ -27,25 +29,46 @@ const Read = () => {
         { nombre: 'Empatía', tipo: 'Conocimiento', nivelActual: 'Alto', nivelRequerido: 'Alto', porcAdecuacion: 1.00 },
         { nombre: 'Toma de Decisiones', tipo: 'Técnico', nivelActual: 'Medio', nivelRequerido: 'Medio', porcAdecuacion: 1.00 },
         { nombre: 'Trabajo Bajo Presión', tipo: 'Habilidades blandas', nivelActual: 'Bajo', nivelRequerido: 'Alto', porcAdecuacion: 0.20 },
-      ];
+    ];
+
+    //para el grafico
+    const optionsBar = {
+        scales: {
+            y: {
+                beginAtZero: true,
+            },
+        },
+    };
+
+    const dataBar = {
+        labels: ['H1', 'H2', 'H3', 'H4', 'H5'],
+        datasets: [
+            {
+                label: 'Valores',
+                data: [3, 5, 1, 1, 3],
+                backgroundColor: 'rgba(0, 123, 255, 0.5)',
+            },
+        ],
+    };
+
     const [competenciasData, setCompetenciasData] = useState(hardcode);
-    
+
 
     const filtrarCompetencias = () => {
         let competenciasFiltradas = competenciasData;
-      
+
         if (tipoCompetencia) {
-          competenciasFiltradas = competenciasFiltradas.filter(competencia => competencia.tipo === tipoCompetencia);
+            competenciasFiltradas = competenciasFiltradas.filter(competencia => competencia.tipo === tipoCompetencia);
         }
 
         if (palabrasClave) {
             const palabrasClaveLower = palabrasClave.toLowerCase();
             competenciasFiltradas = competenciasFiltradas.filter(competencia =>
-              competencia.nombre.toLowerCase().includes(palabrasClaveLower) ||
-              competencia.nivelActual.toLowerCase().includes(palabrasClaveLower) ||
-              competencia.nivelRequerido.toLowerCase().includes(palabrasClaveLower)
+                competencia.nombre.toLowerCase().includes(palabrasClaveLower) ||
+                competencia.nivelActual.toLowerCase().includes(palabrasClaveLower) ||
+                competencia.nivelRequerido.toLowerCase().includes(palabrasClaveLower)
             );
-          }
+        }
         return competenciasFiltradas;
     };
 
@@ -74,99 +97,120 @@ const Read = () => {
 
     const renderTablaBrechas = () => {
         const competenciasFiltradas = filtrarCompetencias();
-      
+
         if (busquedaRealizada && competenciasFiltradas.length === 0) {
             return <p>No se encontraron resultados.</p>;
-          }
+        }
         return (
             <Table striped bordered>
                 <thead>
-                <tr>
-                    <th onClick={() => handleOrdenarPorCampo('nombre')}>
-                        Nombre
-                        {campoOrdenamiento === 'nombre' && (
-                        <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
-                        )}
-                    </th>
-                    <th onClick={() => handleOrdenarPorCampo('tipo')}>
-                        Tipo
-                        {campoOrdenamiento === 'tipo' && (
-                        <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
-                        )}
-                    </th>
-                    <th onClick={() => handleOrdenarPorCampo('nivelActual')}>
-                        Nivel actual
-                        {campoOrdenamiento === 'nivelActual' && (
-                        <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
-                        )}
-                    </th>
-                    <th onClick={() => handleOrdenarPorCampo('nivelRequerido')}>
-                        Nivel requerido
-                        {campoOrdenamiento === 'nivelRequerido' && (
-                        <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
-                        )}
-                    </th>
-                    <th onClick={() => handleOrdenarPorCampo('porcAdecuacion')}>
-                        % de adecuacion
-                        {campoOrdenamiento === 'porcAdecuacion' && (
-                        <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
-                        )}
-                    </th>
-                </tr>
+                    <tr>
+                        <th onClick={() => handleOrdenarPorCampo('nombre')}>
+                            Nombre
+                            {campoOrdenamiento === 'nombre' && (
+                                <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
+                            )}
+                        </th>
+                        <th onClick={() => handleOrdenarPorCampo('tipo')}>
+                            Tipo
+                            {campoOrdenamiento === 'tipo' && (
+                                <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
+                            )}
+                        </th>
+                        <th onClick={() => handleOrdenarPorCampo('nivelActual')}>
+                            Nivel actual
+                            {campoOrdenamiento === 'nivelActual' && (
+                                <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
+                            )}
+                        </th>
+                        <th onClick={() => handleOrdenarPorCampo('nivelRequerido')}>
+                            Nivel requerido
+                            {campoOrdenamiento === 'nivelRequerido' && (
+                                <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
+                            )}
+                        </th>
+                        <th onClick={() => handleOrdenarPorCampo('porcAdecuacion')}>
+                            % de adecuacion
+                            {campoOrdenamiento === 'porcAdecuacion' && (
+                                <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
+                            )}
+                        </th>
+                    </tr>
                 </thead>
                 <tbody>
-                {datosFiltradosYOrdenados.map((competencia, index) => (
-                    <tr key={index}>
-                        <td>{competencia.nombre}</td>
-                        <td>{competencia.tipo}</td>
-                        <td>{competencia.nivelActual}</td>
-                        <td>{competencia.nivelRequerido}</td>
-                        <td>{competencia.porcAdecuacion*100+"%"}</td>
-                    </tr>
-                ))}
+                    {datosFiltradosYOrdenados.map((competencia, index) => (
+                        <tr key={index}>
+                            <td>{competencia.nombre}</td>
+                            <td>{competencia.tipo}</td>
+                            <td>{competencia.nivelActual}</td>
+                            <td>{competencia.nivelRequerido}</td>
+                            <td>{competencia.porcAdecuacion * 100 + "%"}</td>
+                        </tr>
+                    ))}
                 </tbody>
             </Table>
         )
     }
 
+    const renderBarBrechas = () => {
+        return (
+            <Bar data={dataBar} options={optionsBar} />
+        )
+    }
+
     return (
         <div className='container-fluid'>
-            <h2>Consolidado de competencias</h2>
-            <p className="text-muted">Agrega, edita y desactiva competencias</p>
-            <Form className="mb-3">
-                <InputGroup>
-                <FormControl
-                    placeholder="Ingrese palabras clave, código o nombre de las competencias"
-                    aria-label="Buscar competencias"
-                    aria-describedby="buscar-icono"
-                    value={palabrasClave}
-                    onChange={(e) => setPalabrasClave(e.target.value)}
-                />
-                <Button variant="outline-secondary" id="buscar-icono" onClick={() => setBusquedaRealizada(true)}>
-                    <i className="bi bi-search"></i>
-                </Button>
-                </InputGroup>
+            <div className='row'>
+                <h2>Consolidado de competencias</h2>
+                <p className="text-muted">Agrega, edita y desactiva competencias</p>
 
-                <Form.Group className="mb-3" controlId="filtroTipoCompetencia">
-                <select className="form-select" value={tipoCompetencia} onChange={(e) => setTipoCompetencia(e.target.value)}>
-                    <option hidden>Tipo de competencia</option>
-                    <option value="Técnico">Técnico</option>
-                    <option value="Habilidades blandas">Habilidades blandas</option>
-                    <option value="Conocimiento">Conocimiento</option>
-                    {/* Agregar más opciones de tipo de competencia aquí */}
-                </select>
-                </Form.Group>
+                <Form className="align-items-center">
+                    <InputGroup>
+                        <FormControl
+                            placeholder="Ingrese palabras clave, código o nombre de las competencias"
+                            aria-label="Buscar competencias"
+                            aria-describedby="buscar-icono"
+                            value={palabrasClave}
+                            onChange={(e) => setPalabrasClave(e.target.value)}
+                        />
+                        <Button variant="outline-secondary" id="buscar-icono" onClick={() => setBusquedaRealizada(true)}>
+                            <i className="bi bi-search"></i>
+                        </Button>
+                    </InputGroup>
 
-                <div className="d-flex justify-content-end">
-                <Button variant="outline-secondary" className="me-2" onClick={limpiarFiltros}>
-                    Limpiar Filtros
-                </Button>
-                <Button variant="primary">Buscar</Button>
+                    <Form.Group controlId="filtroTipoCompetencia">
+                        <select className="form-select" value={tipoCompetencia} onChange={(e) => setTipoCompetencia(e.target.value)}>
+                            <option hidden>Tipo de competencia</option>
+                            <option value="Técnico">Técnico</option>
+                            <option value="Habilidades blandas">Habilidades blandas</option>
+                            <option value="Conocimiento">Conocimiento</option>
+                            {/* Agregar más opciones de tipo de competencia aquí */}
+                        </select>
+                    </Form.Group>
+
+                    <div >
+                        <Button variant="outline-secondary" className="me-2" onClick={limpiarFiltros}>
+                            Limpiar Filtros
+                        </Button>
+                        <Button variant="primary">Buscar</Button>
+                    </div>
+
+                </Form>
+            </div>
+
+            <div className='row'>
+                <div className='col'>
+                    {renderTablaBrechas()}
                 </div>
-            </Form>
-            {renderTablaBrechas()}
+
+                <div className='col'>
+                <BarChart1></BarChart1>
+                </div>
+            </div>
+
+
         </div>
-        
+
     )
 }
 

@@ -82,6 +82,10 @@ const EvaluacionDeDesempenhoDetail = Loader(
   lazy(() => import('@features/Modulo3/screens/EvaluacionDeDesempenho/Detail'))
 );
 
+const GestionDeCompetencias = Loader(
+    lazy(() => import('@features/Modulo2/Components/GestionDeCompetencias/Read'))
+  );
+
 const EvaluationTemplateIndex = Loader(
   lazy(() => import('@features/Modulo3/screens/Plantillas/Index'))
 );
