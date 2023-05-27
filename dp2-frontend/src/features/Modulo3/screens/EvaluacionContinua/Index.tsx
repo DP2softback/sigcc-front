@@ -10,7 +10,7 @@ import { Form, InputGroup, Button } from 'react-bootstrap';
 import Employee from '@features/Modulo3/components/Cards/Employee/Employee';
 import employeesJson from '@features/Modulo3/jsons/Employees';
 import Linechart from '@features/Modulo3/components/Charts/Linechart/Linechart';
-import { DAYS_UNIT } from '@features/Modulo3/utils/constants.jsx';
+import { loadingScreen, DAYS_UNIT } from '@features/Modulo3/utils/constants.jsx';
 import { getEmployees } from '@features/Modulo3/services/continuousEvaluation';
 import { useEffect, useState } from 'react';
 
@@ -160,7 +160,7 @@ const Index = () => {
   const body = (
     <Section
       title={"Trabajadores"}
-      content={isLoading ? <></> : content}
+      content={isLoading ? loadingScreen : content}
       filters={filters}
     />
   );

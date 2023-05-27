@@ -1,4 +1,4 @@
-import BasicCard from '../BasicCard/BasicCard'
+import BasicCard2 from '../BasicCard2/BasicCard2'
 import { Calendar2, Calendar2Event, PeopleFill } from 'react-bootstrap-icons'
 
 const Training = ({id, name, photoURL, description, creationDate, eventDate, employees}) => {
@@ -32,10 +32,10 @@ const Training = ({id, name, photoURL, description, creationDate, eventDate, emp
     }    
   ]
 
-  const ruta = `/modulo1/capacitacion/detalle/${id}`
+  const ruta = `/modulo1/cursoempresa/detalle/${id}`
 
   return (
-    <BasicCard
+    <BasicCard2
       id={id}
       image={photoURL}
       imageStyle={'100px'}

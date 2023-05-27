@@ -10,7 +10,7 @@ import Section from '@features/Modulo3/components/Layout/Section/Section';
 import TableHistoryContinua from '@features/Modulo3/components/Tables/TableHistoryContinua';
 import { newReg } from '@features/Modulo3/jsons/HistoryContinua';
 import Linechart from '@features/Modulo3/components/Charts/Linechart/Linechart';
-import { noDataFound } from '@features/Modulo3/utils/constants';
+import { loadingScreen, noDataFound } from '@features/Modulo3/utils/constants';
 import { getEvaluationsHistory } from '@features/Modulo3/services/continuousEvaluation';
 
 const History = () => {
@@ -102,7 +102,7 @@ const History = () => {
   const body = (
     <Section
       title={"Evaluaciones"}
-      content={isLoading ? <></> : content}
+      content={isLoading ? loadingScreen : content}
       filters={filters}
     />
   );

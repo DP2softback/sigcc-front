@@ -1,110 +1,101 @@
-import { Suspense, lazy } from "react";
-import { Navigate } from "react-router-dom";
-import { RouteObject } from "react-router";
+import { Suspense, lazy } from 'react';
+import { Navigate } from 'react-router-dom';
+import { RouteObject } from 'react-router';
 
 const Loader = (Component) => (props) =>
-    (
-        <Suspense fallback={<></>}>
-            <Component {...props} />
-        </Suspense>
-    );
+(
+  <Suspense fallback={<></>}>
+    <Component {...props} />
+  </Suspense>
+);
+
 
 const Modulo1LP = Loader(
-    lazy(() => import("@features/Modulo1/pages/LearningPath"))
+  lazy(() => import('@features/Modulo1/pages/LearningPath'))
 );
 
 const M1ListLearningPath = Loader(
-    lazy(() => import("@features/Modulo1/pages/LearningPath"))
+  lazy(() => import('@features/Modulo1/pages/LearningPath'))
 );
 
 const M1LearningPathDetails = Loader(
-    lazy(() => import("@features/Modulo1/pages/LearningPath/Details"))
+  lazy(() => import('@features/Modulo1/pages/LearningPath/Details'))
 );
 
 const M1AddCourse = Loader(
-    lazy(() => import("@features/Modulo1/pages/Course/AddCourse"))
+  lazy(() => import('@features/Modulo1/pages/Course/AddCourse'))
 );
 
 const M1ListTraining = Loader(
-    lazy(() => import("@features/Modulo1/pages/Training"))
+  lazy(() => import('@features/Modulo1/pages/Training'))
+);
+
+const M1TrainingCreate = Loader(
+  lazy(() => import('@features/Modulo1/pages/Training/Create'))
 );
 
 const M1TrainingDetails = Loader(
-    lazy(() => import("@features/Modulo1/pages/Training/Details"))
+  lazy(() => import('@features/Modulo1/pages/Training/Details'))
 );
 
 const M1TrainingAssignment = Loader(
-    lazy(() => import("@features/Modulo1/pages/Training/Assignment"))
+  lazy(() => import('@features/Modulo1/pages/Training/Assignment'))
 );
 
 const ConfigSelectionProcess = Loader(
-    lazy(() => import("@features/Modulo4/pages/ConfigSelectionProcess"))
+  lazy(() => import('@features/Modulo4/pages/ConfigSelectionProcess'))
 );
 
 const ConfigOfertaLaboral = Loader(
-    lazy(() => import("@features/Modulo4/pages/ConfigOfertaLaboral"))
-);
-
-const ConfigProcesoSeleccion = Loader(
-    lazy(() => import("@features/Modulo4/pages/ConfigProcesoSeleccion"))
+  lazy(() => import('@features/Modulo4/pages/ConfigOfertaLaboral'))
 );
 
 const EvaluacionContinuaIndex = Loader(
-    lazy(() => import("@features/Modulo3/screens/EvaluacionContinua/Index"))
+  lazy(() => import('@features/Modulo3/screens/EvaluacionContinua/Index'))
 );
 
 const EvaluacionContinuaHistory = Loader(
-    lazy(() => import("@features/Modulo3/screens/EvaluacionContinua/History"))
+  lazy(() => import('@features/Modulo3/screens/EvaluacionContinua/History'))
 );
 
 const EvaluacionContinuaCreate = Loader(
-    lazy(() => import("@features/Modulo3/screens/EvaluacionContinua/Create"))
+  lazy(() => import('@features/Modulo3/screens/EvaluacionContinua/Create'))
 );
 
 const EvaluacionContinuaDetail = Loader(
-    lazy(() => import("@features/Modulo3/screens/EvaluacionContinua/Detail"))
+  lazy(() => import('@features/Modulo3/screens/EvaluacionContinua/Detail'))
 );
 
 const EvaluacionDeDesempenhoIndex = Loader(
-    lazy(() => import("@features/Modulo3/screens/EvaluacionDeDesempenho/Index"))
+  lazy(() => import('@features/Modulo3/screens/EvaluacionDeDesempenho/Index'))
 );
 
 const EvaluacionDeDesempenhoHistory = Loader(
-    lazy(
-        () => import("@features/Modulo3/screens/EvaluacionDeDesempenho/History")
-    )
+  lazy(() => import('@features/Modulo3/screens/EvaluacionDeDesempenho/History'))
 );
 
 const EvaluacionDeDesempenhoCreate = Loader(
-    lazy(
-        () => import("@features/Modulo3/screens/EvaluacionDeDesempenho/Create")
-    )
+  lazy(() => import('@features/Modulo3/screens/EvaluacionDeDesempenho/Create'))
 );
 
 const EvaluacionDeDesempenhoDetail = Loader(
-    lazy(
-        () => import("@features/Modulo3/screens/EvaluacionDeDesempenho/Detail")
-    )
-);
-
-const VisualizacionBrechasEmpleado = Loader(
-  lazy(() => import('@features/Modulo2/Components/VisualizacionBrechasEmpleado/Read'))
+  lazy(() => import('@features/Modulo3/screens/EvaluacionDeDesempenho/Detail'))
 );
 
 const EvaluationTemplateIndex = Loader(
-    lazy(() => import("@features/Modulo3/screens/Plantillas/Index"))
+  lazy(() => import('@features/Modulo3/screens/Plantillas/Index'))
 );
 
 const EvaluationTemplateCreate = Loader(
-    lazy(() => import("@features/Modulo3/screens/Plantillas/Create"))
+  lazy(() => import('@features/Modulo3/screens/Plantillas/Create'))
 );
 
 const EvaluationTemplateEdit = Loader(
-    lazy(() => import("@features/Modulo3/screens/Plantillas/Edit"))
+  lazy(() => import('@features/Modulo3/screens/Plantillas/Edit'))
 );
 
 const AscensosCandidatos = Loader(
-    lazy(() => import("@features/Modulo3/screens/Ascensos/Candidates"))
+  lazy(() => import('@features/Modulo3/screens/Ascensos/Candidates'))
 );
 
 const ReporteEvaluacionContinua = Loader(
@@ -117,71 +108,62 @@ const ReporteEvaluacionDesempenho = Loader(
 
 const routes: RouteObject[] = [
   {
+    path: '/',
+   element: <Modulo1LP />
+  },
+  {
     path: 'modulo1',
     children: [
       {
-        path: '',
-        element: <Modulo1LP />
+        path: "",
+        element: <Modulo1LP />,
       },
       {
-        path: 'rutadeaprendizaje',
+        path: "rutadeaprendizaje",
         children: [
           {
-            path: '',
-            element: <M1ListLearningPath />
+            path: "",
+            element: <M1ListLearningPath />,
           },
           {
-            path: 'detalle/:learningPathId',
-            element: <M1LearningPathDetails />
+            path: "detalle/:learningPathId",
+            element: <M1LearningPathDetails />,
           },
-        ]
+        ],
       },
       {
-        path: 'curso',
+        path: "curso",
         children: [
           {
-            path: 'agregar/:learningPathId',
-            element: <M1AddCourse />
+            path: "agregar/:learningPathId",
+            element: <M1AddCourse />,
           },
-        ]
+        ],
       },
       {
-        path: 'capacitacion',
+        path: "capacitacion",
         children: [
           {
-            path: '',
-            element: <M1ListTraining />
+            path: "",
+            element: <M1ListTraining />,
           },
           {
-            path: 'detalle/:trainingID',
-            element: <M1TrainingDetails />
+            path: "detalle/:trainingID",
+            element: <M1TrainingDetails />,
           },
           {
-            path: 'asignacion/:trainingID',
-            element: <M1TrainingAssignment />
+            path: "asignacion/:trainingID",
+            element: <M1TrainingAssignment />,
           },
-        ]
+        ],
       },
-    ]
+    ],
   },
   {
-      path: "modulo4",
-      children: [
-          {
-              path: "configurar-proceso-seleccion",
-              element: <ConfigProcesoSeleccion />,
-          },
-          {
-              path: "configurar-oferta-laboral",
-              element: <ConfigOfertaLaboral />,
-          },
-      ],
-  },
-  {
-    path: 'skillManagement',
+    path: "skillManagement",
     children: [
       {
-        path: 'continuousEvaluation',
+        path: "continuousEvaluation",
         children: [
           {
             path: "index",
