@@ -1,12 +1,11 @@
 import Sidebar from '@components/Sidebar'
 import sidebarItems from '@features/Modulo1/utils/sidebarItems'
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axiosInt from '@config/axios';
-import { Link, useParams } from 'react-router-dom';
+import SessionAccordion from '@features/Modulo1/components/SessionAccordion';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { ArrowLeftCircleFill, Check, PlusCircle, Trash, People, PencilFill } from 'react-bootstrap-icons';
-import PictureUpload from '@features/Modulo1/components/PictureUpload';
 import SupplierCard from '@features/Modulo1/components/SupplierCard/SupplierCard';
-import { Card } from 'react-bootstrap';
 import '../../../basic.css';
 import '../training.css';
 
@@ -27,17 +26,16 @@ type Supplier = {
 }
 
 type SessionObj = {
-    id: number;
+    id?: number;
     name: string;
     description: string;
     startDate: string;
     limitDate: string;
-    numEmployees: number;
-    capacity: number;
+    numEmployees?: number;
     location: string;
     urlVideo: string;
+    topics: string[];
 }
-
 
 
 const suppliers: Supplier[] = [
@@ -77,12 +75,12 @@ const typeCreation = [
     { id: 4, type: "Virtual Asincrono" },
 ]
 
-const sessionsData: SessionObj[] = [
-
-]
+let sessionsData: SessionObj[] = []
 
 const TrainingCreate = () => {
+    const location = useLocation();
     const { trainingID } = useParams();
+    //const [training, setTraining] = useState<any>(location.state.data);
     const [training, setTraining] = useState<any>(data);
     const [nombreT, setNombreT] = useState(data.name)
     const [descripcionT, setDescripcionT] = useState(data.description)
@@ -91,7 +89,7 @@ const TrainingCreate = () => {
     const [descripcionAuxT, setDescripcionAuxT] = useState(data.description)
 
     const [classSessions, setClassSessions] = useState<SessionObj[]>(sessionsData)
-    const [addedTopics, setAddedTopics] = useState<String[]>([])
+    const [addedTopics, setAddedTopics] = useState<string[]>([])
 
     const [supplierFilter, setSupplierFilter] = useState<Supplier[]>(suppliers)
     const [typeArea, setTypeArea] = useState("Todos")
@@ -130,10 +128,8 @@ const TrainingCreate = () => {
     const refTrDescription = useRef<HTMLTextAreaElement>(null);
     const refTrLocation = useRef<HTMLInputElement>(null);
     const refTrTopics = useRef<HTMLInputElement>(null);
-    const refTrDateSession = useRef<HTMLInputElement>(null);
     const refTrDateStart = useRef<HTMLInputElement>(null);
     const refTrDateEnd = useRef<HTMLInputElement>(null);
-    const refTrCapacity = useRef<HTMLInputElement>(null);
     /* TRAINING SESSION DETAIL INPUTS */
 
     const addTopic = (e: React.FormEvent) => {
@@ -141,6 +137,7 @@ const TrainingCreate = () => {
         if (refTrTopics.current?.value !== "") {
             setAddedTopics([...addedTopics, refTrTopics.current?.value])
             console.log(addedTopics)
+            refTrTopics.current.value = ""
         }
     }
 
@@ -178,33 +175,36 @@ const TrainingCreate = () => {
     }
 
     const createSession = () => {
-        let dataSession = {}
-
-        if (training.type === "Asincrono") {
-            dataSession = {
-                nombre: refTrName.current?.value,
-                descripcion: refTrDescription.current?.value,
-                fecha: refTrDateStart.current?.value,
-                fechaLimite: refTrDateEnd.current?.value,
-                //urlVideoGrabacion:
-                temas: addedTopics
-                //responsable:
-            }
-        }
-        else {
-            dataSession = {
-                nombre: refTrName.current?.value,
-                descripcion: refTrDescription.current?.value,
-                fecha: refTrDateSession.current?.value,
-                ubicacion: refTrLocation.current?.value,
-                capacidad: refTrCapacity.current?.value,
-                temas: addedTopics
-                //responsable: 
-            }
+        let dataSession: SessionObj = {
+            name: refTrName.current?.value,
+            description: refTrDescription.current?.value,
+            startDate: refTrDateStart.current?.value,
+            limitDate: refTrDateEnd.current?.value,
+            location: refTrLocation.current?.value,
+            urlVideo: null,
+            topics: addedTopics
+            //responsable:
         }
 
-        console.log(dataSession)
+        setClassSessions([...classSessions, dataSession])
+        
+        console.log(classSessions)
 
+        /* Clear inputs */
+        
+        refTrName.current.value = "";
+        refTrDescription.current.value = "";
+        refTrDateStart.current.value = "";
+        setAddedTopics([]);
+
+        if(training.type === "Virtual Asincrono"){
+            refTrDateEnd.current.value = "";
+        }
+        else{
+            refTrLocation.current.value = "";
+        }
+
+        /*
         axiosInt.post('RUTA API', dataSession)
             .then(function (response) {
                 //navigate(`/modulo1/cursoempresa/detalle/${response.data.id}`);
@@ -212,6 +212,7 @@ const TrainingCreate = () => {
             .catch(function (error) {
                 console.log(error);
             });
+        */
     }
 
 
@@ -247,7 +248,7 @@ const TrainingCreate = () => {
     return (
         <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
             <div className='container row mt-3'>
-
+                {/* TRAINING DATA */}
                 <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
                     <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
                         <Link to={`/modulo1/cursoempresa`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
@@ -267,27 +268,11 @@ const TrainingCreate = () => {
                     <div style={{ marginLeft: "20px", position: "relative", top: "-2.2rem" }}>
                         <PencilFill color='cornflowerblue' className='editar' data-bs-target='#editTrainingModal' data-bs-toggle='modal' />
                     </div>
-
                 </div>
 
-
-
-                {/* <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
-                    <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
-                        <Link to={`/modulo1/cursoempresa`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
-                    </div>
-
+            {/* SESSION */}
+            <div className='row mt-3' style={{ marginLeft: "54px" }}>
                     <div className='col'>
-                        <h1 className='screenTitle'>{training.name}</h1>
-                        <p><small className='subtitle'>{training.description}.</small></p>
-                        <p><small className='subtitle'>Modalidad: {training.type}.</small></p>
-                    </div>
-                </div> */}
-
-
-
-                <div className='row mt-3'>
-                    <div className='col' style={{ marginLeft: "54px" }}>
                         <h4 className='mb-3 mt-3 subarea'>Sesiones</h4>
                     </div>
                     <div style={{ flex: '0 0 15rem' }} className='col text-end'>
@@ -295,15 +280,14 @@ const TrainingCreate = () => {
                         <button type='button' className='btn btn-primary' data-bs-target='#createSessionModal' data-bs-toggle='modal'>
                             <div style={{ display: "flex", alignItems: "center" }}>
                                 <span className='me-3'>Nueva sesión</span>
-                                <PlusCircle />
-                            </div>
-                        </button>
-                    </div>
+                            <PlusCircle/>
+                        </div>
+                    </button>
+                </div>
 
+                <div className='mt-3'>
                     {classSessions.length > 0 ?
-                        (<>
-
-                        </>)
+                        (<SessionAccordion sessions={classSessions}/>)
                         :
                         (<>
                             <h6 style={{ display: "flex", justifyContent: "center" }}>
@@ -311,12 +295,14 @@ const TrainingCreate = () => {
                             </h6>
                         </>)
                     }
-
                 </div>
+                    
 
             </div>
-            {/* CREATE SESSION MODAL */}
-            <div className="modal fade" id="createSessionModal" aria-hidden="true" aria-labelledby="createSessionModal" tabIndex={-1}>
+
+        </div>
+        {/* CREATE SESSION MODAL */}
+        <div className="modal fade" id="createSessionModal" aria-hidden="true" aria-labelledby="createSessionModal" tabIndex={-1}>
                 <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -334,36 +320,30 @@ const TrainingCreate = () => {
                             </div>
 
                             {
-                                training.type === "Asincrono" ?
-                                    (<div className='row mb-3'>
-                                        <div className='col'>
-                                            <label className="form-label">Fecha de inicio</label>
-                                            <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
-                                        </div>
-                                        <div className='col'>
-                                            <label className="form-label">Fecha limite</label>
-                                            <input className='form-control' type='date' id='end_date_creation' ref={refTrDateEnd} />
-                                        </div>
-                                    </div>)
-                                    :
-                                    (<>
-                                        <div className='mb-3'>
-                                            <label className="form-label">Fecha de la sesión</label>
-                                            <input className='form-control' type='date' id='start_date_creation' ref={refTrDateSession} />
-                                        </div>
-                                        <div className='row mb-3'>
-                                            <div className='col'>
-                                                <label className="form-label">Ubicación</label>
-                                                <input ref={refTrLocation} type="text" className="form-control" />
-                                            </div>
-                                            <div className='col'>
-                                                <label className="form-label">Aforo máximo</label>
-                                                <input type="number" className="form-control" ref={refTrCapacity} min={'0'} />
-                                            </div>
-                                        </div>
-                                    </>)
+                                training.type === "Virtual Asincrono" ?
+                                (<div className='row mb-3'>
+                                    <div className='col'>
+                                        <label className="form-label">Fecha de inicio</label>
+                                        <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
+                                    </div>
+                                    <div className='col'>
+                                        <label className="form-label">Fecha limite</label>
+                                        <input className='form-control' type='date' id='end_date_creation' ref={refTrDateEnd} />
+                                    </div>
+                                </div>)
+                                :
+                                (<>
+                                    <div className='mb-3'>
+                                        <label className="form-label">Fecha de la sesión</label>
+                                        <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
+                                    </div>
+                                    <div className='mb-3'>
+                                        <label className="form-label">Ubicación</label>
+                                            <input ref={refTrLocation} type="text" className="form-control" />
+                                    </div>
+                                </>)
                             }
-
+                        
                             <div className='row mb-3'>
                                 <label className="form-label">Temas de la sesión</label>
                                 <div className='col-10'>
@@ -498,7 +478,6 @@ const TrainingCreate = () => {
                     </div>
                 </div>
             </div>
-
         </Sidebar >
     )
 }

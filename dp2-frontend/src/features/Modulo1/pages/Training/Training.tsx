@@ -384,9 +384,9 @@ const Training = () => {
 
     const createTraining = () => {
         const data = {
-            nombre: refTrName.current?.value,
-            descripcion: refTrDescription.current?.value,
-            tipo: refTrTypes.current?.value,
+            name: refTrName.current?.value,
+            description: refTrDescription.current?.value,
+            type: refTrTypes.current?.value,
         }
 
         console.log(data)
