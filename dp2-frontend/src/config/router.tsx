@@ -164,86 +164,86 @@ const routes: RouteObject[] = [
     ]
   },
   {
-    path: 'skillManagement',
+    path: "skillManagement",
     children: [
       {
-        path: 'continuousEvaluation',
+        path: "continuousEvaluation",
         children: [
           {
-            path: 'index',
+            path: "index",
             element: <EvaluacionContinuaIndex />,
           },
           {
-            path: 'history',
+            path: "history",
             element: <EvaluacionContinuaHistory />,
           },
           {
-            path: 'detail',
+            path: "detail",
             element: <EvaluacionContinuaDetail />,
           },
           {
-            path: 'create',
+            path: "create",
             element: <EvaluacionContinuaCreate />,
           },
         ],
       },
       {
-        path: 'performanceEvaluation',
+        path: "performanceEvaluation",
         children: [
           {
-            path: 'index',
+            path: "index",
             element: <EvaluacionDeDesempenhoIndex />,
           },
           {
-            path: 'history',
+            path: "history",
             element: <EvaluacionDeDesempenhoHistory />,
           },
           {
-            path: 'detail',
+            path: "detail",
             element: <EvaluacionDeDesempenhoDetail />,
           },
           {
-            path: 'create',
+            path: "create",
             element: <EvaluacionDeDesempenhoCreate />,
           },
         ],
       },
       {
-        path: 'evaluationTemplate',
+        path: "evaluationTemplate",
         children: [
           {
-            path: 'index',
+            path: "index",
             element: <EvaluationTemplateIndex />,
           },
           {
-            path: 'create',
+            path: "create",
             element: <EvaluationTemplateCreate />,
           },
           {
-            path: 'edit',
+            path: "edit",
             element: <EvaluationTemplateEdit />,
           },
         ],
       },
       {
-        path: 'promotions',
+        path: "promotions",
         children: [
           {
-            path: 'candidates',
-            element: <AscensosCandidatos promotionPosition='UX/UI Designer' />,
+            path: "candidates",
+            element: <AscensosCandidatos promotionPosition="UX/UI Designer" />,
           },
         ],
       },
       {
-        path: 'report',
+        path: "report",
         children: [
           {
-            path: 'continuousEvaluation',
-            element: <ReporteEvaluacionContinua />,
+            path: "continuousEvaluation",
+            element: <ReporteEvaluacionContinua/>,
           },
           {
-            path: 'performanceEvaluation',
-            element: <ReporteEvaluacionDesempenho />,
+            path: "performanceEvaluation",
+            element: <ReporteEvaluacionDesempenho/>,
           },
         ],
       },
