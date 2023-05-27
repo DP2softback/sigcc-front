@@ -108,51 +108,51 @@ const ReporteEvaluacionDesempenho = Loader(
 
 const routes: RouteObject[] = [
   {
-    path: "/",
+    path: '/',
     element: <Modulo1LP />,
   },
   {
-    path: "modulo1",
+    path: 'modulo1',
     children: [
       {
-        path: "",
+        path: '',
         element: <Modulo1LP />,
       },
       {
-        path: "rutadeaprendizaje",
+        path: 'rutadeaprendizaje',
         children: [
           {
-            path: "",
+            path: '',
             element: <M1ListLearningPath />,
           },
           {
-            path: "detalle/:learningPathId",
+            path: 'detalle/:learningPathId',
             element: <M1LearningPathDetails />,
           },
         ],
       },
       {
-        path: "curso",
+        path: 'curso',
         children: [
           {
-            path: "agregar/:learningPathId",
+            path: 'agregar/:learningPathId',
             element: <M1AddCourse />,
           },
         ],
       },
       {
-        path: "capacitacion",
+        path: 'capacitacion',
         children: [
           {
-            path: "",
+            path: '',
             element: <M1ListTraining />,
           },
           {
-            path: "detalle/:trainingID",
+            path: 'detalle/:trainingID',
             element: <M1TrainingDetails />,
           },
           {
-            path: "asignacion/:trainingID",
+            path: 'asignacion/:trainingID',
             element: <M1TrainingAssignment />,
           },
         ],
@@ -160,85 +160,85 @@ const routes: RouteObject[] = [
     ],
   },
   {
-    path: "skillManagement",
+    path: 'skillManagement',
     children: [
       {
-        path: "continuousEvaluation",
+        path: 'continuousEvaluation',
         children: [
           {
-            path: "index",
+            path: 'index',
             element: <EvaluacionContinuaIndex />,
           },
           {
-            path: "history",
+            path: 'history',
             element: <EvaluacionContinuaHistory />,
           },
           {
-            path: "detail",
+            path: 'detail',
             element: <EvaluacionContinuaDetail />,
           },
           {
-            path: "create",
+            path: 'create',
             element: <EvaluacionContinuaCreate />,
           },
         ],
       },
       {
-        path: "performanceEvaluation",
+        path: 'performanceEvaluation',
         children: [
           {
-            path: "index",
+            path: 'index',
             element: <EvaluacionDeDesempenhoIndex />,
           },
           {
-            path: "history",
+            path: 'history',
             element: <EvaluacionDeDesempenhoHistory />,
           },
           {
-            path: "detail",
+            path: 'detail',
             element: <EvaluacionDeDesempenhoDetail />,
           },
           {
-            path: "create",
+            path: 'create',
             element: <EvaluacionDeDesempenhoCreate />,
           },
         ],
       },
       {
-        path: "evaluationTemplate",
+        path: 'evaluationTemplate',
         children: [
           {
-            path: "index",
+            path: 'index',
             element: <EvaluationTemplateIndex />,
           },
           {
-            path: "create",
+            path: 'create',
             element: <EvaluationTemplateCreate />,
           },
           {
-            path: "edit",
+            path: 'edit',
             element: <EvaluationTemplateEdit />,
           },
         ],
       },
       {
-        path: "promotions",
+        path: 'promotions',
         children: [
           {
-            path: "candidates",
-            element: <AscensosCandidatos promotionPosition="UX/UI Designer" />,
+            path: 'candidates',
+            element: <AscensosCandidatos promotionPosition='UX/UI Designer' />,
           },
         ],
       },
       {
-        path: "report",
+        path: 'report',
         children: [
           {
-            path: "continuousEvaluation",
+            path: 'continuousEvaluation',
             element: <ReporteEvaluacionContinua />,
           },
           {
-            path: "performanceEvaluation",
+            path: 'performanceEvaluation',
             element: <ReporteEvaluacionDesempenho />,
           },
         ],
