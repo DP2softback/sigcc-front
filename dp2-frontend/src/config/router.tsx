@@ -109,7 +109,7 @@ const ReporteEvaluacionDesempenho = Loader(
 const routes: RouteObject[] = [
   {
     path: '/',
-    element: <Modulo1LP />
+   element: <Modulo1LP />
   },
   {
     path: 'modulo1',
@@ -129,7 +129,7 @@ const routes: RouteObject[] = [
             path: 'detalle/:learningPathId',
             element: <M1LearningPathDetails />
           },
-        ],
+        ]
       },
       {
         path: 'curso',
@@ -138,7 +138,7 @@ const routes: RouteObject[] = [
             path: 'agregar/:learningPathId',
             element: <M1AddCourse />
           },
-        ],
+        ]
       },
       {
         path: 'cursoempresa',
@@ -146,6 +146,10 @@ const routes: RouteObject[] = [
           {
             path: '',
             element: <M1ListTraining />
+          },
+          {
+            path: 'creacion/:trainingID',
+            element: <M1TrainingCreate />
           },
           {
             path: 'detalle/:trainingID',
