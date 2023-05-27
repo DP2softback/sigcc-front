@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button, Form, FormControl, InputGroup, Table } from 'react-bootstrap'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import BarChart1 from './Barchart1';
 const Read = () => {
     const [palabrasClave, setPalabrasClave] = useState('');
     const [tipoOrden, setTipoOrden] = useState('ascendente');
@@ -203,7 +204,7 @@ const Read = () => {
                 </div>
 
                 <div className='col'>
-
+                <BarChart1></BarChart1>
                 </div>
             </div>
 
