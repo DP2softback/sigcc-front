@@ -171,7 +171,6 @@ const routes: RouteObject[] = [
             },
         ],
     },
-
     {
         path: "skillManagement",
         children: [
@@ -542,6 +541,15 @@ const routes: RouteObject[] = [
                         ),
                     },
                 ],
+            },
+            {
+                path: 'employeesGaps',
+                children: [
+                  {
+                    path: 'index',
+                    element: <VisualizacionBrechasEmpleado/>
+                  }
+                ]
             },
         ],
     },
