@@ -10,10 +10,10 @@ import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import TableHistoryContinua from '@features/Modulo3/components/Tables/TableHistoryContinua';
-import registros from '@features/Modulo3/jsons/HistoryContinua';
+import {newReg} from '@features/Modulo3/jsons/HistoryContinua';
 
 const History = () => {
-  const [evaluations, setEvaluations] = useState([]);
+  const [evaluations, setEvaluations] = useState(newReg);
 
   useEffect(() => {
     (async () => {
@@ -56,7 +56,7 @@ const History = () => {
 
   const table =(
     <div className='col-md-6'>
-      <TableHistoryContinua rows ={registros}></TableHistoryContinua>
+      <TableHistoryContinua rows ={evaluations}></TableHistoryContinua>
     </div>
   );
 
