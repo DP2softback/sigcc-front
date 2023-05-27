@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionDeDesempenho.css';
+import { PERFORMANCE_EVALUATION_INDEX } from '@config/paths';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import { Search } from 'react-bootstrap-icons'
@@ -28,7 +29,7 @@ const Index = () => {
   );
 
   const firstTwoEmployees = (
-    <div className='ec-indexFirstTwoEmployees col-md-4'>
+    <div className='ec-indexFirstTwoEmployees col-md-4 cursor-pointer'>
       {employees.slice(0, 2).map((employee) => {
         return (
           <div key={employee.id} className='mb-32px'>
@@ -50,7 +51,7 @@ const Index = () => {
 
   const restEmployees = employees.slice(2).map((employee) => {
     return (
-      <div key={employee.id} className='col-md-4 mb-32px'>
+      <div key={employee.id} className='col-md-4 mb-32px cursor-pointer'>
         <Employee
           id={employee.id}
           name={employee.name}
@@ -97,9 +98,10 @@ const Index = () => {
   return (
     <div>
       <Layout
-        title={'Evaluación continua'}
+        title={'Evaluación de desempeño'}
         body={body}
-        subtitle='Evaluaciones continuas de trabajadores de los que te encuentras a cargo.'
+        route={PERFORMANCE_EVALUATION_INDEX}
+        subtitle='Evaluaciones de desempeño de trabajadores de los que te encuentras a cargo.'
       />
     </div>
   );
