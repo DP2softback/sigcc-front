@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
 import { CONTINUOS_EVALUATION_CREATE, CONTINUOS_EVALUATION_INDEX } from '@config/paths';
@@ -9,14 +9,21 @@ import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import TableHistoryContinua from '@features/Modulo3/components/Tables/TableHistoryContinua';
-import registros from '@features/Modulo3/jsons/HistoryContinua';
+import { newReg } from '@features/Modulo3/jsons/HistoryContinua';
 import Linechart from '@features/Modulo3/components/Charts/Linechart/Linechart';
 import { noDataFound } from '@features/Modulo3/utils/constants';
+import { getEvaluationsHistory } from '@features/Modulo3/services/continuousEvaluation';
 
 const History = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const employeeId = urlParams.get('id');
-  const [evaluations, setEvaluations] = useState([]);
+  const [evaluations, setEvaluations] = useState(newReg);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     setEvaluations(await getEvaluationsHistory(employeeId));
+  //   })();
+  // }, []);
 
   const filters = (
     <Form>
@@ -66,7 +73,7 @@ const History = () => {
 
   const table =(
     <div className='col-md-5'>
-      <TableHistoryContinua rows ={registros}></TableHistoryContinua>
+      <TableHistoryContinua rows ={evaluations}></TableHistoryContinua>
     </div>
   );
 
@@ -80,7 +87,11 @@ const History = () => {
       ) : (
         noDataFound
       )}
-      <div className="text-end mb-4">
+      <div
+        className="text-end mb-4"
+        onClick={() => {
+          navigateTo(CONTINUOS_EVALUATION_CREATE, { id: employeeId });
+        }}>
         <Button>Agregar nueva evaluación</Button>
       </div>
     </>

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionDeDesempenho.css';
-import { PERFORMANCE_EVALUATION_INDEX } from '@config/paths';
+import { PERFORMANCE_EVALUATION_INDEX, PERFORMANCE_EVALUATION_CREATE } from '@config/paths';
+import { navigateTo } from '@features/Modulo3/utils/functions.jsx';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons'
 import { noDataFound } from '@features/Modulo3/utils/constants';
@@ -69,7 +70,11 @@ const History = () => {
       ) : (
         noDataFound
       )}
-      <div className="text-end mt-32 mb-4">
+      <div
+        className="text-end mt-32 mb-4"
+        onClick={() => {
+          navigateTo(PERFORMANCE_EVALUATION_CREATE, { id: 1 });
+        }}>
         <Button>Agregar nueva evaluación</Button>
       </div>
     </>

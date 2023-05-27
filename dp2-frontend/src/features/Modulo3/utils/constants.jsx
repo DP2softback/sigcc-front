@@ -4,6 +4,8 @@ export const CONTINUOS_EVALUATION_TYPE = 'Evaluación Continua';
 
 export const PERFORMANCE_EVALUATION_TYPE = 'Evaluación de Desempeño';
 
+export const DAYS_UNIT = 'días';
+
 export const noDataFound = (
   <div className="col text-center h-100 pt-4">
     <img
