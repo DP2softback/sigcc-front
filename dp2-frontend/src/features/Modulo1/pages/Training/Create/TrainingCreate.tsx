@@ -12,10 +12,12 @@ import '../training.css';
 const data = {
     id: 1,
     nombre: "Ejemplo de Creación",
-    url_foto: 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
+    url_foto: 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg',
     descripcion: "Esto es un ejemplo de creación de un curso empresa",
     tipo: "A"
 }
+
+let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
 
 type Supplier = {
     id: string;
@@ -31,7 +33,7 @@ type TopicObj = {
 }
 
 type SessionObj = {
-    curso_empresa_id: number;
+    curso_empresa_id?: number;
     nombre: string;
     descripcion: string;
     fecha_inicio: string;
@@ -41,6 +43,14 @@ type SessionObj = {
     url_video?: string;
     temas: TopicObj[];
 }
+
+const locationOptions = [
+    { id: 1, type: "Auditorio primer piso" },
+    { id: 2, type: "Auditorio segundo piso" },
+    { id: 3, type: "Auditorio tecer piso" },
+    { id: 4, type: "Auditorio cuarto piso" },
+    { id: 5, type: "Auditorio quinto piso" },
+]
 
 const suppliers: Supplier[] = [
     {
@@ -96,15 +106,17 @@ let sessionsData: SessionObj[] = []
 const TrainingCreate = () => {
     const { trainingID } = useParams();
     /* CAMBIAR CON LA API */ 
-    const [training, setTraining] = useState<any>(data);
+    const [training, setTraining] = useState<any>([]);
     const [nombreT, setNombreT] = useState(training.nombre)
     const [descripcionT, setDescripcionT] = useState(training.descripcion)
     /* CAMBIAR CON LA API */ 
+
+    const [sessionCreated, setSessionCreated] = useState<any>(false);
     
     const [nombreAuxT, setNombreAuxT] = useState(training.nombre)
     const [descripcionAuxT, setDescripcionAuxT] = useState(training.descripcion)
 
-    const [classSessions, setClassSessions] = useState<SessionObj[]>(sessionsData)
+    const [classSessions, setClassSessions] = useState<SessionObj[]>([])
     const [addedTopics, setAddedTopics] = useState<TopicObj[]>([])
 
     const [supplierFilter, setSupplierFilter] = useState<Supplier[]>(suppliers)
@@ -164,7 +176,8 @@ const TrainingCreate = () => {
     /* TRAINING SESSION DETAIL INPUTS */
     const refTrName = useRef<HTMLInputElement>(null);
     const refTrDescription = useRef<HTMLTextAreaElement>(null);
-    const refTrLocation = useRef<HTMLInputElement>(null);
+    const refTrLocation = useRef<HTMLSelectElement>(null);
+    const refTrLocationLink = useRef<HTMLInputElement>(null);
     const refTrTopics = useRef<HTMLInputElement>(null);
     const refTrDateStart = useRef<HTMLInputElement>(null);
     const refTrDateEnd = useRef<HTMLInputElement>(null);
@@ -225,7 +238,6 @@ const TrainingCreate = () => {
     /* CREATE NEW SESSION */
     const createSession = () => {
         let dataSession: SessionObj = {
-            curso_empresa_id: 0,
             nombre: '',
             descripcion: '',
             fecha_inicio: '',
@@ -247,14 +259,27 @@ const TrainingCreate = () => {
             }
         }
         else{
-            dataSession = {
-                curso_empresa_id: parseInt(trainingID),
-                nombre: refTrName.current?.value,
-                descripcion: refTrDescription.current?.value,
-                fecha_inicio: fecha_ini,
-                ubicacion: refTrLocation.current?.value,
-                aforo_maximo: parseInt(refTrCapacity.current?.value),
-                temas: addedTopics
+            if(training.tipo === "P"){
+                dataSession = {
+                    curso_empresa_id: parseInt(trainingID),
+                    nombre: refTrName.current?.value,
+                    descripcion: refTrDescription.current?.value,
+                    fecha_inicio: fecha_ini,
+                    ubicacion: refTrLocation.current?.value,
+                    aforo_maximo: parseInt(refTrCapacity.current?.value),
+                    temas: addedTopics
+                }
+            }
+            else{
+                dataSession = {
+                    curso_empresa_id: parseInt(trainingID),
+                    nombre: refTrName.current?.value,
+                    descripcion: refTrDescription.current?.value,
+                    fecha_inicio: fecha_ini,
+                    ubicacion: refTrLocationLink.current?.value,
+                    aforo_maximo: parseInt(refTrCapacity.current?.value),
+                    temas: addedTopics
+                }
             }
         }
         
@@ -273,19 +298,24 @@ const TrainingCreate = () => {
             refTrDateEnd.current.value = "";
         }
         else {
-            refTrLocation.current.value = "";
+            if(training.tipo === "P"){
+                refTrLocation.current.value = "";
+            }
+            else{
+                refTrLocationLink.current.value = "";
+            }
+            
             refTrCapacity.current.value = "";
         }
-
-        /*
-        axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/sesion_course_company/ ', dataSession)
+        
+        axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/sesion_course_company/', dataSession)
             .then(function (response) {
-
+                console.log(response.data)
+                setSessionCreated(true)
             })
             .catch(function (error) {
                 console.log(error);
             });
-        */
     }
     /* CREATE NEW SESSION */
 
@@ -325,11 +355,13 @@ const TrainingCreate = () => {
             .then(function (response)
             {
                 console.log(response.data)
-/*
+                console.log(response.data.sesiones.length)
+
                 setTraining(response.data);
                 setNombreT(response.data.nombre)
                 setDescripcionT(response.data.descripcion)
-*/
+                setClassSessions(response.data.sesiones)
+
                 setLoading(false);
             })
             .catch(function (error)
@@ -343,7 +375,7 @@ const TrainingCreate = () => {
     useEffect(() =>
     {
         loadTrainingDetails();
-    }, []);
+    }, [sessionCreated]);
 
     const handleCategory = (category: typeTraI) => {
         setTypeArea(category.type)
@@ -389,12 +421,26 @@ const TrainingCreate = () => {
 
                             <div style={{ display: "flex", alignItems: "center" }}>
                                 <div style={{ paddingRight: "2rem" }}>
-                                    <img src={training.url_foto} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>
+                                    {
+                                        training.url_foto === null ?
+                                        (<img src={url_foto_default} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>)
+                                        :
+                                        (<img src={training.url_foto} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>)
+                                    }
                                 </div>
                                 <div>
                                     <h1 className='screenTitle'>{nombreT}</h1>
                                     <p><small className='subtitle'>{descripcionT}.</small></p>
-                                    <p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: {training.tipo}</small><People style={{ opacity: "50%" }} /></p>
+                                    {
+                                        training.tipo === "A" ?
+                                        (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Virtual Asincrono</small><People style={{ opacity: "50%" }} /></p>)
+                                        :
+                                        (training.tipo === "P" ? 
+                                            (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Presencial</small><People style={{ opacity: "50%" }} /></p>)
+                                            :
+                                            (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Virtual Sincrono</small><People style={{ opacity: "50%" }} /></p>)
+                                        )
+                                    }
                                 </div>
                             </div>
 
@@ -441,7 +487,7 @@ const TrainingCreate = () => {
                             </div>
                         </div>
                     </div>
-                    
+
                     {/* CREATE SESSION MODAL */}
                     <div className="modal fade" id="createSessionModal" aria-hidden="true" aria-labelledby="createSessionModal" tabIndex={-1}>
                         <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -486,7 +532,22 @@ const TrainingCreate = () => {
                                             </div>
                                             <div className='mb-3'>
                                                 <label className="form-label">Ubicación</label>
-                                                    <input ref={refTrLocation} type="text" className="form-control" />
+                                                {
+                                                    training.tipo === 'P' ?
+                                                    (<>
+                                                        <select className="form-select" ref={refTrLocation}>
+                                                            <option hidden>Seleccionar</option>
+                                                            {locationOptions.map((lo) => {
+                                                                return (
+                                                                    <option key={lo.id} value={lo.type}>{lo.type}</option>
+                                                                )
+                                                            })}
+                                                        </select>
+                                                    </>)
+                                                    :
+                                                    (<input ref={refTrLocationLink} type="text" className="form-control" />)
+                                                }
+                                                    
                                             </div>
                                         </>)
                                     }

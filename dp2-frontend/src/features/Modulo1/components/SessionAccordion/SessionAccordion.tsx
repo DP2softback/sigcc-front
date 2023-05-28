@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { Calendar2EventFill, GeoFill, JournalBookmarkFill, PeopleFill } from 'react-bootstrap-icons'
 
 const SessionAccordion = (Props) => {
@@ -19,14 +20,14 @@ const SessionAccordion = (Props) => {
                                     Props.trainingType === "A" ?
                                     (
                                         <>
-                                            <p><Calendar2EventFill /><b style={{ paddingLeft: "0.5rem" }}>Fecha de inicio:</b> {session.fecha_inicio}</p>
-                                            <p><Calendar2EventFill /><b style={{ paddingLeft: "0.5rem" }}>Fecha limite:</b> {session.fecha_limite}</p>
+                                            <p><Calendar2EventFill /><b style={{ paddingLeft: "0.5rem" }}>Fecha de inicio:</b> {moment(session.fecha_inicio).format("DD-MM-YYYY")}</p>
+                                            <p><Calendar2EventFill /><b style={{ paddingLeft: "0.5rem" }}>Fecha limite:</b> {moment(session.fecha_limite).format("DD-MM-YYYY")}</p>
                                         </>
                                     )
                                     :
                                     (
                                         <>
-                                            <p><Calendar2EventFill /><b style={{ paddingLeft: "0.5rem" }}>Fecha del evento:</b> {session.fecha_inicio}</p>
+                                            <p><Calendar2EventFill /><b style={{ paddingLeft: "0.5rem" }}>Fecha del evento:</b> {moment(session.fecha_inicio).format("DD-MM-YYYY")}</p>
                                             <p><GeoFill /><b style={{ paddingLeft: "0.5rem" }}>Ubicación:</b> {session.ubicacion}</p>
                                             <p><PeopleFill /><b style={{ paddingLeft: "0.5rem" }}>Aforo máximo:</b> {session.aforo_maximo}</p>
                                         </>

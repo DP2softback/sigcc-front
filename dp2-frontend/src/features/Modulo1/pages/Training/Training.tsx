@@ -8,6 +8,7 @@ import PictureUpload from '@features/Modulo1/components/PictureUpload';
 import '../../basic.css';
 import './training.css';
 import axiosInt from '@config/axios';
+import moment from 'moment';
 
 const typeTra = [
     { id: 1, type: "Todos" },
@@ -18,8 +19,8 @@ const typeTra = [
 
 const typeCreation = [
     { id: 1, type: "Presencial" },
-    { id: 3, type: "Virtual Sincrono" },
-    { id: 4, type: "Virtual Asincrono" },
+    { id: 2, type: "Virtual Sincrono" },
+    { id: 3, type: "Virtual Asincrono" },
 ]
 
 type TrainingObj = {
@@ -29,9 +30,11 @@ type TrainingObj = {
     descripcion: string;
     fecha_creacion: string;
     fecha_primera_sesion: string;
-    numEmployees: number;
+    cantidad_empleados: number;
     tipo: string;
 }
+
+let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
 
 const datos: TrainingObj[] = [
     {
@@ -41,7 +44,7 @@ const datos: TrainingObj[] = [
         "descripcion": "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
         "fecha_creacion": "06/05/2023",
         "fecha_primera_sesion": "06/05/2023",
-        "numEmployees": 10,
+        "cantidad_empleados": 10,
         "tipo": "Presencial",
     },
     {
@@ -51,7 +54,7 @@ const datos: TrainingObj[] = [
         "descripcion": "Lorem ipsum",
         "fecha_creacion": "06/05/2023",
         "fecha_primera_sesion": "10/05/2023",
-        "numEmployees": 15,
+        "cantidad_empleados": 15,
         "tipo": "Sincrono",
     },
     {
@@ -61,7 +64,7 @@ const datos: TrainingObj[] = [
         "descripcion": "Lorem ipsum",
         "fecha_creacion": "06/05/2023",
         "fecha_primera_sesion": "11/05/2023",
-        "numEmployees": 15,
+        "cantidad_empleados": 15,
         "tipo": "Asincrono",
     },
     {
@@ -71,7 +74,7 @@ const datos: TrainingObj[] = [
         "descripcion": "Lorem ipsum",
         "fecha_creacion": "06/05/2023",
         "fecha_primera_sesion": "12/05/2023",
-        "numEmployees": 15,
+        "cantidad_empleados": 15,
         "tipo": "Presencial",
     },
     {
@@ -81,7 +84,7 @@ const datos: TrainingObj[] = [
         "descripcion": "Lorem ipsum",
         "fecha_creacion": "06/05/2023",
         "fecha_primera_sesion": "06/05/2023",
-        "numEmployees": 10,
+        "cantidad_empleados": 10,
         "tipo": "Presencial",
 
     },
@@ -92,7 +95,7 @@ const datos: TrainingObj[] = [
         "descripcion": "Lorem ipsum",
         "fecha_creacion": "06/05/2023",
         "fecha_primera_sesion": "10/05/2023",
-        "numEmployees": 15,
+        "cantidad_empleados": 15,
         "tipo": "Sincrono",
     },
     {
@@ -102,7 +105,7 @@ const datos: TrainingObj[] = [
         "descripcion": "Lorem ipsum",
         "fecha_creacion": "06/05/2023",
         "fecha_primera_sesion": "11/05/2023",
-        "numEmployees": 15,
+        "cantidad_empleados": 15,
         "tipo": "Asincrono",
     },
     {
@@ -112,7 +115,7 @@ const datos: TrainingObj[] = [
         "descripcion": "Lorem ipsum",
         "fecha_creacion": "06/05/2023",
         "fecha_primera_sesion": "12/05/2023",
-        "numEmployees": 15,
+        "cantidad_empleados": 15,
         "tipo": "Presencial",
     },
     {
@@ -122,7 +125,7 @@ const datos: TrainingObj[] = [
         "descripcion": "Lorem ipsum",
         "fecha_creacion": "06/05/2023",
         "fecha_primera_sesion": "06/05/2023",
-        "numEmployees": 10,
+        "cantidad_empleados": 10,
         "tipo": "Presencial",
     },
     {
@@ -132,7 +135,7 @@ const datos: TrainingObj[] = [
         "descripcion": "Lorem ipsum",
         "fecha_creacion": "06/05/2023",
         "fecha_primera_sesion": "10/05/2023",
-        "numEmployees": 15,
+        "cantidad_empleados": 15,
         "tipo": "Sincrono",
     },
     {
@@ -142,7 +145,7 @@ const datos: TrainingObj[] = [
         "descripcion": "Lorem ipsum",
         "fecha_creacion": "06/05/2023",
         "fecha_primera_sesion": "11/05/2023",
-        "numEmployees": 15,
+        "cantidad_empleados": 15,
         "tipo": "Asincrono",
     },
     {
@@ -152,7 +155,7 @@ const datos: TrainingObj[] = [
         "descripcion": "Lorem ipsum",
         "fecha_creacion": "06/05/2023",
         "fecha_primera_sesion": "12/05/2023",
-        "numEmployees": 15,
+        "cantidad_empleados": 15,
         "tipo": "Presencial",
     },
     {
@@ -162,7 +165,7 @@ const datos: TrainingObj[] = [
         "descripcion": "Lorem ipsum",
         "fecha_creacion": "06/05/2023",
         "fecha_primera_sesion": "06/05/2023",
-        "numEmployees": 10,
+        "cantidad_empleados": 10,
         "tipo": "Presencial",
     },
     {
@@ -172,7 +175,7 @@ const datos: TrainingObj[] = [
         "descripcion": "Lorem ipsum",
         "fecha_creacion": "06/05/2023",
         "fecha_primera_sesion": "10/05/2023",
-        "numEmployees": 15,
+        "cantidad_empleados": 15,
         "tipo": "Sincrono",
     },
     {
@@ -182,7 +185,7 @@ const datos: TrainingObj[] = [
         "descripcion": "Lorem ipsum",
         "fecha_creacion": "06/05/2023",
         "fecha_primera_sesion": "11/05/2023",
-        "numEmployees": 15,
+        "cantidad_empleados": 15,
         "tipo": "Asincrono",
     },
     {
@@ -192,7 +195,7 @@ const datos: TrainingObj[] = [
         "descripcion": "Lorem ipsum",
         "fecha_creacion": "06/05/2023",
         "fecha_primera_sesion": "12/05/2023",
-        "numEmployees": 15,
+        "cantidad_empleados": 15,
         "tipo": "Presencial",
     },
 ]
@@ -256,10 +259,10 @@ const Training = () => {
     const now = formatDate(new Date());
     var now7 = formatDate(new Date(today.setDate(today.getDate() + 7)));
 
-    const [trainingFilter, setTrainingFilter] = useState<TrainingObj[]>(datos)
-    const [upcomingCourse, setUpcomingCourse] = useState<TrainingObj[]>(trainingFilter.filter((item: any) => compararFechas(item.fecha_primera_sesion, now, now7, 1)))
-    const [currentCourse, setCurrentCourse] = useState<TrainingObj[]>(trainingFilter.filter((item: any) => compararFechas(item.fecha_primera_sesion, now7, '', 2)))
-    const [finishedCourse, setFinishedCourse] = useState<TrainingObj[]>(trainingFilter.filter((item: any) => compararFechas(item.fecha_primera_sesion, now, '', 3)))
+    const [trainingFilter, setTrainingFilter] = useState<TrainingObj[]>([])
+    const [upcomingCourse, setUpcomingCourse] = useState<TrainingObj[]>(trainingFilter.filter((item: any) => compararFechas(item.fecha_creacion, now, now7, 1)))
+    const [currentCourse, setCurrentCourse] = useState<TrainingObj[]>(trainingFilter.filter((item: any) => compararFechas(item.fecha_creacion, now7, '', 2)))
+    const [finishedCourse, setFinishedCourse] = useState<TrainingObj[]>(trainingFilter.filter((item: any) => compararFechas(item.fecha_creacion, now, '', 3)))
 
     const [startDate, setStarDate] = useState("0001-01-01")
     const [endDate, setEndDate] = useState("9999-12-31")
@@ -363,8 +366,8 @@ const Training = () => {
         console.log(data)
 
         /* RUTA HARDCODEADA*/
-        navigate(`/modulo1/cursoempresa/creacion/1`);
-/*
+        //navigate(`/modulo1/cursoempresa/creacion/1`);
+
         axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/course_company_course/', data)
             .then(function (response) {
                 navigate(`/modulo1/cursoempresa/creacion/${response.data.id}`);
@@ -372,7 +375,6 @@ const Training = () => {
             .catch(function (error) {
                 console.log(error);
             });
-*/
     }
 
     const loadTrainings = () => {
@@ -380,7 +382,8 @@ const Training = () => {
         axiosInt.get('dev-modulo-capacitaciones/api/capacitaciones/course_company_course/')
             .then(function (response) {
                 console.log(response)
-                //setTrainingFilter(response.data);
+                console.log(moment(response.data.fecha_creacion).format("DD-MM-YYYY"))
+                setTrainingFilter(response.data);
                 setLoading(false);
             })
             .catch(function (error) {
@@ -473,11 +476,11 @@ const Training = () => {
                                                             <TrainingCard key={tr.id}
                                                                 id={tr.id}
                                                                 name={tr.nombre}
-                                                                photoURL={tr.url_foto}
+                                                                photoURL={tr.url_foto === null ? (url_foto_default) : (tr.url_foto)}
                                                                 description={tr.descripcion}
-                                                                creationDate={tr.fecha_creacion}
-                                                                eventDate={tr.fecha_primera_sesion}
-                                                                employees={tr.numEmployees}
+                                                                creationDate={moment(tr.fecha_creacion).format("DD-MM-YYYY")}
+                                                                eventDate={tr.fecha_primera_sesion === null ? (moment(tr.fecha_creacion).format("DD-MM-YYYY")) : (moment(tr.fecha_primera_sesion).format("DD-MM-YYYY"))}
+                                                                employees={tr.cantidad_empleados}
                                                             />
 
                                                         )
@@ -534,11 +537,11 @@ const Training = () => {
                                                             <TrainingCard key={tr.id}
                                                                 id={tr.id}
                                                                 name={tr.nombre}
-                                                                photoURL={tr.url_foto}
+                                                                photoURL={tr.url_foto === null ? (url_foto_default) : (tr.url_foto)}
                                                                 description={tr.descripcion}
-                                                                creationDate={tr.fecha_creacion}
-                                                                eventDate={tr.fecha_primera_sesion}
-                                                                employees={tr.numEmployees}
+                                                                creationDate={moment(tr.fecha_creacion).format("DD-MM-YYYY")}
+                                                                eventDate={tr.fecha_primera_sesion === null ? (moment(tr.fecha_creacion).format("DD-MM-YYYY")) : (moment(tr.fecha_primera_sesion).format("DD-MM-YYYY"))}
+                                                                employees={tr.cantidad_empleados}
                                                             />
 
                                                         )
@@ -598,11 +601,11 @@ const Training = () => {
                                                             <TrainingCard key={tr.id}
                                                                 id={tr.id}
                                                                 name={tr.nombre}
-                                                                photoURL={tr.url_foto}
+                                                                photoURL={tr.url_foto === null ? (url_foto_default) : (tr.url_foto)}
                                                                 description={tr.descripcion}
-                                                                creationDate={tr.fecha_creacion}
-                                                                eventDate={tr.fecha_primera_sesion}
-                                                                employees={tr.numEmployees}
+                                                                creationDate={moment(tr.fecha_creacion).format("DD-MM-YYYY")}
+                                                                eventDate={tr.fecha_primera_sesion === null ? (moment(tr.fecha_creacion).format("DD-MM-YYYY")) : (moment(tr.fecha_primera_sesion).format("DD-MM-YYYY"))}
+                                                                employees={tr.cantidad_empleados}
                                                             />
                                                         )
                                                     })
@@ -664,11 +667,11 @@ const Training = () => {
                                                             <TrainingCard key={tr.id}
                                                                 id={tr.id}
                                                                 name={tr.nombre}
-                                                                photoURL={tr.url_foto}
+                                                                photoURL={tr.url_foto === null ? (url_foto_default) : (tr.url_foto)}
                                                                 description={tr.descripcion}
-                                                                creationDate={tr.fecha_creacion}
-                                                                eventDate={tr.fecha_primera_sesion}
-                                                                employees={tr.numEmployees}
+                                                                creationDate={moment(tr.fecha_creacion).format("DD-MM-YYYY")}
+                                                                eventDate={tr.fecha_primera_sesion === null ? (moment(tr.fecha_creacion).format("DD-MM-YYYY")) : (moment(tr.fecha_primera_sesion).format("DD-MM-YYYY"))}
+                                                                employees={tr.cantidad_empleados}
                                                             />
 
                                                         )

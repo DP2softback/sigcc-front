@@ -4,7 +4,7 @@ export type Topics = {
 }
 
 export type Session = {
-    curso_empresa_id: number;
+    curso_empresa_id?: number;
     nombre: string;
     descripcion: string;
     fecha_inicio: string;
