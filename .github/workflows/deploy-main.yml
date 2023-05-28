@@ -36,6 +36,10 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./dp2-frontend/
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -47,7 +51,7 @@ jobs:
         known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
     - name: Deploy with rsync
-      run: rsync -avz ./dp2-frontend/dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/app-react
+      run: rsync -avz dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/app-react
 
     # - name: Copy file to EC2 instance
     #   run: rsync -r -e "ssh -o StrictHostKeyChecking=no" dist ${{ secrets.SSH_HOST }}:/var/www/html
