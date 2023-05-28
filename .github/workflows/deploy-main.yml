@@ -37,10 +37,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: react-app-deploy
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.SSH_PRIVATE_KEY }}
-          key: ${{ secrets.SSH_HOST}}
-      - name: Copy file to EC2 instance
-        run: sudo scp -r dist ${{ secrets.SSH_HOST }}:/var/www/html
+    - name: Checkout code
+      uses: actions/checkout@v2
+  
+    - name: Install SSH client
+      run: sudo apt-get install openssh-client -y
+    
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh/
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -t rsa ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+    - name: Copy file to EC2 instance
+      run: scp -r dist ${{ secrets.SSH_HOST }}:/var/www/html
