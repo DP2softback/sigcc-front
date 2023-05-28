@@ -78,6 +78,7 @@ const TrainingDetails = () => {
     const { trainingID } = useParams();
     const [training, setTraining] = useState<any>(datos);
     const [position, setPosition] = useState(0);
+    const [prueba, setPrueba] = useState(0);
     const employeesToShow = employees.slice(position, position + 3);
     const botonEmployee = "Quitar";
 
@@ -177,7 +178,7 @@ const TrainingDetails = () => {
                         */}
                             <div className='mt-5 mb-3' style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                 <h4 className='subarea'>Empleados asignados</h4>
-                                <Link to={`/modulo1/capacitacion/asignacion/${training.id}`}>
+                                <Link to={`/modulo1/cursoempresa/asignacion/${training.id}`}>
                                     <button className='btn btn-primary' style={{ marginRight: "23px" }}>
                                         <div style={{display: "flex", alignItems: "center"}}>
                                             <span className='me-3'>Asignar empleados</span>                                        
@@ -210,7 +211,7 @@ const TrainingDetails = () => {
                                                 codigo={employee.code}
                                                 boton1={botonEmployee}
                                                 boton1Color={"#B02A37"}
-                                                option={{}}
+                                                option={setPrueba}
                                             />
                                         ))}
                                         {(employeesToShow.length != 3) &&

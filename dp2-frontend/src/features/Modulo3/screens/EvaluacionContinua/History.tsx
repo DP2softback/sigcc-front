@@ -1,15 +1,40 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
+import { CONTINUOS_EVALUATION_CREATE, CONTINUOS_EVALUATION_INDEX } from '@config/paths';
+import { navigateTo, processData } from '@features/Modulo3/utils/functions';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons'
-import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
+import dashboardJson from '@features/Modulo3/jsons/EvContDashboard';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import TableHistoryContinua from '@features/Modulo3/components/Tables/TableHistoryContinua';
-import registros from '@features/Modulo3/jsons/HistoryContinua';
+import { newReg } from '@features/Modulo3/jsons/HistoryContinua';
+import Linechart from '@features/Modulo3/components/Charts/Linechart/Linechart';
+import { loadingScreen, noDataFound } from '@features/Modulo3/utils/constants';
+import { getEvaluationsHistory, getEmployeeEvaluationDashboard } from '@features/Modulo3/services/continuousEvaluation';
 
 const History = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const employeeId = urlParams.get('id');
+  const [evaluations, setEvaluations] = useState(newReg);
+  const [dashboard, setDashboard] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    (async () => {
+      const response = await getEvaluationsHistory(employeeId);
+      if(!response) setEvaluations(newReg);
+      else setEvaluations(response);
+
+      const responseDashboard = await getEmployeeEvaluationDashboard(employeeId);
+      if(!responseDashboard) setDashboard(processData(dashboardJson));
+      else setDashboard(processData(responseDashboard));
+      
+      setIsLoading(false);
+    })();
+  }, []);
 
   const filters = (
     <Form>
@@ -28,43 +53,59 @@ const History = () => {
   );
 
   const chart = (
-    <div className='col-md-6 mb-32px'>
-      <PieChart
-        title={"Evaluaciones continuas"}
-        labels={["Red", "Blue", "Yellow"]}
-        datasets={[
-          {
-            label: "My First Dataset",
-            data: [300, 50, 100],
-            backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-            hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-          },
-        ]}
-      />
+    <div className='col-md-7 mb-32px'>
+      <div className='container-mt-32px'>
+      {dashboard && (
+        <Linechart
+          title={'Evaluaciones continuas'}
+          labelsX={dashboard.months}
+          dataInfoprops={dashboard.valuesPerCategory}/>
+      )}
+      </div>
+
     </div>
   );
 
   const table =(
-    <div className='col-md-6'>
-      <TableHistoryContinua rows ={registros}></TableHistoryContinua>
+    <div className='col-md-5'>
+      <TableHistoryContinua rows ={evaluations}></TableHistoryContinua>
     </div>
   );
+
   const content = (
     <>
-    {table}
-    {chart}
-
+      {evaluations && evaluations.length > 0 ? (
+        <>
+          {table}
+          {chart}
+        </>
+      ) : (
+        noDataFound
+      )}
+      <div
+        className="text-end mb-4"
+        onClick={() => {
+          navigateTo(CONTINUOS_EVALUATION_CREATE, { id: employeeId });
+        }}>
+        <Button>Agregar nueva evaluación</Button>
+      </div>
     </>
-  )
+  );
 
   const body = (
-    <Section title={'Trabajadores'} content={content} filters={filters}/>
+    <Section
+      title={"Evaluaciones"}
+      content={isLoading ? loadingScreen : content}
+      filters={filters}
+    />
   );
+
   return (
     <div>
       <Layout
         title={'Evaluación continua - Angela Quispe Ramírez'}
         body={body}
+        route={CONTINUOS_EVALUATION_INDEX}
         subtitle='Evaluaciones continuas de Angela Quispe Ramírez.'
       />
     </div>

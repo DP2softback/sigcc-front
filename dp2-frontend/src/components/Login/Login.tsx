@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import './Login.css';
+import useRefMounted from '@hooks/useRefMounted';
+import useAuth from '@hooks/useAuth';
 
 const Login = () => {
+
+  const { login } = useAuth();
+  const isMountedRef = useRefMounted();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -18,20 +24,34 @@ const Login = () => {
     setRememberMe(e.target.checked);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Aquí puedes agregar la lógica para autenticar al usuario con los datos proporcionados (username y password)
     console.log('Username:', username);
     console.log('Password:', password);
     console.log('Remember me:', rememberMe);
+    try {
+      await login(username, password);
+
+      if (isMountedRef.current) {
+        // setStatus({ success: true });
+        // setSubmitting(false);
+      }
+    } catch (err) {
+      if (isMountedRef.current) {
+        // setStatus({ success: false });
+        // setErrors({ submit: "Las credenciales ingresadas son incorrectas" });
+        // setSubmitting(false);
+      }
+    }
   };
 
   return ( 
     <div className="container">
-      <div className="row justify-content-left">
+      <div className="row justify-content-left d-flex justify-content-center">
         <img src="" alt="Imagen MEDIA PANTALLA" />
       </div>
-      <div className="row justify-content-right">
+      <div className="row justify-content-right d-flex justify-content-center">
         <div className="col-sm-6">
           <h2 className="text-center mb-4">!Hola! Estamos felices de verte de nuevo. Ingrese su informacion de incio de sesion para continuar</h2>
           <img src="" alt="Imagen LOGO" />

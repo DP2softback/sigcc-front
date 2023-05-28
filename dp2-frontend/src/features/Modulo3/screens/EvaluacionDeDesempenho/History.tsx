@@ -1,15 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionDeDesempenho.css';
+import { PERFORMANCE_EVALUATION_INDEX, PERFORMANCE_EVALUATION_CREATE } from '@config/paths';
+import { navigateTo } from '@features/Modulo3/utils/functions';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons'
+import { loadingScreen, noDataFound } from '@features/Modulo3/utils/constants';
 import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import TableHistoryContinua from '@features/Modulo3/components/Tables/TableHistoryContinua';
-import registros from '@features/Modulo3/jsons/HistoryContinua';
+import { newReg } from '@features/Modulo3/jsons/HistoryContinua';
+import { getEvaluationsHistory } from '@features/Modulo3/services/continuousEvaluation';
 
 const History = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const employeeId = urlParams.get('id');
+  const [evaluations, setEvaluations] = useState(newReg);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    (async () => {
+      const response = await getEvaluationsHistory(employeeId);
+
+      if(!response) setEvaluations(newReg);
+      else setEvaluations(response);
+      
+      setIsLoading(false);
+    })();
+  }, []);
 
   const filters = (
     <Form>
@@ -46,25 +66,40 @@ const History = () => {
 
   const table =(
     <div className='col-md-6'>
-      <TableHistoryContinua rows ={registros}></TableHistoryContinua>
+      <TableHistoryContinua rows ={evaluations}></TableHistoryContinua>
     </div>
   );
+
   const content = (
     <>
-    {table}
-    {chart}
-
+      {evaluations && evaluations.length > 0 ? (
+        <>
+          {table}
+          {chart}
+        </>
+      ) : (
+        noDataFound
+      )}
+      <div
+        className="text-end mt-32 mb-4"
+        onClick={() => {
+          navigateTo(PERFORMANCE_EVALUATION_CREATE, { id: 1 });
+        }}>
+        <Button>Agregar nueva evaluación</Button>
+      </div>
     </>
-  )
+  );
 
   const body = (
-    <Section title={'Trabajadores'} content={content} filters={filters}/>
+    <Section title={'Evaluaciones'} content={isLoading ? loadingScreen : content} filters={filters}/>
   );
+
   return (
     <div>
       <Layout
         title={'Evaluación continua - Angela Quispe Ramírez'}
         body={body}
+        route={PERFORMANCE_EVALUATION_INDEX}
         subtitle='Evaluaciones continuas de Angela Quispe Ramírez.'
       />
     </div>
