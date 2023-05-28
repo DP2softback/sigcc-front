@@ -38,7 +38,7 @@ type SessionObj = {
 }
 
 
-const suppliers: Supplier[] = [
+const suppliers2: Supplier[] = [
     {
         id: "1",
         name: "John Doe Johnson",
@@ -64,28 +64,42 @@ const suppliers: Supplier[] = [
 
 type typeTraI = {
     id: number,
-    type: string
+    categoria: string
 }
 
 type typeComI = {
     id: number,
-    rs: string,
+    razon_social: string,
     email?: string
 }
 
-const typeTra: typeTraI[] = [
-    // { id: 1, type: "Todos" },
-    { id: 1, type: "Software" },
-    { id: 2, type: "Salud" },
-    { id: 3, type: "Seguridad" },
-]
+type typeHabI = {
+    id: number,
+    habilidad: string
+}
 
-const typeCom: typeComI[] = [
-    // { id: 1, type: "Todos" },
-    { id: 1, rs: "Empresa 1" },
-    { id: 2, rs: "Empresa 2" },
-    { id: 3, rs: "Empresa 3" },
-]
+type typeSupp = {
+    id: string,
+    nombres: string,
+    apellidos: string,
+    email?: string,
+    habilidad_x_proveedor_usuario: []
+}
+
+
+// const typeTra: typeTraI[] = [
+//     // { id: 1, type: "Todos" },
+//     { id: 1, type: "Software" },
+//     { id: 2, type: "Salud" },
+//     { id: 3, type: "Seguridad" },
+// ]
+
+// const typeCom: typeComI[] = [
+//     // { id: 1, type: "Todos" },
+//     { id: 1, razon_social: "Empresa 1" },
+//     { id: 2, razon_social: "Empresa 2" },
+//     { id: 3, razon_social: "Empresa 3" },
+// ]
 
 const typeCreation = [
     { id: 1, type: "Presencial" },
@@ -109,16 +123,29 @@ const TrainingCreate = () => {
     const [classSessions, setClassSessions] = useState<SessionObj[]>(sessionsData)
     const [addedTopics, setAddedTopics] = useState<string[]>([])
 
-    const [supplierFilter, setSupplierFilter] = useState<Supplier[]>(suppliers)
-    const [typeArea, setTypeArea] = useState("Todos")
-    const [typeCompany, setTypeCompany] = useState("Todos")
+
+
+    const [typeArea, setTypeArea] = useState<typeTraI>({ id: 0, categoria: "" })
+    const [typeCompany, setTypeCompany] = useState<typeComI>({ id: 0, razon_social: "" })
+    const [typeHability, setTypeHability] = useState<typeHabI>({ id: 0, habilidad: "" })
+    const [typeSupplier, setTypeSupplier] = useState<typeSupp>({ id: "0", nombres: "", apellidos: "", habilidad_x_proveedor_usuario: [] })
+
+
     var filtered;
     var mostrar = 6;
 
-    const [loading, setLoading] = useState(false);
-    const checkList = ["Desarrollo de Software", "Redes y seguridad", "Prueba 1", "Prueba 2"]
-    const [checked, setChecked] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [companies, setCompanies] = useState([]);
+    const [habilities, setHabilities] = useState([]);
+    const [suppliers, setSuppliers] = useState([]);
+    const [supplierFilter, setSupplierFilter] = useState<typeSupp[]>(suppliers)
 
+    const [loading, setLoading] = useState(false);
+    const [loading2, setLoading2] = useState(false);
+    const [loading3, setLoading3] = useState(false);
+    // const checkList = ["Desarrollo de Software", "Redes y seguridad", "Prueba 1", "Prueba 2"]
+    const [checked, setChecked] = useState([]);
+    const [habilitiesS, setHabilitiesS] = useState([]);
 
     const handleCheck = (event) => {
 
@@ -132,7 +159,7 @@ const TrainingCreate = () => {
             setChecked(updatedList);
         }
 
-        updateArray()  
+        updateArray()
     };
 
 
@@ -153,7 +180,7 @@ const TrainingCreate = () => {
     }
 
     const search = (e: any) => {
-        if (typeArea === "Todos")
+        if (typeArea == null)
             setSupplierFilter(suppliers);
         else {
             filtered = suppliers.filter((item: any) =>
@@ -285,18 +312,77 @@ const TrainingCreate = () => {
         }
     }
 
+
+    const loadCompanies = (id: number) => {
+        setLoading2(true);
+        axiosInt.get(`capacitaciones/get_proveedores_empresa/${id}/`)
+            .then(function (response) {
+                setCompanies(response.data);
+                setLoading2(false);
+            })
+            .catch(function (error) {
+                setLoading2(false);
+            });
+    }
+
     const handleCategory = (category: typeTraI) => {
-        setTypeArea(category.type)
+        setTypeArea(category)
+        setTypeCompany({ id: 0, razon_social: "" })
+        loadCompanies(category.id);
+    }
+
+    const loadHabilities = (id: number) => {
+        setLoading3(true);
+        axiosInt.get(`capacitaciones/get_habilidades_empresa/${id}/`)
+            .then(function (response) {
+                setHabilities(response.data);
+                setLoading3(false);
+            })
+            .catch(function (error) {
+                setLoading3(false);
+            });
     }
 
     const handleCompany = (company: typeComI) => {
-        setTypeCompany(company.rs)
+        setTypeCompany(company)
+        loadHabilities(company.id);
+    }
+
+
+    const loadCategories = () => {
+        setLoading(true);
+        axiosInt.get('capacitaciones/get_categoria/')
+            .then(function (response) {
+                setCategories(response.data);
+                setLoading(false);
+            })
+            .catch(function (error) {
+                setLoading(false);
+            });
     }
 
     const handleData = () => {
-        setTypeArea("Todos")
-        setTypeCompany("Todos")
+        setTypeArea({ id: 0, categoria: "" })
+        setTypeCompany({ id: 0, razon_social: "" })
         setChecked([])
+
+        loadCategories();
+    }
+
+    const handleSuppliers = () => {
+        setLoading(true);
+        axiosInt.post('capacitaciones/get_personas_empresa_habilidades/', {
+            id_proveedor: typeCompany.id,
+            habilidades: checked
+        })
+            .then(function (response) {
+                setSuppliers(response.data);
+                setSupplierFilter(response.data)
+                setLoading(false);
+            })
+            .catch(function (error) {
+                setLoading(false);
+            });
     }
 
     const checkedItems = checked.length
@@ -444,27 +530,39 @@ const TrainingCreate = () => {
                         </div>
                         <div className="modal-body">
 
-                            <div>
-                                <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
-                                    <div>
-                                        <h4 style={{ fontSize: "14px", fontWeight: "400" }}>Buscar por categoría</h4>
+                            {loading ?
+                                <>
+                                    <div className='vertical-align-parent'>
+                                        <div className='vertical-align-child'>
+                                            <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                                <span className="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                        {typeTra.map((t) => {
-                                            return (
-                                                <button type='button' key={t.id} className='btn' style={{ backgroundColor: t.type == typeArea ? '#3f4b58' : '', color: t.type == typeArea ? '#FFF' : '#000', border: t.type == typeArea ? '' : '0.1rem solid #0d6efd' }} onClick={() => handleCategory(t)}>{t.type}</button>
-                                            )
-                                        })}
+                                </>
+                                :
+                                <div>
+                                    <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
+                                        <div>
+                                            <h4 style={{ fontSize: "14px", fontWeight: "400" }}>Buscar por categoría</h4>
+                                        </div>
+                                        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "1rem" }}>
+                                            {categories.map((t) => {
+                                                return (
+                                                    <button type='button' key={t.id} className='btn' style={{ backgroundColor: t.categoria == typeArea.categoria ? '#3f4b58' : '', color: t.categoria == typeArea.categoria ? '#FFF' : '#000', border: t.categoria == typeArea.categoria ? '' : '0.1rem solid #0d6efd', fontSize: "12px" }} onClick={() => handleCategory(t)}>{t.categoria}</button>
+                                                )
+                                            })}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
 
 
-                            {typeArea != "Todos" &&
+                            {typeArea.categoria != "" &&
                                 <>
-                                    {loading ?
+                                    {loading2 ?
                                         <>
-                                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                                            <div className='vertical-align-parent'>
                                                 <div className='vertical-align-child'>
                                                     <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
                                                         <span className="visually-hidden">Loading...</span>
@@ -478,10 +576,10 @@ const TrainingCreate = () => {
                                                 <div>
                                                     <h4 style={{ fontSize: "14px", fontWeight: "400" }}>Buscar por empresa</h4>
                                                 </div>
-                                                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                                    {typeCom.map((t) => {
+                                                <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "1rem" }}>
+                                                    {companies.map((t) => {
                                                         return (
-                                                            <button type='button' key={t.id} className='btn' style={{ backgroundColor: t.rs == typeCompany ? '#3f4b58' : '', color: t.rs == typeCompany ? '#FFF' : '#000', border: t.rs == typeCompany ? '' : '0.1rem solid #0d6efd' }} onClick={() => handleCompany(t)}>{t.rs}</button>
+                                                            <button type='button' key={t.id} className='btn' style={{ backgroundColor: t.razon_social == typeCompany.razon_social ? '#3f4b58' : '', color: t.razon_social == typeCompany.razon_social ? '#FFF' : '#000', border: t.razon_social == typeCompany.razon_social ? '' : '0.1rem solid #0d6efd', fontSize: "12px" }} onClick={() => handleCompany(t)}>{t.razon_social}</button>
                                                         )
                                                     })}
                                                 </div>
@@ -491,11 +589,11 @@ const TrainingCreate = () => {
                                 </>
                             }
 
-                            {typeCompany != "Todos" &&
+                            {typeCompany.razon_social != "" &&
                                 <>
-                                    {loading ?
+                                    {loading3 ?
                                         <>
-                                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                                            <div className='vertical-align-parent'>
                                                 <div className='vertical-align-child'>
                                                     <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
                                                         <span className="visually-hidden">Loading...</span>
@@ -509,17 +607,17 @@ const TrainingCreate = () => {
                                                 <div>
                                                     <h4 style={{ fontSize: "14px", fontWeight: "400" }}>Buscar por habilidades</h4>
                                                 </div>
-                                                <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)"}}>
-                                                    {checkList.map((item, index) => {
+                                                <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)" }}>
+                                                    {habilities.map((item) => {
                                                         return (
-                                                            <div key={index}>
-                                                                <input value={item} type="checkbox" onChange={handleCheck} style={{marginRight: "0.5rem"}} />
-                                                                <span >{item}</span>
+                                                            <div key={item.id}>
+                                                                <input value={item.id} type="checkbox" onChange={handleCheck} style={{ marginRight: "0.5rem", fontSize: "12px" }} />
+                                                                <span >{item.habilidad}</span>
                                                             </div>
                                                         )
                                                     })}
                                                 </div>
-                                                <div style={{paddingTop: "0.5rem"}}>
+                                                <div style={{ paddingTop: "0.5rem" }}>
                                                     {`Habilidades seleccionadas: ${checkedItems}`}
                                                 </div>
                                             </div>
@@ -530,7 +628,7 @@ const TrainingCreate = () => {
 
                         </div>
                         <div className="modal-footer">
-                            <button className="btn btn-primary" data-bs-target="#assignResponsible" data-bs-toggle="modal">Buscar</button>
+                            <button className="btn btn-primary" data-bs-target="#assignResponsible" data-bs-toggle="modal" onClick={handleSuppliers}>Buscar</button>
                         </div>
                     </div>
                 </div>
@@ -549,46 +647,65 @@ const TrainingCreate = () => {
 
                             <div>
                                 <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
-                                    <div style={{ display: "flex" }}>
-                                        <input className='form-control' type='text' placeholder='Buscar responsables' onChange={handleFilter} />
-                                        <h5 style={{ display: "flex", fontSize: "14px" }}>Categoría: <p style={{ paddingLeft: "1px" }}> {typeArea}</p></h5>
-                                        <h5>Empresa: {typeCompany}</h5>
+                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                        <input className='form-control' type='text' placeholder='Buscar responsables' onChange={handleFilter} style={{ maxWidth: "60%", marginRight: "1rem" }} />
+                                        <h5 style={{ display: "flex", fontSize: "14px", marginBottom: "0rem" }}>Categoría: {typeArea.categoria}</h5>
+                                        <h5 style={{ display: "flex", fontSize: "14px", marginBottom: "0rem" }}>Empresa: {typeCompany.razon_social}</h5>
                                     </div>
                                 </div>
 
-                                <div >
-                                    {suppliers.length ?
-                                        <>
-                                            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "10px" }}>
-                                                {
-                                                    supplierFilter.map((tr) => {
-                                                        return (
-                                                            <SupplierCard key={tr.id}
-                                                                id={tr.id}
-                                                                name={tr.name}
-                                                                image={tr.image}
-                                                                capacities={tr.capacities}
-                                                                button='Asignar'
-                                                                buttonColor={"rgb(8, 66, 152)"}
-                                                            />
-
-                                                        )
-                                                    })
-                                                }
-                                            </div>
-
-                                            {supplierFilter.length == 0 &&
-                                                <div style={{ display: "flex", justifyContent: "center" }}>
-                                                    No hay resultados de responsables para la búsqueda
+                                {loading ?
+                                    <>
+                                        <div className='vertical-align-parent'>
+                                            <div className='vertical-align-child'>
+                                                <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                                    <span className="visually-hidden">Loading...</span>
                                                 </div>
-                                            }
-                                        </>
-                                        :
-                                        <div>
-                                            No hay responsables disponibles
+                                            </div>
                                         </div>
-                                    }
-                                </div>
+                                    </>
+                                    :
+                                    <div >
+                                        {suppliers.length ?
+                                            <>
+                                                <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "10px" }}>
+                                                    {
+                                                        supplierFilter.map((tr) => {
+                                                            var filtered2 = habilities.filter((item: any) => {                                                                
+                                                                return tr.habilidad_x_proveedor_usuario.every((ha) => {                                                        
+                                                                    return ha == item.id
+                                                                })
+                                                            }) 
+                                                            console.log(filtered2)                                               
+                                                            return (
+                                                                
+                                                                <SupplierCard key={tr.id}
+                                                                    id={tr.id}
+                                                                    name={tr.nombres + ' ' + tr.apellidos}
+                                                                    image='https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
+                                                                    capacities={filtered2}
+                                                                    button='Asignar'
+                                                                    buttonColor={"rgb(8, 66, 152)"}
+                                                                />
+
+                                                            )
+                                                        })
+                                                    }
+                                                </div>
+
+                                                {supplierFilter.length == 0 &&
+                                                    <div style={{ display: "flex", justifyContent: "center" }}>
+                                                        No hay resultados de responsables para la búsqueda
+                                                    </div>
+                                                }
+                                            </>
+                                            :
+                                            <div>
+                                                No hay responsables disponibles
+                                            </div>
+                                        }
+                                    </div>
+                                }
                             </div>
 
                         </div>
