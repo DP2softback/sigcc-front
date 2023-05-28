@@ -42,6 +42,14 @@ const M1TrainingAssignment = Loader(
   lazy(() => import('@features/Modulo1/pages/Training/Assignment'))
 );
 
+const ConfigSelectionProcess = Loader(
+  lazy(() => import('@features/Modulo4/pages/ConfigSelectionProcess'))
+);
+
+const ConfigOfertaLaboral = Loader(
+  lazy(() => import('@features/Modulo4/pages/ConfigOfertaLaboral'))
+);
+
 const EvaluacionContinuaIndex = Loader(
   lazy(() => import('@features/Modulo3/screens/EvaluacionContinua/Index'))
 );
@@ -88,6 +96,14 @@ const EvaluationTemplateEdit = Loader(
 
 const AscensosCandidatos = Loader(
   lazy(() => import('@features/Modulo3/screens/Ascensos/Candidates'))
+);
+
+const ReporteEvaluacionContinua = Loader(
+  lazy(() => import('@features/Modulo3/screens/Reportes/IndexEvaluacionContinua'))
+);
+
+const ReporteEvaluacionDesempenho = Loader(
+  lazy(() => import('@features/Modulo3/screens/Reportes/IndexEvaluacionDesempenho'))
 );
 
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
@@ -150,294 +166,91 @@ const routes: RouteObject[] = [
     ]
   },
   {
-    path: 'skillManagement',
+    path: "skillManagement",
     children: [
       {
-        path: 'continuousEvaluation',
+        path: "continuousEvaluation",
         children: [
           {
-            path: 'index',
-            element: <EvaluacionContinuaIndex/>
+            path: "index",
+            element: <EvaluacionContinuaIndex />,
           },
           {
-            path: 'history',
-            element: <EvaluacionContinuaHistory/>
+            path: "history",
+            element: <EvaluacionContinuaHistory />,
           },
           {
-            path: 'detail',
-            element: (
-              <EvaluacionContinuaDetail
-                employee={{
-                  id: 1,
-                  FullName: 'Angela Quispe Ramirez',
-                }}
-                categories={[
-                  { id: 1, name: 'Rendimiento', subcategories: [
-                    'Consecución de objetivos',
-                    'Calidad del trabajo',
-                    'Atención al detalle',
-                    'Puntualidad de las entregas',
-                    'Gestionar la carga de trabajo y cumplir los plazos'
-                  ] },
-                  { id: 2, name: 'Habilidades blandas', subcategories: [
-                    'Liderazgo',
-                    'Comunicación',
-                    'Resolución de problemas',
-                    'Pensamiento crítico',
-                    'Trabajo en equipo'
-                  ] },
-                  { id: 3, name: 'Conocimientos técnicos', subcategories: [
-                    'Capacidad analítica',
-                    'Aprendizaje continuo y desarrollo profesional',
-                    'Conocimientos técnicos',
-                    'Conocimiento del producto',
-                    'Resolución de problemas técnicos'
-                  ] },
-                  { id: 4, name: 'Orientación al cliente', subcategories: [
-                    'Respuesta a las consultas y peticiones',
-                    'Comprender las necesidades y preferencias',
-                    'Resolución eficaz de los problemas',
-                    'Mejora continua de los productos o servicios',
-                    'Creación y mantenimiento de relaciones positivas',
-                  ] },
-                  { id: 5, name: 'Creatividad e iniciativa', subcategories: [
-                    'Asunción de riesgos',
-                    'Mentalidad abierta',
-                    'Colaboración',
-                    'Feedback',
-                    'Nuevas ideas',
-                  ] },
-                ]}
-                projects={[
-                  { id: 1, name: 'BLF-KC-0012' },
-                  { id: 2, name: 'BLF-KC-0013' },
-                  { id: 3, name: 'BLF-KC-0014' },
-                  { id: 4, name: 'BLF-KC-0015' },
-                  { id: 5, name: 'BLF-KC-0016' },
-                ]}
-                form={{
-                  evaluationCategory: 1,
-                  projectId: 2,
-                  evaluation: [0,1,2,3,4],
-                  additionalComments: 'Todo bien la verdad, sigue así.'
-                }}
-              />
-            ),
+            path: "detail",
+            element: <EvaluacionContinuaDetail />,
           },
           {
-            path: 'create',
-            element: (
-              <EvaluacionContinuaCreate
-                employee={{
-                  id: 1,
-                  FullName: 'Angela Quispe Ramirez',
-                }}
-                categories={[
-                  { id: 1, name: 'Rendimiento', subcategories: [
-                    'Consecución de objetivos',
-                    'Calidad del trabajo',
-                    'Atención al detalle',
-                    'Puntualidad de las entregas',
-                    'Gestionar la carga de trabajo y cumplir los plazos'
-                  ] },
-                  { id: 2, name: 'Habilidades blandas', subcategories: [
-                    'Liderazgo',
-                    'Comunicación',
-                    'Resolución de problemas',
-                    'Pensamiento crítico',
-                    'Trabajo en equipo'
-                  ] },
-                  { id: 3, name: 'Conocimientos técnicos', subcategories: [
-                    'Capacidad analítica',
-                    'Aprendizaje continuo y desarrollo profesional',
-                    'Conocimientos técnicos',
-                    'Conocimiento del producto',
-                    'Resolución de problemas técnicos'
-                  ] },
-                  { id: 4, name: 'Orientación al cliente', subcategories: [
-                    'Respuesta a las consultas y peticiones',
-                    'Comprender las necesidades y preferencias',
-                    'Resolución eficaz de los problemas',
-                    'Mejora continua de los productos o servicios',
-                    'Creación y mantenimiento de relaciones positivas',
-                  ] },
-                  { id: 5, name: 'Creatividad e iniciativa', subcategories: [
-                    'Asunción de riesgos',
-                    'Mentalidad abierta',
-                    'Colaboración',
-                    'Feedback',
-                    'Nuevas ideas',
-                  ] },
-                ]}
-                projects={[
-                  { id: 1, name: 'BLF-KC-0012' },
-                  { id: 2, name: 'BLF-KC-0013' },
-                  { id: 3, name: 'BLF-KC-0014' },
-                  { id: 4, name: 'BLF-KC-0015' },
-                  { id: 5, name: 'BLF-KC-0016' },
-                ]}
-              />
-            ),
+            path: "create",
+            element: <EvaluacionContinuaCreate />,
           },
         ],
       },
       {
-        path: 'performanceEvaluation',
+        path: "performanceEvaluation",
         children: [
           {
-            path: 'index',
-            element: <EvaluacionDeDesempenhoIndex/>
+            path: "index",
+            element: <EvaluacionDeDesempenhoIndex />,
           },
           {
-            path: 'history',
-            element: <EvaluacionDeDesempenhoHistory/>
+            path: "history",
+            element: <EvaluacionDeDesempenhoHistory />,
           },
           {
-            path: 'detail',
-            element: (
-              <EvaluacionDeDesempenhoDetail
-                employee={{
-                  id: 1,
-                  FullName: 'Angela Quispe Ramirez',
-                }}
-                categories={[
-                  { id: 1, name: 'Rendimiento', subcategories: [
-                    'Consecución de objetivos',
-                    'Calidad del trabajo',
-                    'Atención al detalle',
-                    'Puntualidad de las entregas',
-                    'Gestionar la carga de trabajo y cumplir los plazos'
-                  ] },
-                  { id: 2, name: 'Habilidades blandas', subcategories: [
-                    'Liderazgo',
-                    'Comunicación',
-                    'Resolución de problemas',
-                    'Pensamiento crítico',
-                    'Trabajo en equipo'
-                  ] },
-                  { id: 3, name: 'Conocimientos técnicos', subcategories: [
-                    'Capacidad analítica',
-                    'Aprendizaje continuo y desarrollo profesional',
-                    'Conocimientos técnicos',
-                    'Conocimiento del producto',
-                    'Resolución de problemas técnicos'
-                  ] },
-                  { id: 4, name: 'Orientación al cliente', subcategories: [
-                    'Respuesta a las consultas y peticiones',
-                    'Comprender las necesidades y preferencias',
-                    'Resolución eficaz de los problemas',
-                    'Mejora continua de los productos o servicios',
-                    'Creación y mantenimiento de relaciones positivas',
-                  ] },
-                  { id: 5, name: 'Creatividad e iniciativa', subcategories: [
-                    'Asunción de riesgos',
-                    'Mentalidad abierta',
-                    'Colaboración',
-                    'Feedback',
-                    'Nuevas ideas',
-                  ] },
-                ]}
-                projects={[
-                  { id: 1, name: 'BLF-KC-0012' },
-                  { id: 2, name: 'BLF-KC-0013' },
-                  { id: 3, name: 'BLF-KC-0014' },
-                  { id: 4, name: 'BLF-KC-0015' },
-                  { id: 5, name: 'BLF-KC-0016' },
-                ]}
-                form={{
-                  evaluationCategory: 1,
-                  projectId: 2,
-                  evaluation: [0,1,2,3,4],
-                  additionalComments: 'Todo bien la verdad, sigue así.'
-                }}
-              />
-            ),
+            path: "detail",
+            element: <EvaluacionDeDesempenhoDetail />,
           },
           {
-            path: 'create',
-            element: (
-              <EvaluacionDeDesempenhoCreate
-                employee={{
-                  id: 1,
-                  FullName: 'Angela Quispe Ramirez',
-                }}
-                categories={[
-                  { id: 1, name: 'Rendimiento', subcategories: [
-                    'Consecución de objetivos',
-                    'Calidad del trabajo',
-                    'Atención al detalle',
-                    'Puntualidad de las entregas',
-                    'Gestionar la carga de trabajo y cumplir los plazos'
-                  ] },
-                  { id: 2, name: 'Habilidades blandas', subcategories: [
-                    'Liderazgo',
-                    'Comunicación',
-                    'Resolución de problemas',
-                    'Pensamiento crítico',
-                    'Trabajo en equipo'
-                  ] },
-                  { id: 3, name: 'Conocimientos técnicos', subcategories: [
-                    'Capacidad analítica',
-                    'Aprendizaje continuo y desarrollo profesional',
-                    'Conocimientos técnicos',
-                    'Conocimiento del producto',
-                    'Resolución de problemas técnicos'
-                  ] },
-                  { id: 4, name: 'Orientación al cliente', subcategories: [
-                    'Respuesta a las consultas y peticiones',
-                    'Comprender las necesidades y preferencias',
-                    'Resolución eficaz de los problemas',
-                    'Mejora continua de los productos o servicios',
-                    'Creación y mantenimiento de relaciones positivas',
-                  ] },
-                  { id: 5, name: 'Creatividad e iniciativa', subcategories: [
-                    'Asunción de riesgos',
-                    'Mentalidad abierta',
-                    'Colaboración',
-                    'Feedback',
-                    'Nuevas ideas',
-                  ] },
-                ]}
-                projects={[
-                  { id: 1, name: 'BLF-KC-0012' },
-                  { id: 2, name: 'BLF-KC-0013' },
-                  { id: 3, name: 'BLF-KC-0014' },
-                  { id: 4, name: 'BLF-KC-0015' },
-                  { id: 5, name: 'BLF-KC-0016' },
-                ]}
-              />
-            ),
+            path: "create",
+            element: <EvaluacionDeDesempenhoCreate />,
           },
         ],
       },
       {
-        path: 'evaluationTemplate',
+        path: "evaluationTemplate",
         children: [
           {
-            path: 'Index',
-            element: <EvaluationTemplateIndex/>
+            path: "index",
+            element: <EvaluationTemplateIndex />,
           },
           {
-            path: 'Create',
-            element: <EvaluationTemplateCreate/>
+            path: "create",
+            element: <EvaluationTemplateCreate />,
           },
           {
-            path: 'Edit',
-            element: <EvaluationTemplateEdit/>
+            path: "edit",
+            element: <EvaluationTemplateEdit />,
+          },
+        ],
+      },
+      {
+        path: "promotions",
+        children: [
+          {
+            path: "candidates",
+            element: <AscensosCandidatos promotionPosition="UX/UI Designer" />,
+          },
+        ],
+      },
+      {
+        path: 'report',
+        children: [
+          {
+            path: 'continuousEvaluation',
+            element: <ReporteEvaluacionContinua/>
+          },
+          {
+            path: 'performanceEvaluation',
+            element: <ReporteEvaluacionDesempenho/>
           },
         ]
       },
-      {
-        path: 'promotions',
-        children: [
-          {
-            path: 'candidates',
-            element: <AscensosCandidatos promotionPosition='UX/UI Designer'/>
-          },
-        ]
-      }
-    ]
-  }
-]
+    ],
+  },
+];
 
 export default routes;

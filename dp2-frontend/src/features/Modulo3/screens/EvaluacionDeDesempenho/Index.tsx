@@ -1,17 +1,27 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionDeDesempenho.css';
 import { PERFORMANCE_EVALUATION_INDEX } from '@config/paths';
+import { noDataFound } from '@features/Modulo3/utils/constants';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import { Search } from 'react-bootstrap-icons'
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import Employee from '@features/Modulo3/components/Cards/Employee/Employee';
-import employees from '@features/Modulo3/jsons/Employees';
 import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
+import { useEffect, useState } from 'react';
+import { getEmployees } from '@features/Modulo3/services/continuousEvaluation';
 
 const examplePhoto = 'https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg?b=1&s=170667a&w=0&k=20&c=0aBawAGIMPymGUppOgw1HmV8MNXB1536B3sX_PP9_SQ='
 
 const Index = () => {
+  const [employees, setEmployees] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      setEmployees(await getEmployees(1));
+    })();
+  }, []);
+
   const filters = (
     <Form>
       <Form.Group controlId='searchEmployees' className='ec-indexFilters'>
@@ -29,7 +39,7 @@ const Index = () => {
   );
 
   const firstTwoEmployees = (
-    <div className='ec-indexFirstTwoEmployees col-md-4'>
+    <div className='ec-indexFirstTwoEmployees col-md-4 cursor-pointer'>
       {employees.slice(0, 2).map((employee) => {
         return (
           <div key={employee.id} className='mb-32px'>
@@ -38,6 +48,7 @@ const Index = () => {
               name={employee.name}
               photoURL={examplePhoto}
               position={employee.position}
+              code={employee.id}
               lastEvaluation={employee.lastEvaluation}
               lastEvaluationUnit={employee.lastEvaluationUnit}
               area={employee.area}
@@ -51,12 +62,13 @@ const Index = () => {
 
   const restEmployees = employees.slice(2).map((employee) => {
     return (
-      <div key={employee.id} className='col-md-4 mb-32px'>
+      <div key={employee.id} className='col-md-4 mb-32px cursor-pointer'>
         <Employee
           id={employee.id}
           name={employee.name}
           photoURL={examplePhoto}
           position={employee.position}
+          code={employee.id}
           lastEvaluation={employee.lastEvaluation}
           lastEvaluationUnit={employee.lastEvaluationUnit}
           area={employee.area}
@@ -83,13 +95,16 @@ const Index = () => {
     </div>
   );
 
-  const content = (
-    <>
-    {firstTwoEmployees}
-    {chart}
-    {restEmployees}
-    </>
-  )
+  const content =
+    employees.length > 0 ? (
+      <>
+        {firstTwoEmployees}
+        {chart}
+        {restEmployees}
+      </>
+    ) : (
+      noDataFound
+    );
 
   const body = (
     <Section title={'Trabajadores'} content={content} filters={filters}/>

@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
+import { CONTINUOS_EVALUATION_INDEX } from '@config/paths';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import Matrix from '@features/Modulo3/components/Matrix/Matrix';
@@ -122,6 +123,7 @@ const BaseForm = ({employee, categories, projects, form, isReadOnly} : BaseFormP
       <Layout
         title={`Evaluación continua - ${employee.FullName}`}
         body={body}
+        route={CONTINUOS_EVALUATION_INDEX}
         subtitle='Evaluaciones continuas de trabajadores de los que te encuentras a cargo.'
       />
     </div>

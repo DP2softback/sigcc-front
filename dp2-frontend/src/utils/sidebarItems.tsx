@@ -21,7 +21,7 @@ const sidebarItems = [
   },
   {
     to: "/modulo1/cursoempresa",
-    label: "Capacitación",
+    label: "Curso Empresa",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
