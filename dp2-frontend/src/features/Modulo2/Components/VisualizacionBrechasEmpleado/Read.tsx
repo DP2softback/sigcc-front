@@ -140,7 +140,7 @@ const Read = () => {
                 </thead>
                 <tbody>
                     {datosFiltradosYOrdenados.map((competencia, index) => (
-                        <tr key={index} className={index%0===0 ? "evenRow" : "oddRow"}>
+                        <tr key={index} className={index % 0 === 0 ? "evenRow" : "oddRow"}>
                             <td>{competencia.nombre}</td>
                             <td>{competencia.tipo}</td>
                             <td>{competencia.nivelActual}</td>
@@ -187,13 +187,21 @@ const Read = () => {
                 </Form>
             </div>
 
-            <div className='row'>
-                <div className='col'>
+            <div className='row align-items-start'>
+                <div className='col-sm-12 col-md-6'>
+                    <div className="table-container">
                     {renderTablaBrechas()}
+
+                    </div>
+                   
                 </div>
 
-                <div className='col align-items-center'>
-                <BarChart1></BarChart1>
+                <div className='col-md-6'>
+                    <div className='chart-container'>
+                    <BarChart1></BarChart1>
+
+                    </div>
+                    
                 </div>
             </div>
 

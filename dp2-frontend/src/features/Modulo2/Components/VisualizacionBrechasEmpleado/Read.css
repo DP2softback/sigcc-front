@@ -6,3 +6,13 @@
  .container-view{
   padding: 30px 150px 0px;
  }
+
+ .table-container {
+  max-height: 500px; /* Ajusta la altura máxima deseada */
+  overflow-y: auto;
+}
+
+.chart-container {
+  height: 100%;
+  width: 100%;
+}
