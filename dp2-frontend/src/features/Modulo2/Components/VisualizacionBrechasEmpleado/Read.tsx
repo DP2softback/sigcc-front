@@ -3,6 +3,7 @@ import { Button, Form, FormControl, InputGroup, Table } from 'react-bootstrap'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import BarChart1 from './Barchart1';
+import './Read.css'
 const Read = () => {
     const [palabrasClave, setPalabrasClave] = useState('');
     const [tipoOrden, setTipoOrden] = useState('ascendente');
@@ -102,7 +103,7 @@ const Read = () => {
             return <p>No se encontraron resultados.</p>;
         }
         return (
-            <Table striped bordered>
+            <Table striped bordered className='tableGapsEmployees'>
                 <thead>
                     <tr>
                         <th onClick={() => handleOrdenarPorCampo('nombre')}>
@@ -139,7 +140,7 @@ const Read = () => {
                 </thead>
                 <tbody>
                     {datosFiltradosYOrdenados.map((competencia, index) => (
-                        <tr key={index}>
+                        <tr key={index} className={index % 0 === 0 ? "evenRow" : "oddRow"}>
                             <td>{competencia.nombre}</td>
                             <td>{competencia.tipo}</td>
                             <td>{competencia.nivelActual}</td>
@@ -152,20 +153,13 @@ const Read = () => {
         )
     }
 
-    const renderBarBrechas = () => {
-        return (
-            <Bar data={dataBar} options={optionsBar} />
-        )
-    }
-
     return (
-        <div className='container-fluid'>
+        <div className='container-fluid container-view'>
             <div className='row'>
                 <h2>Consolidado de competencias</h2>
                 <p className="text-muted">Agrega, edita y desactiva competencias</p>
-
-                <Form className="align-items-center">
-                    <InputGroup>
+                <Form className="row align-items-center mb-4">
+                    <Form.Group className="col-6">
                         <FormControl
                             placeholder="Ingrese palabras clave, código o nombre de las competencias"
                             aria-label="Buscar competencias"
@@ -173,38 +167,41 @@ const Read = () => {
                             value={palabrasClave}
                             onChange={(e) => setPalabrasClave(e.target.value)}
                         />
-                        <Button variant="outline-secondary" id="buscar-icono" onClick={() => setBusquedaRealizada(true)}>
-                            <i className="bi bi-search"></i>
-                        </Button>
-                    </InputGroup>
+                    </Form.Group>
 
-                    <Form.Group controlId="filtroTipoCompetencia">
+                    <Form.Group controlId="filtroTipoCompetencia" className="col-3">
                         <select className="form-select" value={tipoCompetencia} onChange={(e) => setTipoCompetencia(e.target.value)}>
                             <option hidden>Tipo de competencia</option>
                             <option value="Técnico">Técnico</option>
                             <option value="Habilidades blandas">Habilidades blandas</option>
                             <option value="Conocimiento">Conocimiento</option>
-                            {/* Agregar más opciones de tipo de competencia aquí */}
                         </select>
                     </Form.Group>
 
-                    <div >
+                    <div className="col-3">
                         <Button variant="outline-secondary" className="me-2" onClick={limpiarFiltros}>
                             Limpiar Filtros
                         </Button>
                         <Button variant="primary">Buscar</Button>
                     </div>
-
                 </Form>
             </div>
 
-            <div className='row'>
-                <div className='col'>
+            <div className='row align-items-start'>
+                <div className='col-sm-12 col-md-6'>
+                    <div className="table-container">
                     {renderTablaBrechas()}
+
+                    </div>
+                   
                 </div>
 
-                <div className='col'>
-                <BarChart1></BarChart1>
+                <div className='col-md-6'>
+                    <div className='chart-container'>
+                    <BarChart1></BarChart1>
+
+                    </div>
+                    
                 </div>
             </div>
 
