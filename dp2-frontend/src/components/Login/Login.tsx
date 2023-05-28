@@ -29,7 +29,7 @@ const Login = () => {
     // Aquí puedes agregar la lógica para autenticar al usuario con los datos proporcionados (username y password)
     console.log('Username:', username);
     console.log('Password:', password);
-    console.log('Remember me:', rememberMe);
+    // console.log('Remember me:', rememberMe);
     try {
       await login(username, password);
 
