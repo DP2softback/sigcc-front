@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Form, FormControl, InputGroup, Button, Table, Modal, Row  } from 'react-bootstrap';
+import { Form, FormControl, InputGroup, Button, Table, Modal  } from 'react-bootstrap';
 import AgregarCompetencia from './Create';
-import './Read.css';
+import ActualizarCompetencia from './Update';
+import BorrarCompetencia from './Delete';
 const CompetenciasListar = () => {
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [tipoOrden, setTipoOrden] = useState('ascendente');
@@ -9,9 +10,12 @@ const CompetenciasListar = () => {
     const [estado, setEstado] = useState('');
     const [palabrasClave, setPalabrasClave] = useState('');
     const [busquedaRealizada, setBusquedaRealizada] = useState(false);
-    const [mostrarPopUp, setMostrarPopUp] = useState(false);
+    const [mostrarPopUpCrear , setmostrarPopUpCrear] = useState(false);
+    const [mostrarPopUpActualizar, setmostrarPopUpActualizar] = useState(false);
+    const [mostrarPopUpBorrar, setmostrarPopUpBorrar] = useState(false);
+    const [competenciaSeleccionada, setCompetenciaSeleccionada] = useState(null);
     // Datos de ejemplo para la tabla
-    const hardcode = [
+    const tablaHardcode = [
         { codigo: 'TEC000001', nombre: 'Liderazgo Técnico', asignadoAPuesto: 'Sí', estado: 'Activo', tipo: 'Técnico' },
         { codigo: 'TEC000002', nombre: 'Comunicación Efectiva', asignadoAPuesto: 'No', estado: 'Inactivo', tipo: 'Habilidades blandas' },
         { codigo: 'TEC000003', nombre: 'Resolución de Problemas', asignadoAPuesto: 'Sí', estado: 'Activo', tipo: 'Conocimiento' },
@@ -32,9 +36,8 @@ const CompetenciasListar = () => {
         { codigo: 'TEC000018', nombre: 'Empatía', asignadoAPuesto: 'No', estado: 'Inactivo', tipo: 'Conocimiento' },
         { codigo: 'TEC000019', nombre: 'Toma de Decisiones', asignadoAPuesto: 'Sí', estado: 'Activo', tipo: 'Técnico' },
         { codigo: 'TEC000020', nombre: 'Trabajo Bajo Presión', asignadoAPuesto: 'Sí', estado: 'Inactivo', tipo: 'Habilidades blandas' },
-        // Agrega más filas de ejemplo aquí
       ];
-    const [competenciasData, setCompetenciasData] = useState(hardcode);
+    const [competenciasData, setCompetenciasData] = useState(tablaHardcode);
 
     const handleTipoCompetenciaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
       setTipoCompetencia(event.target.value);
@@ -43,17 +46,58 @@ const CompetenciasListar = () => {
     const handleEstadoChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
       setEstado(event.target.value);
     };
+    
     const agregarCompetencia = (nuevaCompetencia) => {
         setCompetenciasData([...competenciasData, nuevaCompetencia]);
-        handleCerrarPopUp();
-      };
-      const handleMostrarPopUp = () => {
-        setMostrarPopUp(true);
-      };
+        handleCerrarPopUpCrear();
+    };
     
-      const handleCerrarPopUp = () => {
-        setMostrarPopUp(false);
-      };
+    const handleMostrarPopUpCrear  = () => {
+      setmostrarPopUpCrear(true);
+    };
+    
+    const handleCerrarPopUpCrear = () => {
+      setmostrarPopUpCrear(false);
+    };
+    
+    const actualizarCompetencia = (nuevaCompetencia) => {
+      var tablaAux = tablaHardcode;
+      const indice = tablaHardcode.findIndex((competencia) => competencia.codigo=== nuevaCompetencia.codigo);
+      if (indice !== -1) {
+        tablaAux[indice] = nuevaCompetencia;
+      }
+      setCompetenciasData(tablaAux);
+      handleCerrarPopUpActualizar();
+    };
+    
+    const handleMostrarPopUpActualizar = (competencia) => {
+      setCompetenciaSeleccionada(competencia);
+      setmostrarPopUpActualizar(true);
+    };
+    
+    const handleCerrarPopUpActualizar = () => {
+      setmostrarPopUpActualizar(false);
+    };
+    
+    const borrarCompetencia = (nuevaCompetencia) => {
+      var tablaAux = tablaHardcode;
+      const indice = tablaHardcode.findIndex((competencia) => competencia.codigo === nuevaCompetencia.codigo);
+      if (indice !== -1) {
+        tablaAux.splice(indice, 1);
+      }
+      setCompetenciasData(tablaAux);
+      handleCerrarPopUpBorrar();
+    };
+    
+    const handleMostrarPopUpBorrar  = (competencia) => { 
+      setCompetenciaSeleccionada(competencia);
+      setmostrarPopUpBorrar(true);
+    };
+    
+    const handleCerrarPopUpBorrar = () => {
+      setmostrarPopUpBorrar(false);
+    };
+    
     const limpiarFiltros = () => {
         setTipoCompetencia('');
         setEstado('');
@@ -156,11 +200,15 @@ const CompetenciasListar = () => {
                   <td>{competencia.asignadoAPuesto}</td>
                   <td>{competencia.estado}</td>
                   <td>
-          
                     <Button variant="link" size="sm">
+                      <i className="bi bi-box-arrow-in-right"></i>
+                    </Button>
+                    <Button variant="link" size="sm" onClick={
+                      ()=>{handleMostrarPopUpActualizar({ codigo: competencia.codigo, nombre: competencia.nombre, asignadoAPuesto: competencia.asignadoAPuesto, estado:competencia.estado, tipo: competencia.tipo });}}>
                       <i className="bi bi-pencil"></i>
                     </Button>
-                    <Button variant="link" size="sm">
+                    <Button variant="link" size="sm" onClick={
+                      ()=>{handleMostrarPopUpBorrar({ codigo: competencia.codigo, nombre: competencia.nombre, asignadoAPuesto: competencia.asignadoAPuesto, estado:competencia.estado, tipo: competencia.tipo });}}>
                       <i className="bi bi-trash"></i>
                     </Button>
                   </td>
@@ -172,71 +220,58 @@ const CompetenciasListar = () => {
       };
 
   return (
-    <div className="pantalla">
-      <div className='titles'>
+    <div>
       <h2>Gestión de Competencias</h2>
       <p className="text-muted">Agrega, edita y desactiva competencias.</p>
-      </div>
-    
 
-      
-      <Form className="FormComp">
-        <div className= "container-fluid">
-            <div className='row'>
-            <InputGroup className="col basicSearch">
-              <FormControl
-                placeholder="Ingrese palabras clave, código o nombre de las competencias"
-                aria-label="Buscar competencias"
-                aria-describedby="buscar-icono"
-                value={palabrasClave}
-                onChange={(e) => setPalabrasClave(e.target.value)}
-              />
-              <Button variant="outline-secondary" id="buscar-icono" onClick={() => setBusquedaRealizada(true)}>
-                <i className="bi bi-search"></i>
-              </Button>
-            </InputGroup>
+      <Form className="mb-3">
+        <InputGroup>
+          <FormControl
+            placeholder="Ingrese palabras clave, código o nombre de las competencias"
+            aria-label="Buscar competencias"
+            aria-describedby="buscar-icono"
+            value={palabrasClave}
+            onChange={(e) => setPalabrasClave(e.target.value)}
+          />
+          <Button variant="outline-secondary" id="buscar-icono" onClick={() => setBusquedaRealizada(true)}>
+            <i className="bi bi-search"></i>
+          </Button>
+        </InputGroup>
 
-            <Form.Group className="col-sm-3" controlId="filtrFoTipoCompetencia">
-              <Form.Label>Tipo de competencia</Form.Label>
-              <Form.Control as="select" value={tipoCompetencia} onChange={(e) => setTipoCompetencia(e.target.value)}>
-                <option value="">Todos</option>
-                <option value="Técnico">Técnico</option>
-                <option value="Habilidades blandas">Habilidades blandas</option>
-                <option value="Conocimiento">Conocimiento</option>
-                {/* Agregar más opciones de tipo de competencia aquí */}
-              </Form.Control>
-            </Form.Group>
-            
+        <Form.Group className="mb-3" controlId="filtroTipoCompetencia">
+          <Form.Label>Tipo de competencia</Form.Label>
+          <Form.Control as="select" value={tipoCompetencia} onChange={(e) => setTipoCompetencia(e.target.value)}>
+            <option value="">Todos</option>
+            <option value="Técnico">Técnico</option>
+            <option value="Habilidades blandas">Habilidades blandas</option>
+            <option value="Conocimiento">Conocimiento</option>
+            {/* Agregar más opciones de tipo de competencia aquí */}
+          </Form.Control>
+        </Form.Group>
 
-            <div className="col-sm-3 botones">
-              <Button variant="outline-secondary" className="me-2" onClick={limpiarFiltros}>
-                Limpiar Filtros
-              </Button>
-              <Button variant="primary">Buscar</Button>
-            </div>
-          </div>
+        <div className="d-flex justify-content-end">
+          <Button variant="outline-secondary" className="me-2" onClick={limpiarFiltros}>
+            Limpiar Filtros
+          </Button>
+          <Button variant="primary">Buscar</Button>
         </div>
       </Form>
-      
-     <div className='container-fluid'>
-      <div className='row descargas'>
-        <div className="col-sm-3 botones">
-          <Button variant="primary" className="me-2">
-            <i className="bi bi-upload"></i> Importar lista
-          </Button>
-          <p className="text-muted">Maximum file size 2MB</p>
-        </div>
 
-        <div className="col-sm-3 botones">
-          <Button variant="primary">
-            <i className="bi bi-download"></i> Exportar lista
-          </Button>
-          <p className="text-muted">Maximum file size 2MB</p>
-        </div>
-      
-     
+      <div className="d-flex align-items-center mb-3">
+        <Button variant="outline-secondary" className="me-2">
+          <i className="bi bi-upload"></i> Importar lista
+        </Button>
+        <p className="text-muted">Maximum file size 2MB</p>
+      </div>
 
-      <Form.Group className="col-sm-3" controlId="filtroEstado">
+      <div className="d-flex align-items-center mb-3">
+        <Button variant="outline-secondary">
+          <i className="bi bi-download"></i> Exportar lista
+        </Button>
+        <p className="text-muted">Maximum file size 2MB</p>
+      </div>
+
+      <Form.Group className="mb-3" controlId="filtroEstado">
         <Form.Label>Estado</Form.Label>
         <Form.Control as="select" value={estado} onChange={(e) => setEstado(e.target.value)}>
           <option value="">Todos</option>
@@ -244,21 +279,14 @@ const CompetenciasListar = () => {
           <option value="Inactivo">Inactivo</option>
         </Form.Control>
       </Form.Group>
-      
-     
 
-      <div className="col botones">
+      <div className="d-flex justify-content-end mb-3">
         <div className="pop-up">
-            <Button className="btn btn-primary" variant="primary"  onClick={handleMostrarPopUp}>Agregar Competencia</Button>
+            <Button className="btn btn-primary" variant="primary"  onClick={handleMostrarPopUpCrear}>Agregar Competencia</Button>
         </div>
       </div>
-
-      </div>
-      </div>
-
-      <div className='container-fluid'>
-      {mostrarPopUp  && (
-        <Modal show={mostrarPopUp} onHide={handleCerrarPopUp}>
+      {mostrarPopUpCrear  && (
+        <Modal show={mostrarPopUpCrear} onHide={handleCerrarPopUpCrear}>
             <Modal.Header closeButton>
                 <Modal.Title>Crear competencia</Modal.Title>
             </Modal.Header>
@@ -267,8 +295,29 @@ const CompetenciasListar = () => {
             </Modal.Body>
         </Modal>
       )}
+      
+      {mostrarPopUpActualizar  && (
+        <Modal show={mostrarPopUpActualizar} onHide={handleCerrarPopUpActualizar}>
+            <Modal.Header closeButton>
+                <Modal.Title>Actualizar competencia</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <ActualizarCompetencia actualizarCompetencia={actualizarCompetencia} competencia={competenciaSeleccionada}  />
+            </Modal.Body>
+        </Modal>
+      )}
+      
+      {mostrarPopUpBorrar  && (
+        <Modal show={mostrarPopUpBorrar} onHide={handleCerrarPopUpBorrar}>
+            <Modal.Header closeButton>
+                <Modal.Title>Borrar competencia</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <BorrarCompetencia borrarCompetencia={borrarCompetencia} competencia={competenciaSeleccionada} />
+            </Modal.Body>
+        </Modal>
+      )}
       {renderTablaCompetencias()}
-      </div>
     </div>
   );
 };
