@@ -47,7 +47,7 @@ jobs:
         known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
     - name: Deploy with rsync
-      run: rsync -avz ./dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/app-react
+      run: rsync -avz dist ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/app-react
 
     # - name: Copy file to EC2 instance
     #   run: rsync -r -e "ssh -o StrictHostKeyChecking=no" dist ${{ secrets.SSH_HOST }}:/var/www/html
