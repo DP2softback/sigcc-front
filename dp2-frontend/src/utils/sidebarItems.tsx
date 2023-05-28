@@ -1,6 +1,6 @@
 import * as routes from "@config/paths";
-import { ContinuousEvaluation } from '@assets/icons/ContinuousEvaluation.jsx';
-import { PerformanceEvaluation } from '@assets/icons/PerformanceEvaluation.jsx';
+import { ContinuousEvaluation } from '@assets/icons/ContinuousEvaluation';
+import { PerformanceEvaluation } from '@assets/icons/PerformanceEvaluation';
 
 const sidebarItems = [
   {

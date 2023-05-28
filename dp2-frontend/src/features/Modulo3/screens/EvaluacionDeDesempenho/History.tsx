@@ -2,22 +2,32 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionDeDesempenho.css';
 import { PERFORMANCE_EVALUATION_INDEX, PERFORMANCE_EVALUATION_CREATE } from '@config/paths';
-import { navigateTo } from '@features/Modulo3/utils/functions.jsx';
+import { navigateTo } from '@features/Modulo3/utils/functions';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons'
-import { noDataFound } from '@features/Modulo3/utils/constants';
+import { loadingScreen, noDataFound } from '@features/Modulo3/utils/constants';
 import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import TableHistoryContinua from '@features/Modulo3/components/Tables/TableHistoryContinua';
-import {newReg} from '@features/Modulo3/jsons/HistoryContinua';
+import { newReg } from '@features/Modulo3/jsons/HistoryContinua';
+import { getEvaluationsHistory } from '@features/Modulo3/services/continuousEvaluation';
 
 const History = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const employeeId = urlParams.get('id');
   const [evaluations, setEvaluations] = useState(newReg);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     (async () => {
-      // setEvaluations(await getPersonasACargo());
+      const response = await getEvaluationsHistory(employeeId);
+
+      if(!response) setEvaluations(newReg);
+      else setEvaluations(response);
+      
+      setIsLoading(false);
     })();
   }, []);
 
@@ -62,7 +72,7 @@ const History = () => {
 
   const content = (
     <>
-      {evaluations.length > 0 ? (
+      {evaluations && evaluations.length > 0 ? (
         <>
           {table}
           {chart}
@@ -81,7 +91,7 @@ const History = () => {
   );
 
   const body = (
-    <Section title={'Evaluaciones'} content={content} filters={filters}/>
+    <Section title={'Evaluaciones'} content={isLoading ? loadingScreen : content} filters={filters}/>
   );
 
   return (

@@ -49,7 +49,7 @@ const Employee = ({
     },
     {
       icon: <PersonVcard />,
-      text: id,
+      text: code,
     },
     {
       icon: <Building />,
