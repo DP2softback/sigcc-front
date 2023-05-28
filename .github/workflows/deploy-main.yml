@@ -32,16 +32,6 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
 
-  deploy:
-    needs: [build]
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./dp2-frontend/
-
-    steps:
-  
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2
       with:
@@ -53,6 +43,28 @@ jobs:
 
     - name: Deploy with rsync
       run: rsync -avz ./dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/app-react
+
+  # deploy:
+  #   needs: [build]
+  #   runs-on: ubuntu-latest
+
+  #   defaults:
+  #     run:
+  #       working-directory: ./dp2-frontend/
+
+  #   steps:
+  
+  #   - name: Install SSH Key
+  #     uses: shimataro/ssh-key-action@v2
+  #     with:
+  #       key: ${{ secrets.SSH_PRIVATE_KEY }}
+  #       known_hosts: ${{ secrets.KNOWN_HOSTS }}
+
+  #   - name: show smth
+  #     run: ls -la
+
+  #   - name: Deploy with rsync
+  #     run: rsync -avz ./dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/app-react
 
     # - name: Copy file to EC2 instance
     #   run: rsync -r -e "ssh -o StrictHostKeyChecking=no" dist ${{ secrets.SSH_HOST }}:/var/www/html
