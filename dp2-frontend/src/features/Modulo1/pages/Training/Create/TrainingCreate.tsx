@@ -151,8 +151,10 @@ const TrainingCreate = () => {
     const [supplierFilter, setSupplierFilter] = useState<typeSupp[]>(suppliers)
 
     const [loading, setLoading] = useState(false);
+    const [loading1, setLoading1] = useState(false);
     const [loading2, setLoading2] = useState(false);
     const [loading3, setLoading3] = useState(false);
+    const [loading4, setLoading4] = useState(false);
     // const checkList = ["Desarrollo de Software", "Redes y seguridad", "Prueba 1", "Prueba 2"]
     const [checked, setChecked] = useState([]);
     const [habilitiesS, setHabilitiesS] = useState([]);
@@ -406,7 +408,7 @@ const TrainingCreate = () => {
 
     const loadCompanies = (id: number) => {
         setLoading2(true);
-        axiosInt.get(`capacitaciones/get_proveedores_empresa/${id}/`)
+        axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/get_proveedores_empresa/${id}/`)
             .then(function (response) {
                 setCompanies(response.data);
                 setLoading2(false);
@@ -424,7 +426,7 @@ const TrainingCreate = () => {
 
     const loadHabilities = (id: number) => {
         setLoading3(true);
-        axiosInt.get(`capacitaciones/get_habilidades_empresa/${id}/`)
+        axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/get_habilidades_empresa/${id}/`)
             .then(function (response) {
                 setHabilities(response.data);
                 setLoading3(false);
@@ -441,14 +443,14 @@ const TrainingCreate = () => {
 
 
     const loadCategories = () => {
-        setLoading(true);
-        axiosInt.get('capacitaciones/get_categoria/')
+        setLoading1(true);
+        axiosInt.get('dev-modulo-capacitaciones/api/capacitaciones/get_categoria/')
             .then(function (response) {
                 setCategories(response.data);
-                setLoading(false);
+                setLoading1(false);
             })
             .catch(function (error) {
-                setLoading(false);
+                setLoading1(false);
             });
     }
 
@@ -461,18 +463,18 @@ const TrainingCreate = () => {
     }
 
     const handleSuppliers = () => {
-        setLoading(true);
-        axiosInt.post('capacitaciones/get_personas_empresa_habilidades/', {
+        setLoading4(true);
+        axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/get_personas_empresa_habilidades/', {
             id_proveedor: typeCompany.id,
             habilidades: checked
         })
             .then(function (response) {
                 setSuppliers(response.data);
                 setSupplierFilter(response.data)
-                setLoading(false);
+                setLoading4(false);
             })
             .catch(function (error) {
-                setLoading(false);
+                setLoading4(false);
             });
     }
 
@@ -677,7 +679,7 @@ const TrainingCreate = () => {
                         </div>
                         <div className="modal-body">
 
-                            {loading ?
+                            {loading1 ?
                                 <>
                                     <div className='vertical-align-parent'>
                                         <div className='vertical-align-child'>
@@ -800,7 +802,7 @@ const TrainingCreate = () => {
                                     </div>
                                 </div>
 
-                                {loading ?
+                                {loading4 ?
                                     <>
                                         <div className='vertical-align-parent'>
                                             <div className='vertical-align-child'>
@@ -822,7 +824,6 @@ const TrainingCreate = () => {
                                                                     return ha == item.id
                                                                 })
                                                             }) 
-                                                            console.log(filtered2)                                               
                                                             return (
                                                                 
                                                                 <SupplierCard key={tr.id}
