@@ -5,6 +5,7 @@ import ActualizarCompetencia from './Update';
 import BorrarCompetencia from './Delete';
 import { Download,Upload,ArrowRightCircleFill,Pencil,Trash } from 'react-bootstrap-icons';
 import './Read.css';
+import { set } from 'zod';
 const CompetenciasListar = () => {
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [tipoOrden, setTipoOrden] = useState('ascendente');
@@ -63,6 +64,16 @@ const CompetenciasListar = () => {
     };
     
     const actualizarCompetencia = (nuevaCompetencia) => {
+      
+      /*
+      const updatedCompetencias = competenciasData.map((competencia) => {
+        if(competencia.codigo === nuevaCompetencia.codigo){
+          return {...competencia, codigo: nuevaCompetencia.codigo, nombre: nuevaCompetencia.nombre, asignadoAPuesto: nuevaCompetencia.asignadoAPuesto, estado: nuevaCompetencia.estado, tipo: nuevaCompetencia.tipo};
+        }
+        return competencia;});
+      setCompetenciasData(updatedCompetencias);
+      setCompetenciaSeleccionada(null);
+      */
       var tablaAux = tablaHardcode;
       const indice = tablaHardcode.findIndex((competencia) => competencia.codigo=== nuevaCompetencia.codigo);
       if (indice !== -1) {
@@ -77,21 +88,27 @@ const CompetenciasListar = () => {
       setmostrarPopUpActualizar(true);
     };
     
-    const handleCerrarPopUpActualizar = () => {
+    const handleCerrarPopUpActualizar = () => { 
       setmostrarPopUpActualizar(false);
     };
     
-    const borrarCompetencia = (nuevaCompetencia) => {
+    const borrarCompetencia = (id) => {
+      const updatedCompetencias = 
+      competenciasData.filter((competencia) => competencia.codigo !== id);
+      setCompetenciasData(updatedCompetencias);
+      setCompetenciaSeleccionada(null);
+      /*
       var tablaAux = tablaHardcode;
       const indice = tablaHardcode.findIndex((competencia) => competencia.codigo === nuevaCompetencia.codigo);
       if (indice !== -1) {
         tablaAux.splice(indice, 1);
       }
       setCompetenciasData(tablaAux);
+      */
       handleCerrarPopUpBorrar();
     };
     
-    const handleMostrarPopUpBorrar  = (competencia) => { 
+    const handleMostrarPopUpBorrar  = (competencia) => {     
       setCompetenciaSeleccionada(competencia);
       setmostrarPopUpBorrar(true);
     };
@@ -116,7 +133,7 @@ const CompetenciasListar = () => {
       };
       // Filtrado de datos
     const filtrarCompetencias = () => {
-        let competenciasFiltradas = competenciasData;
+        var competenciasFiltradas = competenciasData;
       
         if (tipoCompetencia) {
           competenciasFiltradas = competenciasFiltradas.filter(competencia => competencia.tipo === tipoCompetencia);

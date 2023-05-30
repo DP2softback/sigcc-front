@@ -11,15 +11,13 @@ const BorrarCompetencia = ({ competencia, borrarCompetencia }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="form-group">
+      <label className="form-group">
         <label htmlFor="id">Codigo:</label>
-        <input
-          type="text"
+        <label
           className="form-control"
           id="id"
-          value={id}
-        />
-      </div>
+        >id: {id}</label>
+      </label>
       <button type="submit" className="btn btn-danger">
         Borrar
       </button>

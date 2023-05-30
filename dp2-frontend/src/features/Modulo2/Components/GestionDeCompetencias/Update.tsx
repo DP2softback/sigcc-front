@@ -7,7 +7,8 @@ const ActualizarCompetencia = ({ actualizarCompetencia, competencia }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    actualizarCompetencia({ codigo: id, nombre: nombre, asignadoAPuesto: competencia.asignadoAPuesto, estado:competencia.estado, tipo: competencia.tipo });
+    competencia = { codigo: id, nombre: nombre, asignadoAPuesto: competencia.asignadoAPuesto, estado:competencia.estado, tipo: competencia.tipo }
+    actualizarCompetencia(competencia);
     setId('');
     setNombre('');
     setDescripcion('');
