@@ -8,8 +8,6 @@ import Section from '@features/Modulo3/components/Layout/Section/Section';
 import { Search } from 'react-bootstrap-icons'
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import Employee from '@features/Modulo3/components/Cards/Employee/Employee';
-import employeesJson from '@features/Modulo3/jsons/Employees';
-import dashboardJson from '@features/Modulo3/jsons/EvContDashboard';
 import Linechart from '@features/Modulo3/components/Charts/Linechart/Linechart';
 import { loadingScreen, DAYS_UNIT } from '@features/Modulo3/utils/constants';
 import { getEmployees, getEmployeesEvaluationDashboard } from '@features/Modulo3/services/continuousEvaluation';
@@ -18,20 +16,18 @@ import { useEffect, useState } from 'react';
 const examplePhoto = 'https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg?b=1&s=170667a&w=0&k=20&c=0aBawAGIMPymGUppOgw1HmV8MNXB1536B3sX_PP9_SQ='
 
 const Index = () => {
-  const [employees, setEmployees] = useState(employeesJson);
+  const [employees, setEmployees] = useState([]);
   const [dashboard, setDashboard] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-      const response = await getEmployees(2);
-      if(!response) setEmployees(employeesJson);
-      else setEmployees(response);
+      const response = await getEmployees(13);
+      if(response) setEmployees(response);
 
       const responseDashboard = await getEmployeesEvaluationDashboard();
-      if(!responseDashboard) setDashboard(processData(dashboardJson));
-      else setDashboard(processData(responseDashboard));
+      if(responseDashboard) setDashboard(processData(responseDashboard));
 
       setIsLoading(false);
     })();
@@ -69,7 +65,7 @@ const Index = () => {
   const firstTwoEmployees = (
     <div className="ec-indexFirstTwoEmployees col-md-4">
       {employees &&
-        employees.slice(0, 2).map((employee) => {
+        employees.slice(0, 1).map((employee) => {
           return (
             <div
               key={employee.id}
@@ -83,8 +79,8 @@ const Index = () => {
                 photoURL={examplePhoto}
                 position={employee.position.name}
                 code={formatNumber(employee.id)}
-                lastEvaluation={employee.time_since_last_evaluation}
-                lastEvaluationUnit={DAYS_UNIT}
+                lastEvaluation={employee.time_since_last_evaluation ? employee.time_since_last_evaluation : 'No realizada'}
+                lastEvaluationUnit={employee.time_since_last_evaluation ? DAYS_UNIT : ''}
                 area={employee.area.name}
                 email={employee.email}
               />
@@ -96,7 +92,7 @@ const Index = () => {
 
   const restEmployees =
     employees &&
-    employees.slice(2).map((employee) => {
+    employees.slice(1).map((employee) => {
       return (
         <div
           key={employee.id}
@@ -108,11 +104,11 @@ const Index = () => {
             id={employee.id}
             name={employee.name}
             photoURL={examplePhoto}
-            position={employee.position}
+            position={employee.position.name}
             code={formatNumber(employee.id)}
-            lastEvaluation={employee.lastEvaluation}
-            lastEvaluationUnit={employee.lastEvaluationUnit}
-            area={employee.area}
+            lastEvaluation={employee.time_since_last_evaluation ? employee.time_since_last_evaluation : 'No realizada'}
+            lastEvaluationUnit={employee.time_since_last_evaluation ? DAYS_UNIT : ''}
+            area={employee.area.name}
             email={employee.email}
           />
         </div>

@@ -1,14 +1,14 @@
 import { ajax } from '../tools/ajax';
-import { CONTINUOS_EVALUATION_TYPE, BACKEND_URL } from '../utils/constants';
+import { CONTINUOS_EVALUATION_TYPE, BACKEND_URL, SAMPLE_TOKEN } from '../utils/constants';
 
 export const getEmployees = async (bossId, fechaInicio? : Date, fechaFin? : Date) => {  
   const optionsRequest = {
-    method: 'GET',
-    url: BACKEND_URL + 'api/v1/employees',
+    method: 'POST',
+    url: BACKEND_URL + 'employees',
     headers:{
-      Authorization: `Token ${localStorage.getItem('token')}`
+      Authorization: `Token ${SAMPLE_TOKEN}`
     },
-    body: {
+    data: {
       id: bossId,
       evaluationType: CONTINUOS_EVALUATION_TYPE,
       fecha_inicio: fechaInicio,
@@ -20,12 +20,12 @@ export const getEmployees = async (bossId, fechaInicio? : Date, fechaFin? : Date
 
 export const getEvaluationsHistory = async (employeeId, nivel? : number, fechaInicio? : Date, fechaFin? : Date) => {
   const optionsRequest = {
-    method: 'GET',
-    url: BACKEND_URL + 'api/v1/evaluations',
+    method: 'POST',
+    url: BACKEND_URL + 'evaluations',
     headers:{
-      Authorization: `Token ${localStorage.getItem('token')}`
+      Authorization: `Token ${SAMPLE_TOKEN}`
     },
-    body: {
+    data: {
       id: employeeId,
       evaluationType: CONTINUOS_EVALUATION_TYPE,
       nivel: nivel,
@@ -39,11 +39,11 @@ export const getEvaluationsHistory = async (employeeId, nivel? : number, fechaIn
 export const getEmployeesEvaluationDashboard = async () => {
   const optionsRequest = {
     method: 'GET',
-    url: BACKEND_URL + 'api/v1/LineChartEvaluaciones',
+    url: BACKEND_URL + 'LineChartEvaluaciones',
     headers:{
-      Authorization: `Token ${localStorage.getItem('token')}`
+      Authorization: `Token ${SAMPLE_TOKEN}`
     },
-    body: {
+    data: {
       evaluationType: CONTINUOS_EVALUATION_TYPE,
     }
   }
@@ -53,11 +53,11 @@ export const getEmployeesEvaluationDashboard = async () => {
 export const getEmployeeEvaluationDashboard = async (employeeId) => {
   const optionsRequest = {
     method: 'GET',
-    url: BACKEND_URL + 'api/v1/LineChartEvaluacione',
+    url: BACKEND_URL + 'LineChartEvaluacione',
     headers:{
       Authorization: `Token ${localStorage.getItem('token')}`
     },
-    body: {
+    data: {
       id: employeeId,
       evaluationType: CONTINUOS_EVALUATION_TYPE,
     }

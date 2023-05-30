@@ -10,22 +10,18 @@ import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
 import { useEffect, useState } from 'react';
 import { getEmployees } from '@features/Modulo3/services/performanceEvaluation';
 import { noDataFound, loadingScreen, DAYS_UNIT } from '@features/Modulo3/utils/constants';
-import employeesJson from '@features/Modulo3/jsons/Employees';
 
 const examplePhoto = 'https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg?b=1&s=170667a&w=0&k=20&c=0aBawAGIMPymGUppOgw1HmV8MNXB1536B3sX_PP9_SQ='
 
 const Index = () => {
-  const [employees, setEmployees] = useState(employeesJson);
+  const [employees, setEmployees] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-      const response = await getEmployees(2);
-      
-      if(!response) setEmployees(employeesJson);
-      else setEmployees(response);
-
+      const response = await getEmployees(13);
+      if(response) setEmployees(response);
       setIsLoading(false);
     })();
   }, []);
@@ -57,8 +53,8 @@ const Index = () => {
               photoURL={examplePhoto}
               position={employee.position.name}
               code={employee.id}
-              lastEvaluation={employee.time_since_last_evaluation}
-              lastEvaluationUnit={DAYS_UNIT}
+              lastEvaluation={employee.time_since_last_evaluation ? employee.time_since_last_evaluation : 'No realizada'}
+              lastEvaluationUnit={employee.time_since_last_evaluation ? DAYS_UNIT : ''}
               area={employee.area.name}
               email={employee.email}
             />
@@ -77,8 +73,8 @@ const Index = () => {
           photoURL={examplePhoto}
           position={employee.position.name}
           code={employee.id}
-          lastEvaluation={employee.time_since_last_evaluation}
-          lastEvaluationUnit={DAYS_UNIT}
+          lastEvaluation={employee.time_since_last_evaluation ? employee.time_since_last_evaluation : 'No realizada'}
+          lastEvaluationUnit={employee.time_since_last_evaluation ? DAYS_UNIT : ''}
           area={employee.area.name}
           email={employee.email}
         />

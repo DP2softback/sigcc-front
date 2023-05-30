@@ -22,7 +22,18 @@ import {
     Tooltip,
     Legend
   );  
-  const colorsLineDefault = [ 'rgba(251,227,142,0.7)', 'rgba(154,137,255,0.7)','rgba(254,208,238,0.7)','rgba(208,232,255,0.7)','rgba(169,244,208,0.7)'] //Amarrillo, Morado, Rosado, celeste y Verde
+  const colorsLineDefault = [
+    "rgba(255, 192, 203, 0.7)",
+    "rgba(255, 255, 153, 0.7)",
+    "rgba(173, 216, 230, 0.7)",
+    "rgba(152, 251, 152, 0.7)",
+    "rgba(216, 191, 216, 0.7)",
+    "rgba(255, 218, 185, 0.7)",
+    "rgba(189, 252, 201, 0.7)",
+    "rgba(230, 230, 250, 0.7)",
+    "rgba(135, 206, 235, 0.7)",
+    "rgba(240, 128, 128, 0.7)",
+  ]; 
   const labelsXDefault = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
   const Linechart = ({ colorsLine=colorsLineDefault, labelsX=labelsXDefault, dataInfoprops=null, title=null }) => {

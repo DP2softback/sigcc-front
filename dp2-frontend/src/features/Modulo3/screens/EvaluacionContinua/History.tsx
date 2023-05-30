@@ -6,31 +6,27 @@ import { navigateTo, processData } from '@features/Modulo3/utils/functions';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons'
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
-import dashboardJson from '@features/Modulo3/jsons/EvContDashboard';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import TableHistoryContinua from '@features/Modulo3/components/Tables/TableHistoryContinua';
-import { newReg } from '@features/Modulo3/jsons/HistoryContinua';
 import Linechart from '@features/Modulo3/components/Charts/Linechart/Linechart';
 import { loadingScreen, noDataFound } from '@features/Modulo3/utils/constants';
 import { getEvaluationsHistory, getEmployeeEvaluationDashboard } from '@features/Modulo3/services/continuousEvaluation';
 
 const History = () => {
   const urlParams = new URLSearchParams(window.location.search);
-  const employeeId = urlParams.get('id');
-  const [evaluations, setEvaluations] = useState(newReg);
+  const employeeId = parseInt(urlParams.get('id'));
+  const [evaluations, setEvaluations] = useState([]);
   const [dashboard, setDashboard] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-      const response = await getEvaluationsHistory(employeeId);
-      if(!response) setEvaluations(newReg);
-      else setEvaluations(response);
+      const responseEvaluation = await getEvaluationsHistory(employeeId);
+      if(responseEvaluation) setEvaluations(responseEvaluation);
 
       const responseDashboard = await getEmployeeEvaluationDashboard(employeeId);
-      if(!responseDashboard) setDashboard(processData(dashboardJson));
-      else setDashboard(processData(responseDashboard));
+      if(responseDashboard) setDashboard(processData(responseDashboard));
       
       setIsLoading(false);
     })();
