@@ -36,7 +36,7 @@ const SearchInput = ({ onClose, onSelect }) => {
         // Establecer un temporizador para retrasar la ejecución de la búsqueda después de que el usuario deje de escribir
         const timer = setTimeout(() => {
             performSearch(searchQuery);
-        }, 500); // Intervalo de tiempo (en milisegundos) antes de realizar la búsqueda
+        }, 300); // Intervalo de tiempo (en milisegundos) antes de realizar la búsqueda
 
         // Limpiar el temporizador anterior cada vez que se escriba una nueva entrada
         return () => clearTimeout(timer);
@@ -64,9 +64,11 @@ const SearchInput = ({ onClose, onSelect }) => {
     };
 
     const closeOnSelectModal = () => {
-        console.log(selectedResult);
-        onSelect(selectedResult);
-        closeModal();
+        if (selectedResult != null) {
+            console.log(selectedResult);
+            onSelect(selectedResult);
+            closeModal();
+        }
     };
 
     return (

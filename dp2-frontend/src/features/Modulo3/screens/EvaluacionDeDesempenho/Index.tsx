@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionDeDesempenho.css';
 import { PERFORMANCE_EVALUATION_INDEX } from '@config/paths';
-import { noDataFound } from '@features/Modulo3/utils/constants';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import { Search } from 'react-bootstrap-icons'
@@ -9,22 +8,22 @@ import { Form, InputGroup, Button } from 'react-bootstrap';
 import Employee from '@features/Modulo3/components/Cards/Employee/Employee';
 import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
 import { useEffect, useState } from 'react';
-import { getEmployees } from '@features/Modulo3/services/continuousEvaluation';
-import { loadingScreen, DAYS_UNIT } from '@features/Modulo3/utils/constants.jsx';
-import employeesJson from '@features/Modulo3/jsons/Employees';
+import { getEmployees } from '@features/Modulo3/services/performanceEvaluation';
+import { noDataFound, loadingScreen, DAYS_UNIT } from '@features/Modulo3/utils/constants';
 
 const examplePhoto = 'https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg?b=1&s=170667a&w=0&k=20&c=0aBawAGIMPymGUppOgw1HmV8MNXB1536B3sX_PP9_SQ='
 
 const Index = () => {
-  const [employees, setEmployees] = useState(employeesJson);
+  const [employees, setEmployees] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // setIsLoading(true);
-    // (async () => {
-    //   setEmployees(await getEmployees(1));
-    // })();
-    setIsLoading(false);
+    setIsLoading(true);
+    (async () => {
+      const response = await getEmployees(13);
+      if(response) setEmployees(response);
+      setIsLoading(false);
+    })();
   }, []);
 
   const filters = (
@@ -54,8 +53,8 @@ const Index = () => {
               photoURL={examplePhoto}
               position={employee.position.name}
               code={employee.id}
-              lastEvaluation={employee.time_since_last_evaluation}
-              lastEvaluationUnit={DAYS_UNIT}
+              lastEvaluation={employee.time_since_last_evaluation ? employee.time_since_last_evaluation : 'No realizada'}
+              lastEvaluationUnit={employee.time_since_last_evaluation ? DAYS_UNIT : ''}
               area={employee.area.name}
               email={employee.email}
             />
@@ -74,8 +73,8 @@ const Index = () => {
           photoURL={examplePhoto}
           position={employee.position.name}
           code={employee.id}
-          lastEvaluation={employee.time_since_last_evaluation}
-          lastEvaluationUnit={DAYS_UNIT}
+          lastEvaluation={employee.time_since_last_evaluation ? employee.time_since_last_evaluation : 'No realizada'}
+          lastEvaluationUnit={employee.time_since_last_evaluation ? DAYS_UNIT : ''}
           area={employee.area.name}
           email={employee.email}
         />

@@ -20,7 +20,7 @@ const rutaImageReferencial =
 
 const ImageCard = ({ imageSrc, width, height }) => {
     return (
-        <Card style={{ width: `${width}px`, height: `${height}px` }}>
+        <Card style={{ width: `${width}rem`, height: `${height}rem` }}>
             <Card.Img
                 variant="top"
                 src={imageSrc || logo}

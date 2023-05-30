@@ -1,30 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
 import { CONTINUOS_EVALUATION_CREATE, CONTINUOS_EVALUATION_INDEX } from '@config/paths';
-import { navigateTo } from '@features/Modulo3/utils/functions.jsx';
+import { navigateTo, processData } from '@features/Modulo3/utils/functions';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons'
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import TableHistoryContinua from '@features/Modulo3/components/Tables/TableHistoryContinua';
-import { newReg } from '@features/Modulo3/jsons/HistoryContinua';
 import Linechart from '@features/Modulo3/components/Charts/Linechart/Linechart';
 import { loadingScreen, noDataFound } from '@features/Modulo3/utils/constants';
-import { getEvaluationsHistory } from '@features/Modulo3/services/continuousEvaluation';
+import { getEvaluationsHistory, getEmployeeEvaluationDashboard } from '@features/Modulo3/services/continuousEvaluation';
 
 const History = () => {
   const urlParams = new URLSearchParams(window.location.search);
-  const employeeId = urlParams.get('id');
-  const [evaluations, setEvaluations] = useState(newReg);
+  const employeeId = parseInt(urlParams.get('id'));
+  const [evaluations, setEvaluations] = useState([]);
+  const [dashboard, setDashboard] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // setIsLoading(true);
-    // (async () => {
-    //   setEvaluations(await getEvaluationsHistory(employeeId));
-    // })();
-    setIsLoading(false);
+    setIsLoading(true);
+    (async () => {
+      const responseEvaluation = await getEvaluationsHistory(employeeId);
+      if(responseEvaluation) setEvaluations(responseEvaluation);
+
+      const responseDashboard = await getEmployeeEvaluationDashboard(employeeId);
+      if(responseDashboard) setDashboard(processData(responseDashboard));
+      
+      setIsLoading(false);
+    })();
   }, []);
 
   const filters = (
@@ -45,29 +50,13 @@ const History = () => {
 
   const chart = (
     <div className='col-md-7 mb-32px'>
-      {/* <PieChart
-        title={"Evaluaciones continuas"}
-        labels={["Red", "Blue", "Yellow"]}
-        datasets={[
-          {
-            label: "My First Dataset",
-            data: [300, 50, 100],
-            backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-            hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-          },
-        ]}
-      /> */}
       <div className='container-mt-32px'>
-      <Linechart
-        colorsLine={[ 'rgba(251,227,142,0.7)', 'rgba(154,137,255,0.7)','rgba(254,208,238,0.7)','rgba(208,232,255,0.7)','rgba(169,244,208,0.7)']}
-        labelsX={['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio']}
-        dataInfoprops={[{descripcion : 'Precisión y exactitud en el trabajo realizado', values: [3, 2, 2, 1, 5, 5] },
-        {descripcion : 'Cumplimiento de los estándares de calidad', values: [1, 3, 2, 2, 3, 5] }, 
-        {descripcion : 'Trabajo completo y bien organizado', values: [4, 1, 3, 5, 3, 4] }, 
-        {descripcion : 'Identificación y corrección de errores y problemas', values: [2, 5, 1, 2, 3, 4] }, 
-        {descripcion : 'Cumplimiento de los plazos establecidos', values: [5, 3, 4, 3, 2, 5] }
-        ]}
-      ></Linechart>
+      {dashboard && (
+        <Linechart
+          title={'Evaluaciones continuas'}
+          labelsX={dashboard.months}
+          dataInfoprops={dashboard.valuesPerCategory}/>
+      )}
       </div>
 
     </div>

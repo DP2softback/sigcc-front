@@ -22,29 +22,31 @@ import {
     Tooltip,
     Legend
   );  
-  const colorsLineDefault = [ 'rgba(251,227,142,0.7)', 'rgba(154,137,255,0.7)','rgba(254,208,238,0.7)','rgba(208,232,255,0.7)','rgba(169,244,208,0.7)'] //Amarrillo, Morado, Rosado, celeste y Verde
+  const colorsLineDefault = [
+    "rgba(255, 192, 203, 0.7)",
+    "rgba(255, 255, 153, 0.7)",
+    "rgba(173, 216, 230, 0.7)",
+    "rgba(152, 251, 152, 0.7)",
+    "rgba(216, 191, 216, 0.7)",
+    "rgba(255, 218, 185, 0.7)",
+    "rgba(189, 252, 201, 0.7)",
+    "rgba(230, 230, 250, 0.7)",
+    "rgba(135, 206, 235, 0.7)",
+    "rgba(240, 128, 128, 0.7)",
+  ]; 
   const labelsXDefault = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
   const Linechart = ({ colorsLine=colorsLineDefault, labelsX=labelsXDefault, dataInfoprops=null, title=null }) => {
-    //const labelsInfo = ['Precisión y exactitud en el trabajo realizado', 'Cumplimiento de los estándares de calidad', 'Trabajo completo y bien organizado', 'Identificación y corrección de errores y problemas', 'Cumplimiento de los plazos establecidos']
-    //const dataLines = [[3, 2, 2, 1, 5, 5], [1, 3, 2, 2, 3, 5], [4, 1, 3, 5, 3, 4], [2, 5, 1, 2, 3, 4], [5, 3, 4, 3, 2, 5]];
-    // const dataInfo = [{descripcion : 'Precisión y exactitud en el trabajo realizado', values: [3, 2, 2, 1, 5, 5] },
-    //                     {descripcion : 'Cumplimiento de los estándares de calidad', values: [1, 3, 2, 2, 3, 5] }, 
-    //                     {descripcion : 'Trabajo completo y bien organizado', values: [4, 1, 3, 5, 3, 4] }, 
-    //                     {descripcion : 'Identificación y corrección de errores y problemas', values: [2, 5, 1, 2, 3, 4] }, 
-    //                     {descripcion : 'Cumplimiento de los plazos establecidos', values: [5, 3, 4, 3, 2, 5] }
-    //                 ]
-
     const datasets = dataInfoprops.map((item, index) => {
         return {
-            label: item['descripcion'],
+            label: item['description'],
             data: item['values'],
-            borderColor: [colorsLineDefault[index]],
-            backgroundColor: [colorsLineDefault[index]],
-            pointBackgroundColor: [colorsLineDefault[index]],
-            pointBorderColor: [colorsLineDefault[index]]
+            borderColor: [colorsLine[index]],
+            backgroundColor: [colorsLine[index]],
+            pointBackgroundColor: [colorsLine[index]],
+            pointBorderColor: [colorsLine[index]]
         }
-    })    
+    })
 
     const data = {
         labels: labelsX,
