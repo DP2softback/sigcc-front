@@ -41,6 +41,60 @@ const CompetenciasListar = () => {
         { codigo: 'TEC000020', nombre: 'Trabajo Bajo Presión', asignadoAPuesto: 'Sí', estado: 'Inactivo', tipo: 'Habilidades blandas' },
       ];
 
+
+    /*
+    const register = async (email, name, password) => {
+    const response = await axiosInt.post('/api/account/register', {
+      email,
+      name,
+      password
+    });
+    const { accessToken, user } = response.data;
+
+    window.localStorage.setItem('accessToken', accessToken);
+    dispatch({
+      type: 'REGISTER',
+      payload: {
+        user
+      }
+    });
+  };
+
+
+  const loadsCourses = () =>
+    {
+        setLoadingInit(true);
+        axiosInt.get(`capacitaciones/learning_path/${learningPathId}/course/`)
+            .then(function (response)
+            {
+                setLPName(response.data.nombre);
+                setLoadingInit(false);
+            })
+            .catch(function (error)
+            {
+                console.log(error);
+                setLoadingInit(false);
+            });
+    }
+
+    useEffect(() =>
+    {
+        loadsCourses();
+    }, []);
+
+
+
+    axiosInt.delete(`capacitaciones/learning_path/${learningPathId}/course/detail/${id}`)
+            .then(function (response)
+            {
+                const updatedCourses = courses.filter((course: any) => course.id !== id);
+                setCourses(updatedCourses);
+            })
+            .catch(function (error)
+            {
+                console.log(error);
+            });
+     */
     const tablaApi=[];
 
     const [competenciasData, setCompetenciasData] = useState(tablaHardcode);
