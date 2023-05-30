@@ -3,7 +3,7 @@ import { useRoutes } from 'react-router-dom';
 import { AuthProvider } from '@contexts/JWTAuthContext';
 import routes from '@config/router';
 import Authenticated from '@components/Authenticated';
-import CompetenciasListar from '@features/Modulo2/Components/GestionDeCompetencias/Read';
+import DetalleCompetenciasArea from '@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/DetalleCompetenciasArea';
 
 const App = () => {
 
@@ -22,7 +22,7 @@ const App = () => {
       */
       }
 
-      <CompetenciasListar></CompetenciasListar>
+      <DetalleCompetenciasArea></DetalleCompetenciasArea>
 
 
     </>

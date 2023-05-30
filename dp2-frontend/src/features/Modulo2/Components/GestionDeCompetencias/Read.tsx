@@ -64,16 +64,6 @@ const CompetenciasListar = () => {
     };
     
     const actualizarCompetencia = (nuevaCompetencia) => {
-      
-      /*
-      const updatedCompetencias = competenciasData.map((competencia) => {
-        if(competencia.codigo === nuevaCompetencia.codigo){
-          return {...competencia, codigo: nuevaCompetencia.codigo, nombre: nuevaCompetencia.nombre, asignadoAPuesto: nuevaCompetencia.asignadoAPuesto, estado: nuevaCompetencia.estado, tipo: nuevaCompetencia.tipo};
-        }
-        return competencia;});
-      setCompetenciasData(updatedCompetencias);
-      setCompetenciaSeleccionada(null);
-      */
       var tablaAux = tablaHardcode;
       const indice = tablaHardcode.findIndex((competencia) => competencia.codigo=== nuevaCompetencia.codigo);
       if (indice !== -1) {
@@ -97,14 +87,6 @@ const CompetenciasListar = () => {
       competenciasData.filter((competencia) => competencia.codigo !== id);
       setCompetenciasData(updatedCompetencias);
       setCompetenciaSeleccionada(null);
-      /*
-      var tablaAux = tablaHardcode;
-      const indice = tablaHardcode.findIndex((competencia) => competencia.codigo === nuevaCompetencia.codigo);
-      if (indice !== -1) {
-        tablaAux.splice(indice, 1);
-      }
-      setCompetenciasData(tablaAux);
-      */
       handleCerrarPopUpBorrar();
     };
     
