@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Form, FormControl, InputGroup, Button, Table, Modal  } from 'react-bootstrap';
 import AgregarCompetencia from './Create';
 import ActualizarCompetencia from './Update';
@@ -26,35 +26,45 @@ const CompetenciasListar = () => {
     const [mostrarPopUpActualizar, setmostrarPopUpActualizar] = useState(false);
     const [mostrarPopUpBorrar, setmostrarPopUpBorrar] = useState(false);
     const [competenciaSeleccionada, setCompetenciaSeleccionada] = useState(null);
+    const [tablaApi, setTablaApi] = useState<Competencia[]>([]);
 
     const tablaHardcode: Competencia[] = [
-        {
-          id: 1,
-          abreviatura: 'TEC',
-          nombre: 'Técnico',
-          descripcion: 'Competencias que involucran conocimientos de tecnologías',
-          activo: true
-        },
-        {
-          id: 2,
-          abreviatura: 'ADM',
-          nombre: 'Administrativo',
-          descripcion: 'Competencias que involucran conocimientos de administración',
-          activo: true
-        },
-        {
-          id: 3,
-          abreviatura: 'ART',
-          nombre: 'Artístico',
-          descripcion: 'Competencias que involucran habilidades artísticas',
-          activo: true
-        }
-      ];
+      {
+        id: 1,
+        abreviatura: 'TEC',
+        nombre: 'Técnico',
+        descripcion: 'Competencias que involucran conocimientos de tecnologías',
+        activo: true
+      },
+      {
+        id: 2,
+        abreviatura: 'ADM',
+        nombre: 'Administrativo',
+        descripcion: 'Competencias que involucran conocimientos de administración',
+        activo: true
+      },
+      {
+        id: 3,
+        abreviatura: 'ART',
+        nombre: 'Artístico',
+        descripcion: 'Competencias que involucran habilidades artísticas',
+        activo: true
+      }
+    ];
+      useEffect(() => {
+        const obtenerCompetencias = async () => {
+          try {
+            const response = await axiosInt.get('https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/brechas/tipoCompetencias');
+            setTablaApi(response.data);
+          } catch (error) {
+            console.error(error);
+          }
+        };      
+        obtenerCompetencias();
+      }, []);
 
-
-    const tablaApi=[];
-    //console.log(tablaApi)
-
+      
+    
     const [competenciasData, setCompetenciasData] = useState(tablaHardcode);
 
     const agregarCompetencia = (nuevaCompetencia) => {
@@ -71,8 +81,8 @@ const CompetenciasListar = () => {
     };
     
     const actualizarCompetencia = (nuevaCompetencia) => {
-      var tablaAux = tablaHardcode;
-      const indice = tablaHardcode.findIndex((competencia) => competencia.id=== nuevaCompetencia.id);
+      var tablaAux = competenciasData;
+      const indice = competenciasData.findIndex((competencia) => competencia.id=== nuevaCompetencia.id);
       if (indice !== -1) {
         tablaAux[indice] = nuevaCompetencia;
       }
