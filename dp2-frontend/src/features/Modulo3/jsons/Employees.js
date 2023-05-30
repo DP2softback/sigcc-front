@@ -3,7 +3,7 @@ const employees = [
     id: 2,
     name: "test employee ",
     time_since_last_evaluation: 146,
-    area: { id: 1, name: '"Area de pruebas"' },
+    area: { id: 1, name: "Area de pruebas" },
     position: { id: 1, name: "EL JEFES" },
     email: "test2@test.com",
     CategoryAverages: {
