@@ -1,3 +1,36 @@
 .accordionExpPla-bodyitems{
     margin-left: 20px;
 }
+
+.subCategorie-button{
+    margin-left: 180px;
+}
+
+.row-input{
+    padding: 10px;
+    display: flex;
+}
+
+.textbox{
+    &-cat{
+        width:10px !important;
+        }
+    &-sub{
+        width:10px !important;
+    }
+    
+}
+.boton-add{
+    width:30px;
+    height:30px;
+    margin-left: 10px;
+    margin-top: 3px;
+    padding-right: 12px;
+
+}
+
+.subcategoria-button {
+  background-color: #007bff;
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
