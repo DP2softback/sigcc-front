@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Form, FormControl, InputGroup, Button, Table, Modal  } from 'react-bootstrap';
 import AgregarCompetencia from './Create';
 import ActualizarCompetencia from './Update';
 import BorrarCompetencia from './Delete';
 import { Download,Upload,ArrowRightCircleFill,Pencil,Trash } from 'react-bootstrap-icons';
 import './Read.css';
-import { set } from 'zod';
+import axiosInt from "@config/axios";
 const CompetenciasListar = () => {
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [tipoOrden, setTipoOrden] = useState('ascendente');
@@ -17,7 +17,7 @@ const CompetenciasListar = () => {
     const [mostrarPopUpActualizar, setmostrarPopUpActualizar] = useState(false);
     const [mostrarPopUpBorrar, setmostrarPopUpBorrar] = useState(false);
     const [competenciaSeleccionada, setCompetenciaSeleccionada] = useState(null);
-    // Datos de ejemplo para la tabla
+
     const tablaHardcode = [
         { codigo: 'TEC000001', nombre: 'Liderazgo Técnico', asignadoAPuesto: 'Sí', estado: 'Activo', tipo: 'Técnico' },
         { codigo: 'TEC000002', nombre: 'Comunicación Efectiva', asignadoAPuesto: 'No', estado: 'Inactivo', tipo: 'Habilidades blandas' },
@@ -40,16 +40,11 @@ const CompetenciasListar = () => {
         { codigo: 'TEC000019', nombre: 'Toma de Decisiones', asignadoAPuesto: 'Sí', estado: 'Activo', tipo: 'Técnico' },
         { codigo: 'TEC000020', nombre: 'Trabajo Bajo Presión', asignadoAPuesto: 'Sí', estado: 'Inactivo', tipo: 'Habilidades blandas' },
       ];
+
+    const tablaApi=[];
+
     const [competenciasData, setCompetenciasData] = useState(tablaHardcode);
 
-    const handleTipoCompetenciaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-      setTipoCompetencia(event.target.value);
-    };
-  
-    const handleEstadoChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-      setEstado(event.target.value);
-    };
-    
     const agregarCompetencia = (nuevaCompetencia) => {
         setCompetenciasData([...competenciasData, nuevaCompetencia]);
         handleCerrarPopUpCrear();
@@ -116,15 +111,12 @@ const CompetenciasListar = () => {
       // Filtrado de datos
     const filtrarCompetencias = () => {
         var competenciasFiltradas = competenciasData;
-      
         if (tipoCompetencia) {
           competenciasFiltradas = competenciasFiltradas.filter(competencia => competencia.tipo === tipoCompetencia);
-        }
-      
+        }      
         if (estado) {
           competenciasFiltradas = competenciasFiltradas.filter(competencia => competencia.estado === estado);
         }
-
         if (palabrasClave) {
             const palabrasClaveLower = palabrasClave.toLowerCase();
             competenciasFiltradas = competenciasFiltradas.filter(competencia =>
@@ -134,8 +126,6 @@ const CompetenciasListar = () => {
               competencia.tipo.toLowerCase().includes(palabrasClaveLower)
             );
           }
-
-      
         return competenciasFiltradas;
     };
     // Obtiene los datos ordenados
@@ -150,8 +140,7 @@ const CompetenciasListar = () => {
       });
   
     const renderTablaCompetencias = () => {
-        const competenciasFiltradas = filtrarCompetencias();
-      
+        const competenciasFiltradas = filtrarCompetencias();      
         if (busquedaRealizada && competenciasFiltradas.length === 0) {
             return <p>No se encontraron resultados.</p>;
           }
@@ -229,7 +218,6 @@ const CompetenciasListar = () => {
       <h2>Gestión de Competencias</h2>
       <p className="text-muted">Agrega, edita y desactiva competencias.</p>
       </div>
-
       <Form className="FormComp">
         <div className= "container-fluid">
           <div className='row'>
@@ -245,7 +233,6 @@ const CompetenciasListar = () => {
                 <i className="bi bi-search"></i>
               </Button>
             </InputGroup>
-
             <Form.Group className="col-sm-3" controlId="filtroTipoCompetencia">
               <Form.Label>Tipo de competencia</Form.Label>
               <Form.Control as="select" value={tipoCompetencia} onChange={(e) => setTipoCompetencia(e.target.value)}>
@@ -256,7 +243,6 @@ const CompetenciasListar = () => {
                 {/* Agregar más opciones de tipo de competencia aquí */}
               </Form.Control>
             </Form.Group>
-
             <div className="col-sm-3 botones">
               <Button variant="outline-secondary" className="me-2" onClick={limpiarFiltros}>
                 Limpiar Filtros
@@ -266,7 +252,6 @@ const CompetenciasListar = () => {
           </div>
         </div>
       </Form>
-
       <div className='container-fluid'>
           <div className='row descargas'>
                 <div className="col-sm-3 botones">
@@ -276,7 +261,6 @@ const CompetenciasListar = () => {
                 </Button>
                 <p className="text-muted">Maximum file size 2MB</p>
               </div>
-
               <div className="col-sm-3 botones">
                 <Button variant="outline-primary">
                 <Upload></Upload>
@@ -284,7 +268,6 @@ const CompetenciasListar = () => {
                 </Button>
                 <p className="text-muted">Maximum file size 2MB</p>
               </div>
-
               <Form.Group className="col-sm-3" controlId="filtroEstado">
                 <Form.Label>Estado</Form.Label>
                 <Form.Control as="select" value={estado} onChange={(e) => setEstado(e.target.value)}>
@@ -293,13 +276,11 @@ const CompetenciasListar = () => {
                   <option value="Inactivo">Inactivo</option>
                 </Form.Control>
               </Form.Group>
-
               <div className="col botones">
                 <div className="pop-up">
                     <Button className="btn btn-primary" variant="primary"  onClick={handleMostrarPopUpCrear}>Agregar Competencia</Button>
                 </div>
               </div>
-
           </div>
       </div>
       {mostrarPopUpCrear  && (
@@ -311,8 +292,7 @@ const CompetenciasListar = () => {
                 <AgregarCompetencia agregarCompetencia={agregarCompetencia} />
             </Modal.Body>
         </Modal>
-      )}
-      
+      )}      
       {mostrarPopUpActualizar  && (
         <Modal show={mostrarPopUpActualizar} onHide={handleCerrarPopUpActualizar}>
             <Modal.Header closeButton>
@@ -323,8 +303,6 @@ const CompetenciasListar = () => {
             </Modal.Body>
         </Modal>
       )}
-      
-
       {mostrarPopUpBorrar  && (
         <Modal show={mostrarPopUpBorrar} onHide={handleCerrarPopUpBorrar}>
             <Modal.Header closeButton>
@@ -341,5 +319,4 @@ const CompetenciasListar = () => {
     </div>
   );
 };
-
 export default CompetenciasListar;
