@@ -20,7 +20,7 @@ const Index = () => {
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-      const response = await getEmployees(13);
+      const response = await getEmployees(5);
       if(response) setEmployees(response);
       setIsLoading(false);
     })();
