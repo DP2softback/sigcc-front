@@ -24,6 +24,8 @@ export const EVALUATION_TEMPLATE_INDEX = '/skillManagement/evaluationTemplate/in
 export const EVALUATION_TEMPLATE_CREATE = '/skillManagement/evaluationTemplate/create';
 export const EVALUATION_TEMPLATE_EDIT = '/skillManagement/evaluationTemplate/edit';
 
+export const JOB_OPPORTUNITIES_SKILLS = '/skillManagement/jobOpportunitiesRelatedToSkills/index';
+
 export const REPORT_CONTINUOS_EVALUATION_INDEX = '/skillManagement/report/continuousEvaluation';
 export const REPORT_PERFORMANCE_EVALUATION_INDEX = '/skillManagement/report/performanceEvaluation';
 
