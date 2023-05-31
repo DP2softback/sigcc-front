@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import './Login.css';
 import useRefMounted from '@hooks/useRefMounted';
 import useAuth from '@hooks/useAuth';
-import ImgLogin from '../../assets/images/IMG_Login.png';
-import ImgLogo from '../../assets/images/output-onlinepngtools.png';
+import ImgLogin from '@assets/images/IMG_Login.png';
+import ImgLogo from '@assets/images/output-onlinepngtools.png';
 import { Google } from 'react-bootstrap-icons';
 
 

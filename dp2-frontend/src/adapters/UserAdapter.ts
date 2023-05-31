@@ -1,6 +1,6 @@
 import { RegisterUpdateUser } from "@models/domain/User";
 import { IGetUserDto, IRegisterUpdateUserDto } from "@models/interfaces/IUser";
-
+//testing
 export const IRegisterUpdateDtoAdapter = 
 (user: RegisterUpdateUser) : IRegisterUpdateUserDto => ({
   address: user.address,
