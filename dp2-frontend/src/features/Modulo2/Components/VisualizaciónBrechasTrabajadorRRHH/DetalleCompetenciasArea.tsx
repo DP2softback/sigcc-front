@@ -5,6 +5,7 @@ import DeleteCompetencia from './Delete';
 import { Download,Upload,ArrowRightCircleFill,Pencil,Trash } from 'react-bootstrap-icons';
 import { set } from 'zod';
 import { useHref } from 'react-router-dom';
+import './DetalleCompetenciasArea.css'
 const DetalleCompetenciasArea = () => {
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [tipoOrden, setTipoOrden] = useState('ascendente');
@@ -422,7 +423,7 @@ const DetalleCompetenciasArea = () => {
 
       <Form className="FormComp">
         <div className= "container-fluid">
-          <div className='row'>
+          <div className='row primera'>
               <InputGroup className="col basicSearch">
               <FormControl
                 placeholder="Ingrese palabras clave, código o nombre de las competencias"
@@ -447,10 +448,10 @@ const DetalleCompetenciasArea = () => {
             </Form.Group>
 
             <div className="col-sm-3 botones">
-              <Button variant="outline-secondary" className="me-2" onClick={limpiarFiltros}>
+              <Button variant="outline-primary" className="me-2" onClick={limpiarFiltros}>
                 Limpiar Filtros
               </Button>
-              <Button variant="primary">Buscar</Button>
+              <Button variant="primary" className ="col-sm-4">Buscar</Button>
             </div>
           </div>
         </div>
