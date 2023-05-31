@@ -36,14 +36,15 @@ export const getEvaluationsHistory = async (employeeId, nivel? : number, fechaIn
   return await ajax(optionsRequest);
 }
 
-export const getEmployeesEvaluationDashboard = async () => {
+export const getEmployeesEvaluationDashboard = async (bossId) => {
   const optionsRequest = {
-    method: 'GET',
+    method: 'POST',
     url: BACKEND_URL + 'LineChartEvaluaciones',
     headers:{
       Authorization: `Token ${SAMPLE_TOKEN}`
     },
-    params: {
+    data: {
+      id: bossId,
       evaluationType: CONTINUOS_EVALUATION_TYPE,
     }
   }
@@ -52,13 +53,13 @@ export const getEmployeesEvaluationDashboard = async () => {
 
 export const getEmployeeEvaluationDashboard = async (employeeId) => {
   const optionsRequest = {
-    method: 'GET',
-    url: BACKEND_URL + 'LineChartEvaluacione',
+    method: 'POST',
+    url: BACKEND_URL + 'LineChartEvaluaciones',
     headers:{
-      Authorization: `Token ${localStorage.getItem('token')}`
+      Authorization: `Token ${SAMPLE_TOKEN}`
     },
     data: {
-      id: employeeId,
+      employee_id: employeeId,
       evaluationType: CONTINUOS_EVALUATION_TYPE,
     }
   }

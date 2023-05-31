@@ -2,14 +2,15 @@ import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
 import { CONTINUOS_EVALUATION_CREATE, CONTINUOS_EVALUATION_INDEX } from '@config/paths';
-import { navigateTo, processData } from '@features/Modulo3/utils/functions';
+import { navigateTo, formatDashboardJson, navigateBack } from '@features/Modulo3/utils/functions';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons'
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import TableHistoryContinua from '@features/Modulo3/components/Tables/TableHistoryContinua';
 import Linechart from '@features/Modulo3/components/Charts/Linechart/Linechart';
-import { loadingScreen, noDataFound } from '@features/Modulo3/utils/constants';
+import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
+import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 import { getEvaluationsHistory, getEmployeeEvaluationDashboard } from '@features/Modulo3/services/continuousEvaluation';
 
 const History = () => {
@@ -26,7 +27,7 @@ const History = () => {
       if(responseEvaluation) setEvaluations(responseEvaluation);
 
       const responseDashboard = await getEmployeeEvaluationDashboard(employeeId);
-      if(responseDashboard) setDashboard(processData(responseDashboard));
+      if(responseDashboard) setDashboard(formatDashboardJson(responseDashboard));
       
       setIsLoading(false);
     })();
@@ -49,13 +50,13 @@ const History = () => {
   );
 
   const chart = (
-    <div className='col-md-7 mb-32px'>
+    <div className='col-md-6 mb-32px'>
       <div className='container-mt-32px'>
       {dashboard && (
         <Linechart
           title={'Evaluaciones continuas'}
           labelsX={dashboard.months}
-          dataInfoprops={dashboard.valuesPerCategory}/>
+          dataInfoprops={dashboard.data}/>
       )}
       </div>
 
@@ -63,7 +64,7 @@ const History = () => {
   );
 
   const table =(
-    <div className='col-md-5'>
+    <div className='col-md-6'>
       <TableHistoryContinua rows ={evaluations}></TableHistoryContinua>
     </div>
   );
@@ -76,14 +77,24 @@ const History = () => {
           {chart}
         </>
       ) : (
-        noDataFound
+        <NoDataFound />
       )}
-      <div
-        className="text-end mb-4"
-        onClick={() => {
-          navigateTo(CONTINUOS_EVALUATION_CREATE, { id: employeeId });
-        }}>
-        <Button>Agregar nueva evaluación</Button>
+      <div className='text-end mb-4'>
+        <Button
+          variant='outline-primary me-2'
+          onClick={() => {
+            navigateBack();
+          }}
+        >
+          Volver
+        </Button>
+        <Button
+          onClick={() => {
+            navigateTo(CONTINUOS_EVALUATION_CREATE, { id: employeeId });
+          }}
+        >
+          Agregar nueva evaluación
+        </Button>
       </div>
     </>
   );
@@ -91,7 +102,7 @@ const History = () => {
   const body = (
     <Section
       title={"Evaluaciones"}
-      content={isLoading ? loadingScreen : content}
+      content={isLoading ? <LoadingScreen/> : content}
       filters={filters}
     />
   );

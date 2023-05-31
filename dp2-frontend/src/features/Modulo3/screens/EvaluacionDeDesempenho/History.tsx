@@ -5,7 +5,8 @@ import { PERFORMANCE_EVALUATION_INDEX, PERFORMANCE_EVALUATION_CREATE } from '@co
 import { navigateTo } from '@features/Modulo3/utils/functions';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons'
-import { loadingScreen, noDataFound } from '@features/Modulo3/utils/constants';
+import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
+import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
@@ -76,7 +77,7 @@ const History = () => {
           {chart}
         </>
       ) : (
-        noDataFound
+        <NoDataFound/>
       )}
       <div
         className="text-end mt-32 mb-4"
@@ -89,7 +90,7 @@ const History = () => {
   );
 
   const body = (
-    <Section title={'Evaluaciones'} content={isLoading ? loadingScreen : content} filters={filters}/>
+    <Section title={'Evaluaciones'} content={isLoading ? <LoadingScreen/> : content} filters={filters}/>
   );
 
   return (

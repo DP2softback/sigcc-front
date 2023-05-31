@@ -9,7 +9,9 @@ import Employee from '@features/Modulo3/components/Cards/Employee/Employee';
 import PieChart from '@features/Modulo3/components/Charts/Piechart/PieChart';
 import { useEffect, useState } from 'react';
 import { getEmployees } from '@features/Modulo3/services/performanceEvaluation';
-import { noDataFound, loadingScreen, DAYS_UNIT } from '@features/Modulo3/utils/constants';
+import { DAYS_UNIT } from '@features/Modulo3/utils/constants';
+import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
+import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 
 const examplePhoto = 'https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg?b=1&s=170667a&w=0&k=20&c=0aBawAGIMPymGUppOgw1HmV8MNXB1536B3sX_PP9_SQ='
 
@@ -107,11 +109,11 @@ const Index = () => {
         {restEmployees}
       </>
     ) : (
-      noDataFound
+      <NoDataFound/>
     );
 
   const body = (
-    <Section title={'Trabajadores'} content={isLoading ? loadingScreen : content} filters={filters}/>
+    <Section title={'Trabajadores'} content={isLoading ? <LoadingScreen/> : content} filters={filters}/>
   );
 
   return (

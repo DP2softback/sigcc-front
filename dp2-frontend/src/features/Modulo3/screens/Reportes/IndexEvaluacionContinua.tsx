@@ -7,6 +7,7 @@ import Linechart from '@features/Modulo3/components/Charts/Linechart/Linechart';
 import { Form, Button, Dropdown} from 'react-bootstrap';
 import { jsPDF } from 'jspdf';
 import domtoimage from 'dom-to-image';
+import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@config/paths';
 
 const IndexEvaluacionContinua = () => {
   const [activeRepContinua, setActiveRepContinua] = useState(true);
@@ -113,6 +114,7 @@ const IndexEvaluacionContinua = () => {
         title={'Reportes'}
         body={body}
         subtitle='Reportes acerca de las evaluaciones continuas y evaluaciones de desempeño de los trabajadores'
+				route={REPORT_CONTINUOS_EVALUATION_INDEX}
       />
     </>
   );
