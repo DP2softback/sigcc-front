@@ -4,7 +4,7 @@ import learningPathDetails from './learningPathDetails.json';
 import { Link, useParams } from 'react-router-dom';
 import axiosInt from '@config/axios';
 import Sidebar from '@components/Sidebar';
-import sidebarItems from '@features/Modulo1/utils/sidebarItems';
+import sidebarItems from '@utils/sidebarItems';
 import '../../../content/common.css';
 import { ArrowLeftCircleFill, People, BarChart } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router-dom';

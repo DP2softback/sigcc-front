@@ -1,6 +1,6 @@
 import axiosInt from '@config/axios';
 import Sidebar from '@components/Sidebar'
-import sidebarItems from '@features/Modulo1/utils/sidebarItems'
+import sidebarItems from '@utils/sidebarItems'
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { GeoFill, JournalBookmarkFill, InfoCircleFill, PeopleFill, DoorClosedFill, Calendar2EventFill, Calendar, Calendar2Event, People, ArrowLeftCircle, ArrowLeftCircleFill, ArrowRightCircle } from 'react-bootstrap-icons'
