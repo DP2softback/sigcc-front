@@ -2,7 +2,8 @@ name: PR check
 
 on:
   pull_request:
-    branches: [ "Grupo1", "Grupo2", "Grupo3", "Grupo4" ]
+    branches: 
+      - Grupo4
 
 jobs:
   check_build_status:
