@@ -151,7 +151,7 @@ const BarChart1 = (props) => {
         })
       }
       
-    }, [dataBarProps]) // dataBar | dataBarTot
+    }, [dataBarProps])
 
     return (
         <div className='chart'>
