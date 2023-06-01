@@ -30,49 +30,63 @@ const ModalAddCategorie = (props) => {
         setCategorias([...categorias, nuevaCategoria]);
         setShowAC(false);
       };
-    return(
+      return (
         <Modal show={showAC} onHide={handleClose}>
-            <Modal.Header closeButton>
-                <Modal.Title>Agregar Categoria</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <div className="row">
-                        <p>
-                        Categorías                        
-                        </p>
-                </div>
-                <div className='row-input'>
-                    <Form.Control className='textbox-cat'placeholder='Ingrese el nombre de la categoría' value={nombreCategoria}
-            onChange={(event) => setNombreCategoria(event.target.value)}></Form.Control>
-                </div>
-                <div className="row">
-                        <p>
-                        Subcategorías                        
-                        </p>
-                </div>
-                <div className='row-input'>                   
-                    <Form.Control className='textbox-sub' placeholder='Ingrese el nombre de la subcategoría' value={subcategoriaActual}
-            onChange={(event) => setSubcategoriaActual(event.target.value)}></Form.Control>
-                    <Button className='boton-add' variant='secundary' onClick={handleAddSubcategoria}>
-                        +
-                    </Button>
-                </div>
-                <div className="row-input">
-          {subcategorias.map((subcategoria, index) => (
-            <Button key={index} variant="primary" className="subcategoria-button" disabled>
-              {subcategoria}
+          <Modal.Header closeButton>
+            <Modal.Title>Agregar Categoria</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="row">
+              <p>Categorías</p>
+            </div>
+            <div className="row-input">
+              <Form.Control
+                className="textbox-cat"
+                placeholder="Ingrese el nombre de la categoría"
+                value={nombreCategoria}
+                onChange={(event) => setNombreCategoria(event.target.value)}
+              />
+            </div>
+            <div className="row">
+              <p>Subcategorías</p>
+            </div>
+            <div className="row-input">
+              <Form.Control
+                className="textbox-sub"
+                placeholder="Ingrese el nombre de la subcategoría"
+                value={subcategoriaActual}
+                onChange={(event) => setSubcategoriaActual(event.target.value)}
+              />
+              <Button
+                className="boton-add"
+                variant="secondary"
+                onClick={handleAddSubcategoria}
+              >
+                +
+              </Button>
+            </div>
+            <div className="row-input">
+              <div className="subcategoria-buttons-container">
+                {subcategorias.map((subcategoria, index) => (
+                  <Button
+                    key={index}
+                    variant="primary"
+                    className="subcategoria-button"
+                    disabled
+                  >
+                    {subcategoria}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </Modal.Body>
+      
+          <Modal.Footer>
+            <Button variant="primary" onClick={handleAgregar}>
+              Agregar
             </Button>
-          ))}
-        </div>
-            </Modal.Body>
-
-            <Modal.Footer>
-                <Button variant="primary" onClick={handleAgregar}>
-                    Agregar
-                </Button>
-            </Modal.Footer>
+          </Modal.Footer>
         </Modal>
-    )
-}
-
+      );
+                }
 export default ModalAddCategorie;
