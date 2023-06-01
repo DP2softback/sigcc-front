@@ -29,11 +29,29 @@ const SessionAccordion = (Props: Props) => {
                                 <div className="accordion-body">
                                     {
                                         Props.trainingType !== "A" ?
-                                        (<>
-                                            <p>{session.descripcion}</p>
-                                            <p><GeoFill /><b style={{ paddingLeft: "0.5rem" }}>Ubicación:</b> {session.ubicacion}</p>
-                                            <p><PeopleFill /><b style={{ paddingLeft: "0.5rem" }}>Aforo máximo:</b> {session.aforo_maximo}</p>
-                                        </>)
+                                        (
+                                            <div className='row'>
+                                                <div className='col-6'>
+                                                    <p>{session.descripcion}</p>
+                                                    <p><GeoFill /><b style={{ paddingLeft: "0.5rem" }}>Ubicación:</b> {session.ubicacion}</p>
+                                                    <p><PeopleFill /><b style={{ paddingLeft: "0.5rem" }}>Aforo máximo:</b> {session.aforo_maximo}</p>
+                                                </div>
+                                                <div className='col-6' style={{borderLeftStyle: "groove", paddingLeft: "1rem"}}>
+                                                    <p><JournalBookmarkFill /><b style={{ paddingLeft: "0.5rem" }}>Temas de la sesión</b></p>
+                                                    {
+                                                        session.temas.map((topic: TopicObj, i: number) => {
+                                                            return(
+                                                                <div className='row' key={i}>
+                                                                    <div className='col mb-2'>
+                                                                        <strong>{i+1}.</strong> {topic.nombre}
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        })
+                                                    }
+                                                </div>
+                                            </div>
+                                        )
                                         :
                                         (
                                             <div className='row'>

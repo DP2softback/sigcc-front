@@ -28,7 +28,7 @@ const datos = {
     fecha_creacion: "06/05/2023",
     fecha_primera_sesion: "06/05/2023",
     cantidad_empleados: 10,
-    tipo: "P",
+    tipo: "A",
     sesiones: [
         {
             id: 1,
@@ -45,7 +45,7 @@ const datos = {
             nombre: "Sesión 1",
             descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
             fecha_inicio: "2023-05-10T00:00:00-05:00",
-            //url_video: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
+            url_video: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
             ubicacion: "Auditorio tercer piso",
             aforo_maximo: 20
         },
@@ -88,7 +88,7 @@ const datos = {
             nombre: "Sesión 2",
             descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
             fecha_inicio: "2023-05-10T00:00:00-05:00",
-            //url_video: null,
+            url_video: null,
             ubicacion: "Auditorio tercer piso",
             aforo_maximo: 20
         }
