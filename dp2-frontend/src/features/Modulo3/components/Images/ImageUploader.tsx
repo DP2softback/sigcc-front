@@ -25,7 +25,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageSelect }) => {
             type="file"
             accept="image/*"
             onChange={handleImageSelect}
-            style={{ display: 'none' }}
+            style={{ display: 'none'}}
             id="image-upload-input"
           />
           <label
@@ -34,6 +34,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageSelect }) => {
               border: '1px solid gray',
               padding: '5px 10px',
               cursor: 'pointer',
+              borderRadius: '5px',
+              backgroundColor: 'white',
+              borderColor:'#ced4da'
             }}
           >
             Choose File
@@ -48,6 +51,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageSelect }) => {
             height: '60px',
             overflow: 'hidden',
             verticalAlign: 'top',
+            borderRadius: '5px',
+            backgroundColor: 'white',
+            borderColor:'#ced4da'
           }}
         >
           {selectedImage && (
