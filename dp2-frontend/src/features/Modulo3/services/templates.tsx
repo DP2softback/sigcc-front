@@ -27,3 +27,17 @@ export const getPlantilla = async(idPlantilla) =>{
         }
         return await ajax(optionsRequest);
 }
+
+export const getCategoriesSubs = async() =>{
+  const optionsRequest = {
+      method: 'POST',
+      url: BACKEND_URL + 'VistaCategoriasSubCategorias',
+      headers:{
+        Authorization: `Token ${SAMPLE_TOKEN}`
+      },
+      data: {      
+        evaluationType: PERFORMANCE_EVALUATION_TYPE,
+      }
+  }
+  return await ajax(optionsRequest);
+}
