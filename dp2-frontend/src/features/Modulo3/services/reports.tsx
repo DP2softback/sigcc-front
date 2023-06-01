@@ -154,14 +154,13 @@ export const getPostCategoriasDesempenio = async () => {
   }
 };
 
-export const getPostReportContinuaLineChart = async (areaid, categoriaid, dateFechaInicio, dateFechaFin, tipoEvaluacion) => {
+export const getPostReportContinuaLineChart = async (areaid, categoriaid, dateFechaInicio, dateFechaFin) => {
   try {
     const response = await axios.post(`${BACKEND_URL}reporte`, {
       areaId: areaid,
       categoriaId: categoriaid,
       fechaInicio: dateFechaInicio,
       fechaFin: dateFechaFin,
-      tipoEvaluacion: tipoEvaluacion,
     });
     console.log(response.data);
     return response.data;
@@ -170,14 +169,13 @@ export const getPostReportContinuaLineChart = async (areaid, categoriaid, dateFe
   }
 };
 
-export const getPostReportDesempenioLineChart = async (areaid, categoriaid, dateFechaInicio, dateFechaFin, tipoEvaluacion) => {
+export const getPostReportDesempenioLineChart = async (areaid, categoriaid, dateFechaInicio, dateFechaFin) => {
   try {
     const response = await axios.post(`${BACKEND_URL}reporte`, {
       areaId: areaid,
       categoriaId: categoriaid,
       fechaInicio: dateFechaInicio,
       fechaFin: dateFechaFin,
-      tipoEvaluacion: tipoEvaluacion,
     });
     console.log(response.data);
     return response.data;

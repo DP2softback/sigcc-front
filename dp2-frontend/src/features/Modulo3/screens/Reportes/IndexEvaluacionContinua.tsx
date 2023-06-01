@@ -250,25 +250,37 @@ const IndexEvaluacionContinua = () => {
       return;
     }
 
-    if(!activeRepContinua) {
-      getReportDesempenioLineChart(area.id, categoria.id, fechaInicio, fechaFin, activeRepContinua)
-        .then((data) => {
+    if(activeRepContinua) {
+      const fetchData = async () => {
+        setIsLoading(true);
+        const data = await getPostReportContinuaLineChart(searchParams.area.id, searchParams.categoria.id, searchParams.fechaInicio, searchParams.fechaFin);
+        if(data){
           setDashboard(formatDashboardJson(data));
-        })
-        .catch((error) => {
-          console.error("Hubo un error con la solicitud:", error);
-          setDashboard(defaultDashboard);
-        });
+          console.log("Data: ", data);
+          console.log("Dashboard: ", dashboard);
+        }
+        else{
+          console.log("Error C: ", data);
+        }
+        setIsLoading(false);
+      };
+      fetchData();
     }
     else{
-      getReportContinuaLineChart(area.id, categoria.id, fechaInicio, fechaFin, activeRepContinua)
-        .then((data) => {
+      const fetchData = async () => {
+        setIsLoading(true);
+        const data = await getPostReportDesempenioLineChart(searchParams.area.id, searchParams.categoria.id, searchParams.fechaInicio, searchParams.fechaFin);
+        if(data){
           setDashboard(formatDashboardJson(data));
-        })
-        .catch((error) => {
-          console.error("Hubo un error con la solicitud:", error);
-          setDashboard(defaultDashboard);
-        });
+          console.log("Data: ", data);
+          console.log("Dashboard: ", dashboard);
+        }
+        else{
+          console.log("Error D: ", data);
+        }
+        setIsLoading(false);
+      };
+      fetchData();
     }        
   };
 
