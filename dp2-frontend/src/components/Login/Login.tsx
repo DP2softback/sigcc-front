@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import './Login.css';
 import useRefMounted from '@hooks/useRefMounted';
 import useAuth from '@hooks/useAuth';
+import ImgLogin from '@assets/images/IMG_Login.png';
+import ImgLogo from '@assets/images/output-onlinepngtools.png';
+import { Google } from 'react-bootstrap-icons';
+
 
 const Login = () => {
 
@@ -29,7 +33,7 @@ const Login = () => {
     // Aquí puedes agregar la lógica para autenticar al usuario con los datos proporcionados (username y password)
     console.log('Username:', username);
     console.log('Password:', password);
-    console.log('Remember me:', rememberMe);
+    console.log("tenemos autoteploy :'')");
     try {
       await login(username, password);
 
@@ -47,41 +51,46 @@ const Login = () => {
   };
 
   return ( 
-    <div className="container">
-      <div className="row justify-content-left d-flex justify-content-center">
-        <img src="" alt="Imagen MEDIA PANTALLA" />
-      </div>
-      <div className="row justify-content-right d-flex justify-content-center">
-        <div className="col-sm-6">
-          <h2 className="text-center mb-4">!Hola! Estamos felices de verte de nuevo. Ingrese su informacion de incio de sesion para continuar</h2>
-          <img src="" alt="Imagen LOGO" />
-          <h2 className="text-center mb-4">Iniciar Sesion</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="username" className="form-label">Usuario:</label>
-              <input type="text" id="username" className="form-control" value={username} onChange={handleUsernameChange} />
+    <div className="container-fluid">
+      <div className='row'>
+        <div className="col justify-content-left d-flex justify-content-center">
+          <img className='imgMedio' src={ImgLogin} alt="Imagen MEDIA PANTALLA" />
+        </div>
+        <div className="col justify-content-right d-flex justify-content-center">
+          <div className="col-sm-6">
+          <img src={ImgLogo} alt="Imagen LOGO" />
+            <h2 className="text-center mb-4">!Hola! Estamos felices de verte de nuevo. Ingrese su informacion de incio de sesion para continuar</h2>
+            
+            <h2 className="text-left mb-4">Iniciar sesión</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label htmlFor="username" className="form-label">Usuario:</label>
+                <input type="text" id="username" className="form-control" value={username} onChange={handleUsernameChange} />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="password" className="form-label">Contraseña:</label>
+                <input type="password" id="password" className="form-control" value={password} onChange={handlePasswordChange} />
+              </div>
+              <div className="mb-3 form-check">
+                <input type="checkbox" id="rememberMe" className="form-check-input" checked={rememberMe} onChange={handleRememberMeChange} />
+                <label htmlFor="rememberMe" className="form-check-label">Recordarme</label>
+              </div>
+              <div className="mb-3">
+                <a href="#" className="text-decoration-none">¿Olvidaste tu contraseña?</a>
+              </div>
+              <button type="submit" className="btn btn-primary w-100">Iniciar sesión</button>
+            </form>
+            <div className="text-center mt-4">
+              <label>¿Eres nuevo?</label>
+              <a href="#" className="text-decoration-none"> Crear una cuenta</a>
             </div>
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label">Contraseña:</label>
-              <input type="password" id="password" className="form-control" value={password} onChange={handlePasswordChange} />
+            <div className="text-center mt-3">
+              <label >o Ingresar con:</label>
             </div>
-            <div className="mb-3 form-check">
-              <input type="checkbox" id="rememberMe" className="form-check-input" checked={rememberMe} onChange={handleRememberMeChange} />
-              <label htmlFor="rememberMe" className="form-check-label">Recordarme</label>
-            </div>
-            <div className="mb-3">
-              <a href="#" className="text-decoration-none">¿Olvidaste tu contraseña?</a>
-            </div>
-            <button type="submit" className="btn btn-primary w-100">Iniciar sesión</button>
-          </form>
-          <div className="mt-4">
-            <label>¿Eres nuevo?</label>
-            <a href="#" className="text-decoration-none">Crear una cuenta</a>
+            <button className="btn btn-outline-secondary w-100">
+              <Google></Google>  Continuar con Google
+              </button>
           </div>
-          <div className="mt-3">
-            <label>o Ingresar con:</label>
-          </div>
-          <button className="btn btn-light w-100">Continuar con Google</button>
         </div>
       </div>
     </div>

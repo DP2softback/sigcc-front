@@ -85,6 +85,10 @@ const GestionDeCompetencias = Loader(
   lazy(() => import("@features/Modulo2/Components/GestionDeCompetencias/Read"))
 );
 
+const JobOpportunitiesRelatedToSkills = Loader(
+  lazy(() => import("@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/index"))
+);
+
 const EvaluationTemplateIndex = Loader(
   lazy(() => import("@features/Modulo3/screens/Plantillas/Index"))
 );
@@ -269,6 +273,15 @@ const routes: RouteObject[] = [
           {
             path: "index",
             element: <VisualizacionBrechasEmpleado />,
+          },
+        ],
+      },
+      {
+        path: "jobOpportunitiesRelatedToSkills",
+        children: [
+          {
+            path: "index",
+            element: <JobOpportunitiesRelatedToSkills />,
           },
         ],
       },
