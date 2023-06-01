@@ -87,6 +87,8 @@ const Linechart = ({
     scales: {
       y: {
         beginAtZero: false,
+        min : 1,
+        max : 5,
         ticks: {
           stepSize: 1,
           callback: value => {

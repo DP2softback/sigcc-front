@@ -1,26 +1,52 @@
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import { Form, Button, InputGroup, Accordion, OverlayTrigger, Tooltip, FormCheck, Dropdown  } from 'react-bootstrap';
 import cat from '@features/Modulo3/jsons/Categories';
 import {EVALUATION_TEMPLATE_INDEX} from '@config/paths';
 import { navigateTo } from '@features/Modulo3/utils/functions.jsx';
 import ImageUploader from '@features/Modulo3/components/Images/ImageUploader';
 import "./Plantillas.css"
+import { getCategoriesSubs } from '@features/Modulo3/services/templates';
+import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
+import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 
 const dataIni ={
   categoriaNombre: "",
-  subcategorias: [],
+  subcategory: [],
 }
+
+// const dataIni2 ={
+//   categorias: [
+//     {
+//       categoriaNombre: "",
+//       subcategory:[ {
+//         id: "",
+//         name: ""}
+//       ]
+//     }
+//   ]
+// }
 
 const Create = () => {
 
   const [showAC,setShowAC]=useState(false);
-  const [categorias,setCategorias]= useState(cat);
+  const [categorias,setCategorias]= useState([]);
   const [file, setFile] = useState(null);
   const [inputValues, setInputValues] = useState({});
   const [selectedOption, setSelectedOption] = useState('');
   const [data, setData] = useState(dataIni);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    (async () => {
+      const response = await getCategoriesSubs();
+      if(response) setCategorias(response);
+      console.log("a",response)
+      setIsLoading(false);
+    })();
+  }, []);
 
   const handleInputChange = (categoriaId, value) => {
     setInputValues({ ...inputValues, [categoriaId]: value });
@@ -92,52 +118,101 @@ const Create = () => {
     </Form>
 );
 
+// const handleRadioChange = (categoryName: string) => {
+//   let nuevo={
+//     categoriaNombre: categoryName,
+//     subcategory:[]
+//   }
+//   let lista
+//   if(data) lista=[]  
+//   else lista=data.categorias;
+//   lista.push(nuevo)
+//   setData({
+//     ...data,
+//     categorias: lista,
+//   })
+// }
+
 const handleRadioChange = (categoryName: string) => {
   setData({
     ...data,
     categoriaNombre: categoryName,
-    subcategorias: [],
-  })	
+    subcategory: [],
+  })
 }
 
+
+// const handleSubcategoryRadioChange = (e: any,subcategoria: string, catIndex: number, subId: string) => {
+//   let lista=data.categorias[catIndex].subcategory;
+//   console.log("e",e)
+//   let nuevo={id:subId, name: subcategoria}
+//   if(data.categorias[catIndex].subcategory.find(sub => subcategoria==sub.name)) 
+//     lista=lista.filter(sub => sub.name!=subcategoria)
+//   else lista.push(nuevo)
+//   // e.target.checked ? lista.push(subcategoria) : lista.filter(sub => sub!=subcategoria)
+//   let aux=data.categorias;
+//   aux[catIndex].subcategory=lista
+//   console.log("nuevo",nuevo)
+//   console.log("lista",lista)
+//   console.log("aux",aux)
+//   setData({
+//     ...data,
+//     categorias: aux,
+//   })
+//   console.log("data",data)
+// }
+
 const handleSubcategoryRadioChange = (e: any,subcategoria: string) => {
-  const lista=data.subcategorias
-  e.target.checked ? lista.push(subcategoria) : lista.filter(sub => sub!=subcategoria)
+  let lista=data.subcategory
+  console.log("e",e)
+  if(data.subcategory.find(sub => subcategoria==sub)) 
+    lista=lista.filter(sub => sub!=subcategoria)
+  else lista.push(subcategoria)
+  // e.target.checked ? lista.push(subcategoria) : lista.filter(sub => sub!=subcategoria)
   setData({
     ...data,
-    subcategorias: lista,
+    subcategory: lista,
   })
+  console.log("data",data)
 }
 
 const accordion = (
   <Accordion alwaysOpen={false}>
-    {categorias.map((categoria, index) => (
-      <Accordion.Item eventKey={categoria.id} key={categoria.id}>
+    {categorias && categorias.map((categoria, index) => (
+      <Accordion.Item eventKey={categoria["category-id"]} key={categoria["category-id"]}>
         <Accordion.Header>
           <FormCheck
             name='opciones'
             type={selectedOption === 'Evaluación continua' ? 'radio' : 'checkbox'}
-            label={categoria.name}
+            label={categoria["category-name"]}
+            // label={categoria.name}
             // checked={selectedOptions[categoria.id] === categoria.name}
-            onChange={() => handleRadioChange(categoria.name)}
+            onChange={() => handleRadioChange(categoria["category-name"])}
+            // onChange={() => handleRadioChange(categoria.name)}
           />
         </Accordion.Header>
-
         <Accordion.Body>
           <div className="accordionExpPla-bodyitems">
-            {categoria.subcategories.map((subcategoria, index) => (
+            {/* {categorias && categoria.subcategories.map((subcategoria, index) => ( */}
+            {categorias && categoria.subcategory.map((subcategoria, subIndex) => (
               <FormCheck
-                key={subcategoria}
+                // key={subcategoria}
+                key={subcategoria.id}
                 type="checkbox"
-                label={subcategoria}
-                checked={data.subcategorias.find(sub => subcategoria==sub) ? true : false}
+                // label={subcategoria}
+                label={subcategoria.name}
+                // checked={data.subcategory.find(sub => subcategoria==sub) ? true : false}
+                // checked={data && data.categorias[index].subcategory.find(sub => subcategoria.name==sub) ? true : false}
+                checked={data.subcategory.find(sub => subcategoria.name==sub) ? true : false}
                 // disabled={}
-                onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria)}
+                // onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria)}
+                // onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria.name,index,subcategoria.id)}
+                onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria.name)}
               />
             ))}
           </div>
 
-          <div className="row ingreso-sub mt-32">
+          {/* <div className="row ingreso-sub mt-32">
             <Form.Control
               className="input-sub"
               placeholder="Ingrese una nueva subcategoría"
@@ -153,29 +228,36 @@ const accordion = (
             >
               <span>+</span>
             </Button>
-          </div>
+          </div> */}
         </Accordion.Body>
       </Accordion.Item>
     ))}
-    <div className="text-end mt-32">
+    {/* <div className="text-end mt-32">
       <Button onClick={() => setShowAC(true)}>+ Añadir nueva categoría</Button>
-    </div>
+    </div> */}
   </Accordion>
 );
 
-  const content = (
+  const content = 
+    categorias && categorias.length>0 ? (
     <>
-    {accordion}
-    <div className="text-end mt-32" >
-      <Button>
-        Guardar
-      </Button>
-    </div>
+      {accordion}
+      <div className="text-end mt-32" >
+        <Button>
+          Guardar
+        </Button>
+      </div>
     </>
-  )
+    ) : ( 
+    <NoDataFound/>
+  );
 
   const body = (
-    <Section title={null} content={content} filters={filters} filtersStyle={{width:'100%'}}/>
+    <Section 
+      title={null} 
+      content={isLoading ? <LoadingScreen/> : content} 
+      filters={filters} 
+      filtersStyle={{width:'100%'}}/>
   );
 
   return (
