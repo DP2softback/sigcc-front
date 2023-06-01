@@ -26,7 +26,7 @@ export const getEvaluationsHistory = async (employeeId, nivel? : number, fechaIn
       Authorization: `Token ${SAMPLE_TOKEN}`
     },
     data: {
-      id: employeeId,
+      employee_id: employeeId,
       evaluationType: PERFORMANCE_EVALUATION_TYPE,
       nivel: nivel,
       fecha_inicio: fechaInicio,
