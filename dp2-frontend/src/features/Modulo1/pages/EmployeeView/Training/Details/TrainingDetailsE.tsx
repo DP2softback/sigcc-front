@@ -231,7 +231,7 @@ const TrainingDetails = () => {
                             {/* TRAINING DATA */}
                             <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
                                 <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
-                                    <Link to={`/modulo1/cursoempresa`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
+                                    <Link to={`/modulo1/empleado/cursoempresa`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
                                 </div>
     
                                 <div style={{ display: "flex", alignItems: "center" }}>

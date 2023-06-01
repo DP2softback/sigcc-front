@@ -147,15 +147,16 @@ let sessionsData: SessionObj[] = []
 const TrainingCreate = () => {
     const { trainingID } = useParams();
     /* CAMBIAR CON LA API */
-    const [training, setTraining] = useState<any>([]);
+    // const [training, setTraining] = useState<any>([]);
+    const [training, setTraining] = useState<any>(data);
     const [nombreT, setNombreT] = useState(training.nombre)
     const [descripcionT, setDescripcionT] = useState(training.descripcion)
     /* CAMBIAR CON LA API */
 
     const [sessionCreated, setSessionCreated] = useState<any>(false);
 
-    const [nombreAuxT, setNombreAuxT] = useState(training.nombre)
-    const [descripcionAuxT, setDescripcionAuxT] = useState(training.descripcion)
+    const [nombreAuxT, setNombreAuxT] = useState(data.nombre)
+    const [descripcionAuxT, setDescripcionAuxT] = useState(data.descripcion)
 
     const [classSessions, setClassSessions] = useState<SessionObj[]>([])
     const [addedTopics, setAddedTopics] = useState<TopicObj[]>([])
@@ -351,7 +352,7 @@ const TrainingCreate = () => {
             temas: []
         }
 
-        let fecha_ini = new Date(refTrDateStart.current?.value).toISOString()
+        // 
 
         if (training.tipo === "A") {
             //let fecha_lim = new Date(refTrDateEnd.current?.value).toISOString()
@@ -361,13 +362,14 @@ const TrainingCreate = () => {
                 nombre: refTrName.current?.value,
                 descripcion: refTrDescription.current?.value,
                 //fecha_inicio: fecha_ini,
-                //url_video: refTrVideo.current.getUrl(),
+                url_video: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
                 //fecha_limite: fecha_lim,
                 temas: addedTopics
             }
         }
         else {
             if (training.tipo === "P") {
+                let fecha_ini = new Date(refTrDateStart.current?.value).toISOString()
                 dataSession = {
                     curso_empresa_id: parseInt(trainingID),
                     nombre: refTrName.current?.value,
@@ -379,6 +381,7 @@ const TrainingCreate = () => {
                 }
             }
             else {
+                let fecha_ini = new Date(refTrDateStart.current?.value).toISOString()
                 dataSession = {
                     curso_empresa_id: parseInt(trainingID),
                     nombre: refTrName.current?.value,
@@ -392,7 +395,7 @@ const TrainingCreate = () => {
         }
 
         /* VER SI NO MUERE SIN ESTO */
-        //setClassSessions([...classSessions, dataSession])
+        setClassSessions([...classSessions, dataSession])
 
         console.log(dataSession)
 
@@ -474,17 +477,21 @@ const TrainingCreate = () => {
             })
             .catch(function (error) {
                 console.log(error);
+                setTraining(data)
+                setNombreT(data.nombre)
+                setDescripcionT(data.descripcion)
+                // setClassSessions(data.sesiones)
                 setLoading(false);
 
-                /* BORRAR LUEGO */
-                setTraining(data)
+                // /* BORRAR LUEGO */
+                // setTraining(data)
             });
     }
     /* LOAD TRAINING DETAILS */
 
     useEffect(() => {
         loadTrainingDetails();
-    }, [sessionCreated]);
+    }, []);
 
     const loadCompanies = (id: number) => {
         setLoading2(true);

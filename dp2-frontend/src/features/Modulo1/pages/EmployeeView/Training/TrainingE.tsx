@@ -461,7 +461,7 @@ const TrainingE = () => {
                         :
                         <>
                             {/* SHOW TRAINING DATA */}
-                            {trainingFilter == datos ?
+                            {trainingFilter != datos ?
                                 <div>
                                     <div>
                                         <div>

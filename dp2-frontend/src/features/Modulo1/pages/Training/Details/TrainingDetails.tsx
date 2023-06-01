@@ -22,7 +22,7 @@ type Employee = {
 
 const datos = {
     id: 1,
-    nombre: "Seguridad de Información",
+    nombre: "Seguridad de Información 1",
     url_foto: 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
     descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
     cantidad_empleados: 10,

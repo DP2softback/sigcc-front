@@ -390,13 +390,14 @@ const Training = () => {
                 setLoading(false);
             })
             .catch(function (error) {
+                setTrainingFilter(datos)
                 setLoading(false);
                 console.log(error);
             });
     }
 
     useEffect(() => {
-        //loadTrainings();    
+        loadTrainings();    
     }, []);
 
     return (
@@ -461,7 +462,7 @@ const Training = () => {
                         </div>
                         
                         {/* SHOW TRAINING DATA */}
-                        {trainingFilter == datos ?
+                        {trainingFilter != datos ?
                             <div>
                                 <div>
                                     <div>
