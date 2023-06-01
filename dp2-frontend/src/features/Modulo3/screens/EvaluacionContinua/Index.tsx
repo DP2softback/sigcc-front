@@ -1,15 +1,16 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
 import { CONTINUOS_EVALUATION_INDEX, CONTINUOS_EVALUATION_HISTORY } from '@config/paths';
-import { navigateTo, processData, formatNumber } from '@features/Modulo3/utils/functions';
-import { noDataFound } from '@features/Modulo3/utils/constants';
+import { navigateTo, formatDashboardJson, formatNumber } from '@features/Modulo3/utils/functions';
+import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import { Search } from 'react-bootstrap-icons'
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import Employee from '@features/Modulo3/components/Cards/Employee/Employee';
 import Linechart from '@features/Modulo3/components/Charts/Linechart/Linechart';
-import { loadingScreen, DAYS_UNIT } from '@features/Modulo3/utils/constants';
+import { DAYS_UNIT } from '@features/Modulo3/utils/constants';
+import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import { getEmployees, getEmployeesEvaluationDashboard } from '@features/Modulo3/services/continuousEvaluation';
 import { useEffect, useState } from 'react';
 
@@ -26,8 +27,8 @@ const Index = () => {
       const response = await getEmployees(5);
       if(response) setEmployees(response);
 
-      const responseDashboard = await getEmployeesEvaluationDashboard();
-      if(responseDashboard) setDashboard(processData(responseDashboard));
+      const responseDashboard = await getEmployeesEvaluationDashboard(5);
+      if(responseDashboard) setDashboard(formatDashboardJson(responseDashboard));
 
       setIsLoading(false);
     })();
@@ -90,7 +91,7 @@ const Index = () => {
     </div>
   );
 
-  const restEmployees =
+  const restEmployees = (
     employees &&
     employees.slice(1).map((employee) => {
       return (
@@ -113,7 +114,7 @@ const Index = () => {
           />
         </div>
       );
-    });
+  }));
 
   const chart = (
     <div className="col-md-8 mb-32px">
@@ -121,7 +122,7 @@ const Index = () => {
         <Linechart
           title={'Evaluaciones continuas'}
           labelsX={dashboard.months}
-          dataInfoprops={dashboard.valuesPerCategory}/>
+          dataInfoprops={dashboard.data}/>
       )}
     </div>
   );
@@ -134,13 +135,13 @@ const Index = () => {
         {restEmployees}
       </>
     ) : (
-      noDataFound
+      <NoDataFound/>
     );
 
   const body = (
     <Section
       title={"Trabajadores"}
-      content={isLoading ? loadingScreen : content}
+      content={isLoading ? <LoadingScreen/> : content}
       filters={filters}
     />
   );

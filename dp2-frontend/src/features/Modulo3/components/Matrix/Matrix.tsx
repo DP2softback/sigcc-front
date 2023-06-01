@@ -1,5 +1,5 @@
 import "./Matrix.css";
-import RadioButton from "../RadioButton/RadioButton";
+import RadioButton from "@features/Modulo3/components/Shared/RadioButton/RadioButton";
 import { useEffect, useState } from "react";
 
 type MatrixProps = {
