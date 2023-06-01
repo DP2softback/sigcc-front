@@ -1,10 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './learning-path.css';
-import '../../content/common.css';
+import '../../../content/common.css';
 import axiosInt from '@config/axios';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import Sidebar from '@components/Sidebar';
-import sidebarItems from '@utils/sidebarItems'
+import sidebarItems from '@features/Modulo1/utils/sidebarItemsE'
 import PictureUpload from '@features/Modulo1/components/PictureUpload';
 import Rate from '@features/Modulo1/components/Rate';
 import { ThreeDotsVertical, People, Clock } from 'react-bootstrap-icons'
@@ -99,7 +99,7 @@ function LearningPath (props: any)
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'>
+            <Sidebar items={sidebarItems} active='/modulo1/empleado/rutadeaprendizaje'>
                 {
                     loading ?
                         <>

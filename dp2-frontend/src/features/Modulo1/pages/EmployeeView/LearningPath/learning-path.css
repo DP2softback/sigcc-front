@@ -1,0 +1,22 @@
+.lp-thumb {
+    height: 4rem;
+    width: 4rem;
+    object-fit: cover;
+}
+
+.lp-description-wrap {
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    text-align: justify;
+    overflow: hidden;
+}
+
+.lp-header {
+    background-color: var(--bs-card-bg);
+}
+.lp-footer {
+    background-color: var(--bs-card-bg);
+    border: 0;
+    padding-top: 0;
+}
