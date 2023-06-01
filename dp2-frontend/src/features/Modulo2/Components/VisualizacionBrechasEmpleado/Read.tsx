@@ -4,13 +4,19 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import BarChart1 from './Barchart1';
 import './Read.css'
+import { getCompetencesTypes, getEmployeeCompetences } from '@features/Modulo2/services/EmployeeGapsServices';
+
 const Read = () => {
+
     const [palabrasClave, setPalabrasClave] = useState('');
     const [tipoOrden, setTipoOrden] = useState('ascendente');
     const [busquedaRealizada, setBusquedaRealizada] = useState(false);
-    const [tipoCompetencia, setTipoCompetencia] = useState('');
+    const [tipoCompetenciaString, setTipoCompetenciaString] = useState('');
+    const [tipoCompetenciaSelected, setTipoCompetenciaSelected] = useState(null);
+    const [tiposCompetencia, setTiposCompetencia] = useState(null);
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
-    const hardcode = [
+    const [employeeCompetences, setEmployeeCompetences] = useState(null);
+    const [competenciasData, setCompetenciasData] = useState([
         { nombre: 'Programación en Java', tipo: 'Técnico', nivelActual: 'Bajo', nivelRequerido: 'Medio', porcAdecuacion: 0.45 },
         { nombre: 'Liderazgo', tipo: 'Habilidades blandas', nivelActual: 'Alto', nivelRequerido: 'Alto', porcAdecuacion: 1.00 },
         { nombre: 'Programación modular', tipo: 'Conocimiento', nivelActual: 'Medio', nivelRequerido: 'Alto', porcAdecuacion: 0.86 },
@@ -30,7 +36,42 @@ const Read = () => {
         { nombre: 'Empatía', tipo: 'Conocimiento', nivelActual: 'Alto', nivelRequerido: 'Alto', porcAdecuacion: 1.00 },
         { nombre: 'Toma de Decisiones', tipo: 'Técnico', nivelActual: 'Medio', nivelRequerido: 'Medio', porcAdecuacion: 1.00 },
         { nombre: 'Trabajo Bajo Presión', tipo: 'Habilidades blandas', nivelActual: 'Bajo', nivelRequerido: 'Alto', porcAdecuacion: 0.20 },
-    ];
+    ]);
+
+    React.useEffect(() => {
+        getCompetencesTypes()
+        .then(function (response){
+            let temp = {
+                id: -1,
+                name: "Tipos de competencia"
+            }
+            let temp2 = {
+                id: 0,
+                name: "Todas"
+            }
+            let tipoCom = [];
+            tipoCom.push(temp);
+            tipoCom.push(temp2);
+            response.forEach(res => tipoCom.push(res));
+            setTipoCompetenciaString(temp.name);
+            setTiposCompetencia(tipoCom);
+            const obj = {
+                idCompetencia: 0,
+                palabraClave: "",
+                idTipoCompetencia: 0,
+                activo: 1,
+                idEmpleado: 3
+            }
+            getEmployeeCompetences(obj)
+            .then(function (response){
+                console.log(response);
+                setEmployeeCompetences(response);
+            })
+            .catch(function(error){
+                console.log(error);
+            })
+        })
+    }, []);
 
     //para el grafico
     const optionsBar = {
@@ -52,29 +93,9 @@ const Read = () => {
         ],
     };
 
-    const [competenciasData, setCompetenciasData] = useState(hardcode);
-
-
-    const filtrarCompetencias = () => {
-        let competenciasFiltradas = competenciasData;
-
-        if (tipoCompetencia) {
-            competenciasFiltradas = competenciasFiltradas.filter(competencia => competencia.tipo === tipoCompetencia);
-        }
-
-        if (palabrasClave) {
-            const palabrasClaveLower = palabrasClave.toLowerCase();
-            competenciasFiltradas = competenciasFiltradas.filter(competencia =>
-                competencia.nombre.toLowerCase().includes(palabrasClaveLower) ||
-                competencia.nivelActual.toLowerCase().includes(palabrasClaveLower) ||
-                competencia.nivelRequerido.toLowerCase().includes(palabrasClaveLower)
-            );
-        }
-        return competenciasFiltradas;
-    };
-
     const limpiarFiltros = () => {
-        setTipoCompetencia('');
+        setPalabrasClave('');
+        setTipoCompetenciaString('');
     };
 
     const handleOrdenarPorCampo = (campo) => {
@@ -86,71 +107,27 @@ const Read = () => {
         }
     };
 
-    const datosFiltradosYOrdenados = filtrarCompetencias().sort((a, b) => {
-        if (a[campoOrdenamiento] < b[campoOrdenamiento]) {
-            return tipoOrden === 'ascendente' ? -1 : 1;
-        }
-        if (a[campoOrdenamiento] > b[campoOrdenamiento]) {
-            return tipoOrden === 'ascendente' ? 1 : -1;
-        }
-        return 0;
-    });
+    const handleTipoCompetencias = (string) => {
+        setTipoCompetenciaString(string);
+        console.log(tiposCompetencia.filter(competencia => competencia.name === string))
+        setTipoCompetenciaSelected(tiposCompetencia.filter(competencia => competencia.name === string));
+    }
 
-    const renderTablaBrechas = () => {
-        const competenciasFiltradas = filtrarCompetencias();
-
-        if (busquedaRealizada && competenciasFiltradas.length === 0) {
-            return <p>No se encontraron resultados.</p>;
+    const handleSearch = () => {
+        console.log(tipoCompetenciaSelected[0])
+        console.log(tipoCompetenciaSelected[0].id)
+        const obj = {
+            idCompetencia: 0,
+            palabraClave: palabrasClave,
+            idTipoCompetencia: tipoCompetenciaSelected[0].id,
+            activo: 1,
+            idEmpleado: 3
         }
-        return (
-            <Table striped bordered className='tableGapsEmployees'>
-                <thead>
-                    <tr>
-                        <th onClick={() => handleOrdenarPorCampo('nombre')}>
-                            Nombre
-                            {campoOrdenamiento === 'nombre' && (
-                                <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
-                            )}
-                        </th>
-                        <th onClick={() => handleOrdenarPorCampo('tipo')}>
-                            Tipo
-                            {campoOrdenamiento === 'tipo' && (
-                                <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
-                            )}
-                        </th>
-                        <th onClick={() => handleOrdenarPorCampo('nivelActual')}>
-                            Nivel actual
-                            {campoOrdenamiento === 'nivelActual' && (
-                                <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
-                            )}
-                        </th>
-                        <th onClick={() => handleOrdenarPorCampo('nivelRequerido')}>
-                            Nivel requerido
-                            {campoOrdenamiento === 'nivelRequerido' && (
-                                <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
-                            )}
-                        </th>
-                        <th onClick={() => handleOrdenarPorCampo('porcAdecuacion')}>
-                            % de adecuacion
-                            {campoOrdenamiento === 'porcAdecuacion' && (
-                                <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
-                            )}
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {datosFiltradosYOrdenados.map((competencia, index) => (
-                        <tr key={index} className={index % 0 === 0 ? "evenRow" : "oddRow"}>
-                            <td>{competencia.nombre}</td>
-                            <td>{competencia.tipo}</td>
-                            <td>{competencia.nivelActual}</td>
-                            <td>{competencia.nivelRequerido}</td>
-                            <td>{competencia.porcAdecuacion * 100 + "%"}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
-        )
+        getEmployeeCompetences(obj)
+        .then(function (response){
+            console.log(response);
+            setEmployeeCompetences(response);
+        })
     }
 
     return (
@@ -170,11 +147,14 @@ const Read = () => {
                     </Form.Group>
 
                     <Form.Group controlId="filtroTipoCompetencia" className="col-3">
-                        <select className="form-select" value={tipoCompetencia} onChange={(e) => setTipoCompetencia(e.target.value)}>
-                            <option hidden>Tipo de competencia</option>
-                            <option value="Técnico">Técnico</option>
-                            <option value="Habilidades blandas">Habilidades blandas</option>
-                            <option value="Conocimiento">Conocimiento</option>
+                        <select 
+                            className="form-select" 
+                            value={tipoCompetenciaString} 
+                            onChange={(e) => handleTipoCompetencias(e.target.value)}
+                        >
+                            {tiposCompetencia && tiposCompetencia.map((tipoCom, index) => (
+                                <option value={tipoCom.name} hidden={tipoCom.id === -1}>{tipoCom.name}</option>
+                            ))}
                         </select>
                     </Form.Group>
 
@@ -182,7 +162,7 @@ const Read = () => {
                         <Button variant="outline-secondary" className="me-2" onClick={limpiarFiltros}>
                             Limpiar Filtros
                         </Button>
-                        <Button variant="primary">Buscar</Button>
+                        <Button variant="primary" onClick={handleSearch}>Buscar</Button>
                     </div>
                 </Form>
             </div>
@@ -190,24 +170,67 @@ const Read = () => {
             <div className='row align-items-start'>
                 <div className='col-sm-12 col-md-6'>
                     <div className="table-container">
-                    {renderTablaBrechas()}
-
+                    {employeeCompetences && employeeCompetences.length === 0 ? <p>No se encontraron resultados.</p> : 
+                        <Table striped bordered className='tableGapsEmployees'>
+                            <thead>
+                                <tr>
+                                    <th onClick={() => handleOrdenarPorCampo('nombre')}>
+                                        Nombre
+                                        {campoOrdenamiento === 'nombre' && (
+                                            <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
+                                        )}
+                                    </th>
+                                    <th onClick={() => handleOrdenarPorCampo('tipo')}>
+                                        Tipo
+                                        {campoOrdenamiento === 'tipo' && (
+                                            <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
+                                        )}
+                                    </th>
+                                    <th onClick={() => handleOrdenarPorCampo('nivelActual')}>
+                                        Nivel actual
+                                        {campoOrdenamiento === 'nivelActual' && (
+                                            <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
+                                        )}
+                                    </th>
+                                    <th onClick={() => handleOrdenarPorCampo('nivelRequerido')}>
+                                        Nivel requerido
+                                        {campoOrdenamiento === 'nivelRequerido' && (
+                                            <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
+                                        )}
+                                    </th>
+                                    <th onClick={() => handleOrdenarPorCampo('porcAdecuacion')}>
+                                        % de adecuacion
+                                        {campoOrdenamiento === 'porcAdecuacion' && (
+                                            <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
+                                        )}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {employeeCompetences && employeeCompetences.map((competence, index) => (
+                                    <tr key={index} className={index % 0 === 0 ? "evenRow" : "oddRow"}>
+                                        <td>{competence.competence__name}</td>
+                                        <td>{competence.competence__type__name}</td>
+                                        <td>{competence.levelCurrent}</td>
+                                        <td>{competence.levelRequired}</td>
+                                        <td>{Math.round(competence.likeness) + "%"}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    }
                     </div>
-                   
                 </div>
-
                 <div className='col-md-6'>
                     <div className='chart-container'>
-                    <BarChart1></BarChart1>
-
+                        <BarChart1/>
                     </div>
                     
                 </div>
             </div>
 
 
-        </div>
-
+        </div>               
     )
 }
 
