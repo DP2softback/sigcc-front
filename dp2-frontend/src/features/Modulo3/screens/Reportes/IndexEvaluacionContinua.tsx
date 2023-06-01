@@ -8,8 +8,10 @@ import { Form, Button, Dropdown} from 'react-bootstrap';
 import { jsPDF } from 'jspdf';
 import domtoimage from 'dom-to-image';
 import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@config/paths';
-import { getAreas, getCategoriasContinua, getCategoriasDesempenio, getEmployeesEvaluationDashboard } from '@features/Modulo3/services/reports';
+import { getAreas, getCategoriasContinua, getCategoriasDesempenio, getEmployeesEvaluationDashboard, getReportDesempenioLineChart, getReportContinuaLineChart, getPostAreas, getPostCategoriasContinua, getPostCategoriasDesempenio, getPostReportContinuaLineChart, getPostReportDesempenioLineChart } from '@features/Modulo3/services/reports';
 import { formatDashboardJson } from '@features/Modulo3/utils/functions';
+import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
+import { set } from 'zod';
 
 const dataAreas =     [
   {
@@ -111,22 +113,54 @@ const IndexEvaluacionContinua = () => {
   const [categoriasDesempenio, setCategoriasDesempenio] = useState(dataCategoriasDesempenio); // Cuando tengamos las apis dejarlo como array vacío
 
   const [dashboard, setDashboard] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [defaultDashboard, setDefaultDashboard] = useState(
+    {
+      data: [
+        {description: "", values: 0},
+        {description: "", values: 0},
+        {description: "", values: 0},
+        {description: "", values: 0},
+        {description: "", values: 0},
+        {description: "", values: 0},
+        {description: "", values: 0},
+        {description: "", values: 0},
+        {description: "", values: 0},
+      ],
+      months: ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]
+    }
+  );
 
   useEffect(() => {
-    // getAreas().then(data => setAreas(data));
-    // getCategoriasContinua().then(data => setCategoriasContinua(data));
-    // getCategoriasDesempenio().then(data => setCategoriasContinua(data));
-    
-    // Post funcionando como get
-    getEmployeesEvaluationDashboard(5)
-    .then(data => {
-      setDashboard(formatDashboardJson(data));
-      console.log(dashboard)
-    })
-    .catch(error => {
-      console.error(error);
-    });
+    // Invocaciones provisionales:
+    const fetchData = async () => {
+      setIsLoading(true);
 
+      // const areasData = await getPostAreas();
+      // setAreas(areasData);
+      
+      // const categoriasContinuaData = await getPostCategoriasContinua();
+      // setCategoriasContinua(categoriasContinuaData);
+
+      // const categoriasDesempenioData = await getPostCategoriasDesempenio();
+      // setCategoriasDesempenio(categoriasDesempenioData);
+
+      setDashboard(defaultDashboard);
+
+      // const data = await getEmployeesEvaluationDashboard(5);
+      // if(data){
+      //   setDashboard(formatDashboardJson(data));
+      //   console.log("Data: ", data);
+      //   console.log("Dashboard: ", dashboard);
+      // }
+      // else{
+      //   console.log("Error: ", data);
+      // }
+      setIsLoading(false);
+    };
+
+    fetchData();
   }, []);
 
   const chart = (
@@ -134,14 +168,18 @@ const IndexEvaluacionContinua = () => {
       id="chart-container"
       className="col-md-12 mb-32px"
       style={{ paddingBottom: '12px', marginBottom: '32px' }}
-    >
-          
-    {/* <Linechart
-        title={activeRepContinua ? 'Evaluaciones Continuas - Todas las áreas' : 'Evaluaciones de Desempeño - Todas las áreas'}
-        dataInfoprops={dashboard.data}
-        labelsX={dashboard.months}
-      /> */}
-    
+    >          
+      {dashboard && (
+        <Linechart
+          title={
+            activeRepContinua
+              ? `Evaluaciones Continuas - ${searchParams.area.area}`
+              : `Evaluaciones de Desempeño - ${searchParams.area.area}`
+          }
+          dataInfoprops={dashboard.data}
+          labelsX={dashboard.months}
+        />
+      )}
     </div>
   );
   
@@ -183,11 +221,55 @@ const IndexEvaluacionContinua = () => {
 
   const handleButtonModeClick = () => {
     setActiveRepContinua(!activeRepContinua);
+    setSearchParams(prevState => ({
+      ...prevState,
+      area: {id:0 , area:"Todas las áreas"},
+      categoria: {id:0, categoria:"Todas las categorías"},
+    }));
   };
 
   const handleSearchClick = () => {
-    console.log('Buscando...');
-    console.log(searchParams);
+    const { area, categoria, fechaInicio, fechaFin } = searchParams;
+    
+    if(fechaInicio === null || fechaFin === null) {
+      alert("Debe seleccionar un rango de fechas");
+      return;
+    }
+
+    if(fechaInicio > fechaFin) {
+      alert("La fecha de inicio no puede ser mayor a la fecha de fin");
+      return;
+    }
+
+    if(searchParams.area.id === 0) {
+      alert("Debe seleccionar un área");
+      return;
+    }
+    if(searchParams.categoria.id === 0) {
+      alert("Debe seleccionar una categoría");
+      return;
+    }
+
+    if(!activeRepContinua) {
+      getReportDesempenioLineChart(area.id, categoria.id, fechaInicio, fechaFin, activeRepContinua)
+        .then((data) => {
+          setDashboard(formatDashboardJson(data));
+        })
+        .catch((error) => {
+          console.error("Hubo un error con la solicitud:", error);
+          setDashboard(defaultDashboard);
+        });
+    }
+    else{
+      getReportContinuaLineChart(area.id, categoria.id, fechaInicio, fechaFin, activeRepContinua)
+        .then((data) => {
+          setDashboard(formatDashboardJson(data));
+        })
+        .catch((error) => {
+          console.error("Hubo un error con la solicitud:", error);
+          setDashboard(defaultDashboard);
+        });
+    }        
   };
 
   const handleButtonExportClick = async () => {
@@ -259,9 +341,11 @@ const IndexEvaluacionContinua = () => {
   );
   
   const body = (
-    <Section title={(activeRepContinua)?"Evaluaciones Continuas":"Evaluaciones de Desempeño"} content={content} filters={filters} 
-    titleStyle={{width: "100%", flexDirection:"column"}}
-    contentStyle={{width: "100%", flexDirection:"column", height: "100%"}}  
+    <Section title={(activeRepContinua)?"Evaluaciones Continuas":"Evaluaciones de Desempeño"} 
+      content={isLoading ? <LoadingScreen/> : content}
+      filters={filters} 
+      titleStyle={{width: "100%", flexDirection:"column"}}
+      contentStyle={{width: "100%", flexDirection:"column", height: "100%"}}  
     />
   )
   
