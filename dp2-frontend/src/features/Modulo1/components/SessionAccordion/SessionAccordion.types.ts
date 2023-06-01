@@ -1,21 +1,20 @@
-export type Topics = {
-    id: number;
+export type TopicObj = {
+    id?: number;
     nombre: string;
 }
 
-export type Session = {
+export type SessionObj = {
     curso_empresa_id?: number;
     nombre: string;
     descripcion: string;
-    fecha_inicio: string;
-    fecha_limite?: string;
+    fecha_inicio?: string;
     ubicacion?: string;
     aforo_maximo?: number;
     url_video?: string;
-    temas: Topics[];
+    temas: TopicObj[];
 }
 
 export type Props = {
-    sessions: Session[],
+    sessions: SessionObj[],
     trainingType: string,
 }

@@ -297,6 +297,8 @@ const Training = () => {
     const refTrName = useRef<HTMLInputElement>(null);
     const refTrDescription = useRef<HTMLTextAreaElement>(null);
     const refTrTypes = useRef<HTMLSelectElement>(null);
+    const refTrFree = useRef<any>(null);
+    const refTrPhoto = useRef(null);
     /* TRAINING DETAIL INPUTS */
 
     /* TRAINING FILTERS */
@@ -344,30 +346,30 @@ const Training = () => {
 
     /* TRAINING FILTERS */
 
+    const switchRefTr = () => {
+        refTrFree.current = !refTrFree.current
+    }
+
     const createTraining = () => {
         let tipo: string
 
-        if(refTrTypes.current?.value === "Virtual Asincrono"){
-            tipo = "A"
-        }
-        else if(refTrTypes.current?.value === "Virtual Sincrono"){
-            tipo = "S"
-        }
-        else{
-            tipo = "P"
-        }
+        refTrTypes.current?.value === "Virtual Asincrono" ? 
+            (tipo = "A") : refTrTypes.current?.value === "Virtual Sincrono" ? 
+                (tipo = "S") : (tipo = "P")
 
         const data = {
             nombre: refTrName.current?.value,
             descripcion: refTrDescription.current?.value,
             tipo: tipo,
+            es_libre: !refTrFree.current,
+            url_foto: refTrPhoto.current.getUrl(),
         }
 
         console.log(data)
 
         /* RUTA HARDCODEADA*/
-        //navigate(`/modulo1/cursoempresa/creacion/1`);
-
+        navigate(`/modulo1/cursoempresa/creacion/1`);
+        /*
         axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/course_company_course/', data)
             .then(function (response) {
                 navigate(`/modulo1/cursoempresa/creacion/${response.data.id}`);
@@ -375,6 +377,7 @@ const Training = () => {
             .catch(function (error) {
                 console.log(error);
             });
+            */
     }
 
     const loadTrainings = () => {
@@ -393,7 +396,7 @@ const Training = () => {
     }
 
     useEffect(() => {
-        loadTrainings();    
+        //loadTrainings();    
     }, []);
 
     return (
@@ -744,20 +747,24 @@ const Training = () => {
                                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div className="modal-body">
-                                        <div className="mb-3">
-                                            <label className="form-label">Nombre</label>
-                                            <input ref={refTrName} type="text" className="form-control" />
-                                        </div>
                                         <div className='row mb-3'>
                                             <div className='col' style={{ flex: '0 0 8rem' }}>
-                                                <PictureUpload />
+                                                <PictureUpload ref={refTrPhoto}/>
                                             </div>
                                             <div className='col'>
                                                 <div className="mb-3">
+                                                    <label className="form-label">Nombre</label>
+                                                    <input ref={refTrName} type="text" className="form-control" />
+                                                </div>
+                                                <div >
                                                     <label className="form-label">Descripción</label>
                                                     <textarea ref={refTrDescription} className="form-control" />
                                                 </div>
-                                                <div>
+                                            </div>
+                                        </div>
+                                        <div className='row'>
+                                            <div className='col'>
+                                                <div className="mb-3">
                                                     <label className="form-label">Modalidad</label>
                                                     <select className="form-select" ref={refTrTypes}>
                                                         <option hidden>Seleccionar</option>
@@ -767,6 +774,10 @@ const Training = () => {
                                                             )
                                                         })}
                                                     </select>
+                                                </div>
+                                                <div className="form-check form-switch">
+                                                    <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={switchRefTr} ref={refTrFree}/>
+                                                    <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Libre disponibilidad</label>
                                                 </div>
                                             </div>
                                         </div>

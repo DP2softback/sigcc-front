@@ -8,6 +8,7 @@ import { ArrowLeftCircleFill, Check, PlusCircle, Trash, People, PencilFill } fro
 import SupplierCard from '@features/Modulo1/components/SupplierCard/SupplierCard';
 import '../../../basic.css';
 import '../training.css';
+import VideoUpload from '@features/Modulo1/components/VideoUpload';
 
 const data = {
     id: 1,
@@ -36,8 +37,8 @@ type SessionObj = {
     curso_empresa_id?: number;
     nombre: string;
     descripcion: string;
-    fecha_inicio: string;
-    fecha_limite?: string;
+    fecha_inicio?: string;
+    //fecha_limite?: string;
     ubicacion?: string;
     aforo_maximo?: number;
     url_video?: string;
@@ -209,8 +210,9 @@ const TrainingCreate = () => {
     const refTrLocationLink = useRef<HTMLInputElement>(null);
     const refTrTopics = useRef<HTMLInputElement>(null);
     const refTrDateStart = useRef<HTMLInputElement>(null);
-    const refTrDateEnd = useRef<HTMLInputElement>(null);
+    //const refTrDateEnd = useRef<HTMLInputElement>(null);
     const refTrCapacity = useRef<HTMLInputElement>(null);
+    const refTrVideo = useRef(null);
     /* TRAINING SESSION DETAIL INPUTS */
 
     /* MANAGEMENT TOPICS */
@@ -230,7 +232,7 @@ const TrainingCreate = () => {
         }
     }
 
-    const deleteTopic = (index) => {
+    const deleteTopic = (index: number) => {
         console.log(index)
 
         let newDataTopics = [...addedTopics]
@@ -247,7 +249,7 @@ const TrainingCreate = () => {
         setAddedTopics(newDataTopics)
     }
 
-    const getTopics = (index, element) => {
+    const getTopics = (index: number, element: TopicObj) => {
         return (
             <div className='row'>
                 <div className='col-1'>
@@ -269,21 +271,21 @@ const TrainingCreate = () => {
         let dataSession: SessionObj = {
             nombre: '',
             descripcion: '',
-            fecha_inicio: '',
             temas: []
         }
 
         let fecha_ini = new Date(refTrDateStart.current?.value).toISOString()
         
         if(training.tipo === "A"){
-            let fecha_lim = new Date(refTrDateEnd.current?.value).toISOString()
+            //let fecha_lim = new Date(refTrDateEnd.current?.value).toISOString()
 
             dataSession = {
                 curso_empresa_id: parseInt(trainingID),
                 nombre: refTrName.current?.value,
                 descripcion: refTrDescription.current?.value,
-                fecha_inicio: fecha_ini,
-                fecha_limite: fecha_lim,
+                //fecha_inicio: fecha_ini,
+                //url_video: refTrVideo.current.getUrl(),
+                //fecha_limite: fecha_lim,
                 temas: addedTopics
             }
         }
@@ -312,7 +314,8 @@ const TrainingCreate = () => {
             }
         }
         
-        setClassSessions([...classSessions, dataSession])
+        /* VER SI NO MUERE SIN ESTO */
+        //setClassSessions([...classSessions, dataSession])
         
         console.log(dataSession)
 
@@ -320,21 +323,22 @@ const TrainingCreate = () => {
 
         refTrName.current.value = "";
         refTrDescription.current.value = "";
-        refTrDateStart.current.value = "";
         setAddedTopics([]);
 
         if(training.tipo === "A"){
-            refTrDateEnd.current.value = "";
+            //refTrDateEnd.current.value = "";
+            refTrVideo.current = null;
         }
         else {
+            refTrDateStart.current.value = "";
+            refTrCapacity.current.value = "";
+
             if(training.tipo === "P"){
                 refTrLocation.current.value = "";
             }
             else{
                 refTrLocationLink.current.value = "";
-            }
-            
-            refTrCapacity.current.value = "";
+            }            
         }
         
         axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/sesion_course_company/', dataSession)
@@ -383,9 +387,6 @@ const TrainingCreate = () => {
         axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/course_company_course/${trainingID}`)
             .then(function (response)
             {
-                console.log(response.data)
-                console.log(response.data.sesiones.length)
-
                 setTraining(response.data);
                 setNombreT(response.data.nombre)
                 setDescripcionT(response.data.descripcion)
@@ -397,6 +398,9 @@ const TrainingCreate = () => {
             {
                 console.log(error);
                 setLoading(false);
+
+                /* BORRAR LUEGO */
+                setTraining(data)
             });
     }
     /* LOAD TRAINING DETAILS */
@@ -595,16 +599,22 @@ const TrainingCreate = () => {
 
                                     {
                                         training.tipo === "A" ?
-                                        (<div className='row mb-3'>
-                                            <div className='col'>
-                                                <label className="form-label">Fecha de inicio</label>
+                                        (<>
+                                            {/*
+                                            <div className='mb-3'>
+                                                <label className="form-label">Fecha de la sesión</label>
                                                 <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
                                             </div>
                                             <div className='col'>
                                                 <label className="form-label">Fecha limite</label>
                                                 <input className='form-control' type='date' id='end_date_creation' ref={refTrDateEnd} />
                                             </div>
-                                        </div>)
+                                            */}
+                                            <div className='mb-3'>
+                                                <label className="form-label">Video de la sesión</label>
+                                                <VideoUpload ref={refTrVideo}/>
+                                            </div>
+                                        </>)
                                         :
                                         (<>
                                             <div className='row mb-3'>
@@ -633,8 +643,11 @@ const TrainingCreate = () => {
                                                     </>)
                                                     :
                                                     (<input ref={refTrLocationLink} type="text" className="form-control" />)
-                                                }
-                                                    
+                                                } 
+                                            </div>
+                                            <div className='mb-3'>
+                                                <label className="form-label">Video de la sesión</label>
+                                                <VideoUpload ref={refTrVideo}/>
                                             </div>
                                         </>)
                                     }
