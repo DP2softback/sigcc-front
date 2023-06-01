@@ -1,6 +1,6 @@
 import axiosInt from '@config/axios';
 import Sidebar from '@components/Sidebar'
-import sidebarItems from '@features/Modulo1/utils/sidebarItems'
+import sidebarItems from '@utils/sidebarItems'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { People, ArrowLeftCircle, ArrowLeftCircleFill, ArrowRightCircle } from 'react-bootstrap-icons'
@@ -28,7 +28,7 @@ const datos = {
     fecha_creacion: "06/05/2023",
     fecha_primera_sesion: "06/05/2023",
     cantidad_empleados: 10,
-    tipo: "A",
+    tipo: "P",
     sesiones: [
         {
             id: 1,
@@ -44,9 +44,9 @@ const datos = {
             ],
             nombre: "Sesión 1",
             descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
-            //fecha_inicio: "2023-05-10T00:00:00-05:00",
-            url_video: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
-            //ubicacion: "Auditorio tercer piso",
+            fecha_inicio: "2023-05-10T00:00:00-05:00",
+            //url_video: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
+            ubicacion: "Auditorio tercer piso",
             aforo_maximo: 20
         },
         {
@@ -59,13 +59,36 @@ const datos = {
                 {
                     id: 2,
                     nombre: "Tema 2 Sesión 2"
+                },
+                {
+                    id: 3,
+                    nombre: "Tema Sesión 2"
+                },
+                {
+                    id: 4,
+                    nombre: "Tema 2 Sesión 2"
+                },
+                {
+                    id: 1,
+                    nombre: "Tema Sesión 2"
+                },
+                {
+                    id: 2,
+                    nombre: "Tema 2 Sesión 2"
+                },
+                {
+                    id: 3,
+                    nombre: "Tema Sesión 2"
+                },
+                {
+                    id: 4,
+                    nombre: "Tema 2 Sesión 2"
                 }
             ],
             nombre: "Sesión 2",
-            descripcion: "asdasd",
+            descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
             fecha_inicio: "2023-05-10T00:00:00-05:00",
-            //fecha_limite: "2023-09-10T00:00:00-05:00",
-            url_video: null,
+            //url_video: null,
             ubicacion: "Auditorio tercer piso",
             aforo_maximo: 20
         }

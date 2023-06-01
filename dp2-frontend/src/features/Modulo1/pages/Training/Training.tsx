@@ -1,5 +1,5 @@
 import Sidebar from '@components/Sidebar'
-import sidebarItems from '@features/Modulo1/utils/sidebarItems'
+import sidebarItems from '@utils/sidebarItems'
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import TrainingCard from '@features/Modulo1/components/Training/TrainingCard';
@@ -269,7 +269,7 @@ const Training = () => {
     const [typeTraining, setTypeTraining] = useState("Todos")
     var filtered;
     var mostrar = 6;
-    var mostrarF = 9;
+    var mostrarF = 6;
 
     const [pageF, setPageF] = useState(1)
     const totalPagesF = Math.ceil(finishedCourse.length / mostrar);
@@ -682,7 +682,7 @@ const Training = () => {
                                                 }
                                             </div>
 
-                                            {trainingFilter.length >= mostrarF &&
+                                            {trainingFilter.length > mostrarF &&
                                                 <div>
                                                     <div>
                                                         <Pagination

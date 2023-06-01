@@ -1,11 +1,12 @@
 import Sidebar from '@components/Sidebar'
-import sidebarItems from '@features/Modulo1/utils/sidebarItems'
+import sidebarItems from '@utils/sidebarItems'
 import { useEffect, useRef, useState } from 'react';
 import axiosInt from '@config/axios';
 import SessionAccordion from '@features/Modulo1/components/SessionAccordion';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { ArrowLeftCircleFill, Check, PlusCircle, Trash, People, PencilFill } from 'react-bootstrap-icons';
 import SupplierCard from '@features/Modulo1/components/SupplierCard/SupplierCard';
+import Pagination from '@features/Modulo1/components/Pagination';
 import '../../../basic.css';
 import '../training.css';
 import VideoUpload from '@features/Modulo1/components/VideoUpload';
@@ -102,32 +103,48 @@ type typeSupp = {
 }
 
 
-// const typeTra: typeTraI[] = [
-//     // { id: 1, type: "Todos" },
-//     { id: 1, type: "Software" },
-//     { id: 2, type: "Salud" },
-//     { id: 3, type: "Seguridad" },
-// ]
+const typeTra: typeTraI[] = [
+    { id: 1, categoria: "Software" },
+    { id: 2, categoria: "Salud" },
+    { id: 3, categoria: "Seguridad" },
+    { id: 4, categoria: "Software2" },
+    { id: 5, categoria: "Salud2" },
+    { id: 6, categoria: "Seguridad2" },
+    { id: 7, categoria: "Software3" },
+    { id: 8, categoria: "Salud3" },
+    { id: 9, categoria: "Seguridad3" },
+]
 
-// const typeCom: typeComI[] = [
-//     // { id: 1, type: "Todos" },
-//     { id: 1, razon_social: "Empresa 1" },
-//     { id: 2, razon_social: "Empresa 2" },
-//     { id: 3, razon_social: "Empresa 3" },
-// ]
+const typeCom: typeComI[] = [
+    { id: 1, razon_social: "Empresa 1" },
+    { id: 2, razon_social: "Empresa 2" },
+    { id: 3, razon_social: "Empresa 3" },
+    { id: 4, razon_social: "Empresa 4" },
+    { id: 5, razon_social: "Empresa 5" },
+    { id: 6, razon_social: "Empresa 6" },
+]
+
+const typeHa: typeHabI[] = [
+    { id: 1, habilidad: "Habilidad 1 asdsadsa" },
+    { id: 2, habilidad: "Habilidad 2" },
+    { id: 3, habilidad: "Habilidad 3" },
+    { id: 4, habilidad: "Habilidad 4" },
+    { id: 5, habilidad: "Habilidad 5" },
+    { id: 6, habilidad: "Habilidad 6" },
+]
 
 let sessionsData: SessionObj[] = []
 
 const TrainingCreate = () => {
     const { trainingID } = useParams();
-    /* CAMBIAR CON LA API */ 
+    /* CAMBIAR CON LA API */
     const [training, setTraining] = useState<any>([]);
     const [nombreT, setNombreT] = useState(training.nombre)
     const [descripcionT, setDescripcionT] = useState(training.descripcion)
-    /* CAMBIAR CON LA API */ 
+    /* CAMBIAR CON LA API */
 
     const [sessionCreated, setSessionCreated] = useState<any>(false);
-    
+
     const [nombreAuxT, setNombreAuxT] = useState(training.nombre)
     const [descripcionAuxT, setDescripcionAuxT] = useState(training.descripcion)
 
@@ -144,9 +161,19 @@ const TrainingCreate = () => {
 
     var filtered;
     var mostrar = 6;
-
+    var mostrarC = 6;
     const [categories, setCategories] = useState([]);
+    const [pageC, setPageC] = useState(1)
+    const totalPagesC = Math.ceil(categories.length / mostrarC);
+    const [positionC, setPositionC] = useState(0);
+    const categoriesShow = categories.slice(positionC, positionC + mostrarC);
+
     const [companies, setCompanies] = useState([]);
+    const [pageCo, setPageCo] = useState(1)
+    const totalPagesCo = Math.ceil(companies.length / mostrarC);
+    const [positionCo, setPositionCo] = useState(0);
+    const companiesShow = companies.slice(positionCo, positionCo + mostrarC);
+
     const [habilities, setHabilities] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
     const [supplierFilter, setSupplierFilter] = useState<typeSupp[]>(suppliers)
@@ -160,18 +187,21 @@ const TrainingCreate = () => {
     const [checked, setChecked] = useState([]);
     const [habilitiesS, setHabilitiesS] = useState([]);
 
-    const handleCheck = (event) => {
+    const handleCheck = (item: typeHabI, event) => {
 
         async function updateArray() {
             var updatedList = [...checked];
+            var updatedList2 = [...habilitiesS];
             if (event.target.checked) {
-                updatedList = [...checked, event.target.value];
+                updatedList = [...checked, item.id];
+                updatedList2 = [...habilitiesS, item.habilidad];
             } else {
-                updatedList.splice(checked.indexOf(event.target.value), 1);
+                updatedList.splice(checked.indexOf(item.id), 1);
+                updatedList2.splice(habilitiesS.indexOf(item.habilidad), 1);
             }
             setChecked(updatedList);
+            setHabilitiesS(updatedList2);
         }
-
         updateArray()
     };
 
@@ -289,8 +319,8 @@ const TrainingCreate = () => {
                 temas: addedTopics
             }
         }
-        else{
-            if(training.tipo === "P"){
+        else {
+            if (training.tipo === "P") {
                 dataSession = {
                     curso_empresa_id: parseInt(trainingID),
                     nombre: refTrName.current?.value,
@@ -301,7 +331,7 @@ const TrainingCreate = () => {
                     temas: addedTopics
                 }
             }
-            else{
+            else {
                 dataSession = {
                     curso_empresa_id: parseInt(trainingID),
                     nombre: refTrName.current?.value,
@@ -336,11 +366,11 @@ const TrainingCreate = () => {
             if(training.tipo === "P"){
                 refTrLocation.current.value = "";
             }
-            else{
+            else {
                 refTrLocationLink.current.value = "";
             }            
         }
-        
+
         axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/sesion_course_company/', dataSession)
             .then(function (response) {
                 console.log(response.data)
@@ -381,12 +411,13 @@ const TrainingCreate = () => {
     }
 
     /* LOAD TRAINING DETAILS */
-    const loadTrainingDetails = () =>
-    {
+    const loadTrainingDetails = () => {
         setLoading(true);
         axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/course_company_course/${trainingID}`)
-            .then(function (response)
-            {
+            .then(function (response) {
+                console.log(response.data)
+                console.log(response.data.sesiones.length)
+
                 setTraining(response.data);
                 setNombreT(response.data.nombre)
                 setDescripcionT(response.data.descripcion)
@@ -394,8 +425,7 @@ const TrainingCreate = () => {
 
                 setLoading(false);
             })
-            .catch(function (error)
-            {
+            .catch(function (error) {
                 console.log(error);
                 setLoading(false);
 
@@ -404,9 +434,8 @@ const TrainingCreate = () => {
             });
     }
     /* LOAD TRAINING DETAILS */
-    
-    useEffect(() =>
-    {
+
+    useEffect(() => {
         loadTrainingDetails();
     }, [sessionCreated]);
 
@@ -418,6 +447,7 @@ const TrainingCreate = () => {
                 setLoading2(false);
             })
             .catch(function (error) {
+                setCompanies(typeCom)
                 setLoading2(false);
             });
     }
@@ -436,6 +466,7 @@ const TrainingCreate = () => {
                 setLoading3(false);
             })
             .catch(function (error) {
+                setHabilities(typeHa)
                 setLoading3(false);
             });
     }
@@ -454,6 +485,7 @@ const TrainingCreate = () => {
                 setLoading1(false);
             })
             .catch(function (error) {
+                setCategories(typeTra)
                 setLoading1(false);
             });
     }
@@ -462,6 +494,9 @@ const TrainingCreate = () => {
         setTypeArea({ id: 0, categoria: "" })
         setTypeCompany({ id: 0, razon_social: "" })
         setChecked([])
+        setHabilitiesS([])
+        setPositionC(0)
+        setPositionCo(0)
 
         loadCategories();
     }
@@ -482,188 +517,186 @@ const TrainingCreate = () => {
             });
     }
 
-    const checkedItems = checked.length
-        ? checked.reduce((total, item) => {
+    const checkedItems = habilitiesS.length
+        ? habilitiesS.reduce((total, item) => {
             return total + ", " + item;
         })
         : "";
+
+
+
 
     return (
         <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
             {
                 loading ?
-                (
-                    <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
-                        <div className='vertical-align-child'>
-                            <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
-                                <span className="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                    </div>
-                )
-                :
-                (<>
-                    <div className='container row mt-3'>
-                        {/* TRAINING DATA */}
-                        <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
-                            <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
-                                <Link to={`/modulo1/cursoempresa`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
-                            </div>
-
-                            <div style={{ display: "flex", alignItems: "center" }}>
-                                <div style={{ paddingRight: "2rem" }}>
-                                    {
-                                        training.url_foto === null ?
-                                        (<img src={url_foto_default} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>)
-                                        :
-                                        (<img src={training.url_foto} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>)
-                                    }
-                                </div>
-                                <div>
-                                    <h1 className='screenTitle'>{nombreT}</h1>
-                                    <p><small className='subtitle'>{descripcionT}.</small></p>
-                                    {
-                                        training.tipo === "A" ?
-                                        (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Virtual Asincrono</small><People style={{ opacity: "50%" }} /></p>)
-                                        :
-                                        (training.tipo === "P" ? 
-                                            (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Presencial</small><People style={{ opacity: "50%" }} /></p>)
-                                            :
-                                            (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Virtual Sincrono</small><People style={{ opacity: "50%" }} /></p>)
-                                        )
-                                    }
+                    (
+                        <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                            <div className='vertical-align-child'>
+                                <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                    <span className="visually-hidden">Loading...</span>
                                 </div>
                             </div>
-
-                            <div style={{ marginLeft: "20px", position: "relative", top: "-2.2rem" }}>
-                                <PencilFill color='cornflowerblue' className='editar' data-bs-target='#editTrainingModal' data-bs-toggle='modal' />
-                            </div>
                         </div>
+                    )
+                    :
+                    (<>
+                        <div className='container row mt-3'>
+                            {/* TRAINING DATA */}
+                            <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
+                                <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
+                                    <Link to={`/modulo1/cursoempresa`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
+                                </div>
 
-                        {/* SESSION */}
-                        <div className='row mt-3' style={{ marginLeft: "54px" }}>
-                            <div className='col'>
-                                <h4 className='mt-3 subarea'>Sesiones</h4>
-                            </div>
-                            <div style={{ flex: '0 0 15rem' }} className='col text-end'>
-                                {/* Button trigger modal */}
-                                <button type='button' className='btn btn-primary' data-bs-target='#createSessionModal' data-bs-toggle='modal'>
-                                    <div style={{ display: "flex", alignItems: "center" }}>
-                                        <span className='me-3'>Nueva sesión</span>
-                                        <PlusCircle/>
+                                <div style={{ display: "flex", alignItems: "center" }}>
+                                    <div style={{ paddingRight: "2rem" }}>
+                                        {
+                                            training.url_foto === null ?
+                                                (<img src={url_foto_default} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>)
+                                                :
+                                                (<img src={training.url_foto} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>)
+                                        }
                                     </div>
-                                </button>
+                                    <div>
+                                        <h1 className='screenTitle'>{nombreT}</h1>
+                                        <p><small className='subtitle'>{descripcionT}.</small></p>
+                                        {
+                                            training.tipo === "A" ?
+                                                (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Virtual Asincrono</small><People style={{ opacity: "50%" }} /></p>)
+                                                :
+                                                (training.tipo === "P" ?
+                                                    (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Presencial</small><People style={{ opacity: "50%" }} /></p>)
+                                                    :
+                                                    (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Virtual Sincrono</small><People style={{ opacity: "50%" }} /></p>)
+                                                )
+                                        }
+                                    </div>
+                                </div>
+
+                                <div style={{ marginLeft: "20px", position: "relative", top: "-2.2rem" }}>
+                                    <PencilFill color='cornflowerblue' className='editar' data-bs-target='#editTrainingModal' data-bs-toggle='modal' />
+                                </div>
                             </div>
 
-                            <div>
-                                {classSessions.length > 0 ?
-                                    (<SessionAccordion trainingType={training.tipo} sessions={classSessions}/>)
-                                    :
-                                    (
-                                        <div className='row align-items-stretch g-3 py-3'>
-                                            <div className='col'>
-                                                <div className='card'>
-                                                    <div className='card-body'>
-                                                        <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                            <div className='vertical-align-child'>
-                                                                <h5 className='opacity-50 text-center'>Crea una sesión para comenzar</h5>
+                            {/* SESSION */}
+                            <div className='row mt-3' style={{ marginLeft: "54px" }}>
+                                <div className='col'>
+                                    <h4 className='mt-3 subarea'>Sesiones</h4>
+                                </div>
+                                <div style={{ flex: '0 0 15rem' }} className='col text-end'>
+                                    {/* Button trigger modal */}
+                                    <button type='button' className='btn btn-primary' data-bs-target='#createSessionModal' data-bs-toggle='modal'>
+                                        <div style={{ display: "flex", alignItems: "center" }}>
+                                            <span className='me-3'>Nueva sesión</span>
+                                            <PlusCircle />
+                                        </div>
+                                    </button>
+                                </div>
+
+                                <div>
+                                    {classSessions.length > 0 ?
+                                        (<SessionAccordion trainingType={training.tipo} sessions={classSessions} />)
+                                        :
+                                        (
+                                            <div className='row align-items-stretch g-3 py-3'>
+                                                <div className='col'>
+                                                    <div className='card'>
+                                                        <div className='card-body'>
+                                                            <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                                <div className='vertical-align-child'>
+                                                                    <h5 className='opacity-50 text-center'>Crea una sesión para comenzar</h5>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    )
-                                }
+                                        )
+                                    }
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    {/* CREATE SESSION MODAL */}
-                    <div className="modal fade" id="createSessionModal" aria-hidden="true" aria-labelledby="createSessionModal" tabIndex={-1}>
-                        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h1 className="modal-title fs-5" id="createSessionModal">Crear nueva sesión</h1>
-                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div className="modal-body">
-                                    <div className="mb-3">
-                                        <label className="form-label">Nombre</label>
-                                        <input ref={refTrName} type="text" className="form-control" />
+                        {/* CREATE SESSION MODAL */}
+                        <div className="modal fade" id="createSessionModal" aria-hidden="true" aria-labelledby="createSessionModal" tabIndex={-1}>
+                            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h1 className="modal-title fs-5" id="createSessionModal">Crear nueva sesión</h1>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div className="mb-3">
-                                        <label className="form-label">Descripción</label>
-                                        <textarea ref={refTrDescription} className="form-control" />
-                                    </div>
-
-                                    {
-                                        training.tipo === "A" ?
-                                        (<>
-                                            {/*
-                                            <div className='mb-3'>
-                                                <label className="form-label">Fecha de la sesión</label>
-                                                <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
-                                            </div>
-                                            <div className='col'>
-                                                <label className="form-label">Fecha limite</label>
-                                                <input className='form-control' type='date' id='end_date_creation' ref={refTrDateEnd} />
-                                            </div>
-                                            */}
-                                            <div className='mb-3'>
-                                                <label className="form-label">Video de la sesión</label>
-                                                <VideoUpload ref={refTrVideo}/>
-                                            </div>
-                                        </>)
-                                        :
-                                        (<>
-                                            <div className='row mb-3'>
-                                                <div className='col'>
+                                    <div className="modal-body">
+                                        <div className="mb-3">
+                                            <label className="form-label">Nombre</label>
+                                            <input ref={refTrName} type="text" className="form-control" />
+                                        </div>
+                                        <div className="mb-3">
+                                            <label className="form-label">Descripción</label>
+                                            <textarea ref={refTrDescription} className="form-control" />
+                                        </div>
+                                        {
+                                            training.tipo === "A" ?
+                                            (<>
+                                                {/*
+                                                <div className='mb-3'>
                                                     <label className="form-label">Fecha de la sesión</label>
                                                     <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
                                                 </div>
                                                 <div className='col'>
-                                                    <label className="form-label">Aforo máximo</label>
-                                                    <input type="number" className="form-control" ref={refTrCapacity} min={'0'} />
+                                                    <label className="form-label">Fecha limite</label>
+                                                    <input className='form-control' type='date' id='end_date_creation' ref={refTrDateEnd} />
                                                 </div>
+                                                */}
+                                                <div className='mb-3'>
+                                                    <label className="form-label">Video de la sesión</label>
+                                                    <VideoUpload ref={refTrVideo}/>
+                                                </div>
+                                            </>)
+                                            :
+                                            (<>
+                                                <div className='row mb-3'>
+                                                    <div className='col'>
+                                                        <label className="form-label">Fecha de la sesión</label>
+                                                        <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
+                                                    </div>
+                                                    <div className='col'>
+                                                        <label className="form-label">Aforo máximo</label>
+                                                        <input type="number" className="form-control" ref={refTrCapacity} min={'0'} />
+                                                    </div>
+                                                </div>
+                                                <div className='mb-3'>
+                                                    <label className="form-label">Ubicación</label>
+                                                    {
+                                                        training.tipo === 'P' ?
+                                                        (<>
+                                                            <select className="form-select" ref={refTrLocation}>
+                                                                <option hidden>Seleccionar</option>
+                                                                {locationOptions.map((lo) => {
+                                                                    return (
+                                                                        <option key={lo.id} value={lo.type}>{lo.type}</option>
+                                                                    )
+                                                                })}
+                                                            </select>
+                                                        </>)
+                                                        :
+                                                        (<input ref={refTrLocationLink} type="text" className="form-control" />)
+                                                    } 
+                                                </div>
+                                            </>)
+                                        }
+                                    
+                                        <div className='row mb-3'>
+                                            <label className="form-label">Temas de la sesión</label>
+                                            <div className='col-10'>
+                                                <input ref={refTrTopics} type="text" className="form-control" />
                                             </div>
-                                            <div className='mb-3'>
-                                                <label className="form-label">Ubicación</label>
-                                                {
-                                                    training.tipo === 'P' ?
-                                                    (<>
-                                                        <select className="form-select" ref={refTrLocation}>
-                                                            <option hidden>Seleccionar</option>
-                                                            {locationOptions.map((lo) => {
-                                                                return (
-                                                                    <option key={lo.id} value={lo.type}>{lo.type}</option>
-                                                                )
-                                                            })}
-                                                        </select>
-                                                    </>)
-                                                    :
-                                                    (<input ref={refTrLocationLink} type="text" className="form-control" />)
-                                                } 
+                                            <div className='col text-end'>
+                                                <button type='submit' className='btn btn-primary' onClick={addTopic}><Check /></button>
                                             </div>
-                                            <div className='mb-3'>
-                                                <label className="form-label">Video de la sesión</label>
-                                                <VideoUpload ref={refTrVideo}/>
-                                            </div>
-                                        </>)
-                                    }
-                                
-                                    <div className='row mb-3'>
-                                        <label className="form-label">Temas de la sesión</label>
-                                        <div className='col-10'>
-                                            <input ref={refTrTopics} type="text" className="form-control" />
                                         </div>
-                                        <div className='col text-end'>
-                                            <button type='submit' className='btn btn-primary' onClick={addTopic}><Check /></button>
-                                        </div>
-                                    </div>
 
-                                    {
-                                        addedTopics.length > 0 ?
+                                        {
+                                            addedTopics.length > 0 ?
                                             (addedTopics.map((element, i) => {
                                                 return (
                                                     <div key={i}>
@@ -673,240 +706,297 @@ const TrainingCreate = () => {
                                             }))
                                             :
                                             (<></>)
-                                    }
-                                </div>
-                                <div className="modal-footer">
-                            <button className="btn btn-primary" data-bs-target="#searchResponsible" data-bs-toggle="modal" onClick={handleData}>Continuar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* MODAL SEARCH RESPONSIBLE */}
-            <div className="modal fade" id="searchResponsible" aria-hidden="true" aria-labelledby="searchResponsible" tabIndex={-1}>
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="searchResponsible">Buscar responsables</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-
-                            {loading1 ?
-                                <>
-                                    <div className='vertical-align-parent'>
-                                        <div className='vertical-align-child'>
-                                            <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
-                                                <span className="visually-hidden">Loading...</span>
-                                            </div>
-                                        </div>
+                                        }
                                     </div>
-                                </>
-                                :
-                                <div>
-                                    <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
-                                        <div>
-                                            <h4 style={{ fontSize: "14px", fontWeight: "400" }}>Buscar por categoría</h4>
-                                        </div>
-                                        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "1rem" }}>
-                                            {categories.map((t) => {
-                                                return (
-                                                    <button type='button' key={t.id} className='btn' style={{ backgroundColor: t.categoria == typeArea.categoria ? '#3f4b58' : '', color: t.categoria == typeArea.categoria ? '#FFF' : '#000', border: t.categoria == typeArea.categoria ? '' : '0.1rem solid #0d6efd', fontSize: "12px" }} onClick={() => handleCategory(t)}>{t.categoria}</button>
-                                                )
-                                            })}
-                                        </div>
+                                    <div className="modal-footer">
+                                        <button className="btn btn-primary" data-bs-target="#searchResponsible" data-bs-toggle="modal" onClick={handleData}>Continuar</button>
                                     </div>
                                 </div>
-                            }
-
-
-                            {typeArea.categoria != "" &&
-                                <>
-                                    {loading2 ?
-                                        <>
-                                            <div className='vertical-align-parent'>
-                                                <div className='vertical-align-child'>
-                                                    <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
-                                                        <span className="visually-hidden">Loading...</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </>
-                                        :
-                                        <div>
-                                            <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
-                                                <div>
-                                                    <h4 style={{ fontSize: "14px", fontWeight: "400" }}>Buscar por empresa</h4>
-                                                </div>
-                                                <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "1rem" }}>
-                                                    {companies.map((t) => {
-                                                        return (
-                                                            <button type='button' key={t.id} className='btn' style={{ backgroundColor: t.razon_social == typeCompany.razon_social ? '#3f4b58' : '', color: t.razon_social == typeCompany.razon_social ? '#FFF' : '#000', border: t.razon_social == typeCompany.razon_social ? '' : '0.1rem solid #0d6efd', fontSize: "12px" }} onClick={() => handleCompany(t)}>{t.razon_social}</button>
-                                                        )
-                                                    })}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
-                                </>
-                            }
-
-                            {typeCompany.razon_social != "" &&
-                                <>
-                                    {loading3 ?
-                                        <>
-                                            <div className='vertical-align-parent'>
-                                                <div className='vertical-align-child'>
-                                                    <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
-                                                        <span className="visually-hidden">Loading...</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </>
-                                        :
-                                        <div>
-                                            <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
-                                                <div>
-                                                    <h4 style={{ fontSize: "14px", fontWeight: "400" }}>Buscar por habilidades</h4>
-                                                </div>
-                                                <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)" }}>
-                                                    {habilities.map((item) => {
-                                                        return (
-                                                            <div key={item.id}>
-                                                                <input value={item.id} type="checkbox" onChange={handleCheck} style={{ marginRight: "0.5rem", fontSize: "12px" }} />
-                                                                <span >{item.habilidad}</span>
-                                                            </div>
-                                                        )
-                                                    })}
-                                                </div>
-                                                <div style={{ paddingTop: "0.5rem" }}>
-                                                    {`Habilidades seleccionadas: ${checkedItems}`}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
-                                </>
-                            }
-
+                            </div>
                         </div>
-                        <div className="modal-footer">
-                            <button className="btn btn-primary" data-bs-target="#assignResponsible" data-bs-toggle="modal" onClick={handleSuppliers}>Buscar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            {/* MODAL ASSING RESPONSIBLE */}
-            <div className="modal fade" id="assignResponsible" aria-hidden="true" aria-labelledby="assignResponsible" tabIndex={-1}>
-                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="assignResponsible">Asignar responsable</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body" style={{ paddingLeft: "4rem" }}>
-
-                            <div>
-                                <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
-                                    <div style={{ display: "flex", alignItems: "center" }}>
-                                        <input className='form-control' type='text' placeholder='Buscar responsables' onChange={handleFilter} style={{ maxWidth: "60%", marginRight: "1rem" }} />
-                                        <h5 style={{ display: "flex", fontSize: "14px", marginBottom: "0rem" }}>Categoría: {typeArea.categoria}</h5>
-                                        <h5 style={{ display: "flex", fontSize: "14px", marginBottom: "0rem" }}>Empresa: {typeCompany.razon_social}</h5>
+                        {/* MODAL SEARCH RESPONSIBLE */}
+                        <div className="modal fade" id="searchResponsible" aria-hidden="true" aria-labelledby="searchResponsible" tabIndex={-1}>
+                            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h1 className="modal-title fs-5" id="searchResponsible">Buscar responsables</h1>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                </div>
+                                    <div className="modal-body">
 
-                                {loading4 ?
-                                    <>
-                                        <div className='vertical-align-parent'>
-                                            <div className='vertical-align-child'>
-                                                <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
-                                                    <span className="visually-hidden">Loading...</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </>
-                                    :
-                                    <div >
-                                        {suppliers.length ?
+                                        {loading1 ?
                                             <>
-                                                <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "10px" }}>
-                                                    {
-                                                        supplierFilter.map((tr) => {
-                                                            var filtered2 = habilities.filter((item: any) => {                                                                
-                                                                return tr.habilidad_x_proveedor_usuario.every((ha) => {                                                        
-                                                                    return ha == item.id
-                                                                })
-                                                            }) 
-                                                            return (
-                                                                
-                                                                <SupplierCard key={tr.id}
-                                                                    id={tr.id}
-                                                                    name={tr.nombres + ' ' + tr.apellidos}
-                                                                    image='https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
-                                                                    capacities={filtered2}
-                                                                    button='Asignar'
-                                                                    buttonColor={"rgb(8, 66, 152)"}
-                                                                />
-
-                                                            )
-                                                        })
-                                                    }
-                                                </div>
-
-                                                {supplierFilter.length == 0 &&
-                                                    <div style={{ display: "flex", justifyContent: "center" }}>
-                                                        No hay resultados de responsables para la búsqueda
+                                                <div className='vertical-align-parent'>
+                                                    <div className='vertical-align-child'>
+                                                        <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                                            <span className="visually-hidden">Loading...</span>
+                                                        </div>
                                                     </div>
-                                                }
+                                                </div>
                                             </>
                                             :
                                             <div>
-                                                No hay responsables disponibles
+                                                <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
+                                                    <div>
+                                                        <h4 style={{ fontSize: "14px", fontWeight: "400" }}>Buscar por categoría</h4>
+                                                    </div>
+                                                    <div>
+                                                        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "1rem" }}>
+                                                            {categoriesShow.map((t) => {
+                                                                return (
+                                                                    <button type='button' key={t.id} className='btn' style={{ backgroundColor: t.categoria == typeArea.categoria ? '#3f4b58' : '', color: t.categoria == typeArea.categoria ? '#FFF' : '#000', border: t.categoria == typeArea.categoria ? '' : '0.1rem solid #0d6efd', fontSize: "12px" }} onClick={() => handleCategory(t)}>{t.categoria}</button>
+                                                                )
+                                                            })}
+                                                        </div>
+
+                                                        {categories.length > mostrarC &&
+                                                            <div>
+                                                                <div>
+                                                                    <Pagination
+                                                                        page={pageC}
+                                                                        totalPages={totalPagesC}
+                                                                        handlePagination={setPageC}
+                                                                        setPosition={setPositionC}
+                                                                        position={positionC}
+                                                                        mostrar={mostrarC}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
                                             </div>
                                         }
+
+
+                                        {typeArea.categoria != "" &&
+                                            <>
+                                                {loading2 ?
+                                                    <>
+                                                        <div className='vertical-align-parent'>
+                                                            <div className='vertical-align-child'>
+                                                                <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                                                    <span className="visually-hidden">Loading...</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </>
+                                                    :
+                                                    <div>
+                                                        <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
+                                                            <div>
+                                                                <h4 style={{ fontSize: "14px", fontWeight: "400" }}>Buscar por empresa</h4>
+                                                            </div>
+
+                                                            <div>
+                                                                <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "1rem" }}>
+                                                                    {companiesShow.map((t) => {
+                                                                        return (
+                                                                            <button type='button' key={t.id} className='btn' style={{ backgroundColor: t.razon_social == typeCompany.razon_social ? '#3f4b58' : '', color: t.razon_social == typeCompany.razon_social ? '#FFF' : '#000', border: t.razon_social == typeCompany.razon_social ? '' : '0.1rem solid #0d6efd', fontSize: "12px" }} onClick={() => handleCompany(t)}>{t.razon_social}</button>
+                                                                        )
+                                                                    })}
+                                                                </div>
+
+                                                                {companies.length > mostrarC &&
+                                                                    <div>
+                                                                        <div>
+                                                                            <Pagination
+                                                                                page={pageCo}
+                                                                                totalPages={totalPagesCo}
+                                                                                handlePagination={setPageCo}
+                                                                                setPosition={setPositionCo}
+                                                                                position={positionCo}
+                                                                                mostrar={mostrarC}
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </>
+                                        }
                                     </div>
-                                }
-                                </div>
-                                </div>
-                                <div className="modal-footer">
-                                    <button className="btn btn-primary" data-bs-dismiss="modal" onClick={createSession}>Crear</button>
+                                    {(typeArea.categoria != "" && typeCompany.razon_social != "") &&
+                                        <div className="modal-footer">
+                                            <button className="btn btn-primary" data-bs-target="#searchSkillResponsible" data-bs-toggle="modal">Ver Habilidades</button>
+                                        </div>
+                                    }
+
+
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    {/* EDIT TRAINING MODAL */}
-                    <div className="modal fade" id="editTrainingModal" aria-hidden="true" aria-labelledby="editTrainingModal" tabIndex={-1}>
-                        <div className="modal-dialog modal-dialog-centered">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h1 className="modal-title fs-5" id="createTrainingModal">Editar curso</h1>
-                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div className="modal-body">
-                                    <div className="mb-3">
-                                        <label className="form-label">Nombre</label>
-                                        <input value={nombreAuxT} type="text" className="form-control" onChange={e => setNombreAuxT(e.target.value)} />
+                        {/* MODAL SEARCH SKILLS RESPONSIBLE */}
+                        <div className="modal fade" id="searchSkillResponsible" aria-hidden="true" aria-labelledby="searchSkillResponsible" tabIndex={-1}>
+                            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h1 className="modal-title fs-5" id="searchResponsible">Buscar responsables</h1>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div className='row mb-3'>
-                                        {/* <div className='col' style={{ flex: '0 0 8rem' }}>
+                                    <div className="modal-body">
+
+                                        {loading3 ?
+                                            <>
+                                                <div className='vertical-align-parent'>
+                                                    <div className='vertical-align-child'>
+                                                        <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                                            <span className="visually-hidden">Loading...</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </>
+                                            :
+                                            <div>
+                                                <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
+                                                    <div>
+                                                        <h4 style={{ fontSize: "14px", fontWeight: "400" }}>Buscar por habilidades</h4>
+                                                    </div>
+                                                    <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)" }}>
+                                                        {habilities.map((item) => {
+                                                            return (
+                                                                <label key={item.id}>
+                                                                    <input value={item} type="checkbox" onChange={() => handleCheck(item, event)} style={{ marginRight: "0.5rem", fontSize: "12px" }} />
+                                                                    <span >{item.habilidad}</span>
+                                                                </label>
+                                                            )
+                                                        })}
+                                                    </div>
+                                                    <div style={{ paddingTop: "1rem", fontSize: "10px" }}>
+                                                        {`Habilidades seleccionadas: ${checkedItems}`}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    </div>
+                                    {(typeArea.categoria != "" && typeCompany.razon_social != "") &&
+                                        <div className="modal-footer">
+                                            <button className="btn btn-primary" data-bs-target="#assignResponsible" data-bs-toggle="modal" onClick={handleSuppliers}>Buscar</button>
+                                        </div>
+                                    }
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* MODAL ASSING RESPONSIBLE */}
+                        <div className="modal fade" id="assignResponsible" aria-hidden="true" aria-labelledby="assignResponsible" tabIndex={-1}>
+                            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h1 className="modal-title fs-5" id="assignResponsible">Asignar responsable</h1>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div className="modal-body" style={{ paddingLeft: "4rem" }}>
+
+                                        <div>
+                                            <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
+                                                <div style={{ display: "flex", alignItems: "center" }}>
+                                                    <input className='form-control' type='text' placeholder='Buscar responsables' onChange={handleFilter} style={{ maxWidth: "60%", marginRight: "1rem" }} />
+                                                    <h5 style={{ display: "flex", fontSize: "14px", marginBottom: "0rem" }}>Categoría: {typeArea.categoria}</h5>
+                                                    <h5 style={{ display: "flex", fontSize: "14px", marginBottom: "0rem" }}>Empresa: {typeCompany.razon_social}</h5>
+                                                </div>
+                                            </div>
+
+                                            {loading4 ?
+                                                <>
+                                                    <div className='vertical-align-parent'>
+                                                        <div className='vertical-align-child'>
+                                                            <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                                                <span className="visually-hidden">Loading...</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </>
+                                                :
+                                                <div >
+                                                    {suppliers.length ?
+                                                        <>
+                                                            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "10px" }}>
+                                                                {
+                                                                    supplierFilter.map((tr) => {
+                                                                        var filtered2 = habilities.filter((item: any) => {
+                                                                            return tr.habilidad_x_proveedor_usuario.every((ha) => {
+                                                                                return ha == item.id
+                                                                            })
+                                                                        })
+                                                                        return (
+
+                                                                            <SupplierCard key={tr.id}
+                                                                                id={tr.id}
+                                                                                name={tr.nombres + ' ' + tr.apellidos}
+                                                                                image='https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
+                                                                                capacities={filtered2}
+                                                                                button='Asignar'
+                                                                                buttonColor={"rgb(8, 66, 152)"}
+                                                                            />
+
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </div>
+
+                                                            {supplierFilter.length == 0 &&
+                                                                <div style={{ display: "flex", justifyContent: "center" }}>
+                                                                    No hay resultados de responsables para la búsqueda
+                                                                </div>
+                                                            }
+                                                        </>
+                                                        :
+                                                        <div>
+                                                            No hay responsables disponibles
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button className="btn btn-primary" data-bs-dismiss="modal" onClick={createSession}>Crear</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* EDIT TRAINING MODAL */}
+                        <div className="modal fade" id="editTrainingModal" aria-hidden="true" aria-labelledby="editTrainingModal" tabIndex={-1}>
+                            <div className="modal-dialog modal-dialog-centered">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h1 className="modal-title fs-5" id="createTrainingModal">Editar curso</h1>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <div className="mb-3">
+                                            <label className="form-label">Nombre</label>
+                                            <input value={nombreAuxT} type="text" className="form-control" onChange={e => setNombreAuxT(e.target.value)} />
+                                        </div>
+                                        <div className='row mb-3'>
+                                            {/* <div className='col' style={{ flex: '0 0 8rem' }}>
                                                 <PictureUpload />
                                             </div> */}
-                                        <div className='col'>
-                                            <div className="mb-3">
-                                                <label className="form-label">Descripción</label>
-                                                <textarea value={descripcionAuxT} className="form-control" onChange={e => setDescripcionAuxT(e.target.value)} />
+                                            <div className='col'>
+                                                <div className="mb-3">
+                                                    <label className="form-label">Descripción</label>
+                                                    <textarea value={descripcionAuxT} className="form-control" onChange={e => setDescripcionAuxT(e.target.value)} />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="modal-footer">
-                                    <button className="btn btn-primary" data-bs-dismiss="modal" onClick={editTraining}>Guardar</button>
+                                    <div className="modal-footer">
+                                        <button className="btn btn-primary" data-bs-dismiss="modal" onClick={editTraining}>Guardar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </>)
+                    </>)
             }
         </Sidebar >
     )
