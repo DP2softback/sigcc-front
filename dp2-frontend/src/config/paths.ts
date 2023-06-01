@@ -29,3 +29,4 @@ export const GAPS_EMPLOYEE_INDEX = 'skill-management/employeesGaps/index';
 export const GAPS_EMPLOYEE_DETAIL = 'skill-management/employeesGaps/detail';
 
 export const PROMOTIONS_CANDIDATES = '/skill-management/promotions/candidates';
+export const JOB_OPPORTUNITIES_SKILLS = '/skillManagement/jobOpportunitiesRelatedToSkills/index';
