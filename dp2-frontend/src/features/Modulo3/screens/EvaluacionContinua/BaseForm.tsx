@@ -8,6 +8,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Button } from 'react-bootstrap';
 import { useState } from 'react';
+import { navigateBack } from '@features/Modulo3/utils/functions';
 
 type BaseFormProps = {
   employee: any;
@@ -68,18 +69,24 @@ const BaseForm = ({employee, categories, projects, form, isReadOnly} : BaseFormP
           <Form.Control
             value={form && form.additionalComments}
             disabled={isReadOnly}
-            as="textarea"
-            aria-label="With textarea"
-            placeholder="Ingrese los comentarios o recomendaciones que crea conveniente"
+            as='textarea'
+            aria-label='With textarea'
+            placeholder='Ingrese los comentarios o recomendaciones que crea conveniente'
             rows={3}
           />
         </InputGroup>
       </div>
-      {!isReadOnly && (
-        <div className="text-end mt-32 mb-4">
-          <Button>Guardar evaluación</Button>
-        </div>
-      )}
+      <div className='text-end mt-32 mb-4'>
+        <Button
+          variant='outline-primary me-2'
+          onClick={() => {
+            navigateBack();
+          }}
+        >
+          Cancelar
+        </Button>
+        {!isReadOnly && <Button>Guardar evaluación</Button>}
+      </div>
     </>
   );
 

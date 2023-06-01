@@ -16,6 +16,14 @@ const employees = [
       "Iniciativa y creatividad": 3.1,
     },
   },
+  {
+    id: 3,
+    name: "test employee 2",
+    time_since_last_evaluation: 146,
+    area: { id: 1, name: "Area de pruebas" },
+    position: { id: 2, name: "EL PRACTICANTE" },
+    email: "test3@test.com"
+  },
 ];
 
 export default employees;

@@ -184,10 +184,10 @@ const routes: RouteObject[] = [
     ],
   },
   {
-    path: "skillManagement",
+    path: "skill-management",
     children: [
       {
-        path: "continuousEvaluation",
+        path: "continuous-evaluation",
         children: [
           {
             path: "index",
@@ -208,7 +208,7 @@ const routes: RouteObject[] = [
         ],
       },
       {
-        path: "performanceEvaluation",
+        path: "performance-evaluation",
         children: [
           {
             path: "index",
@@ -229,7 +229,7 @@ const routes: RouteObject[] = [
         ],
       },
       {
-        path: "evaluationTemplate",
+        path: "evaluation-template",
         children: [
           {
             path: "index",
@@ -258,11 +258,11 @@ const routes: RouteObject[] = [
         path: "report",
         children: [
           {
-            path: "continuousEvaluation",
+            path: "continuous-evaluation",
             element: <ReporteEvaluacionContinua />,
           },
           {
-            path: "performanceEvaluation",
+            path: "performance-evaluation",
             element: <ReporteEvaluacionDesempenho />,
           }
         ],
