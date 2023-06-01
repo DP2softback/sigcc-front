@@ -46,6 +46,18 @@ const M1TrainingAssignment = Loader(
   lazy(() => import('@features/Modulo1/pages/Training/Assignment'))
 );
 
+const M1ListLearningPathE = Loader(
+  lazy(() => import('@features/Modulo1/pages/EmployeeView/LearningPath'))
+);
+
+const M1ListTrainingE = Loader(
+  lazy(() => import('@features/Modulo1/pages/EmployeeView/Training'))
+);
+
+const M1TrainingEDetails = Loader(
+  lazy(() => import('@features/Modulo1/pages/EmployeeView/Training/Details'))
+);
+
 const ConfigSelectionProcess = Loader(
   lazy(() => import('@features/Modulo4/pages/ConfigSelectionProcess'))
 );
@@ -173,6 +185,32 @@ const routes: RouteObject[] = [
           {
             path: 'asignacion/:trainingID',
             element: <M1TrainingAssignment />
+          },
+        ]
+      },
+      {
+        path: 'empleado',
+        children: [
+          {
+            path: '',
+            element: <M1ListLearningPathE />
+          },  
+          {
+            path: 'rutadeaprendizaje',
+            element: <M1ListLearningPathE />
+          },
+          {
+            path: 'cursoempresa',
+            children: [
+              {
+                path: '',
+                element: <M1ListTrainingE />
+              },
+              {
+                path: 'sessions/:trainingID',
+                element: <M1TrainingEDetails />
+              }
+            ]
           },
         ]
       },
