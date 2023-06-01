@@ -7,13 +7,14 @@ type SectionProps = {
   sectionStyle?: any,
   titleStyle?: any,
   contentStyle?: any,
+  filtersStyle?: any,
 }
 
-const Section = ({ title, content, filters, sectionStyle, titleStyle, contentStyle }: SectionProps) => {
+const Section = ({ title, content, filters, sectionStyle, titleStyle, contentStyle, filtersStyle }: SectionProps) => {
   const titleComponent = (
     <div className='titleAndFilters' style={titleStyle}>
       {title && <div className="title">{title}</div>}
-      {filters && <div className='filters'>{filters}</div>}
+      {filters && <div className='filters' style={filtersStyle}>{filters}</div>}
     </div>
   );
 
