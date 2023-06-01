@@ -9,6 +9,7 @@ import '../../../content/common.css';
 import { ArrowLeftCircleFill, People, BarChart } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router-dom';
 import Rate from '@features/Modulo1/components/Rate';
+import LearningPathAssignment from '../Assignment';
 
 
 function LearningPathDetails (props: any)
@@ -68,6 +69,17 @@ function LearningPathDetails (props: any)
                 console.log(error);
             });
     };
+
+    const handleAssignEmployees = (employees: Array<any>) =>
+    {
+        axiosInt.post('capacitaciones/learning_path/enroll_employess/', {
+            "id_lp": learningPathId,
+            "empleados": employees
+        }).then((res) => {
+            console.log(res.data);
+            window.location.reload();
+        })
+    }
 
     return (
         <>
@@ -158,11 +170,12 @@ function LearningPathDetails (props: any)
                             </div>
                             <div className='mt-3 d-flex gap-2 w-100 justify-content-between'>
                                 <h4>Empleados asignados</h4>
-                                <Link to={`/course/add/${learningPathId}`} className='btn btn-primary'>Agregar empleados</Link>
+                                <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#assignmentModal">Asignar empleados</button>
                             </div>
                         </>
                 }
             </Sidebar>
+            <LearningPathAssignment assignFunction={handleAssignEmployees} />
         </>
     );
 }
