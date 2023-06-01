@@ -151,7 +151,7 @@ class LearningPathAssignment extends Component<
             delete employee.fullName;
             return employee
         })
-        this.props.assignFunction(this.state.employees)
+        this.props.assignFunction(this.state.employees, this.refCloseModal);
     }
 
     render ()
@@ -165,7 +165,7 @@ class LearningPathAssignment extends Component<
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">Asignar empleados</h5>
-                                <button type="button" className="btn-close">
+                                <button type="button" className="btn-close" data-bs-dismiss="modal">
                                 </button>
                             </div>
                             <div className="modal-body">
@@ -197,7 +197,7 @@ class LearningPathAssignment extends Component<
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button ref={this.refCloseModal} type="button" className="btn btn-secondary">
+                                <button ref={this.refCloseModal} type="button" className="btn btn-secondary" data-bs-dismiss="modal">
                                     Cancelar
                                 </button>
                                 <button type="button" className="btn btn-primary" onClick={this.handleAssignmentClick.bind(this)}>

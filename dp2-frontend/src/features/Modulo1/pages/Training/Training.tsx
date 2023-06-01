@@ -215,6 +215,7 @@ function formatDate(date: Date) {
 }
 
 function compararFechas(fecha1: string, fecha2: string, fecha3: string, tipo: number): boolean {
+    return true;
     const fecha1Parts = fecha1.split('/');
     const dia1 = parseInt(fecha1Parts[0], 10);
     const mes1 = parseInt(fecha1Parts[1], 10) - 1; // Restamos 1 al mes para que coincida con el rango de 0 a 11 en la clase Date
@@ -367,22 +368,20 @@ const Training = () => {
 
         console.log(data)
 
-        /* RUTA HARDCODEADA*/
-        navigate(`/modulo1/cursoempresa/creacion/1`);
-        /*
-        axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/course_company_course/', data)
+        /* RUTA HARDCODEADA */
+        // navigate(`/modulo1/cursoempresa/creacion/1`);
+        axiosInt.post('capacitaciones/course_company_course/', data)
             .then(function (response) {
                 navigate(`/modulo1/cursoempresa/creacion/${response.data.id}`);
             })
             .catch(function (error) {
                 console.log(error);
             });
-            */
     }
 
     const loadTrainings = () => {
         setLoading(true);
-        axiosInt.get('dev-modulo-capacitaciones/api/capacitaciones/course_company_course/')
+        axiosInt.get('capacitaciones/course_company_course/')
             .then(function (response) {
                 console.log(response)
                 console.log(moment(response.data.fecha_creacion).format("DD-MM-YYYY"))
@@ -396,7 +395,7 @@ const Training = () => {
     }
 
     useEffect(() => {
-        //loadTrainings();    
+        loadTrainings();    
     }, []);
 
     return (
