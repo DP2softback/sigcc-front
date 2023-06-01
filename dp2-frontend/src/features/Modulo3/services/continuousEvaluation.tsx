@@ -54,12 +54,12 @@ export const getEmployeesEvaluationDashboard = async (bossId) => {
 export const getEmployeeEvaluationDashboard = async (employeeId) => {
   const optionsRequest = {
     method: 'POST',
-    url: BACKEND_URL + 'LineChartEvaluaciones',
+    url: BACKEND_URL + 'LineChartEvaluacionesPersona',
     headers:{
       Authorization: `Token ${SAMPLE_TOKEN}`
     },
     data: {
-      employee_id: employeeId,
+      id: employeeId,
       evaluationType: CONTINUOS_EVALUATION_TYPE,
     }
   }

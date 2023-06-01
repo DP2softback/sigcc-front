@@ -35,3 +35,33 @@ export const getEvaluationsHistory = async (employeeId, nivel? : number, fechaIn
   }
   return await ajax(optionsRequest);
 }
+
+export const getEmployeesEvaluationDashboard = async (bossId) => {
+  const optionsRequest = {
+    method: 'POST',
+    url: BACKEND_URL + 'LineChartEvaluaciones',
+    headers:{
+      Authorization: `Token ${SAMPLE_TOKEN}`
+    },
+    data: {
+      id: bossId,
+      evaluationType: PERFORMANCE_EVALUATION_TYPE,
+    }
+  }
+  return await ajax(optionsRequest);
+}
+
+export const getEmployeeEvaluationDashboard = async (employeeId) => {
+  const optionsRequest = {
+    method: 'POST',
+    url: BACKEND_URL + 'LineChartEvaluacionesPersona',
+    headers:{
+      Authorization: `Token ${SAMPLE_TOKEN}`
+    },
+    data: {
+      id: employeeId,
+      evaluationType: PERFORMANCE_EVALUATION_TYPE,
+    }
+  }
+  return await ajax(optionsRequest);
+}
