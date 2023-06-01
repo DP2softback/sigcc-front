@@ -1,6 +1,6 @@
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import { Form, Button, InputGroup, Accordion, OverlayTrigger, Tooltip, FormCheck, Dropdown  } from 'react-bootstrap';
 import cat from '@features/Modulo3/jsons/Categories';
 import "./Plantillas.css"
@@ -8,23 +8,30 @@ import {EVALUATION_TEMPLATE_INDEX} from '@config/paths';
 import { navigateTo } from '@features/Modulo3/utils/functions.jsx';
 import ModalAddCategorie from '@features/Modulo3/components/Modals/ModalAddCategorie';
 import ImageUploader from '@features/Modulo3/components/Images/ImageUploader';
+import { getCategories } from '@features/Modulo3/services/templates';
 const Edit = () => {
   const [show,setShow]=useState(false);
   const [showAC,setShowAC]=useState(false);
   const [categorias,setCategorias]= useState(cat);
   const [file, setFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    setIsLoading(true);
+    (async () => {
+      const response = await getCategories();
+      if(response) setCategorias(response);
+      setIsLoading(false);
+    })();
+  }, []);
+
   const handleUpload = (e) => {
     const file = e.target.files[0];
     setFile(file);
   };
 
   const handleImageChange = (image: File | null) => {
-    // Hacer algo con la imagen seleccionada
-    if (image) {
-      console.log('Imagen seleccionada:', image);
-    } else {
-      console.log('Imagen borrada');
-    }
+
   };
 
   const [selectedOption, setSelectedOption] = useState('');

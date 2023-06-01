@@ -1,5 +1,4 @@
-const Categories =[
-    
+const Categories =[    
         { id: 1, name: 'Rendimiento', subcategories: [
           'Consecución de objetivos',
           'Calidad del trabajo',
