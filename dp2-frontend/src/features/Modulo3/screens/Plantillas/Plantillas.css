@@ -101,15 +101,26 @@
 }
 
 .sub-image{
-  margin-left: 80px;
-  margin-right: 100px;
+  padding-right: 32px;
 }
 
 .dropdown-edit{
-  margin-left: 80px;
+  background-color: white !important;
+  color: black !important;
+  border-color: #ced4da !important; 
+  width: 100%;
 }
 
 .label-estilizado {
   font-weight: bold;
   font-size: 18px;
+}
+
+.accordionExpPla-bodyitems{
+  margin-left: 20px;
+}
+
+.flex1{
+  flex: 1;
+  padding-right: 32px;
 }
