@@ -136,27 +136,34 @@ const IndexEvaluacionContinua = () => {
     // Invocaciones provisionales:
     const fetchData = async () => {
       setIsLoading(true);
-
-      // const areasData = await getPostAreas();
-      // setAreas(areasData);
-      
+      // try{
+      //   const dataAreas = await getAreas();
+      //   const dataCategoriasContinua = await getCategoriasContinua();
+      //   const dataCategoriasDesempenio = await getCategoriasDesempenio();
+      //   setAreas(dataAreas);          
+      //   setCategoriasContinua(dataCategoriasContinua);
+      //   setCategoriasDesempenio(dataCategoriasDesempenio);
+      // } catch (error){
+      //   console.log("Error: En el Fetch");
+      // }
+          
       // const categoriasContinuaData = await getPostCategoriasContinua();
       // setCategoriasContinua(categoriasContinuaData);
 
       // const categoriasDesempenioData = await getPostCategoriasDesempenio();
       // setCategoriasDesempenio(categoriasDesempenioData);
 
-      setDashboard(defaultDashboard);
-
       // const data = await getEmployeesEvaluationDashboard(5);
       // if(data){
-      //   setDashboard(formatDashboardJson(data));
-      //   console.log("Data: ", data);
-      //   console.log("Dashboard: ", dashboard);
-      // }
-      // else{
-      //   console.log("Error: ", data);
-      // }
+      //     setDashboard(formatDashboardJson(data));
+      //     console.log("Data: ", data);
+      //     console.log("Dashboard: ", dashboard);
+      //   }
+      //   else{
+      //       console.log("Error: ", data);
+      //     }
+
+      setDashboard(defaultDashboard);
       setIsLoading(false);
     };
 
