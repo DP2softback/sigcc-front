@@ -1,0 +1,30 @@
+.card-job-opp{
+    background-color: #FFFFFF;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.title-job-opp{
+    font-weight: 500;
+}
+
+.availability-job-opp{
+    opacity: 0.6;
+}
+
+.lbl-job-opp{
+    font-size: 12px;
+    background-color: #0DCAF0;
+    border-radius: 10px;
+    margin-left: 15px;
+    font-weight: 500;
+    height: 20px;
+}
+
+.btn-job-opp{
+    font-size: 10px;
+}
+
+.btn-acept{
+    margin-right: 8px;
+}
