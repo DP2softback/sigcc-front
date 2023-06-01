@@ -39,7 +39,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageSelect }) => {
               borderColor:'#ced4da'
             }}
           >
-            Choose File
+            Subir Archivo
           </label>
         </div>
         <div
