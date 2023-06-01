@@ -25,10 +25,8 @@ const datos = {
     nombre: "Seguridad de Información",
     url_foto: 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
     descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
-    fecha_creacion: "06/05/2023",
-    fecha_primera_sesion: "06/05/2023",
     cantidad_empleados: 10,
-    tipo: "A",
+    tipo: "P",
     sesiones: [
         {
             id: 1,
@@ -44,13 +42,13 @@ const datos = {
             ],
             nombre: "Sesión 1",
             descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
-            fecha_inicio: "2023-05-10T00:00:00-05:00",
+            fecha_inicio: "2023-05-31T00:00:00-05:00",
             url_video: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
             ubicacion: "Auditorio tercer piso",
             aforo_maximo: 20
         },
         {
-            id: 1,
+            id: 2,
             temas: [
                 {
                     id: 1,
@@ -87,11 +85,30 @@ const datos = {
             ],
             nombre: "Sesión 2",
             descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
-            fecha_inicio: "2023-05-10T00:00:00-05:00",
+            fecha_inicio: "2023-06-01T00:00:00-05:00",
             url_video: null,
             ubicacion: "Auditorio tercer piso",
             aforo_maximo: 20
-        }
+        },
+        {
+            id: 3,
+            temas: [
+                {
+                    id: 1,
+                    nombre: "Tema Sesión 3"
+                },
+                {
+                    id: 2,
+                    nombre: "Tema 2 Sesión 3"
+                }
+            ],
+            nombre: "Sesión 3",
+            descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
+            fecha_inicio: "2023-06-02T00:00:00-05:00",
+            url_video: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
+            ubicacion: "Auditorio tercer piso",
+            aforo_maximo: 20
+        },
     ]
 }
 
@@ -144,11 +161,10 @@ type TopicObj = {
 }
 
 type SessionObj = {
-    curso_empresa_id: number;
+    id: number;
     nombre: string;
     descripcion: string;
     fecha_inicio: string;
-    //fecha_limite?: string;
     ubicacion?: string;
     aforo_maximo?: number;
     url_video?: string;
@@ -160,20 +176,15 @@ type TrainingObj = {
     nombre: string;
     url_foto: string,
     descripcion: string;
-    fecha_creacion: string;
-    fecha_primera_sesion: string;
-    numEmployees: number;
+    cantidad_empleados: number;
     tipo: string;
     sesiones: SessionObj[];
 }
 
-let sessionsData: SessionObj[] = []
-
 const TrainingDetails = () => {
     const { trainingID } = useParams();
-    const [training, setTraining] = useState<any>(datos);
+    const [training, setTraining] = useState<TrainingObj>(datos);
     const [loading, setLoading] = useState(false);
-    const [classSessions, setClassSessions] = useState<SessionObj[]>([])
 
     const [position, setPosition] = useState(0);
     const [prueba, setPrueba] = useState(0);

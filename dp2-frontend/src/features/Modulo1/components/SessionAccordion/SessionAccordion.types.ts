@@ -4,7 +4,7 @@ export type TopicObj = {
 }
 
 export type SessionObj = {
-    curso_empresa_id?: number;
+    id?: number;
     nombre: string;
     descripcion: string;
     fecha_inicio?: string;

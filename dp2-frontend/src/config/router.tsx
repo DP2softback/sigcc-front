@@ -38,6 +38,10 @@ const M1TrainingDetails = Loader(
   lazy(() => import('@features/Modulo1/pages/Training/Details'))
 );
 
+const M1TrainingAttendance = Loader(
+  lazy(() => import('@features/Modulo1/pages/Training/Attendance'))
+);
+
 const M1TrainingAssignment = Loader(
   lazy(() => import('@features/Modulo1/pages/Training/Assignment'))
 );
@@ -155,7 +159,16 @@ const routes: RouteObject[] = [
           },
           {
             path: 'detalle/:trainingID',
-            element: <M1TrainingDetails />
+            children:[
+              {
+                path: '',
+                element: <M1TrainingDetails />,
+              },
+              {
+                path: 'asistencia/:sessionID',
+                element: <M1TrainingAttendance />
+              },
+            ]
           },
           {
             path: 'asignacion/:trainingID',
