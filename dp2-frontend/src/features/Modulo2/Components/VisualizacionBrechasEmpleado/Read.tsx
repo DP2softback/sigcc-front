@@ -64,7 +64,6 @@ const Read = () => {
             }
             getEmployeeCompetences(obj)
             .then(function (response){
-                console.log(response);
                 setEmployeeCompetences(response);
             })
             .catch(function(error){
@@ -94,7 +93,7 @@ const Read = () => {
     };
 
     const limpiarFiltros = () => {
-        setPalabrasClave('');
+        setPalabrasClave('')
         setTipoCompetenciaString('');
     };
 
@@ -109,13 +108,10 @@ const Read = () => {
 
     const handleTipoCompetencias = (string) => {
         setTipoCompetenciaString(string);
-        console.log(tiposCompetencia.filter(competencia => competencia.name === string))
         setTipoCompetenciaSelected(tiposCompetencia.filter(competencia => competencia.name === string));
     }
 
     const handleSearch = () => {
-        console.log(tipoCompetenciaSelected[0])
-        console.log(tipoCompetenciaSelected[0].id)
         const obj = {
             idCompetencia: 0,
             palabraClave: palabrasClave,
@@ -125,7 +121,6 @@ const Read = () => {
         }
         getEmployeeCompetences(obj)
         .then(function (response){
-            console.log(response);
             setEmployeeCompetences(response);
         })
     }
@@ -223,9 +218,8 @@ const Read = () => {
                 </div>
                 <div className='col-md-6'>
                     <div className='chart-container'>
-                        <BarChart1/>
+                        <BarChart1 dataBarProps={employeeCompetences}/>
                     </div>
-                    
                 </div>
             </div>
 
