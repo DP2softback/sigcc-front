@@ -26,66 +26,66 @@ const Read = () => {
     ]);
 
     React.useEffect(() => {
-        // getCompetencesTypes()
-        // .then(function (response){
-        //     let temp = {
-        //         id: -1,
-        //         name: "Tipos de competencia"
-        //     }
-        //     let temp2 = {
-        //         id: 0,
-        //         name: "Todas"
-        //     }
-        //     let tipoCom = [];
-        //     tipoCom.push(temp);
-        //     tipoCom.push(temp2);
-        //     response.forEach(res => tipoCom.push(res));
-        //     setTipoCompetenciaString(temp.name);
-        //     setTiposCompetencia(tipoCom);
-        //     const obj = {
-        //         idCompetencia: 0,
-        //         palabraClave: "",
-        //         idTipoCompetencia: 0,
-        //         activo: 1,
-        //         idEmpleado: 3
-        //     }
-        //     getEmployeeCompetences(obj)
-        //     .then(function (response){
-        //         setEmployeeCompetences(response);
-        //     })
-        //     .catch(function(error){
-        //         console.log(error);
-        //     })
-        // })
-        let temp = {
-            id: -1,
-            name: "Tipos de competencia"
-        }
-        let temp2 = {
-            id: 0,
-            name: "Todas"
-        }
-        let temp3 = {
-            id: 1,
-            name: "Técnico"
-        }
-        let temp4 = {
-            id: 1,
-            name: "Habilidades blandas"
-        }
-        let temp5 = {
-            id: 1,
-            name: "Conocimiento"
-        }
-        let tipoCom = [];
-        tipoCom.push(temp);
-        tipoCom.push(temp2);
-        tipoCom.push(temp3);
-        tipoCom.push(temp4);
-        tipoCom.push(temp5);
-        setTipoCompetenciaString(temp.name);
-        setTiposCompetencia(tipoCom);
-        setEmployeeCompetences(competenciasData);
+        getCompetencesTypes()
+        .then(function (response){
+            let temp = {
+                id: -1,
+                name: "Tipos de competencia"
+            }
+            let temp2 = {
+                id: 0,
+                name: "Todas"
+            }
+            let tipoCom = [];
+            tipoCom.push(temp);
+            tipoCom.push(temp2);
+            response.forEach(res => tipoCom.push(res));
+            setTipoCompetenciaString(temp.name);
+            setTiposCompetencia(tipoCom);
+            const obj = {
+                idCompetencia: 0,
+                palabraClave: "",
+                idTipoCompetencia: 0,
+                activo: 1,
+                idEmpleado: 3
+            }
+            getEmployeeCompetences(obj)
+            .then(function (response){
+                setEmployeeCompetences(response);
+            })
+            .catch(function(error){
+                console.log(error);
+            })
+        })
+        // let temp = {
+        //     id: -1,
+        //     name: "Tipos de competencia"
+        // }
+        // let temp2 = {
+        //     id: 0,
+        //     name: "Todas"
+        // }
+        // let temp3 = {
+        //     id: 1,
+        //     name: "Técnico"
+        // }
+        // let temp4 = {
+        //     id: 1,
+        //     name: "Habilidades blandas"
+        // }
+        // let temp5 = {
+        //     id: 1,
+        //     name: "Conocimiento"
+        // }
+        // let tipoCom = [];
+        // tipoCom.push(temp);
+        // tipoCom.push(temp2);
+        // tipoCom.push(temp3);
+        // tipoCom.push(temp4);
+        // tipoCom.push(temp5);
+        // setTipoCompetenciaString(temp.name);
+        // setTiposCompetencia(tipoCom);
+        // setEmployeeCompetences(competenciasData);
     }, []);
 
     //para el grafico
@@ -128,31 +128,30 @@ const Read = () => {
     }
 
     const handleSearch = () => {
-        // const obj = {
-        //     idCompetencia: 0,
-        //     palabraClave: palabrasClave,
-        //     idTipoCompetencia: tipoCompetenciaSelected[0].id,
-        //     activo: 1,
-        //     idEmpleado: 3
+        const obj = {
+            idCompetencia: 0,
+            palabraClave: palabrasClave,
+            idTipoCompetencia: tipoCompetenciaSelected[0].id,
+            activo: 1,
+            idEmpleado: 3
+        }
+        getEmployeeCompetences(obj)
+        .then(function (response){
+            setEmployeeCompetences(response);
+        })
+        // let competenciasFiltradas = competenciasData;
+        // if (tipoCompetenciaString && tipoCompetenciaString !== "Tipos de competencia" && tipoCompetenciaString !== "Todas") {
+        //     competenciasFiltradas = competenciasFiltradas.filter(competencia => competencia.competence__type__name === tipoCompetenciaString);
         // }
-        // getEmployeeCompetences(obj)
-        // .then(function (response){
-        //     setEmployeeCompetences(response);
-        // })
-        let competenciasFiltradas = competenciasData;
-        if (tipoCompetenciaString && tipoCompetenciaString !== "Tipos de competencia" && tipoCompetenciaString !== "Todas") {
-            competenciasFiltradas = competenciasFiltradas.filter(competencia => competencia.competence__type__name === tipoCompetenciaString);
-        }
-        if (palabrasClave) {
-            const palabrasClaveLower = palabrasClave.toLowerCase();
-            competenciasFiltradas = competenciasFiltradas.filter(competencia =>
-                competencia.competence__name.toLowerCase().includes(palabrasClaveLower) ||
-                returnLevel(competencia.levelCurrent).toLowerCase().includes(palabrasClaveLower) ||
-                returnLevel(competencia.levelRequired).toLowerCase().includes(palabrasClaveLower)
-            );
-        }
-        setEmployeeCompetences(competenciasFiltradas);
-
+        // if (palabrasClave) {
+        //     const palabrasClaveLower = palabrasClave.toLowerCase();
+        //     competenciasFiltradas = competenciasFiltradas.filter(competencia =>
+        //         competencia.competence__name.toLowerCase().includes(palabrasClaveLower) ||
+        //         returnLevel(competencia.levelCurrent).toLowerCase().includes(palabrasClaveLower) ||
+        //         returnLevel(competencia.levelRequired).toLowerCase().includes(palabrasClaveLower)
+        //     );
+        // }
+        // setEmployeeCompetences(competenciasFiltradas);
     }
 
     const returnLevel = (number) => {
