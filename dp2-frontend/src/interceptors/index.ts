@@ -1,1 +1,2 @@
 /** HERE YOU WILL DEFINE CUSTOMS INTERCEPTORS FOR AXIOS */
+export default {};

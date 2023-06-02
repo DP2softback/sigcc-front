@@ -21,6 +21,10 @@ const M1LearningPathDetails = Loader(
   lazy(() => import("@features/Modulo1/pages/LearningPath/Details"))
 );
 
+const M1LearningPathAssignment = Loader(
+  lazy(() => import("@features/Modulo1/pages/LearningPath/Assignment"))
+);
+
 const M1AddCourse = Loader(
   lazy(() => import("@features/Modulo1/pages/Course/AddCourse"))
 );
@@ -37,8 +41,24 @@ const M1TrainingDetails = Loader(
   lazy(() => import("@features/Modulo1/pages/Training/Details"))
 );
 
+const M1TrainingAttendance = Loader(
+  lazy(() => import('@features/Modulo1/pages/Training/Attendance'))
+);
+
 const M1TrainingAssignment = Loader(
   lazy(() => import("@features/Modulo1/pages/Training/Assignment"))
+);
+
+const M1ListLearningPathE = Loader(
+  lazy(() => import('@features/Modulo1/pages/EmployeeView/LearningPath'))
+);
+
+const M1ListTrainingE = Loader(
+  lazy(() => import('@features/Modulo1/pages/EmployeeView/Training'))
+);
+
+const M1TrainingEDetails = Loader(
+  lazy(() => import('@features/Modulo1/pages/EmployeeView/Training/Details'))
 );
 
 const ConfigSelectionProcess = Loader(
@@ -149,6 +169,10 @@ const routes: RouteObject[] = [
             path: "detalle/:learningPathId",
             element: <M1LearningPathDetails />,
           },
+          {
+            path: "asignacion/:learningPathId",
+            element: <M1LearningPathAssignment />,
+          },
         ],
       },
       {
@@ -172,8 +196,17 @@ const routes: RouteObject[] = [
             element: <M1TrainingCreate />,
           },
           {
-            path: "detalle/:trainingID",
-            element: <M1TrainingDetails />,
+            path: 'detalle/:trainingID',
+            children:[
+              {
+                path: '',
+                element: <M1TrainingDetails />,
+              },
+              {
+                path: 'asistencia/:sessionID',
+                element: <M1TrainingAttendance />
+              },
+            ]
           },
           {
             path: "asignacion/:trainingID",
@@ -181,7 +214,33 @@ const routes: RouteObject[] = [
           },
         ],
       },
-    ],
+      {
+        path: 'empleado',
+        children: [
+          {
+            path: '',
+            element: <M1ListLearningPathE />
+          },  
+          {
+            path: 'rutadeaprendizaje',
+            element: <M1ListLearningPathE />
+          },
+          {
+            path: 'cursoempresa',
+            children: [
+              {
+                path: '',
+                element: <M1ListTrainingE />
+              },
+              {
+                path: 'sessions/:trainingID',
+                element: <M1TrainingEDetails />
+              }
+            ]
+          },
+        ]
+      },
+    ]
   },
   {
     path: "skill-management",

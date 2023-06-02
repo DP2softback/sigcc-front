@@ -1,12 +1,12 @@
 import axiosInt from '@config/axios';
 import Sidebar from '@components/Sidebar'
-import sidebarItems from '@utils/sidebarItems'
+import sidebarItems from '@features/Modulo1/utils/sidebarItemsE'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { People, ArrowLeftCircle, ArrowLeftCircleFill, ArrowRightCircle } from 'react-bootstrap-icons'
 import EmployeeCard from '@features/Modulo1/components/EmployeeCard/EmployeeCard';
-import '../../../basic.css';
-import '../training.css';
+import '../../../../basic.css';
+import '../trainingE.css';
 import SessionAccordion from '@features/Modulo1/components/SessionAccordion';
 
 let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
@@ -25,8 +25,10 @@ const datos = {
     nombre: "Seguridad de Información",
     url_foto: 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
     descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
+    fecha_creacion: "06/05/2023",
+    fecha_primera_sesion: "06/05/2023",
     cantidad_empleados: 10,
-    tipo: "P",
+    tipo: "A",
     sesiones: [
         {
             id: 1,
@@ -42,13 +44,13 @@ const datos = {
             ],
             nombre: "Sesión 1",
             descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
-            fecha_inicio: "2023-05-31T00:00:00-05:00",
+            fecha_inicio: "2023-05-10T00:00:00-05:00",
             url_video: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
             ubicacion: "Auditorio tercer piso",
             aforo_maximo: 20
         },
         {
-            id: 2,
+            id: 1,
             temas: [
                 {
                     id: 1,
@@ -85,30 +87,11 @@ const datos = {
             ],
             nombre: "Sesión 2",
             descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
-            fecha_inicio: "2023-06-01T00:00:00-05:00",
+            fecha_inicio: "2023-05-10T00:00:00-05:00",
             url_video: null,
             ubicacion: "Auditorio tercer piso",
             aforo_maximo: 20
-        },
-        {
-            id: 3,
-            temas: [
-                {
-                    id: 1,
-                    nombre: "Tema Sesión 3"
-                },
-                {
-                    id: 2,
-                    nombre: "Tema 2 Sesión 3"
-                }
-            ],
-            nombre: "Sesión 3",
-            descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
-            fecha_inicio: "2023-06-02T00:00:00-05:00",
-            url_video: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
-            ubicacion: "Auditorio tercer piso",
-            aforo_maximo: 20
-        },
+        }
     ]
 }
 
@@ -161,10 +144,11 @@ type TopicObj = {
 }
 
 type SessionObj = {
-    id: number;
+    curso_empresa_id: number;
     nombre: string;
     descripcion: string;
     fecha_inicio: string;
+    //fecha_limite?: string;
     ubicacion?: string;
     aforo_maximo?: number;
     url_video?: string;
@@ -176,15 +160,20 @@ type TrainingObj = {
     nombre: string;
     url_foto: string,
     descripcion: string;
-    cantidad_empleados: number;
+    fecha_creacion: string;
+    fecha_primera_sesion: string;
+    numEmployees: number;
     tipo: string;
     sesiones: SessionObj[];
 }
 
+let sessionsData: SessionObj[] = []
+
 const TrainingDetails = () => {
     const { trainingID } = useParams();
-    const [training, setTraining] = useState<TrainingObj>(datos);
+    const [training, setTraining] = useState<any>(datos);
     const [loading, setLoading] = useState(false);
+    const [classSessions, setClassSessions] = useState<SessionObj[]>([])
 
     const [position, setPosition] = useState(0);
     const [prueba, setPrueba] = useState(0);
@@ -224,7 +213,7 @@ const TrainingDetails = () => {
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
+            <Sidebar items={sidebarItems} active='/modulo1/empleado/cursoempresa'>
                 {
                     loading ?
                     (
@@ -284,86 +273,6 @@ const TrainingDetails = () => {
                                                             <div className='vertical-align-parent' style={{ height: '10rem' }}>
                                                                 <div className='vertical-align-child'>
                                                                     <h5 className='opacity-50 text-center'>No cuenta con sesiones creadas</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )
-                                    }
-                                </div>
-
-                                {/* EMPLOYEES SECTION */}
-                                <div className='row'>
-                                    <div className='mt-3 mb-3' style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                                        <h4 className='subarea'>Empleados asignados</h4>
-                                        <Link to={`/modulo1/cursoempresa/asignacion/${training.id}`}>
-                                            <button className='btn btn-primary' style={{ marginRight: "23px" }}>
-                                                <div style={{display: "flex", alignItems: "center"}}>
-                                                    <span className='me-3'>Asignar empleados</span>                                        
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
-                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                                                    </svg>
-                                                </div>
-                                            </button>
-                                        </Link>
-                                    </div>
-
-                                    {employees.length ?
-                                        <div style={{ display: "flex", alignItems: "center" }}>
-                                            <div>
-                                                <ArrowLeftCircle onClick={handlePrevious} className={`${position === 0 ? 'controlsD' : 'controls'}`} />
-                                            </div>
-
-                                            <div className="employees-list cards">
-                                                {employeesToShow.map((employee) => (
-                                                    <EmployeeCard key={employee.id}
-                                                        id={employee.id}
-                                                        name={employee.name}
-                                                        photoURL={employee.image}
-                                                        area={employee.area}
-                                                        puesto={employee.position}
-                                                        codigo={employee.code}
-                                                        boton1={botonEmployee}
-                                                        boton1Color={"#B02A37"}
-                                                        option={setPrueba}
-                                                    />
-                                                ))}
-                                                {(employeesToShow.length != 3) &&
-                                                    <>
-                                                        {employeesToShow.length === 2 ?
-                                                            <div key={1} style={{ width: "380px", height: "297.07px" }}>
-                                                            </div>
-                                                            :
-                                                            <>
-                                                                <div key={1} style={{ width: "380px", height: "297.07px" }}>
-                                                                </div>
-                                                                <div key={2} style={{ width: "380px", height: "297.07px" }}>
-                                                                </div>
-                                                            </>
-                                                        }
-                                                    </>
-                                                }
-                                            </div>
-
-                                            <div>
-                                                <div>
-                                                    <ArrowRightCircle onClick={handleNext} className={`${position >= employees.length - 3 ? 'controlsD' : 'controls'}`} />
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        :
-                                        (
-                                            <div className='row align-items-stretch g-3 py-3'>
-                                                <div className='col'>
-                                                    <div className='card'>
-                                                        <div className='card-body'>
-                                                            <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                                <div className='vertical-align-child'>
-                                                                    <h5 className='opacity-50 text-center'>Sin empleados asignados</h5>
                                                                 </div>
                                                             </div>
                                                         </div>
