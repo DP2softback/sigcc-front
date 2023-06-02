@@ -124,6 +124,20 @@ const VisualizacionBrechasEmpleado = Loader(
   )
 );
 
+const DetalleCompetenciasArea = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/DetalleCompetenciasArea")
+  )
+);
+
+const EstadisticasCompetencias = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/ConsolidadoCompetencias")
+  )
+);
+
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
 const routes: RouteObject[] = [
@@ -291,6 +305,24 @@ const routes: RouteObject[] = [
           {
             path: "index",
             element: <GestionDeCompetencias />,
+          },
+        ],
+      },
+      {
+        path: "showStatsArea",
+        children: [
+          {
+            path: "index",
+            element: <DetalleCompetenciasArea></DetalleCompetenciasArea>,
+          },
+        ],
+      },
+      {
+        path: "showPieChart",
+        children: [
+          {
+            path: "index",
+            element: <EstadisticasCompetencias></EstadisticasCompetencias>,
           },
         ],
       },
