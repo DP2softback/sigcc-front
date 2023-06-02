@@ -42,7 +42,7 @@ const M1TrainingDetails = Loader(
 );
 
 const M1TrainingAttendance = Loader(
-  lazy(() => import('@features/Modulo1/pages/Training/Attendance'))
+  lazy(() => import("@features/Modulo1/pages/Training/Attendance"))
 );
 
 const M1TrainingAssignment = Loader(
@@ -50,15 +50,15 @@ const M1TrainingAssignment = Loader(
 );
 
 const M1ListLearningPathE = Loader(
-  lazy(() => import('@features/Modulo1/pages/EmployeeView/LearningPath'))
+  lazy(() => import("@features/Modulo1/pages/EmployeeView/LearningPath"))
 );
 
 const M1ListTrainingE = Loader(
-  lazy(() => import('@features/Modulo1/pages/EmployeeView/Training'))
+  lazy(() => import("@features/Modulo1/pages/EmployeeView/Training"))
 );
 
 const M1TrainingEDetails = Loader(
-  lazy(() => import('@features/Modulo1/pages/EmployeeView/Training/Details'))
+  lazy(() => import("@features/Modulo1/pages/EmployeeView/Training/Details"))
 );
 
 const ConfigSelectionProcess = Loader(
@@ -67,6 +67,10 @@ const ConfigSelectionProcess = Loader(
 
 const ConfigOfertaLaboral = Loader(
   lazy(() => import("@features/Modulo4/pages/ConfigOfertaLaboral"))
+);
+
+const ConfigProcesoSeleccion = Loader(
+  lazy(() => import("@features/Modulo4/pages/ConfigProcesoSeleccion"))
 );
 
 const EvaluacionContinuaIndex = Loader(
@@ -106,7 +110,12 @@ const GestionDeCompetencias = Loader(
 );
 
 const JobOpportunitiesRelatedToSkills = Loader(
-  lazy(() => import("@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/index"))
+  lazy(
+    () =>
+      import(
+        "@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/index"
+      )
+  )
 );
 
 const EvaluationTemplateIndex = Loader(
@@ -196,17 +205,17 @@ const routes: RouteObject[] = [
             element: <M1TrainingCreate />,
           },
           {
-            path: 'detalle/:trainingID',
-            children:[
+            path: "detalle/:trainingID",
+            children: [
               {
-                path: '',
+                path: "",
                 element: <M1TrainingDetails />,
               },
               {
-                path: 'asistencia/:sessionID',
-                element: <M1TrainingAttendance />
+                path: "asistencia/:sessionID",
+                element: <M1TrainingAttendance />,
               },
-            ]
+            ],
           },
           {
             path: "asignacion/:trainingID",
@@ -215,32 +224,46 @@ const routes: RouteObject[] = [
         ],
       },
       {
-        path: 'empleado',
+        path: "empleado",
         children: [
           {
-            path: '',
-            element: <M1ListLearningPathE />
-          },  
-          {
-            path: 'rutadeaprendizaje',
-            element: <M1ListLearningPathE />
+            path: "",
+            element: <M1ListLearningPathE />,
           },
           {
-            path: 'cursoempresa',
+            path: "rutadeaprendizaje",
+            element: <M1ListLearningPathE />,
+          },
+          {
+            path: "cursoempresa",
             children: [
               {
-                path: '',
-                element: <M1ListTrainingE />
+                path: "",
+                element: <M1ListTrainingE />,
               },
               {
-                path: 'sessions/:trainingID',
-                element: <M1TrainingEDetails />
-              }
-            ]
+                path: "sessions/:trainingID",
+                element: <M1TrainingEDetails />,
+              },
+            ],
           },
-        ]
+        ],
       },
-    ]
+    ],
+  },
+
+  {
+    path: "modulo4",
+    children: [
+      {
+        path: "configurar-oferta-laboral",
+        element: <ConfigOfertaLaboral />,
+      },
+      {
+        path: "configurar-proceso-seleccion",
+        element: <ConfigProcesoSeleccion />,
+      },
+    ],
   },
   {
     path: "skill-management",
@@ -323,7 +346,7 @@ const routes: RouteObject[] = [
           {
             path: "performance-evaluation",
             element: <ReporteEvaluacionDesempenho />,
-          }
+          },
         ],
       },
       {
@@ -350,6 +373,19 @@ const routes: RouteObject[] = [
           {
             path: "index",
             element: <GestionDeCompetencias />,
+          },
+        ],
+      },
+      {
+        path: "selection-process",
+        children: [
+          {
+            path: "create",
+            element: <ConfigSelectionProcess />,
+          },
+          {
+            path: "portal-create-job",
+            element: <ConfigOfertaLaboral />,
           },
         ],
       },
