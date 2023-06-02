@@ -353,6 +353,19 @@ const routes: RouteObject[] = [
           },
         ],
       },
+      {
+        path: "selection-process",
+        children: [
+          {
+            path: "create",
+            element: <ConfigSelectionProcess />,
+          },
+          {
+            path: "portal-create-job",
+            element: <ConfigOfertaLaboral />,
+          }
+        ],
+      },
     ],
   },
 ];
