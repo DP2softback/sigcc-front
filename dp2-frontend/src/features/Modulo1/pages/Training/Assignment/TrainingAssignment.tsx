@@ -1,6 +1,6 @@
 import axiosInt from '@config/axios';
 import Sidebar from '@components/Sidebar'
-import sidebarItems from '@features/Modulo1/utils/sidebarItems'
+import sidebarItems from '@utils/sidebarItems'
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
 import { GeoFill, JournalBookmarkFill, InfoCircleFill, PeopleFill, DoorClosedFill, Calendar2EventFill, Calendar, Calendar2Event, People, ArrowLeftCircle, ArrowLeftCircleFill, ArrowRightCircle } from 'react-bootstrap-icons'
@@ -349,9 +349,9 @@ const TrainingAssignment = () => {
                                 <div style={{paddingLeft: "1rem", position: employeeFilter.length == 0 ? 'relative' : 'static', right: employeeFilter.length == 0 ? '-21.9rem' : '', }}>
                                     {addedEmployees.length ?
                                         <>
-                                            <div style={{backgroundColor: "#E9ECEF", width: "17.3rem"}}>
+                                            <div style={{backgroundColor: "#D8E0E8", width: "17.3rem", borderRadius: "4px", overflow: "hidden", boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px"}}>
 
-                                                <h4 style={{display: "flex", justifyContent: "center"}}>Empleados asignados</h4>
+                                                <h4 style={{display: "flex", justifyContent: "center", marginTop: "0.25rem"}}>Empleados asignados</h4>
 
                                                 <div>
                                                     {addedEmployees.map((employee) => (                                                        
