@@ -161,3 +161,4 @@ const BarChart1 = (props) => {
 }
 
 export default BarChart1;
+

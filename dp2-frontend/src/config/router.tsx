@@ -153,6 +153,13 @@ const VisualizacionBrechasEmpleado = Loader(
   )
 );
 
+const ConfigPosition = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo4/pages/JobPositions/ConfigPosition")
+  )
+);
+
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
 const routes: RouteObject[] = [
@@ -385,8 +392,12 @@ const routes: RouteObject[] = [
           },
           {
             path: "portal-create-job",
-            element: <ConfigOfertaLaboral />,
+            element: <ConfigOfertaLaboral />
           },
+          {
+            path: "test",
+            element: <ConfigPosition />
+          }
         ],
       },
     ],
