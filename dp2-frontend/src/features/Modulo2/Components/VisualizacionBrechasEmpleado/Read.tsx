@@ -26,7 +26,7 @@ const Read = () => {
     ]);
 
     React.useEffect(() => {
-        // getCompetencesTypes()
+        /// getCompetencesTypes()
         // .then(function (response){
         //     let temp = {
         //         id: -1,
