@@ -1,0 +1,871 @@
+@use "sass:map";
+@use "sass:math";
+
+$var-prefix: 'nk-';
+
+////////////////////////////////////////////////////////
+////////     CORE VARIABLES    ///// //////////
+////////////////////////////////////////////////////////
+
+/////////    COLORS    ///////////
+//////////////////////////////////////
+$white:		#fff;
+$black: 	#000;
+
+$base-50:  #f8f8f9;
+$base-100: #f1f2f7;
+$base-200: #E5E7EB;
+$base-300: #D1D5DB;
+$base-400: #9CA3AF;
+$base-500: #6B7280;
+$base-600: #4B5563;
+$base-700: #374151;
+$base-800: #1F2937;
+$base-900: #111827;
+
+$blue:    #0080FF;
+$indigo:  #5b5efb;
+$purple:  #8927f9;
+$pink:    #f24a8b;
+$red:     #df3c4e;
+$orange:  #f85f32;
+$yellow:  #f2bc16;
+$green:   #2dc58c;
+$teal:    #2acc9c;
+$cyan:    #478ffc;
+
+
+// Base/Default color @used for text
+$accent-color:  	  rgb(0, 123, 255);
+$accent-dark:       darken($accent-color, 15%);
+$accent-darken:     darken($accent-color, 12%);
+$base-dark:  		    #24214b;
+$base-text:         #43476b;
+$base-color:        #2e314a;
+$base-light:        #787c9e;
+$base-lighter:      $base-300;
+
+$texts : (
+  'accent':         $accent-color,
+  'accent-dark':    $accent-dark,
+  'accent-darken':  $accent-darken,
+  'base-dark':      $base-dark,
+  'base':           $base-text,
+  'base-alt':       $base-color,
+  'base-light':     $base-light,
+  'base-lighter':   $base-lighter,
+);
+
+$lighter:       $base-100;
+$light:         $base-200;
+
+//Borders
+$border-lighter:    $base-50;
+$border-light:     #e8e7ec;
+$border-color:     #d2d4e4;
+$border-dark:      #b6b8cc;
+$border-darker:     #8a8da2; //$base-500;
+$disabled-color:    #f2f3f8;
+
+// bg
+$bg-primary-dark: darken($accent-color,38%);
+
+/////////    TYPTOGRAPHY    //////////
+//////////////////////////////////////
+$base-font-family: 		'Manrope', sans-serif;
+$base-font-family-2: 		'Roboto', sans-serif;
+$font-size-base:        1rem;
+
+$line-height-base:            1.67;
+$line-height-sm:              1.35;
+$line-height-lg:              2;
+
+// Headding sizes
+$font-size-h1: 1.75rem;
+$font-size-h2: 1.5rem;
+$font-size-h3: 1.25rem;
+$font-size-h4: 1.125rem;
+$font-size-h5: 1rem;
+$font-size-h6: .875rem;
+
+$display-size-1: 3.25rem;
+$display-size-2: 3rem;
+$display-size-3: 2.75rem;
+$display-size-4: 2.5rem;
+$display-size-5: 2.25rem;
+$display-size-6: 2rem;
+
+$font-size-sm:   .75rem;
+$font-size-md:   .875rem;
+$font-size-lg:   1.125rem;
+
+$h-margin-bottom:      .5rem;
+$h-font-family:        null;
+$h-font-style:         null;
+$h-font-weight:        500;
+$h-line-height:        1.2;
+$h-color:              $base-text;
+
+$lead-font-size:              1.125rem;
+$lead-font-weight:            400;
+$small-font-size:             .875rem;
+$smaller-font-size:           .75rem;
+$sub-sup-font-size:           .65rem;
+
+$sizes: (
+    'tiny': 1.25rem,
+    'xs': 1.5rem,
+    'sm': 1.875rem,
+    'md': 2.375rem,
+    'rg': 2.75rem,
+    'lg': 3.5rem,
+    'xl': 3.375rem,
+    'xxl': 3.75rem,
+    'big': 5rem,
+    'huge': 6rem,
+);
+
+$size-xs:       map.get($sizes,xs);
+$size-sm:       map.get($sizes,sm);
+$size-md:       map.get($sizes,md);
+$size-rg:       map.get($sizes,rg);
+$size-lg:       map.get($sizes,lg);
+$size-xl:       map.get($sizes,xl);
+$size-xxl:      map.get($sizes,xxl);
+
+// font weight
+$nk-font-weight-lighter:         lighter;
+$nk-font-weight-light:           300;
+$nk-font-weight-normal:          400;
+$nk-font-weight-medium:          500;
+$nk-font-weight-semibold:        600;
+$nk-font-weight-bold:            700;
+$nk-font-weight-bolder:          bolder;
+
+////////// COMMON BG /////////
+$nk-body-bg:                    $base-50;
+
+$sidebar-dark-bg:               $accent-darken;
+$header-dark-bg:                $accent-dark;
+
+////////// GAP /////////
+$nk-grid-gutter-width:          1.75rem;
+
+$nk-spacer:                        1rem;
+
+////////// BORDER /////////
+$nk-border-width: 1px;
+
+////////// BORDER RADIUS /////////
+$nk-border-radius:               .375rem;
+$nk-border-radius-sm:            .25rem;
+$nk-border-radius-md:            .313rem;
+$nk-border-radius-lg:            .75rem;
+$nk-border-radius-xl:            1rem;
+$nk-border-radius-2xl:           2rem;
+$nk-border-radius-pill:          50rem;
+
+////////// SHADOW /////////
+$shadow:                  0 .5rem 1rem rgba($black, .15);
+$shadow-sm:               0 .125rem .25rem rgba($black, .075);
+$shadow-lg:               0 1rem 3rem rgba($black, .175);
+$shadow-inset:            inset 0 1px 2px rgba($black, .075);
+
+////////// LABELS /////////
+$nk-form-label-font-weight:    500;
+$nk-form-label-color:    $base-color;
+
+////////// INPUT /////////
+
+$field-color:               $base-text;
+$field-border-width:        pxToRem(1px);
+$field-font-size:           0.875rem;
+$field-font-weight:         $nk-font-weight-normal;
+$field-line-height:         1.5rem;
+$field-plain-padding-y:     math.div(($size-rg - $field-line-height),2);
+
+$field-bg:                  $white;
+
+$field-disabled-color:        null;
+$field-disabled-border-color: null;
+$field-disabled-bg:           $disabled-color;
+$field-readonly-bg:           $disabled-color;
+
+$field-border-color:        $border-color;
+$field-focus-border-color:  rgba($accent-color, 0.65); //$border-dark;
+
+$field-padding-y:           $field-plain-padding-y - $field-border-width;
+$field-padding-x:           1.125rem;
+$field-font-family:         null;
+
+$field-focus-width:         .25rem;
+$field-focus-color-opacity: .25;
+$field-focus-blur:          0;
+$field-focus-box-shadow:    0 0 5px 0px rgba(95, 56, 249, 0.20);
+
+$field-plain-padding-y-sm:     math.div(($size-sm - $field-line-height),2);
+$field-padding-y-sm:           $field-plain-padding-y-sm - $field-border-width;
+$field-padding-x-sm:          .75rem;
+$field-font-size-sm:          $font-size-sm;
+
+$field-plain-padding-y-md:     math.div(($size-md - $field-line-height),2);
+$field-padding-y-md:           $field-plain-padding-y-md - $field-border-width;
+$field-padding-x-md:           1.125rem;
+$field-font-size-md:           $font-size-md;
+
+$field-plain-padding-y-lg:     math.div(($size-lg - $field-line-height),2);
+$field-padding-y-lg:           $field-plain-padding-y-lg - $field-border-width;
+$field-padding-x-lg:           1.375rem;
+$field-font-size-lg:           $font-size-base;
+
+$field-plain-padding-y-xl:     math.div(($size-xl - $field-line-height),2);
+$field-padding-y-xl:           $field-plain-padding-y-xl - $field-border-width;
+$field-padding-x-xl:           1.375rem;
+$field-font-size-xl:           $font-size-lg;
+
+$field-hint-font-size:         0.813rem;
+$field-icon-font-size:         1rem;
+
+$field-note-font-size:         0.813rem;
+$field-note-color:             $base-light;
+
+$field-height:                 $size-rg;
+$field-height-sm:              $size-sm;
+$field-height-md:              $size-md;
+$field-height-lg:              $size-lg;
+$field-height-xl:              $size-xl;
+
+$field-border-radius:          $nk-border-radius;
+$field-border-radius-sm:       $nk-border-radius-sm;
+$field-border-radius-md:       $nk-border-radius-md;
+$field-border-radius-lg:       $nk-border-radius-lg;
+$field-border-radius-xl:       $nk-border-radius-xl;
+
+$textarea-height-sm:           4rem;
+$textarea-height:              5.625rem;
+$textarea-height-lg:           7rem;
+$textarea-height-xl:           10rem;
+
+//checkboxes/radio
+$field-check-label-font-size:   1rem;
+$field-check-label-line-height: 1.75rem;
+
+$field-check-label-gap:        .75rem;
+$field-check-input-size:       1.25rem;
+
+$field-check-label-font-size-sm:   .875rem;
+$field-check-label-line-height-sm: 1.375rem;
+
+$field-check-label-gap-sm:        .75rem;
+$field-check-input-size-sm:       1rem;
+
+$field-check-label-font-size-lg:   1.125rem;
+$field-check-label-line-height-lg: 2rem;
+
+$field-check-label-gap-lg:        .875rem;
+$field-check-input-size-lg:       1.5rem;
+
+$field-check-label-font-size-xl:   1.25rem;
+$field-check-label-line-height-xl: 2.25rem;
+
+$field-check-label-gap-xl:        1rem;
+$field-check-input-size-xl:       2rem;
+
+$field-check-input-bg:                    $white;
+$field-check-input-border:                2px solid $field-border-color;
+$field-check-input-border-radius:         .25em;
+$field-check-radio-border-radius:         50%;
+$field-check-input-focus-border:          $field-focus-border-color;
+
+$field-check-inline-margin-end:    1.25rem;
+
+$field-switch-color:               $field-border-color;
+$field-switch-width:               2.5rem;
+$field-switch-width-sm:            2rem;
+$field-switch-width-lg:            3rem;
+$field-switch-width-xl:            3.75rem;
+
+///////// FORM SELECT ///////////////
+// scss-docs-start form-select-variables
+$nk-form-select-padding-y:             $field-padding-y;
+$nk-form-select-padding-x:             $field-padding-x;
+$nk-form-select-font-family:           $field-font-family;
+$nk-form-select-font-size:             $field-font-size;
+$nk-form-select-indicator-padding:     $nk-form-select-padding-x * 3; // Extra padding for background-image
+$nk-form-select-font-weight:           $field-font-weight;
+$nk-form-select-line-height:           $field-line-height;
+$nk-form-select-color:                 $field-color;
+$nk-form-select-bg:                    $field-bg;
+$nk-form-select-disabled-color:        null;
+$nk-form-select-disabled-bg:           $field-disabled-bg;
+$nk-form-select-disabled-border-color: $field-disabled-border-color;
+$nk-form-select-bg-position:           right $nk-form-select-padding-x center;
+$nk-form-select-bg-size:               16px 12px; // In pixels because image dimensions
+$nk-form-select-indicator-color:       $base-800;
+$nk-form-select-indicator:             url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='#{$nk-form-select-indicator-color}' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/></svg>");
+
+$nk-form-select-border-width:        $field-border-width;
+$nk-form-select-border-color:        $field-border-color;
+$nk-form-select-border-radius:       $field-border-radius;
+$nk-form-select-box-shadow:          $shadow-inset;
+
+$nk-form-select-focus-border-color:  $field-focus-border-color;
+$nk-form-select-focus-width:         $field-focus-width;
+$nk-form-select-focus-box-shadow:    $field-focus-box-shadow;
+
+$nk-form-select-padding-y-sm:        $field-padding-y-sm;
+$nk-form-select-padding-x-sm:        $field-padding-x-sm;
+$nk-form-select-font-size-sm:        $field-font-size-sm;
+$nk-form-select-border-radius-sm:    $field-border-radius-sm;
+
+$nk-form-select-padding-y-md:        $field-padding-y-md;
+$nk-form-select-padding-x-md:        $field-padding-x-md;
+$nk-form-select-font-size-md:        $field-font-size-md;
+$nk-form-select-border-radius-md:    $field-border-radius-md;
+
+$nk-form-select-padding-y-lg:        $field-padding-y-lg;
+$nk-form-select-padding-x-lg:        $field-padding-x-lg;
+$nk-form-select-font-size-lg:        $field-font-size-lg;
+$nk-form-select-border-radius-lg:    $field-border-radius-lg;
+// scss-docs-end form-select-variables
+
+////////// DROPDOWN /////////
+$nk-dropdown-min-width:                200px;
+$nk-dropdown-padding-x:                0;
+$nk-dropdown-padding-y:                0;
+$nk-dropdown-spacer:                   .125rem;
+$nk-dropdown-font-size:                0.813rem;
+$nk-dropdown-color:                    $base-text;
+$nk-dropdown-bg:                       $white;
+$nk-dropdown-border-color:             $border-light;
+$nk-dropdown-border-radius:            $nk-border-radius;
+$nk-dropdown-border-width:             0;
+$nk-dropdown-inner-border-radius:      subtract($nk-dropdown-border-radius, $nk-dropdown-border-width);
+$nk-dropdown-divider-bg:               $nk-dropdown-border-color;
+$nk-dropdown-divider-margin-y:         .5rem;
+$nk-dropdown-box-shadow:               0 2px 12px -1px rgba(#43476b, 0.20);
+
+$nk-dropdown-link-color:               $base-light;
+$nk-dropdown-link-hover-color:         $accent-color;
+$nk-dropdown-link-hover-bg:            rgba($accent-color, 0.06);
+
+$nk-dropdown-link-active-color:        $accent-color;
+$nk-dropdown-link-active-bg:           rgba($accent-color, 0.06);
+
+$nk-dropdown-link-disabled-color:      $base-500;
+
+$nk-dropdown-item-padding-y:           0.375rem;
+$nk-dropdown-item-padding-x:           1rem;
+
+$nk-dropdown-header-color:             $base-600;
+$nk-dropdown-header-padding-x:         $nk-dropdown-item-padding-x;
+$nk-dropdown-header-padding-y:         0.5rem;
+// fusv-disable
+$nk-dropdown-header-padding:           $nk-dropdown-header-padding-y $nk-dropdown-header-padding-x; // Deprecated in v5.2.0
+// fusv-enable
+
+$nk-dropdown-icon-font-size:      1rem;
+$nk-dropdown-icon-width:          1.625rem;
+
+$nk-dropdown-content-padding-x:         $nk-dropdown-item-padding-x;
+$nk-dropdown-content-padding-x-lg:      1.5rem;
+$nk-dropdown-divider-opacity:     0.5;
+
+////////// CARD /////////
+$nk-card-spacer-y:                     1.25rem;
+$nk-card-spacer-x:                     1.25rem;
+$nk-card-title-spacer-y:               $nk-spacer * .5;
+$nk-card-title-font-weight:            600;
+$nk-card-border-width:                 $nk-border-width;
+$nk-card-border-color:                 $border-light;
+$nk-card-border-radius:                0.5rem;
+$nk-card-box-shadow:                   0 1px 0px rgba($nk-card-border-color, 0.50);
+$nk-card-inner-border-radius:          calc(#{$nk-card-border-radius} - 1px);
+$nk-card-cap-padding-y:                $nk-card-spacer-y * .5;
+$nk-card-cap-padding-x:                $nk-card-spacer-x;
+$nk-card-cap-bg:                       $base-50;
+$nk-card-cap-color:                    $base-text;
+$nk-card-height:                       null;
+$nk-card-color:                        null;
+$nk-card-bg:                           $white;
+$nk-card-img-overlay-padding:          $nk-spacer;
+$nk-card-group-margin:                 $nk-grid-gutter-width * .5;
+
+////////// ACCORDION /////////
+$nk-accordion-padding-y:                     1rem;
+$nk-accordion-padding-x:                     1.25rem;
+$nk-accordion-color:                         $base-text;
+$nk-accordion-bg:                            $white;
+$nk-accordion-border-width:                  $nk-border-width;
+$nk-accordion-border-color:                  $border-light;
+$nk-accordion-border-radius:                 $nk-border-radius;
+$nk-accordion-inner-border-radius:           subtract($nk-accordion-border-radius, $nk-accordion-border-width);
+
+$nk-accordion-body-padding-y:                $nk-accordion-padding-y;
+$nk-accordion-body-padding-x:                $nk-accordion-padding-x;
+
+$nk-accordion-button-padding-y:              $nk-accordion-padding-y;
+$nk-accordion-button-padding-x:              $nk-accordion-padding-x;
+$nk-accordion-button-color:                  $nk-accordion-color;
+$nk-accordion-button-bg:                     transparent;
+$nk-accordion-transition:                    all 0.2s;
+$nk-accordion-button-active-bg:              $nk-accordion-button-bg;
+$nk-accordion-button-active-color:           shade-color($accent-color, 10%);
+
+$nk-accordion-button-focus-border-color:     $border-light;
+$nk-accordion-button-focus-box-shadow:       none;
+
+$nk-accordion-icon-width:                    0.875rem;
+$nk-accordion-icon-color:                    $nk-accordion-button-color;
+$nk-accordion-icon-active-color:             $base-dark;
+$nk-accordion-icon-transition:               transform .2s ease-in-out;
+$nk-accordion-icon-transform:                rotate(-180deg);
+
+$nk-accordion-button-icon:         url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$nk-accordion-icon-color}'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+$nk-accordion-button-active-icon:  url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$nk-accordion-icon-active-color}'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+
+$nk-accordion-button-font-weight:     500;
+
+////////// ALERT /////////
+$nk-alert-padding-y:               0.75rem;
+$nk-alert-padding-x:               1rem;
+$nk-alert-margin-bottom:           1rem;
+$nk-alert-border-radius:           $nk-border-radius;
+$nk-alert-link-font-weight:        600;
+$nk-alert-border-width:            $nk-border-width;
+$nk-alert-bg-scale:                -90%;
+$nk-alert-border-scale:            -80%;
+$nk-alert-color-scale:             40%;
+$nk-alert-dismissible-padding-r:   $nk-alert-padding-x * 3; // 3x covers width of x plus default padding on either side
+
+////////// BADGE /////////
+$nk-badge-font-size:                   0.688rem;
+$nk-badge-font-weight:                 500;
+$nk-badge-color:                       $white;
+$nk-badge-padding-y:                   .35rem;
+$nk-badge-padding-x:                   .5rem;
+$nk-badge-border-radius:               $nk-border-radius-sm;
+
+////////// BREADCRUMB /////////
+$nk-breadcrumb-font-size:              $font-size-sm;
+$nk-breadcrumb-padding-y:              0;
+$nk-breadcrumb-padding-x:              0;
+$nk-breadcrumb-item-padding-x:         .5rem;
+$nk-breadcrumb-margin-bottom:          1rem;
+$nk-breadcrumb-bg:                     null;
+$nk-breadcrumb-divider-color:          $base-light;
+$nk-breadcrumb-active-color:           $base-light;
+$nk-breadcrumb-divider:                quote("/");
+$nk-breadcrumb-divider-flipped:        $nk-breadcrumb-divider;
+$nk-breadcrumb-border-radius:          null;
+
+////////// NAV TABS /////////
+$nk-nav-link-padding-y:                $field-padding-y;
+$nk-nav-link-padding-x:                $field-padding-x;
+$nk-nav-link-padding-y-sm:             0.5rem;
+$nk-nav-link-padding-x-sm:             0.625rem;
+$nk-nav-link-font-size:                $field-font-size;
+$nk-nav-link-line-height:              $field-line-height;
+$nk-nav-link-font-weight:              null;
+$nk-nav-link-color:                    $base-light;
+$nk-nav-link-hover-color:              $base-dark;
+$nk-nav-link-transition:               color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+$nk-nav-link-disabled-color:           $base-400;
+
+
+$nk-nav-tabs-border-color:             $base-200;
+$nk-nav-tabs-border-width:             $nk-border-width;
+$nk-nav-tabs-border-radius:            $nk-border-radius;
+$nk-nav-tabs-link-hover-border-color:  $base-200 $base-200 $nk-nav-tabs-border-color;
+$nk-nav-tabs-link-active-color:        $base-dark;
+$nk-nav-tabs-link-active-bg:           $white;
+$nk-nav-tabs-link-active-border-color: $base-300 $base-300 $nk-nav-tabs-link-active-bg;
+
+$nk-nav-pills-border-radius:           $nk-border-radius;
+$nk-nav-pills-link-active-color:       $white;
+$nk-nav-pills-link-active-bg:          $accent-color;
+
+// nav tabs style one
+$nk-nav-s1-link-padding-x:                0;
+$nk-nav-s1-link-border:                   transparent;
+$nk-nav-s1-item-gap-x:                    2rem;
+$nk-nav-s1-link-divider-bg:               $accent-color;
+$nk-nav-s1-link-active-color:             $accent-color;
+
+////////// PAGINATION /////////
+$nk-pagination-line-height:            0.875rem;
+
+$nk-pagination-min-width:              2.625rem;
+$nk-pagination-padding-y:              0.813rem;
+$nk-pagination-padding-x:              .75rem;
+
+$nk-pagination-min-width-sm:           ($nk-pagination-line-height + $nk-pagination-padding-y);
+$nk-pagination-padding-y-sm:           0.438rem;
+$nk-pagination-padding-x-sm:           .5rem;
+
+$nk-pagination-padding-y-lg:           1rem;
+$nk-pagination-padding-x-lg:           1.313rem;
+
+$nk-pagination-font-size:              $font-size-sm;
+
+$nk-pagination-color:                  $base-text;
+$nk-pagination-bg:                     transparent;
+$nk-pagination-border-radius:          $nk-border-radius;
+$nk-pagination-border-width:           $nk-border-width;
+$nk-pagination-margin-start:           calc($nk-pagination-border-width * -1); // stylelint-disable-line function-disallowed-list
+$nk-pagination-border-color:           $border-color;
+
+$nk-pagination-focus-color:            $accent-color;
+$nk-pagination-focus-bg:               mix($accent-color, $white, 12%);
+$nk-pagination-focus-box-shadow:       none;
+$nk-pagination-focus-outline:          0;
+
+$nk-pagination-hover-color:            $accent-color;
+$nk-pagination-hover-bg:               mix($accent-color, $white, 8%);
+$nk-pagination-hover-border-color:     $border-color;
+
+$nk-pagination-active-color:           $accent-color;
+$nk-pagination-active-bg:              mix($accent-color, $white, 20%);
+$nk-pagination-active-border-color:    $nk-pagination-active-bg;
+
+$nk-pagination-disabled-color:         $base-400;
+$nk-pagination-disabled-bg:            transparent;
+$nk-pagination-disabled-border-color:  $border-color;
+
+$nk-pagination-transition:              color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
+$nk-pagination-border-radius-sm:       $nk-border-radius-sm;
+$nk-pagination-border-radius-lg:       $nk-border-radius;
+
+// pagination style one
+$nk-pagination-s1-hover-color:            $accent-color;
+$nk-pagination-s1-hover-bg:               mix($accent-color, $white, 8%);
+$nk-pagination-s1-item-gap-x:             0.5rem;
+$nk-pagination-s1-icon-font-size:         1.125rem;
+$nk-pagination-s1-active-color:           $accent-color;
+$nk-pagination-s1-active-bg:              mix($accent-color, $white, 20%);
+
+////////// PROGRESSBAR /////////
+$nk-progress-height:                   0.75rem;
+$nk-progress-font-size:                $font-size-base * .75;
+$nk-progress-bg:                       $base-100;
+$nk-progress-border-radius:            $nk-border-radius-sm;
+$nk-progress-bar-color:                $white;
+$nk-progress-bar-bg:                   $accent-color;
+$nk-progress-bar-animation-timing:     1s linear infinite;
+$nk-progress-bar-transition:           width .6s ease;
+
+////////// TOOLTIP /////////
+$nk-tooltip-font-size:                 .875rem;
+$nk-tooltip-max-width:                 200px;
+$nk-tooltip-color:                     $white;
+$nk-tooltip-bg:                        $base-dark;
+$nk-tooltip-border-radius:             $nk-border-radius-sm;
+$nk-tooltip-opacity:                   1;
+$nk-tooltip-padding-y:                 0.25rem;
+$nk-tooltip-padding-x:                 0.75rem;
+$nk-tooltip-margin:                    null;
+
+$nk-tooltip-arrow-width:               .8rem;
+$nk-tooltip-arrow-height:              .4rem;
+// fusv-disable
+$nk-tooltip-arrow-color:               null;
+
+////////// LIST GROUP /////////
+$nk-list-group-color:                  $base-color;
+$nk-list-group-bg:                     $white;
+$nk-list-group-border-color:           rgba($black, .125);
+$nk-list-group-border-width:           $nk-border-width;
+$nk-list-group-border-radius:          $nk-border-radius;
+
+$nk-list-group-item-padding-y:         0.5rem;
+$nk-list-group-item-padding-x:         1rem;
+$nk-list-group-item-padding-y-sm:      0.25rem;
+
+$nk-list-group-item-bg-scale:          -80%;
+$nk-list-group-item-color-scale:       40%;
+
+$nk-list-group-hover-bg:               $base-100;
+$nk-list-group-active-color:           $white;
+$nk-list-group-active-bg:              $accent-color;
+$nk-list-group-active-border-color:    $nk-list-group-active-bg;
+
+$nk-list-group-disabled-color:         $base-600;
+$nk-list-group-disabled-bg:            $nk-list-group-bg;
+
+$nk-list-group-action-color:           $base-700;
+$nk-list-group-action-hover-color:     $nk-list-group-action-color;
+
+$nk-list-group-action-active-color:    $base-text;
+$nk-list-group-action-active-bg:       $base-200;
+
+////////// BTN CLOSE /////////
+$nk-btn-close-width:            0.75rem;
+$nk-btn-close-color:            $base-dark;
+$nk-btn-close-bg:               url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$nk-btn-close-color}'><path d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/></svg>");
+
+////////// MODAL /////////
+$nk-modal-inner-padding:               1rem;
+
+$nk-modal-footer-margin-between:       .5rem;
+
+$nk-modal-dialog-margin:               .5rem;
+$nk-modal-dialog-margin-y-sm-up:       1.75rem;
+
+$nk-modal-title-line-height:           $line-height-base;
+
+$nk-modal-content-color:               null;
+$nk-modal-content-bg:                  $white;
+$nk-modal-content-border-color:        $border-color;
+$nk-modal-content-border-width:        $nk-border-width;
+$nk-modal-content-border-radius:       $nk-border-radius-lg;
+$nk-modal-content-inner-border-radius: subtract($nk-modal-content-border-radius, $nk-modal-content-border-width);
+$nk-modal-content-box-shadow-xs:       $shadow-sm;
+$nk-modal-content-box-shadow-sm-up:    $shadow;
+
+$nk-modal-backdrop-bg:                 $base-dark;
+$nk-modal-backdrop-opacity:            .8;
+
+$nk-modal-header-border-color:         $border-color;
+$nk-modal-header-border-width:         $nk-modal-content-border-width;
+$nk-modal-header-padding-y:            $nk-modal-inner-padding;
+$nk-modal-header-padding-x:            $nk-modal-inner-padding;
+$nk-modal-header-padding:              $nk-modal-header-padding-y $nk-modal-header-padding-x; // Keep this for backwards compatibility
+
+$nk-modal-footer-bg:                   null;
+$nk-modal-footer-border-color:         $nk-modal-header-border-color;
+$nk-modal-footer-border-width:         $nk-modal-header-border-width;
+
+$nk-modal-sm:                          300px;
+$nk-modal-md:                          500px;
+$nk-modal-lg:                          800px;
+$nk-modal-xl:                          1140px;
+
+$nk-modal-fade-transform:              translate(0, -50px);
+$nk-modal-show-transform:              none;
+$nk-modal-transition:                  transform .3s ease-out;
+$nk-modal-scale-transform:             scale(1.02);
+
+////////// POPOVER /////////
+$nk-popover-font-size:                 .875rem;
+$nk-popover-bg:                        $white;
+$nk-popover-max-width:                 276px;
+$nk-popover-border-width:              $nk-border-width;
+$nk-popover-border-color:              $border-color;
+$nk-popover-border-radius:             $nk-border-radius-lg;
+$nk-popover-inner-border-radius:       subtract($nk-popover-border-radius, $nk-popover-border-width);
+$nk-popover-box-shadow:                $shadow;
+
+$nk-popover-header-font-size:          $font-size-base;
+$nk-popover-header-bg:                 shade-color($nk-popover-bg, 6%);
+$nk-popover-header-color:              $h-color;
+$nk-popover-header-padding-y:          .5rem;
+$nk-popover-header-padding-x:          1rem;
+
+$nk-popover-body-color:                $base-text;
+$nk-popover-body-padding-y:            1rem;
+$nk-popover-body-padding-x:            1rem;
+
+$nk-popover-arrow-width:               1rem;
+$nk-popover-arrow-height:              .5rem;
+
+////////// TABLES /////////
+$nk-table-cell-padding-y:        .5rem;
+$nk-table-cell-padding-x:        .75rem;
+$nk-table-cell-padding-y-sm:     .25rem;
+$nk-table-cell-padding-x-sm:     .25rem;
+$nk-table-head-cell-padding-y-sm: 0.25rem;
+
+$nk-table-cell-vertical-align:   top;
+
+$nk-table-color:                 $base-text;
+$nk-table-bg:                    transparent;
+$nk-table-accent-bg:             transparent;
+
+$nk-table-th-font-weight:        null;
+
+$nk-table-striped-color:         $nk-table-color;
+$nk-table-striped-bg-factor:     .03;
+$nk-table-striped-bg:            rgba($black, $nk-table-striped-bg-factor);
+
+$nk-table-active-color:          $nk-table-color;
+$nk-table-active-bg-factor:      .1;
+$nk-table-active-bg:             rgba($black, $nk-table-active-bg-factor);
+
+$nk-table-hover-color:           $nk-table-color;
+$nk-table-hover-bg-factor:       .075;
+$nk-table-hover-bg:              rgba($black, $nk-table-hover-bg-factor);
+
+$nk-table-border-factor:         .1;
+$nk-table-border-width:          $nk-border-width;
+$nk-table-border-color:          $border-light;
+
+$nk-table-striped-order:         odd;
+$nk-table-striped-columns-order: even;
+
+$nk-table-group-separator-color: currentcolor;
+
+$nk-table-caption-color:         $base-text;
+
+$nk-table-bg-scale:              -80%;
+$nk-table-border-radius:         $nk-border-radius;
+
+////////// Offcanvas ///////////
+$nk-offcanvas-horizontal-width:     400px;
+$nk-offcanvas-horizontal-width-sm:  300px;
+$nk-offcanvas-horizontal-width-lg:  500px;
+
+$nk-offcanvas-padding-x:         1.5rem;
+$nk-offcanvas-padding-y:         1.5rem;
+$nk-offcanvas-padding-x-sm:      1rem;
+$nk-offcanvas-padding-y-sm:      1rem;
+$nk-offcanvas-padding-x-lg:      2rem;
+$nk-offcanvas-padding-y-lg:      2rem;
+
+$nk-offcanvas-header-padding-y:     1.25rem;
+$nk-offcanvas-header-padding-y-sm:  1rem;
+$nk-offcanvas-header-padding-y-lg:  1.375rem;
+
+
+////////// DATA TABLES /////////
+$data-table-field-gap-y:        $field-padding-y-md;
+$data-table-field-gap-x:        $field-padding-x-md;
+$data-table-field-gap-x-lg:     2rem;
+
+$data-table-border-color:         $field-border-color;
+$data-table-focus-border-color:   $field-focus-border-color;
+$data-table-border-radius:        $field-border-radius;
+$data-table-font-size:            0.875rem;
+$data-table-heading-color:        $base-light;
+$data-table-focus-box-shadow:     $field-focus-box-shadow;
+
+$data-table-active-color:         $accent-color;
+$data-table-active-bg:            mix($accent-color,$white,20%);
+$data-table-pager-color:          $base-text;
+$data-table-pager-hover-color:    $accent-color;
+$data-table-pager-hover-bg:       mix($accent-color,$white,15%);
+$data-table-pager-font-size:      .875rem;
+$data-table-pager-line-height:    $field-line-height;
+$data-table-pager-item-gap-x:     0.25rem;
+$data-table-pager-link-gap-y:     $field-padding-y-md;
+$data-table-pager-link-gap-x:     .25rem;
+$data-table-pager-link-min-width:     $size-md;
+
+$data-table-sorter-color:           $base-dark;
+$data-table-input-sm-width:         200px;
+
+////////// KANBAN BOARD /////////
+$kanban-board-bg:                  $base-100;
+$kanban-board-border-radius:       $nk-border-radius;
+
+$kanban-board-border-color:       $border-color;
+
+$kanban-board-header-gap-y:          0.75rem;
+$kanban-board-header-gap-x:          1rem;
+$kanban-board-header-font-size:      0.938rem;
+
+$kanban-board-header-title-color:   $h-color;
+$kanban-board-header-title-margin:   0 .5rem 0 0;
+
+$kanban-board-header-count-gap-y:     0.188rem;
+$kanban-board-header-count-gap-x:     0.313rem;
+$kanban-board-header-count-font-size:   0.688rem;
+
+$kanban-board-item-bg:             $white;
+$kanban-board-item-gap-y:          0.75rem;
+$kanban-board-item-gap-x:          1rem;
+$kanban-board-item-font-size:      0.875rem;
+$kanban-board-item-box-shadow:      0 1px 3px rgba($black, 0.02);
+$kanban-board-item-box-shadow-md:   0 1px 3px rgba($black, 0.1);
+
+$kanban-board-drag-gap-y:           1rem;
+$kanban-board-drag-gap-x:           1rem;
+
+$kanban-item-title-font-size:       0.938rem;
+$kanban-item-title-margin:          0.5rem;
+
+// kanban theming
+$kanban-board-header-light:         $base-200;
+$kanban-board-header-primary:       $accent-color;
+$kanban-board-header-warning:       $yellow;
+$kanban-board-header-success:       $green;
+$kanban-board-header-danger:        $red;
+
+////////// FULL CALENDER /////////
+$fullcalendar-border-color:            $field-border-color;
+$fullcalendar-text-color:              $base-text;
+$fullcalendar-text-font-size:          0.75rem;
+$fullcalendar-active-bg:               $base-100;
+$fullcalendar-button-width:            2.125rem;
+
+////////// ICON FONT SIZE  /////////
+$icon-font-size-1: 1.188rem;
+$icon-font-size-2:   1.375rem;
+
+////////// CHART LEGEND /////////
+$chart-legend-gap-x: .875rem;
+$chart-legend-font-size: 0.813rem;
+$chart-legend-font-size-sm: 0.813rem;
+$chart-label-font-size-sm: 0.75rem;
+
+////////// MEDIA  /////////
+$media-title-font-size:           0.875rem;
+$media-text-gap-x:                0.625rem;
+$media-title-color:               $base-color;
+
+////////// TIMELINE  /////////
+$nk-timeline-heading-gap-y:            0.75rem;
+$nk-timeline-item-gap-y:               0.25rem;
+$nk-timeline-item-inner-gap:           0.75rem;
+$nk-timeline-content-gap-x:            0.75rem;
+
+////////// BIO BLOCK  /////////
+$bio-block-gap-y:                  1.625rem;
+
+////////// RATING  /////////
+$rating-label-font-size: 1rem;
+$rating-label-color: $base-300;
+$rating-label-checked-color: $yellow;
+
+////////// IMAGE UPLOAD  /////////
+$image-uploda-border-color:     $border-color;
+$image-uploda-border-radius: $nk-border-radius;
+$image-uploda-gap: 2rem 1rem;
+
+
+// Logo
+$logo-height:                       36px;
+$logo-height-sm:                    29px;
+
+// Footer
+$footer-main-gap-y:                 60px;
+
+$utilities: (
+    "width": (
+        property: width,
+        class: w,
+        values: (
+          25: 25%,
+          40: 40%,
+          50: 50%,
+          75: 75%,
+          100: 100%,
+          auto: auto
+        )
+    ),
+    "font-weight": (
+      property: font-weight,
+      class: fw,
+      values: (
+        light: $nk-font-weight-light,
+        lighter: $nk-font-weight-lighter,
+        normal: $nk-font-weight-normal,
+        medium: $nk-font-weight-medium,
+        bold: $nk-font-weight-bold,
+        semibold: $nk-font-weight-semibold,
+        bolder: $nk-font-weight-bolder
+      )
+    ),
+);
+
+$enable-negative-margins: true

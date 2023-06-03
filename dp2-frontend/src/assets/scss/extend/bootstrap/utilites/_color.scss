@@ -1,0 +1,12 @@
+@each $color, $value in $theme-colors {
+    .bg-#{$color}-soft {
+        background-color: mix($value, $white, 12%);
+    }
+    //hover
+    .bg-#{$color}-hover:hover {
+        background-color: $value;
+    }
+    .bg-#{$color}-soft-hover:hover {
+        background-color: mix($value, $white, 12%);
+    }
+}

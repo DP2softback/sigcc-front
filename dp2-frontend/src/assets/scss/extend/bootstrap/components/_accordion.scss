@@ -1,0 +1,11 @@
+.accordion{
+    &-button{
+        font-weight: $nk-accordion-button-font-weight;
+        &:focus{
+            border-width: 1px;
+        }
+    }
+    &-body{
+        color: $base-text;
+    }
+}

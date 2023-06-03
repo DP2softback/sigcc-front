@@ -1,0 +1,16 @@
+.breadcrumb{
+    &-item{
+        font-weight: 500;
+        a:not(:hover){
+            color: $base-text;
+        }
+    }
+    &-arrow{
+        .breadcrumb-item + .breadcrumb-item{
+            &::before{
+                content: $ni-chevron-right;
+                font-family: $nio-font-family;
+            }
+        }
+    }
+}
