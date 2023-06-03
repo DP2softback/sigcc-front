@@ -11,6 +11,16 @@ import '../../../basic.css';
 import '../training.css';
 import VideoUpload from '@features/Modulo1/components/VideoUpload';
 
+let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
+
+const locationOptions = [
+    { id: 1, type: "Auditorio primer piso" },
+    { id: 2, type: "Auditorio segundo piso" },
+    { id: 3, type: "Auditorio tecer piso" },
+    { id: 4, type: "Auditorio cuarto piso" },
+    { id: 5, type: "Auditorio quinto piso" },
+]
+
 const data = {
     id: 1,
     nombre: "Ejemplo de Creación",
@@ -19,15 +29,26 @@ const data = {
     tipo: "A"
 }
 
-let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
-
-type Supplier = {
-    id: string;
-    name: string;
-    image: string;
-    capacities: any[];
-    category: string;
-}
+const suppliers2: typeSupp[] = [
+    {
+        id: 1,
+        nombres: "John",
+        apellidos: " Doe Johnson",
+        habilidad_x_proveedor_usuario: [{ text: "Front" }, { text: "React" }],
+    },
+    {
+        id: 2,
+        nombres: "Jane",
+        apellidos: "Smith Jackson",
+        habilidad_x_proveedor_usuario: [{ text: "Back" }, { text: "Python" }],
+    },
+    {
+        id: 3,
+        nombres: "Bob",
+        apellidos: "Johnson Doe",
+        habilidad_x_proveedor_usuario: [{ text: "ML" }, { text: "Udemy" }],
+    }
+];
 
 type TopicObj = {
     id?: number;
@@ -39,44 +60,12 @@ type SessionObj = {
     nombre: string;
     descripcion: string;
     fecha_inicio?: string;
-    //fecha_limite?: string;
     ubicacion?: string;
     aforo_maximo?: number;
     url_video?: string;
     temas: TopicObj[];
+    responsables: typeSupp[];
 }
-
-const locationOptions = [
-    { id: 1, type: "Auditorio primer piso" },
-    { id: 2, type: "Auditorio segundo piso" },
-    { id: 3, type: "Auditorio tecer piso" },
-    { id: 4, type: "Auditorio cuarto piso" },
-    { id: 5, type: "Auditorio quinto piso" },
-]
-
-const suppliers2: Supplier[] = [
-    {
-        id: "1",
-        name: "John Doe Johnson",
-        image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-        capacities: [{ text: "Front" }, { text: "React" }],
-        category: "Software"
-    },
-    {
-        id: "2",
-        name: "Jane Smith Jackson",
-        image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-        capacities: [{ text: "Back" }, { text: "Python" }],
-        category: "Salud"
-    },
-    {
-        id: "3",
-        name: "Bob Johnson Doe",
-        image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-        capacities: [{ text: "ML" }, { text: "Udemy" }],
-        category: "Seguridad"
-    }
-];
 
 type typeTraI = {
     id: number,
@@ -99,9 +88,8 @@ type typeSupp = {
     nombres: string,
     apellidos: string,
     email?: string,
-    habilidad_x_proveedor_usuario: []
+    habilidad_x_proveedor_usuario: any[]
 }
-
 
 const typeTra: typeTraI[] = [
     { id: 1, categoria: "Software" },
@@ -133,11 +121,6 @@ const typeHa: typeHabI[] = [
     { id: 6, habilidad: "Habilidad 6" },
 ]
 
-
-
-
-let sessionsData: SessionObj[] = []
-
 const TrainingCreate = () => {
     const { trainingID } = useParams();
     /* CAMBIAR CON LA API */
@@ -164,9 +147,7 @@ const TrainingCreate = () => {
     const [addedSupplier, setAddedSupplier] = useState<typeSupp>()
     const [addedSuppliers, setAddedSuppliers] = useState<typeSupp[]>([])
 
-
     var filtered;
-    var mostrar = 6;
     var mostrarC = 6;
     const [categories, setCategories] = useState([]);
     const [pageC, setPageC] = useState(1)
@@ -268,7 +249,6 @@ const TrainingCreate = () => {
                 nombre: refTrTopics.current?.value
             }
             setAddedTopics([...addedTopics, topicSession])
-            console.log(addedTopics)
             refTrTopics.current.value = ""
         }
     }
@@ -304,25 +284,25 @@ const TrainingCreate = () => {
 
     /* CREATE NEW SESSION */
     const createSession = () => {
+        console.log(addedSuppliers)
+
         let dataSession: SessionObj = {
             nombre: '',
             descripcion: '',
-            temas: []
+            temas: [],
+            responsables: []
         }
 
         let fecha_ini = new Date(refTrDateStart.current?.value).toISOString()
-
-        if (training.tipo === "A") {
-            //let fecha_lim = new Date(refTrDateEnd.current?.value).toISOString()
-
+        
+        if(training.tipo === "A"){
             dataSession = {
                 curso_empresa_id: parseInt(trainingID),
                 nombre: refTrName.current?.value,
                 descripcion: refTrDescription.current?.value,
-                //fecha_inicio: fecha_ini,
                 //url_video: refTrVideo.current.getUrl(),
-                //fecha_limite: fecha_lim,
-                temas: addedTopics
+                temas: addedTopics,
+                responsables: addedSuppliers
             }
         }
         else {
@@ -334,7 +314,8 @@ const TrainingCreate = () => {
                     fecha_inicio: fecha_ini,
                     ubicacion: refTrLocation.current?.value,
                     aforo_maximo: parseInt(refTrCapacity.current?.value),
-                    temas: addedTopics
+                    temas: addedTopics,
+                    responsables: addedSuppliers
                 }
             }
             else {
@@ -345,7 +326,8 @@ const TrainingCreate = () => {
                     fecha_inicio: fecha_ini,
                     ubicacion: refTrLocationLink.current?.value,
                     aforo_maximo: parseInt(refTrCapacity.current?.value),
-                    temas: addedTopics
+                    temas: addedTopics,
+                    responsables: addedSuppliers
                 }
             }
         }
@@ -355,13 +337,10 @@ const TrainingCreate = () => {
         console.log(dataSession)
 
         /* Clear inputs */
-
         refTrName.current.value = "";
         refTrDescription.current.value = "";
-        setAddedTopics([]);
 
-        if (training.tipo === "A") {
-            //refTrDateEnd.current.value = "";
+        if(training.tipo === "A"){
             refTrVideo.current = null;
         }
         else {
@@ -375,6 +354,9 @@ const TrainingCreate = () => {
                 refTrLocationLink.current.value = "";
             }
         }
+
+        setAddedTopics([]);
+        /* Clear inputs */
 
         axiosInt.post('capacitaciones/sesion_course_company/', dataSession)
             .then(function (response) {
@@ -465,6 +447,7 @@ const TrainingCreate = () => {
         setLoading3(true);
         axiosInt.get(`capacitaciones/get_habilidades_empresa/${id}/`)
             .then(function (response) {
+                console.log(response.data)
                 setHabilities(response.data);
                 setLoading3(false);
             })
@@ -656,8 +639,8 @@ const TrainingCreate = () => {
                             </div>
                         </div>
 
-                        {/* CREATE SESSION MODAL */}
-                        <div className="modal fade" id="createSessionModal" aria-hidden="true" aria-labelledby="createSessionModal" tabIndex={-1}>
+{/* CREATE SESSION MODAL */}
+<div className="modal fade" id="createSessionModal" aria-hidden="true" aria-labelledby="createSessionModal" tabIndex={-1}>
                             <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                 <div className="modal-content">
                                     <div className="modal-header">
@@ -675,55 +658,45 @@ const TrainingCreate = () => {
                                         </div>
                                         {
                                             training.tipo === "A" ?
-                                                (<>
-                                                    {/*
+                                            (<>
                                                 <div className='mb-3'>
-                                                    <label className="form-label">Fecha de la sesión</label>
-                                                    <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
+                                                    <label className="form-label">Video de la sesión</label>
+                                                    <VideoUpload ref={refTrVideo}/>
                                                 </div>
-                                                <div className='col'>
-                                                    <label className="form-label">Fecha limite</label>
-                                                    <input className='form-control' type='date' id='end_date_creation' ref={refTrDateEnd} />
+                                            </>)
+                                            :
+                                            (<>
+                                                <div className='row mb-3'>
+                                                    <div className='col'>
+                                                        <label className="form-label">Fecha de la sesión</label>
+                                                        <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
+                                                    </div>
+                                                    <div className='col'>
+                                                        <label className="form-label">Aforo máximo</label>
+                                                        <input type="number" className="form-control" ref={refTrCapacity} min={'0'} />
+                                                    </div>
                                                 </div>
-                                                */}
-                                                    <div className='mb-3'>
-                                                        <label className="form-label">Video de la sesión</label>
-                                                        <VideoUpload ref={refTrVideo} />
-                                                    </div>
-                                                </>)
-                                                :
-                                                (<>
-                                                    <div className='row mb-3'>
-                                                        <div className='col'>
-                                                            <label className="form-label">Fecha de la sesión</label>
-                                                            <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
-                                                        </div>
-                                                        <div className='col'>
-                                                            <label className="form-label">Aforo máximo</label>
-                                                            <input type="number" className="form-control" ref={refTrCapacity} min={'0'} />
-                                                        </div>
-                                                    </div>
-                                                    <div className='mb-3'>
-                                                        <label className="form-label">Ubicación</label>
-                                                        {
-                                                            training.tipo === 'P' ?
-                                                                (<>
-                                                                    <select className="form-select" ref={refTrLocation}>
-                                                                        <option hidden>Seleccionar</option>
-                                                                        {locationOptions.map((lo) => {
-                                                                            return (
-                                                                                <option key={lo.id} value={lo.type}>{lo.type}</option>
-                                                                            )
-                                                                        })}
-                                                                    </select>
-                                                                </>)
-                                                                :
-                                                                (<input ref={refTrLocationLink} type="text" className="form-control" />)
-                                                        }
-                                                    </div>
-                                                </>)
+                                                <div className='mb-3'>
+                                                    <label className="form-label">Ubicación</label>
+                                                    {
+                                                        training.tipo === 'P' ?
+                                                        (<>
+                                                            <select className="form-select" ref={refTrLocation}>
+                                                                <option hidden>Seleccionar</option>
+                                                                {locationOptions.map((lo) => {
+                                                                    return (
+                                                                        <option key={lo.id} value={lo.type}>{lo.type}</option>
+                                                                    )
+                                                                })}
+                                                            </select>
+                                                        </>)
+                                                        :
+                                                        (<input ref={refTrLocationLink} type="text" className="form-control" />)
+                                                    } 
+                                                </div>
+                                            </>)
                                         }
-
+                                    
                                         <div className='row mb-3'>
                                             <label className="form-label">Temas de la sesión</label>
                                             <div className='col-10'>
@@ -733,18 +706,17 @@ const TrainingCreate = () => {
                                                 <button type='submit' className='btn btn-primary' onClick={addTopic}><Check /></button>
                                             </div>
                                         </div>
-
                                         {
                                             addedTopics.length > 0 ?
-                                                (addedTopics.map((element, i) => {
-                                                    return (
-                                                        <div key={i}>
-                                                            {getTopics(i, element)}
-                                                        </div>
-                                                    )
-                                                }))
-                                                :
-                                                (<></>)
+                                            (addedTopics.map((element, i) => {
+                                                return (
+                                                    <div key={i}>
+                                                        {getTopics(i, element)}
+                                                    </div>
+                                                )
+                                            }))
+                                            :
+                                            (<></>)
                                         }
                                     </div>
                                     <div className="modal-footer">
@@ -763,7 +735,6 @@ const TrainingCreate = () => {
                                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div className="modal-body">
-
                                         {loading1 ?
                                             <>
                                                 <div className='vertical-align-parent'>
@@ -807,7 +778,6 @@ const TrainingCreate = () => {
                                                 </div>
                                             </div>
                                         }
-
 
                                         {typeArea.categoria != "" &&
                                             <>
@@ -859,13 +829,12 @@ const TrainingCreate = () => {
                                             </>
                                         }
                                     </div>
-                                    {(typeArea.categoria != "" && typeCompany.razon_social != "") &&
-                                        <div className="modal-footer">
+                                    <div className="modal-footer">
+                                        <button className="btn btn-outline-primary" data-bs-target="#createSessionModal" data-bs-toggle="modal">Regresar</button>
+                                        {(typeArea.categoria != "" && typeCompany.razon_social != "") &&
                                             <button className="btn btn-primary" data-bs-target="#searchSkillResponsible" data-bs-toggle="modal">Ver Habilidades</button>
-                                        </div>
-                                    }
-
-
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -914,11 +883,12 @@ const TrainingCreate = () => {
                                         }
 
                                     </div>
-                                    {(typeArea.categoria != "" && typeCompany.razon_social != "") &&
-                                        <div className="modal-footer">
+                                    <div className="modal-footer">
+                                        <button className="btn btn-outline-primary" data-bs-target="#searchResponsible" data-bs-toggle="modal">Regresar</button>
+                                        {(typeArea.categoria != "" && typeCompany.razon_social != "") &&
                                             <button className="btn btn-primary" data-bs-target="#assignResponsible" data-bs-toggle="modal" onClick={handleSuppliers}>Buscar</button>
-                                        </div>
-                                    }
+                                        }
+                                    </div>
 
 
                                 </div>
@@ -1025,6 +995,7 @@ const TrainingCreate = () => {
                                         </div>
                                     </div>
                                     <div className="modal-footer">
+                                        <button className="btn btn-outline-primary" data-bs-target="#searchSkillResponsible" data-bs-toggle="modal">Regresar</button>
                                         <button className="btn btn-primary" data-bs-dismiss="modal" onClick={createSession}>Crear</button>
                                     </div>
                                 </div>
