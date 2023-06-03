@@ -3,6 +3,7 @@ import { Form, FormControl, InputGroup, Button, Table, Modal  } from 'react-boot
 import { Download,Upload,ArrowRightCircleFill,Pencil,Trash } from 'react-bootstrap-icons';
 import { set } from 'zod';
 import { useHref } from 'react-router-dom';
+import './GestionCompetencias.css'
 const GestionCompetencia = () => {
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [nombreEmpleado, setNombreEmpleado] = useState('Ángela Quispe Ramírez');
@@ -124,16 +125,19 @@ const GestionCompetencia = () => {
       <h2>Competencias de empleado del área de TI</h2>
       <p className="text-muted">Competencias por empleado.</p>
       </div>
+      
     <div className='container-fluid'>
     <img alt='Foto de perfil del empleado' src=''></img>
     <div>{nombreEmpleado}</div>
     <div>{cargoEmpleado}</div>
     </div>
+    
       <div className='container-fluid'>
+      <hr style={{background:'black', height:'2px'}}></hr>
          {renderTablaCompetencias()}
       </div>
       <div className="col-sm-3 botones">
-              <Button variant="outline-secondary" className="me-2" onClick={()=>{}}>
+              <Button variant="outline-primary" className="me-2" onClick={()=>{}}>
                 Regresar
               </Button>
             </div>
