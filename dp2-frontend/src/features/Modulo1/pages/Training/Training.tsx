@@ -385,6 +385,7 @@ const Training = () => {
         axiosInt.get('capacitaciones/course_company_course/')
             .then(function (response) {
                 setTrainingFilter(response.data);
+                console.log(response.data)
                 setLoading(false);
             })
             .catch(function (error) {
@@ -460,7 +461,7 @@ const Training = () => {
                         </div>
                         
                         {/* SHOW TRAINING DATA */}
-                        {trainingFilter != datos ?
+                        {trainingFilter == datos ?
                             <div>
                                 <div>
                                     <div>
