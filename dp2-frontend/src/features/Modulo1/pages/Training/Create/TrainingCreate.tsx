@@ -14,7 +14,7 @@ import VideoUpload from '@features/Modulo1/components/VideoUpload';
 const data = {
     id: 1,
     nombre: "Ejemplo de Creación",
-    url_foto: 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg',
+    url_foto: null,
     descripcion: "Esto es un ejemplo de creación de un curso empresa",
     tipo: "A"
 }
@@ -95,11 +95,11 @@ type typeHabI = {
 }
 
 type typeSupp = {
-    id: number,
+    id: string,
     nombres: string,
     apellidos: string,
     email?: string,
-    habilidad_x_proveedor_usuario: number[]
+    habilidad_x_proveedor_usuario: []
 }
 
 
@@ -125,7 +125,7 @@ const typeCom: typeComI[] = [
 ]
 
 const typeHa: typeHabI[] = [
-    { id: 1, habilidad: "Habilidad 1" },
+    { id: 1, habilidad: "Habilidad 1 asdsadsa" },
     { id: 2, habilidad: "Habilidad 2" },
     { id: 3, habilidad: "Habilidad 3" },
     { id: 4, habilidad: "Habilidad 4" },
@@ -133,30 +133,20 @@ const typeHa: typeHabI[] = [
     { id: 6, habilidad: "Habilidad 6" },
 ]
 
-const typeSup: typeSupp[] = [
-    { id: 1, nombres: "Proveedor 1", apellidos: "A", habilidad_x_proveedor_usuario: [1, 2] },
-    { id: 2, nombres: "Proveedor 2", apellidos: "B", habilidad_x_proveedor_usuario: [1, 2] },
-    { id: 3, nombres: "Proveedor 3", apellidos: "C", habilidad_x_proveedor_usuario: [1, 2] },
-    { id: 4, nombres: "Proveedor 4", apellidos: "D", habilidad_x_proveedor_usuario: [1, 2] },
-    { id: 5, nombres: "Proveedor 5", apellidos: "E", habilidad_x_proveedor_usuario: [1, 2] },
-    { id: 6, nombres: "Proveedor 6", apellidos: "F", habilidad_x_proveedor_usuario: [1, 2] },
-]
-
 let sessionsData: SessionObj[] = []
 
 const TrainingCreate = () => {
     const { trainingID } = useParams();
     /* CAMBIAR CON LA API */
-    // const [training, setTraining] = useState<any>([]);
-    const [training, setTraining] = useState<any>(data);
+    const [training, setTraining] = useState<any>([]);
     const [nombreT, setNombreT] = useState(training.nombre)
     const [descripcionT, setDescripcionT] = useState(training.descripcion)
     /* CAMBIAR CON LA API */
 
     const [sessionCreated, setSessionCreated] = useState<any>(false);
 
-    const [nombreAuxT, setNombreAuxT] = useState(data.nombre)
-    const [descripcionAuxT, setDescripcionAuxT] = useState(data.descripcion)
+    const [nombreAuxT, setNombreAuxT] = useState(training.nombre)
+    const [descripcionAuxT, setDescripcionAuxT] = useState(training.descripcion)
 
     const [classSessions, setClassSessions] = useState<SessionObj[]>([])
     const [addedTopics, setAddedTopics] = useState<TopicObj[]>([])
@@ -166,15 +156,12 @@ const TrainingCreate = () => {
     const [typeArea, setTypeArea] = useState<typeTraI>({ id: 0, categoria: "" })
     const [typeCompany, setTypeCompany] = useState<typeComI>({ id: 0, razon_social: "" })
     const [typeHability, setTypeHability] = useState<typeHabI>({ id: 0, habilidad: "" })
-    const [typeSupplier, setTypeSupplier] = useState<typeSupp>({ id: 0, nombres: "", apellidos: "", habilidad_x_proveedor_usuario: [] })
+    const [typeSupplier, setTypeSupplier] = useState<typeSupp>({ id: "0", nombres: "", apellidos: "", habilidad_x_proveedor_usuario: [] })
 
-    const [addedSupplier, setAddedSupplier] = useState<typeSupp>()
-    const [addedSuppliers, setAddedSuppliers] = useState<typeSupp[]>([])
 
     var filtered;
     var mostrar = 6;
     var mostrarC = 6;
-    var filtered2;
     const [categories, setCategories] = useState([]);
     const [pageC, setPageC] = useState(1)
     const totalPagesC = Math.ceil(categories.length / mostrarC);
@@ -201,6 +188,7 @@ const TrainingCreate = () => {
     const [habilitiesS, setHabilitiesS] = useState([]);
 
     const handleCheck = (item: typeHabI, event) => {
+
         async function updateArray() {
             var updatedList = [...checked];
             var updatedList2 = [...habilitiesS];
@@ -218,47 +206,17 @@ const TrainingCreate = () => {
     };
 
 
-    // const handleFilter = (e: any) => {
-    //     const searchTerm = e.target.value;
-    //     if (searchTerm === '') {
-    //         setSupplierFilter(typeSup)
-    //     } else {
-    //         filtered = typeSup.filter((item: any) =>
-    //             item.nombres.toLowerCase().includes(searchTerm.toLowerCase()) || item.apellidos.toLowerCase().includes(searchTerm.toLowerCase())
-    //         );
-    //         setSupplierFilter(filtered);
-    //     }
-    // };
-
     const handleFilter = (e: any) => {
         const searchTerm = e.target.value;
         if (searchTerm === '') {
-            if (addedSuppliers.length) {
-                filtered = typeSup.filter((item: any) => {
-                    return addedSuppliers.every((added) => {
-                        return added[0].id != item.id
-                    })
-                });
-                setSupplierFilter(filtered);
-            }
-            else setSupplierFilter(typeSup);
+            setSupplierFilter(suppliers)
         } else {
-            if (addedSuppliers.length) {
-                filtered = supplierFilter.filter((item: any) => {
-                    return addedSuppliers.every((added) => {
-                        return added[0].id != item.id
-                    }) && item.name.toLowerCase().includes(searchTerm.toLowerCase())
-                });
-            } else {
-                filtered = supplierFilter.filter((item: any) =>
-                    item.name.toLowerCase().includes(searchTerm.toLowerCase())
-                );
-            }
+            filtered = suppliers.filter((item: any) =>
+                item.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
             setSupplierFilter(filtered);
         }
-    }
-
-
+    };
 
     const handleChangeType = (e: any) => {
         setTypeArea(e.target.value)
@@ -266,20 +224,14 @@ const TrainingCreate = () => {
 
     const search = (e: any) => {
         if (typeArea == null)
-            setSupplierFilter(typeSup);
+            setSupplierFilter(suppliers);
         else {
-            filtered = typeSup.filter((item: any) =>
+            filtered = suppliers.filter((item: any) =>
                 item.category === typeArea
             );
             setSupplierFilter(filtered);
         }
     }
-
-    const handleRemove = (idAEliminar: number) => {
-        const newArray = addedSuppliers.filter((item) => item[0].id !== idAEliminar);
-        setAddedSuppliers(newArray)
-    }
-
 
     /* TRAINING SESSION DETAIL INPUTS */
     const refTrName = useRef<HTMLInputElement>(null);
@@ -311,14 +263,9 @@ const TrainingCreate = () => {
     }
 
     const deleteTopic = (index: number) => {
-        console.log(index)
-
         let newDataTopics = [...addedTopics]
 
         newDataTopics.splice(index, 1)
-
-        console.log(newDataTopics)
-        console.log(newDataTopics.length)
 
         if (newDataTopics.length === 0) {
             newDataTopics = []
@@ -352,9 +299,9 @@ const TrainingCreate = () => {
             temas: []
         }
 
-        // 
-
-        if (training.tipo === "A") {
+        let fecha_ini = new Date(refTrDateStart.current?.value).toISOString()
+        
+        if(training.tipo === "A"){
             //let fecha_lim = new Date(refTrDateEnd.current?.value).toISOString()
 
             dataSession = {
@@ -362,14 +309,13 @@ const TrainingCreate = () => {
                 nombre: refTrName.current?.value,
                 descripcion: refTrDescription.current?.value,
                 //fecha_inicio: fecha_ini,
-                url_video: 'https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4',
+                //url_video: refTrVideo.current.getUrl(),
                 //fecha_limite: fecha_lim,
                 temas: addedTopics
             }
         }
         else {
             if (training.tipo === "P") {
-                let fecha_ini = new Date(refTrDateStart.current?.value).toISOString()
                 dataSession = {
                     curso_empresa_id: parseInt(trainingID),
                     nombre: refTrName.current?.value,
@@ -381,7 +327,6 @@ const TrainingCreate = () => {
                 }
             }
             else {
-                let fecha_ini = new Date(refTrDateStart.current?.value).toISOString()
                 dataSession = {
                     curso_empresa_id: parseInt(trainingID),
                     nombre: refTrName.current?.value,
@@ -393,10 +338,9 @@ const TrainingCreate = () => {
                 }
             }
         }
-
-        /* VER SI NO MUERE SIN ESTO */
-        setClassSessions([...classSessions, dataSession])
-
+        
+        //setClassSessions([...classSessions, dataSession])
+        
         console.log(dataSession)
 
         /* Clear inputs */
@@ -405,7 +349,7 @@ const TrainingCreate = () => {
         refTrDescription.current.value = "";
         setAddedTopics([]);
 
-        if (training.tipo === "A") {
+        if(training.tipo === "A"){
             //refTrDateEnd.current.value = "";
             refTrVideo.current = null;
         }
@@ -413,21 +357,21 @@ const TrainingCreate = () => {
             refTrDateStart.current.value = "";
             refTrCapacity.current.value = "";
 
-            if (training.tipo === "P") {
+            if(training.tipo === "P"){
                 refTrLocation.current.value = "";
             }
             else {
                 refTrLocationLink.current.value = "";
-            }
+            }            
         }
 
-        axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/sesion_course_company/', dataSession)
+        axiosInt.post('capacitaciones/sesion_course_company/', dataSession)
             .then(function (response) {
                 console.log(response.data)
                 setSessionCreated(true)
             })
             .catch(function (error) {
-                console.log(error);
+                //console.log(error);
             });
     }
     /* CREATE NEW SESSION */
@@ -463,11 +407,8 @@ const TrainingCreate = () => {
     /* LOAD TRAINING DETAILS */
     const loadTrainingDetails = () => {
         setLoading(true);
-        axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/course_company_course/${trainingID}`)
+        axiosInt.get(`capacitaciones/course_company_course/${trainingID}`)
             .then(function (response) {
-                console.log(response.data)
-                console.log(response.data.sesiones.length)
-
                 setTraining(response.data);
                 setNombreT(response.data.nombre)
                 setDescripcionT(response.data.descripcion)
@@ -476,15 +417,12 @@ const TrainingCreate = () => {
                 setLoading(false);
             })
             .catch(function (error) {
-                console.log(error);
-                setTraining(data)
-                setNombreT(data.nombre)
-                setDescripcionT(data.descripcion)
-                // setClassSessions(data.sesiones)
                 setLoading(false);
 
-                // /* BORRAR LUEGO */
-                // setTraining(data)
+                /* BORRAR LUEGO */
+                //setTraining(data)
+                //setNombreT(data.nombre)
+                //setDescripcionT(data.descripcion)
             });
     }
     /* LOAD TRAINING DETAILS */
@@ -495,7 +433,7 @@ const TrainingCreate = () => {
 
     const loadCompanies = (id: number) => {
         setLoading2(true);
-        axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/get_proveedores_empresa/${id}/`)
+        axiosInt.get(`capacitaciones/get_proveedores_empresa/${id}/`)
             .then(function (response) {
                 setCompanies(response.data);
                 setLoading2(false);
@@ -514,7 +452,7 @@ const TrainingCreate = () => {
 
     const loadHabilities = (id: number) => {
         setLoading3(true);
-        axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/get_habilidades_empresa/${id}/`)
+        axiosInt.get(`capacitaciones/get_habilidades_empresa/${id}/`)
             .then(function (response) {
                 setHabilities(response.data);
                 setLoading3(false);
@@ -533,7 +471,7 @@ const TrainingCreate = () => {
 
     const loadCategories = () => {
         setLoading1(true);
-        axiosInt.get('dev-modulo-capacitaciones/api/capacitaciones/get_categoria/')
+        axiosInt.get('capacitaciones/get_categoria/')
             .then(function (response) {
                 setCategories(response.data);
                 setLoading1(false);
@@ -551,14 +489,13 @@ const TrainingCreate = () => {
         setHabilitiesS([])
         setPositionC(0)
         setPositionCo(0)
-        setAddedSuppliers([])
 
         loadCategories();
     }
 
     const handleSuppliers = () => {
         setLoading4(true);
-        axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/get_personas_empresa_habilidades/', {
+        axiosInt.post('capacitaciones/get_personas_empresa_habilidades/', {
             id_proveedor: typeCompany.id,
             habilidades: checked
         })
@@ -568,8 +505,6 @@ const TrainingCreate = () => {
                 setLoading4(false);
             })
             .catch(function (error) {
-                setSuppliers(typeSup)
-                setSupplierFilter(typeSup)
                 setLoading4(false);
             });
     }
@@ -580,41 +515,6 @@ const TrainingCreate = () => {
         })
         : "";
 
-
-    useEffect(() => {
-        async function UpdateFilter() {
-            var filtered2 = typeSup.filter((item: any) => {
-                return addedSuppliers.every((added) => {
-                    return added[0].id != item.id
-                })
-            }
-            );
-            setSupplierFilter(filtered2);
-        }
-        UpdateFilter()
-    }, [addedSuppliers]);
-
-    useEffect(() => {
-        async function AddSupplier() {
-            var aux = addedSuppliers;
-            aux.push(addedSupplier)
-            setAddedSuppliers(aux)
-        }
-        async function UpdateFilter() {
-            var filtered2 = supplierFilter.filter((item: any) => {
-                return addedSuppliers.every((added) => {
-                    return added[0].id != item.id
-                })
-            }
-            );
-            setSupplierFilter(filtered2);
-        }
-
-        if (addedSupplier != undefined) {
-            AddSupplier()
-            UpdateFilter()
-        }
-    }, [addedSupplier]);
 
 
 
@@ -728,8 +628,8 @@ const TrainingCreate = () => {
                                         </div>
                                         {
                                             training.tipo === "A" ?
-                                                (<>
-                                                    {/*
+                                            (<>
+                                                {/*
                                                 <div className='mb-3'>
                                                     <label className="form-label">Fecha de la sesión</label>
                                                     <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
@@ -739,44 +639,44 @@ const TrainingCreate = () => {
                                                     <input className='form-control' type='date' id='end_date_creation' ref={refTrDateEnd} />
                                                 </div>
                                                 */}
-                                                    <div className='mb-3'>
-                                                        <label className="form-label">Video de la sesión</label>
-                                                        <VideoUpload ref={refTrVideo} />
+                                                <div className='mb-3'>
+                                                    <label className="form-label">Video de la sesión</label>
+                                                    <VideoUpload ref={refTrVideo}/>
+                                                </div>
+                                            </>)
+                                            :
+                                            (<>
+                                                <div className='row mb-3'>
+                                                    <div className='col'>
+                                                        <label className="form-label">Fecha de la sesión</label>
+                                                        <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
                                                     </div>
-                                                </>)
-                                                :
-                                                (<>
-                                                    <div className='row mb-3'>
-                                                        <div className='col'>
-                                                            <label className="form-label">Fecha de la sesión</label>
-                                                            <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
-                                                        </div>
-                                                        <div className='col'>
-                                                            <label className="form-label">Aforo máximo</label>
-                                                            <input type="number" className="form-control" ref={refTrCapacity} min={'0'} />
-                                                        </div>
+                                                    <div className='col'>
+                                                        <label className="form-label">Aforo máximo</label>
+                                                        <input type="number" className="form-control" ref={refTrCapacity} min={'0'} />
                                                     </div>
-                                                    <div className='mb-3'>
-                                                        <label className="form-label">Ubicación</label>
-                                                        {
-                                                            training.tipo === 'P' ?
-                                                                (<>
-                                                                    <select className="form-select" ref={refTrLocation}>
-                                                                        <option hidden>Seleccionar</option>
-                                                                        {locationOptions.map((lo) => {
-                                                                            return (
-                                                                                <option key={lo.id} value={lo.type}>{lo.type}</option>
-                                                                            )
-                                                                        })}
-                                                                    </select>
-                                                                </>)
-                                                                :
-                                                                (<input ref={refTrLocationLink} type="text" className="form-control" />)
-                                                        }
-                                                    </div>
-                                                </>)
+                                                </div>
+                                                <div className='mb-3'>
+                                                    <label className="form-label">Ubicación</label>
+                                                    {
+                                                        training.tipo === 'P' ?
+                                                        (<>
+                                                            <select className="form-select" ref={refTrLocation}>
+                                                                <option hidden>Seleccionar</option>
+                                                                {locationOptions.map((lo) => {
+                                                                    return (
+                                                                        <option key={lo.id} value={lo.type}>{lo.type}</option>
+                                                                    )
+                                                                })}
+                                                            </select>
+                                                        </>)
+                                                        :
+                                                        (<input ref={refTrLocationLink} type="text" className="form-control" />)
+                                                    } 
+                                                </div>
+                                            </>)
                                         }
-
+                                    
                                         <div className='row mb-3'>
                                             <label className="form-label">Temas de la sesión</label>
                                             <div className='col-10'>
@@ -789,15 +689,15 @@ const TrainingCreate = () => {
 
                                         {
                                             addedTopics.length > 0 ?
-                                                (addedTopics.map((element, i) => {
-                                                    return (
-                                                        <div key={i}>
-                                                            {getTopics(i, element)}
-                                                        </div>
-                                                    )
-                                                }))
-                                                :
-                                                (<></>)
+                                            (addedTopics.map((element, i) => {
+                                                return (
+                                                    <div key={i}>
+                                                        {getTopics(i, element)}
+                                                    </div>
+                                                )
+                                            }))
+                                            :
+                                            (<></>)
                                         }
                                     </div>
                                     <div className="modal-footer">
@@ -992,7 +892,7 @@ const TrainingCreate = () => {
                                             <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
                                                 <div style={{ display: "flex", alignItems: "center" }}>
                                                     <input className='form-control' type='text' placeholder='Buscar responsables' onChange={handleFilter} style={{ maxWidth: "60%", marginRight: "1rem" }} />
-                                                    <h5 style={{ display: "flex", fontSize: "14px", marginBottom: "0rem", marginRight: "1rem" }}>Categoría: {typeArea.categoria}</h5>
+                                                    <h5 style={{ display: "flex", fontSize: "14px", marginBottom: "0rem" }}>Categoría: {typeArea.categoria}</h5>
                                                     <h5 style={{ display: "flex", fontSize: "14px", marginBottom: "0rem" }}>Empresa: {typeCompany.razon_social}</h5>
                                                 </div>
                                             </div>
@@ -1008,13 +908,13 @@ const TrainingCreate = () => {
                                                     </div>
                                                 </>
                                                 :
-                                                <div style={{ display: "flex" }}>
+                                                <div >
                                                     {suppliers.length ?
                                                         <>
                                                             <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "10px" }}>
                                                                 {
                                                                     supplierFilter.map((tr) => {
-                                                                        filtered2 = habilities.filter((item: any) => {
+                                                                        var filtered2 = habilities.filter((item: any) => {
                                                                             return tr.habilidad_x_proveedor_usuario.every((ha) => {
                                                                                 return ha == item.id
                                                                             })
@@ -1023,13 +923,11 @@ const TrainingCreate = () => {
 
                                                                             <SupplierCard key={tr.id}
                                                                                 id={tr.id}
-                                                                                nombres={tr.nombres}
-                                                                                apellidos={tr.apellidos}
+                                                                                name={tr.nombres + ' ' + tr.apellidos}
                                                                                 image='https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
-                                                                                capacities={tr.habilidad_x_proveedor_usuario}
+                                                                                capacities={filtered2}
                                                                                 button='Asignar'
                                                                                 buttonColor={"rgb(8, 66, 152)"}
-                                                                                option={setAddedSupplier}
                                                                             />
 
                                                                         )
@@ -1048,31 +946,6 @@ const TrainingCreate = () => {
                                                             No hay responsables disponibles
                                                         </div>
                                                     }
-
-                                                    <div style={{ paddingLeft: "1rem", position: supplierFilter.length == 0 ? 'relative' : 'static', right: supplierFilter.length == 0 ? '-21.9rem' : '', }}>
-                                                        {addedSuppliers.length ?
-                                                            <>
-                                                                <div style={{ backgroundColor: "#D8E0E8", width: "17.3rem", borderRadius: "4px", overflow: "hidden", boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}>
-
-                                                                    <h4 style={{ display: "flex", justifyContent: "center", marginTop: "0.25rem", fontSize: "16px" }}>Responsables asignados</h4>
-
-                                                                    <div>
-                                                                        {addedSuppliers.map((supplier) => (
-                                                                            <div key={supplier[0].id} style={{ display: "flex", alignItems: "center", paddingLeft: "0.5rem", paddingRight: " 0.5rem", paddingBottom: "0.5rem", justifyContent: "space-between" }}>
-                                                                                <h4 style={{ fontSize: "13px", paddingTop: "0.35rem" }}>{supplier[0].nombres + supplier[0].apellidos}</h4>
-                                                                                <button style={{ backgroundColor: '#B02A37', color: 'white', border: "none", fontSize: "12px" }} onClick={() => handleRemove(supplier[0].id)}>Quitar</button>
-                                                                            </div>
-                                                                        ))
-
-                                                                        }
-                                                                    </div>
-                                                                </div>
-                                                            </>
-                                                            :
-                                                            <></>
-                                                        }
-                                                    </div>
-
                                                 </div>
                                             }
                                         </div>
