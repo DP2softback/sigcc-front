@@ -263,7 +263,7 @@ const TrainingDetails = () => {
                                 <div className="row mb-3 ">
                                     <h4 className='mt-3 mb-3 subarea'>Sesiones</h4>
                                     {training.sesiones.length > 0 ?
-                                        (<SessionAccordion trainingType={training.tipo} sessions={training.sesiones}/>)
+                                        (<SessionAccordion trainingType={training.tipo} sessions={training.sesiones} mode={"detailEmp"}/>)
                                         :
                                         (
                                             <div className='row align-items-stretch g-3 py-3'>

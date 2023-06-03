@@ -306,6 +306,7 @@ const TrainingCreate = () => {
 
     /* CREATE NEW SESSION */
     const createSession = () => {
+        setLoading(true)
         let dataSession: SessionObj = {
             nombre: '',
             descripcion: '',
@@ -384,7 +385,7 @@ const TrainingCreate = () => {
                 setSessionCreated(true)
             })
             .catch(function (error) {
-                //console.log(error);
+                console.log(error);
             });
     }
     /* CREATE NEW SESSION */
@@ -422,6 +423,7 @@ const TrainingCreate = () => {
         setLoading(true);
         axiosInt.get(`capacitaciones/course_company_course/${trainingID}`)
             .then(function (response) {
+                console.log(response.data)
                 setTraining(response.data);
                 setNombreT(response.data.nombre)
                 setDescripcionT(response.data.descripcion)
@@ -431,18 +433,13 @@ const TrainingCreate = () => {
             })
             .catch(function (error) {
                 setLoading(false);
-
-                /* BORRAR LUEGO */
-                //setTraining(data)
-                //setNombreT(data.nombre)
-                //setDescripcionT(data.descripcion)
             });
     }
     /* LOAD TRAINING DETAILS */
 
     useEffect(() => {
         loadTrainingDetails();
-    }, []);
+    }, [sessionCreated]);
 
     const loadCompanies = (id: number) => {
         setLoading2(true);
@@ -646,7 +643,7 @@ const TrainingCreate = () => {
 
                                 <div>
                                     {classSessions.length > 0 ?
-                                        (<SessionAccordion trainingType={training.tipo} sessions={classSessions} />)
+                                        (<SessionAccordion trainingType={training.tipo} sessions={classSessions} mode={"create"}/>)
                                         :
                                         (
                                             <div className='row align-items-stretch g-3 py-3'>

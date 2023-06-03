@@ -1,18 +1,17 @@
 import Sidebar from '@components/Sidebar'
 import axiosInt from '@config/axios';
 import TableAttendance from '@features/Modulo1/components/TableAttendance';
-import Employee from '@features/Modulo3/components/Cards/Employee/Employee';
 import sidebarItems from '@utils/sidebarItems'
 import { useEffect, useState } from 'react';
 import { ArrowLeftCircleFill } from 'react-bootstrap-icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 type EmployeeObj = {
     id: number;
     nombre: string;
     codigo: string;
     area: string;
-    asistencia: string;
+    estado_asistencia: string;
 }
 
 const employeesData: EmployeeObj[] = [
@@ -21,35 +20,35 @@ const employeesData: EmployeeObj[] = [
         nombre: "John Doe",
         codigo: "123456789",
         area: "Área de Base de datos",
-        asistencia: null
+        estado_asistencia: null
     },
     {
         id: 2,
         nombre: "Jane Smith",
         codigo: "123456789",
         area: "Área de Base de datos",
-        asistencia: null
+        estado_asistencia: null
     },
     {
         id: 3,
         nombre: "Bob Johnson",
         codigo: "123456789",
         area: "Área de Base de datos",
-        asistencia: null
+        estado_asistencia: null
     },
     {
         id: 4,
         nombre: "Sarah Lee",
         codigo: "123456789",
         area: "Área de Base de datos",
-        asistencia: null
+        estado_asistencia: null
     },
     {
         id: 5,
         nombre: "Tom Jackson",
         codigo: "123456789",
         area: "Área de Base de datos",
-        asistencia: null
+        estado_asistencia: null
     }
 ];
 

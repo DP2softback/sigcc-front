@@ -11,15 +11,6 @@ import SessionAccordion from '@features/Modulo1/components/SessionAccordion';
 
 let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
 
-type Employee = {
-    id: string;
-    name: string;
-    code: string;
-    area: string;
-    position: string;
-    image: string;
-}
-
 const datos = {
     id: 1,
     nombre: "Seguridad de Información 1",
@@ -45,7 +36,10 @@ const datos = {
             fecha_inicio: "2023-05-31T00:00:00-05:00",
             url_video: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
             ubicacion: "Auditorio tercer piso",
-            aforo_maximo: 20
+            aforo_maximo: 20,
+            responsables : [
+
+            ]
         },
         {
             id: 2,
@@ -66,29 +60,17 @@ const datos = {
                     id: 4,
                     nombre: "Tema 2 Sesión 2"
                 },
-                {
-                    id: 1,
-                    nombre: "Tema Sesión 2"
-                },
-                {
-                    id: 2,
-                    nombre: "Tema 2 Sesión 2"
-                },
-                {
-                    id: 3,
-                    nombre: "Tema Sesión 2"
-                },
-                {
-                    id: 4,
-                    nombre: "Tema 2 Sesión 2"
-                }
             ],
             nombre: "Sesión 2",
             descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
             fecha_inicio: "2023-06-01T00:00:00-05:00",
             url_video: null,
             ubicacion: "Auditorio tercer piso",
-            aforo_maximo: 20
+            aforo_maximo: 20,
+            responsables : [
+
+            ]
+            
         },
         {
             id: 3,
@@ -107,7 +89,10 @@ const datos = {
             fecha_inicio: "2023-06-02T00:00:00-05:00",
             url_video: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
             ubicacion: "Auditorio tercer piso",
-            aforo_maximo: 20
+            aforo_maximo: 20,
+            responsables : [
+
+            ]
         },
     ]
 }
@@ -155,9 +140,24 @@ const employees: Employee[] = [
     }
 ];
 
+type Employee = {
+    id: string;
+    name: string;
+    code: string;
+    area: string;
+    position: string;
+    image: string;
+}
+
 type TopicObj = {
     id?: number;
     nombre: string;
+}
+
+type SupplierObj = {
+    id: number
+    nombres?: string;
+    apellidos?: string;
 }
 
 type SessionObj = {
@@ -169,23 +169,14 @@ type SessionObj = {
     aforo_maximo?: number;
     url_video?: string;
     temas: TopicObj[];
-}
-
-type TrainingObj = {
-    id: number;
-    nombre: string;
-    url_foto: string,
-    descripcion: string;
-    cantidad_empleados: number;
-    tipo: string;
-    sesiones: SessionObj[];
+    responsables: SupplierObj[];
 }
 
 const TrainingDetails = () => {
     const { trainingID } = useParams();
-    const [training, setTraining] = useState<TrainingObj>(datos);
+    const [training, setTraining] = useState<any>([]);
     const [loading, setLoading] = useState(false);
-
+    const [classSessions, setClassSessions] = useState<SessionObj[]>([])
     const [position, setPosition] = useState(0);
     const [prueba, setPrueba] = useState(0);
     const employeesToShow = employees.slice(position, position + 3);
@@ -209,6 +200,7 @@ const TrainingDetails = () => {
             .then(function (response)
             {
                 setTraining(response.data);
+                setClassSessions(response.data.sesiones)
                 setLoading(false);
             })
             .catch(function (error)
@@ -273,8 +265,8 @@ const TrainingDetails = () => {
                             <div className='col' style={{ marginLeft: "60px" }}>
                                 <div className="row mb-3 ">
                                     <h4 className='mt-3 mb-3 subarea'>Sesiones</h4>
-                                    {training.sesiones.length > 0 ?
-                                        (<SessionAccordion trainingType={training.tipo} sessions={training.sesiones}/>)
+                                    {classSessions.length > 0 ? 
+                                        (<SessionAccordion trainingType={training.tipo} sessions={classSessions} mode={"detail"}/>)
                                         :
                                         (
                                             <div className='row align-items-stretch g-3 py-3'>

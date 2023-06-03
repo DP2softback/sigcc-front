@@ -6,14 +6,12 @@ export type THearder = {
 export type TBodyEmployee = {
     id: number;
     nombre: string;
-    codigo: string;
-    area: string;
-    asistencia: string;
+    estado_asistencia: string;
 }
 
 export type Props = {
     tableHeaders: THearder[],
-    tableData: TBodyEmployee[] | [],
+    tableData: TBodyEmployee[],
     pageNumber: number,
     pageSize: number,
     enable: string,
