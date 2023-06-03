@@ -1,0 +1,323 @@
+$ibx-aside-width: 254px;
+
+$ibx-aside-gutter-x:$aside-gutter-x;
+$ibx-item-gutter-x:$ibx-aside-gutter-x;
+$ibx-item-elm-gutter-x:.5rem;
+$ibx-item-elm-gutter-y:1rem;
+$ibx-head-gutter-x:$ibx-item-gutter-x;
+
+.nk-ibx{
+    display: flex;
+    position: relative;
+    background: $white;
+    height: 100%;
+    &-aside{
+        position: absolute;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        width: $ibx-aside-width;
+        height: 100%;
+        border-right:1px solid $border-color;
+        transform: translateX(-100%);
+        background: $white;
+        z-index: 500;
+        &.toggle-collapsed{
+            transition: transform .3s ease;
+        }
+        &.show-aside{
+            transform: none;
+        }
+        .simplebar-content{
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            > *:last-child{
+                padding-bottom: 1.25rem;
+            }
+        }
+        &-header{
+            padding: 1.5rem $ibx-aside-gutter-x 1rem;
+        }
+    }
+    &-menu{
+        li{
+            padding: .375rem 0;
+        }
+        &-item{
+            position: relative;
+            display: flex;
+            align-items: center;
+            color: $base-light;
+            padding: .375rem $ibx-aside-gutter-x;
+            font-size: .875rem;
+            &::after{
+                position: absolute;
+                height: 100%;
+                width: 2px;
+                content: '';
+                left: 0;
+                top: 0;
+                background: $accent-color;
+                opacity: 0;
+            }
+            &.active, .active > &{
+                color: $accent-color;
+                &:after{
+                    opacity: 1;
+                }
+            }
+            .icon{
+                font-size: 1.375rem;
+                width: 2.375rem;
+            }
+        }
+        &-badge{
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: .125rem;
+            margin-left: auto;
+            display: inline-flex;
+        }
+    }
+    &-contacts{
+        li{
+            padding: 0 $ibx-aside-gutter-x;
+            &:not(:last-child){
+                padding-bottom: 1.5rem;
+            }
+        }
+    }
+    &-body{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        width: 100%;
+    }
+    &-head{
+        display: flex;
+        align-items: center;
+        border-bottom:1px solid $border-light;
+        padding: .5rem ($ibx-head-gutter-x - .625rem);
+        &-tools{
+            display: flex;
+            align-items: center;
+            margin: 0 -.125rem;
+            > li{
+                display: inline-flex;
+                align-items: center;
+                padding: 1px .125rem;
+                flex-shrink: 0;
+            }
+        }
+        &-search{
+            width: 20rem;
+            padding:0 1.25rem;
+        }
+        &-pagination{
+            display: flex;
+            align-items: center;
+            > *:not(:last-child){
+                padding-right: 1rem;
+            }
+        }
+        &-info{
+            color: $base-light;
+            font-size: 0.875rem;
+        }
+        &-nav{
+            display: flex;
+            align-items: center;
+            margin: 0 -.125rem;
+            li{
+                padding: 0 .125rem;
+            }
+        }
+    }
+    &-list{
+        display: flex;
+        flex-direction: column;
+        max-height: 100%;
+        height: 100%;
+        overflow: auto;
+    }
+    &-item{
+        position: relative;
+        display: flex;
+        align-items: center;
+        background: $white;
+        padding: 0 ($ibx-item-gutter-x - $ibx-item-elm-gutter-x);
+        &-elem{
+            flex-shrink: 0;
+            padding: $ibx-item-elm-gutter-y $ibx-item-elm-gutter-x;
+        }
+        &-check{
+            width: 2.25rem;
+            z-index: 2;
+        }
+        &-star{
+            width: 2rem;
+            z-index: 2;
+        }
+        &-user{
+            width: 240px;
+        }
+        &-title{
+            display: flex;
+        }
+        &-content{
+            overflow: hidden;
+            flex-grow: 1;
+            flex-shrink: 1;
+            width: 100%;
+            max-width: 100%;
+        }
+        &-subject{
+            color: $base-color;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 0.875rem;
+        }
+        &-tags{
+            padding: 0 .25rem;
+            li{
+                padding: 0 .125rem;
+            }
+        }
+        &-message{
+            color: $base-light;
+            font-size: .813rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        &-meta{
+            width: 5rem;
+            .time{
+                font-size: 0.813rem;
+                white-space: nowrap;
+                text-align: right;
+            }
+        }
+        &:not(:last-child){
+            border-bottom: 1px solid $border-light;
+        }
+    }
+    &-link{
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+    &-view{
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: $white;
+        z-index: 2;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        &.show-ibx{
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+        }
+    }
+    &-reply{
+        &-head{
+            padding: .75rem $ibx-item-gutter-x 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        &-header{
+            margin-right: -.5rem;
+        }
+        &-item{
+            position: relative;
+            > div:not(.nk-reply-header){
+                margin-top: 1.25rem;
+                &:not(:last-child){
+                    margin-bottom: 0.75rem;
+                }
+            }
+            &:not(:last-child){
+                &:after{
+                    position: absolute;
+                    left: $ibx-item-gutter-x;
+                    right: $ibx-item-gutter-x;
+                    height: 1px;
+                    bottom: 0;
+                    content: '';
+                    background: $border-light;
+                }
+            }
+        }
+    }
+}
+
+
+@include media-breakpoint-down(md){
+    .nk-ibx{
+        &-item{
+            flex-wrap: wrap;
+            &-check{
+                position: absolute;
+                top: .375rem;
+                left: ($ibx-item-gutter-x - $ibx-item-elm-gutter-x);
+            }
+            &-star{
+                position: absolute;
+                left: ($ibx-item-gutter-x - $ibx-item-elm-gutter-x);
+                top: 2.875rem;
+            }
+            &-user{
+                width: 100%;
+                padding-left: 3rem;
+                padding-bottom: 0;
+            }
+            &-content{
+                padding-left: 3rem;
+            }
+            &-meta{
+                position: absolute;
+                top: 0;
+                right: ($ibx-item-gutter-x - $ibx-item-elm-gutter-x);
+            }
+        }
+    }
+}
+
+$ibx-collapse-points: md, lg, xl;
+@each $point in $ibx-collapse-points {
+    @include media-breakpoint-up($point){
+       [data-ibx-collapse="#{$point}"]{
+           .nk{
+                &-ibx{
+                    &-aside{
+                        position: static;
+                        transform: translateX(0);
+                    }
+                    &-body{
+                        max-width: calc(100% - $ibx-aside-width);
+                    }
+                    &-toggle{
+                        display: none;
+                    }
+                }
+           }
+       }
+    }
+}

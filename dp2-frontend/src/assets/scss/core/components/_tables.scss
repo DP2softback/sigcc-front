@@ -1,0 +1,215 @@
+.table{
+    &-border{
+        border: 1px solid $table-border-color;
+        border-spacing: 0;
+        border-collapse: separate;
+        border-radius: $nk-table-border-radius;
+    }
+    &-head{
+        &-sm{
+            th{
+                padding-top: $nk-table-head-cell-padding-y-sm;
+                padding-bottom: $nk-table-head-cell-padding-y-sm;
+            }   
+        }
+    }
+    tbody {
+        tr:last-child{
+            td, th{
+                border-bottom-width: 0;
+            }
+        }
+        th{
+            color: $h-color;
+        }
+    }
+}
+
+.data-table-sorter::before,
+.data-table-sorter::after {
+	content: "";
+	height: 0;
+	width: 0;
+	position: absolute;
+	right: 16px;
+	border-left: 3px solid transparent;
+	border-right: 3px solid transparent;
+	opacity: 0.3;
+}
+
+.data-table-sorter::before {
+	border-top: 3px solid $data-table-sorter-color;
+	bottom: calc(50% - 6px);
+}
+
+.data-table-sorter::after {
+	border-bottom: 3px solid $data-table-sorter-color;
+	top: calc(50% - 6px);
+}
+
+.asc .data-table-sorter::after,
+.desc .data-table-sorter::before {
+	opacity: 0.7;
+}
+
+.data-table{
+    &-wrapper{
+        .rdt_TableCol_Sortable{
+            opacity: 1!important;
+            font-size: 11px;
+            line-height: 1.2;
+            letter-spacing: .1em;
+            color: $overline-title-color;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        .rdt_TableHeadRow{
+            min-height: auto;
+        }
+        .rdt_TableRow{
+            min-height: auto;
+            color: $base-color;
+            &:not(:last-of-type){
+                border-bottom-color: $border-light;
+            }
+        }
+        .rdt_TableCol,
+        .rdt_TableCell {
+            padding: 0.813rem 1.25rem;
+            line-height: inherit;
+        }
+        .rdt_TableCol:last-child{
+            .rdt_TableCol_Sortable{
+                justify-content: flex-end;
+            }
+        }
+    }
+    &-top{
+        display: flex;
+        flex-direction: column;
+        .data-table-search{
+            margin-bottom: 20px;
+        }
+    }
+    &-bottom,
+    &-top {
+        padding: $nk-card-spacer-x;
+    }
+    &-bottom{
+        border-top: 1px solid $table-border-color;
+    }
+    &-head-light{
+        .rdt_TableHeadRow{
+            background-color: $lighter;
+        }
+    }
+    &-select {
+        display: flex;
+        align-items: center;
+        .form-select{
+            width: 90px;
+        }
+        .text{
+            font-size: 14px;
+            margin-left: 10px;
+        }
+    }
+    &-action-wrap{
+        display: flex;
+        align-items: center;
+    }
+    &-checkbox{
+        .rdt_TableHeadRow{
+            .rdt_TableCol{
+                &:first-child{
+                    padding-right: 0;
+                }
+            }
+        }
+        .rdt_TableRow{
+            .rdt_TableCell{
+                &:first-child{
+                    padding-right: 0;
+                }
+            }
+        }
+        .rdt_TableCol,
+        .rdt_TableCell {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+    }
+}
+
+@include media-breakpoint-up(sm){
+    .data-table{
+        &-top{
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            .data-table-search{
+                margin-bottom: 0;
+            }
+        }
+        &-select {
+            flex-direction: row-reverse;
+            .text{
+                margin-left: 0;
+                margin-right: 10px;
+            }
+        }
+    }
+}
+
+/// Tables
+///////////////////////////
+.tb-col-hide, .tb-col-xs, .tb-col-mb{
+    display: none !important;
+}
+@each $breakpoint in map-keys($container-max-widths) {
+    $infix: breakpoint-infix($breakpoint, $container-max-widths);
+    .tb-col#{$infix}{
+        @extend .tb-col-hide; 
+    }
+}
+
+@media (min-width: 359px) { 
+    .tb-col-xs{
+        display: table-cell !important;
+    }
+}
+@media (min-width: 414px) { 
+    .tb-col-mb{
+        display: table-cell !important;
+    }
+}
+@each $breakpoint in map-keys($container-max-widths) {
+    @include media-breakpoint-up($breakpoint) {
+        $infix: breakpoint-infix($breakpoint, $container-max-widths);
+        .tb-col#{$infix}{
+            display: table-cell !important;
+        }
+    }
+}
+
+.table-middle td, 
+.tb-row-middle td{
+    vertical-align: middle;
+}
+.tb-col{
+    &-end, &-action{
+        text-align: right;
+    }
+    &-middle {
+        vertical-align: middle;
+    }
+    &-check{
+        width: 48px !important;
+        padding-right: 0 !important;
+        .form-check{
+            display: inline-block;
+            margin-bottom: 0;
+            margin-top: 0;
+        }
+    }
+}

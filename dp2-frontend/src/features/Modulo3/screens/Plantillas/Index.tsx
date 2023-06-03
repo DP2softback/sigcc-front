@@ -7,6 +7,7 @@ import BasicCard from '@features/Modulo3/components/Cards/BasicCard/BasicCard';
 import Templates from '@features/Modulo3/jsons/Templates';
 import Template from '@features/Modulo3/components/Cards/Template/Template';
 import './Plantillas.css';
+import { EVALUATION_TEMPLATE_INDEX } from '@config/paths';
 
 const Index = () => {
 
@@ -56,6 +57,7 @@ const Index = () => {
 				title={`Plantillas de evaluación`}
 				body={body}
 				subtitle='Plantillas de evaluación continua y de desempeño'
+				route={EVALUATION_TEMPLATE_INDEX}
 			/>
 		</div>
 	);

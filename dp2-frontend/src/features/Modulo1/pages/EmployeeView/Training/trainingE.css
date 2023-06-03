@@ -1,0 +1,58 @@
+.cards{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+
+.row-center{
+    display: flex;
+    align-items: center;
+}
+
+.subarea{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.prueba{
+    background-color: #000000;
+}
+
+.controls{
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+}
+
+.controls:hover {
+    cursor: pointer;
+}
+
+.editar{
+    cursor: pointer;
+}
+
+.controlsD {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+    opacity: 50%;
+}
+
+.optionActive{
+    background-color: #F3F4F6;
+    border: none;
+    border-radius: 4px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.optionNoActive{
+    border: 1px solid #1967e1;
+    background-color: #fff;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 400;
+}

@@ -1,0 +1,15 @@
+.rating{
+    display: flex;
+    align-items: center;
+    margin: -2px;
+    >*{
+        padding: 2px;
+    }
+    &-label{
+        font-size: $rating-label-font-size;
+        color: $rating-label-color;
+        &.checked{
+            color: $rating-label-checked-color;
+        }
+    }
+}

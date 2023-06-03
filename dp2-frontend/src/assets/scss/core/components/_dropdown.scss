@@ -1,0 +1,14 @@
+$dropdown-class: "dropdown";
+$dropdown-user-width: 250px;
+$dropdown-border-radius: $border-radius-lg;
+
+.#{$dropdown-class}{
+    &-user{
+        .#{$dropdown-class}{
+            &-menu{
+                width: $dropdown-user-width;
+                //border-radius: $dropdown-border-radius;
+            }
+        }
+    }
+}
