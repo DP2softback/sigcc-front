@@ -1,0 +1,73 @@
+@use "sass:math";
+
+$nk-schedule-class: 'nk-schedule';
+$nk-schedule-item-gap: 1.625rem;
+$nk-schedule-symbol: .5rem;
+$nk-schedule-symbol-line: .125rem;
+
+.#{$nk-schedule-class}{
+    &-item{
+        overflow: hidden;
+        &:not(:last-child){
+            padding-bottom: $nk-schedule-item-gap;
+        }
+        &-inner{
+            display: flex;
+        }
+        &:first-child{
+            .#{$nk-schedule-class}-symbol::before{
+                top: 50%;
+            }
+        }
+        &:last-child{
+            .#{$nk-schedule-class}-symbol::before{
+                top: auto;
+                bottom: 50%;
+            }
+        }
+    }
+    &-symbol{
+        position: relative;
+        width: 2.25rem;
+        flex-shrink: 0;
+        &.active{
+            &::after{
+                background-color: $info;
+                box-shadow: 0 0 0 math.div($nk-schedule-symbol,2) mix($info, $white, 10%);
+            }
+        }
+        &::after{
+            width: $nk-schedule-symbol;
+            height: $nk-schedule-symbol;
+            top: calc(50% - #{math.div($nk-schedule-symbol,2)});
+            left: math.div($nk-schedule-symbol,2);
+            position: absolute;
+            content: '';
+            background-color: $base-200;
+            border-radius: 50%;
+            z-index: 2;
+            box-shadow: 0 0 0 math.div($nk-schedule-symbol,2) mix($base-200, $white, 10%);
+        }
+        &::before{
+            position: absolute;
+            content: "";
+            top: 0;
+            left: $nk-schedule-symbol;
+            transform: translateX(-50%);
+            width: $nk-schedule-symbol-line;
+            height: 100rem;
+            background-color: $base-100;
+            z-index: 1;
+        }
+    }
+    &-content{
+        border: 1px dashed $border-color;
+        border-radius: $border-radius;
+        padding: 0.5rem 1rem 0.75rem 1rem;
+        &-no-border{
+            border: 0;
+            padding: 0;
+            border-radius: 0;
+        }
+    }
+}

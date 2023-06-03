@@ -1,0 +1,22 @@
+.pagination{
+    &-wrap{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
+    &-info{
+        margin-top: 14px;
+    }
+}
+@include media-breakpoint-up(md){
+    .pagination{
+        &-wrap{
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: row;
+        }
+        &-info{
+            margin-top: 0;
+        }
+    }
+}

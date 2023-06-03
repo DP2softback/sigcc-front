@@ -1,0 +1,15 @@
+.bio-block {
+    p{
+        font-size: 0.875rem;
+        &:not(:last-child){
+            margin-bottom: 0.625rem;
+        }
+    }
+    strong{
+        font-weight: 500;
+        color: $base-color;
+    }
+    + .bio-block{
+        padding-top: $bio-block-gap-y;
+    }
+}

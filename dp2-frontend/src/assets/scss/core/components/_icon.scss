@@ -1,0 +1,32 @@
+.icon{
+    &-hint{
+        color: $base-light;
+    }
+}
+$icon-size:
+    "xs"    pxToRem(14px),
+    "sm"    pxToRem(16px),
+    "md"    pxToRem(20px),
+    "rg"    pxToRem(24px),
+    "lg"    pxToRem(28px),
+    "xl"    pxToRem(32px);
+
+@each $name, $value in $icon-size {
+    .icon-#{$name}{
+        font-size: $value;
+    }
+}
+
+// on off icon switch
+.off{
+    display: block;
+    .active > &{
+        display: none;
+    }
+}
+.on{
+    display: none;
+    .active > &{
+        display: block;
+    }
+}

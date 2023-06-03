@@ -1,0 +1,36 @@
+///////////////////////////////////////////////////
+///        INCLUDED THIRD-PARTY VENDORS         ///
+///////////////////////////////////////////////////
+
+// Include NioIcon
+@import "nioicon/nioicon";
+
+// Include Simplebar
+@import "simplebar";
+.simplebar-scroll-content {
+	@extend .simplebar-content-wrapper;
+}
+
+// Incldue choices
+@import 'choices/choices';
+
+// Include sweetalert2
+@import "sweetalert2/sweetalert2";
+
+// Include simple-datatables
+@import "simple-datatables/simple-datatables";
+
+// Include fullcalendar
+@import "fullcalendar/main";
+
+// Include date picker
+@import "datepicker/datepicker-bs5";
+
+// Include date picker
+@import "dropzone/dropzone";
+
+// Include svgmap
+@import "svgmap/main";
+
+// Include noUiSlider
+@import "nouislider/nouislider";
