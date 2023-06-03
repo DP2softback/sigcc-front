@@ -64,7 +64,7 @@ type SessionObj = {
     aforo_maximo?: number;
     url_video?: string;
     temas: TopicObj[];
-    responsables: typeSupp[];
+    responsables: typeSuppId[];
 }
 
 type typeTraI = {
@@ -89,6 +89,10 @@ type typeSupp = {
     apellidos: string,
     email?: string,
     habilidad_x_proveedor_usuario: any[]
+}
+
+type typeSuppId = {
+    id: number
 }
 
 const typeTra: typeTraI[] = [
@@ -146,6 +150,8 @@ const TrainingCreate = () => {
 
     const [addedSupplier, setAddedSupplier] = useState<typeSupp>()
     const [addedSuppliers, setAddedSuppliers] = useState<typeSupp[]>([])
+    const [addedSuppliersId, setAddedSuppliersId] = useState<typeSuppId[]>([])
+
 
     var filtered;
     var mostrarC = 6;
@@ -196,14 +202,30 @@ const TrainingCreate = () => {
     const handleFilter = (e: any) => {
         const searchTerm = e.target.value;
         if (searchTerm === '') {
-            setSupplierFilter(suppliers)
+            if (addedSuppliers.length) {
+                filtered = suppliers.filter((item: any) => {
+                    return addedSuppliers.every((added) => {
+                        return added[0].id != item.id
+                    })
+                });
+                setSupplierFilter(filtered);
+            }
+            else setSupplierFilter(suppliers);
         } else {
-            filtered = suppliers.filter((item: any) =>
-                item.name.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+            if (addedSuppliers.length) {
+                filtered = suppliers.filter((item: any) => {
+                    return addedSuppliers.every((added) => {
+                        return added[0].id != item.id
+                    }) && item.name.toLowerCase().includes(searchTerm.toLowerCase())
+                });
+            } else {
+                filtered = suppliers.filter((item: any) =>
+                    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
             setSupplierFilter(filtered);
         }
-    };
+    }
 
     const handleChangeType = (e: any) => {
         setTypeArea(e.target.value)
@@ -284,8 +306,6 @@ const TrainingCreate = () => {
 
     /* CREATE NEW SESSION */
     const createSession = () => {
-        console.log(addedSuppliers)
-
         let dataSession: SessionObj = {
             nombre: '',
             descripcion: '',
@@ -294,15 +314,15 @@ const TrainingCreate = () => {
         }
 
         let fecha_ini = new Date(refTrDateStart.current?.value).toISOString()
-        
-        if(training.tipo === "A"){
+
+        if (training.tipo === "A") {
             dataSession = {
                 curso_empresa_id: parseInt(trainingID),
                 nombre: refTrName.current?.value,
                 descripcion: refTrDescription.current?.value,
                 //url_video: refTrVideo.current.getUrl(),
                 temas: addedTopics,
-                responsables: addedSuppliers
+                responsables: addedSuppliersId
             }
         }
         else {
@@ -315,7 +335,7 @@ const TrainingCreate = () => {
                     ubicacion: refTrLocation.current?.value,
                     aforo_maximo: parseInt(refTrCapacity.current?.value),
                     temas: addedTopics,
-                    responsables: addedSuppliers
+                    responsables: addedSuppliersId
                 }
             }
             else {
@@ -327,7 +347,7 @@ const TrainingCreate = () => {
                     ubicacion: refTrLocationLink.current?.value,
                     aforo_maximo: parseInt(refTrCapacity.current?.value),
                     temas: addedTopics,
-                    responsables: addedSuppliers
+                    responsables: addedSuppliersId
                 }
             }
         }
@@ -340,7 +360,7 @@ const TrainingCreate = () => {
         refTrName.current.value = "";
         refTrDescription.current.value = "";
 
-        if(training.tipo === "A"){
+        if (training.tipo === "A") {
             refTrVideo.current = null;
         }
         else {
@@ -484,6 +504,7 @@ const TrainingCreate = () => {
         setPositionC(0)
         setPositionCo(0)
         setAddedSuppliers([])
+        setAddedSuppliersId([])
 
         loadCategories();
     }
@@ -530,6 +551,14 @@ const TrainingCreate = () => {
             var aux = addedSuppliers;
             aux.push(addedSupplier)
             setAddedSuppliers(aux)
+
+            let idSupplier: typeSuppId = {
+                id: 0,
+            }
+            idSupplier = {
+                id: addedSupplier[0].id
+            }
+            setAddedSuppliersId([...addedSuppliersId, idSupplier])            
         }
         async function UpdateFilter() {
             var filtered2 = supplierFilter.filter((item: any) => {
@@ -639,8 +668,8 @@ const TrainingCreate = () => {
                             </div>
                         </div>
 
-{/* CREATE SESSION MODAL */}
-<div className="modal fade" id="createSessionModal" aria-hidden="true" aria-labelledby="createSessionModal" tabIndex={-1}>
+                        {/* CREATE SESSION MODAL */}
+                        <div className="modal fade" id="createSessionModal" aria-hidden="true" aria-labelledby="createSessionModal" tabIndex={-1}>
                             <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                 <div className="modal-content">
                                     <div className="modal-header">
@@ -658,45 +687,45 @@ const TrainingCreate = () => {
                                         </div>
                                         {
                                             training.tipo === "A" ?
-                                            (<>
-                                                <div className='mb-3'>
-                                                    <label className="form-label">Video de la sesión</label>
-                                                    <VideoUpload ref={refTrVideo}/>
-                                                </div>
-                                            </>)
-                                            :
-                                            (<>
-                                                <div className='row mb-3'>
-                                                    <div className='col'>
-                                                        <label className="form-label">Fecha de la sesión</label>
-                                                        <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
+                                                (<>
+                                                    <div className='mb-3'>
+                                                        <label className="form-label">Video de la sesión</label>
+                                                        <VideoUpload ref={refTrVideo} />
                                                     </div>
-                                                    <div className='col'>
-                                                        <label className="form-label">Aforo máximo</label>
-                                                        <input type="number" className="form-control" ref={refTrCapacity} min={'0'} />
+                                                </>)
+                                                :
+                                                (<>
+                                                    <div className='row mb-3'>
+                                                        <div className='col'>
+                                                            <label className="form-label">Fecha de la sesión</label>
+                                                            <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
+                                                        </div>
+                                                        <div className='col'>
+                                                            <label className="form-label">Aforo máximo</label>
+                                                            <input type="number" className="form-control" ref={refTrCapacity} min={'0'} />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className='mb-3'>
-                                                    <label className="form-label">Ubicación</label>
-                                                    {
-                                                        training.tipo === 'P' ?
-                                                        (<>
-                                                            <select className="form-select" ref={refTrLocation}>
-                                                                <option hidden>Seleccionar</option>
-                                                                {locationOptions.map((lo) => {
-                                                                    return (
-                                                                        <option key={lo.id} value={lo.type}>{lo.type}</option>
-                                                                    )
-                                                                })}
-                                                            </select>
-                                                        </>)
-                                                        :
-                                                        (<input ref={refTrLocationLink} type="text" className="form-control" />)
-                                                    } 
-                                                </div>
-                                            </>)
+                                                    <div className='mb-3'>
+                                                        <label className="form-label">Ubicación</label>
+                                                        {
+                                                            training.tipo === 'P' ?
+                                                                (<>
+                                                                    <select className="form-select" ref={refTrLocation}>
+                                                                        <option hidden>Seleccionar</option>
+                                                                        {locationOptions.map((lo) => {
+                                                                            return (
+                                                                                <option key={lo.id} value={lo.type}>{lo.type}</option>
+                                                                            )
+                                                                        })}
+                                                                    </select>
+                                                                </>)
+                                                                :
+                                                                (<input ref={refTrLocationLink} type="text" className="form-control" />)
+                                                        }
+                                                    </div>
+                                                </>)
                                         }
-                                    
+
                                         <div className='row mb-3'>
                                             <label className="form-label">Temas de la sesión</label>
                                             <div className='col-10'>
@@ -708,15 +737,15 @@ const TrainingCreate = () => {
                                         </div>
                                         {
                                             addedTopics.length > 0 ?
-                                            (addedTopics.map((element, i) => {
-                                                return (
-                                                    <div key={i}>
-                                                        {getTopics(i, element)}
-                                                    </div>
-                                                )
-                                            }))
-                                            :
-                                            (<></>)
+                                                (addedTopics.map((element, i) => {
+                                                    return (
+                                                        <div key={i}>
+                                                            {getTopics(i, element)}
+                                                        </div>
+                                                    )
+                                                }))
+                                                :
+                                                (<></>)
                                         }
                                     </div>
                                     <div className="modal-footer">
@@ -909,7 +938,7 @@ const TrainingCreate = () => {
                                             <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
                                                 <div style={{ display: "flex", alignItems: "center" }}>
                                                     <input className='form-control' type='text' placeholder='Buscar responsables' onChange={handleFilter} style={{ maxWidth: "60%", marginRight: "1rem" }} />
-                                                    <h5 style={{ display: "flex", fontSize: "14px", marginBottom: "0rem" }}>Categoría: {typeArea.categoria}</h5>
+                                                    <h5 style={{ display: "flex", fontSize: "14px", marginBottom: "0rem", marginRight: "1rem" }}>Categoría: {typeArea.categoria}</h5>
                                                     <h5 style={{ display: "flex", fontSize: "14px", marginBottom: "0rem" }}>Empresa: {typeCompany.razon_social}</h5>
                                                 </div>
                                             </div>
@@ -976,7 +1005,7 @@ const TrainingCreate = () => {
                                                                     <div>
                                                                         {addedSuppliers.map((supplier) => (
                                                                             <div key={supplier[0].id} style={{ display: "flex", alignItems: "center", paddingLeft: "0.5rem", paddingRight: " 0.5rem", paddingBottom: "0.5rem", justifyContent: "space-between" }}>
-                                                                                <h4 style={{ fontSize: "13px", paddingTop: "0.35rem" }}>{supplier[0].nombres + supplier[0].apellidos}</h4>
+                                                                                <h4 style={{ fontSize: "13px", paddingTop: "0.35rem" }}>{supplier[0].nombres + ' ' + supplier[0].apellidos}</h4>
                                                                                 <button style={{ backgroundColor: '#B02A37', color: 'white', border: "none", fontSize: "12px" }} onClick={() => handleRemove(supplier[0].id)}>Quitar</button>
                                                                             </div>
                                                                         ))

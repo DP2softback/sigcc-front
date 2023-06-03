@@ -208,7 +208,7 @@ const TrainingDetails = () => {
         axiosInt.get(`capacitaciones/course_company_course/${trainingID}`)
             .then(function (response)
             {
-                //setTraining(response.data);
+                setTraining(response.data);
                 setLoading(false);
             })
             .catch(function (error)
