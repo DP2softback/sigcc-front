@@ -357,33 +357,6 @@ const routes: RouteObject[] = [
         ],
       },
       {
-        path: "employeesGaps",
-        children: [
-          {
-            path: "index",
-            element: <VisualizacionBrechasEmpleado />,
-          },
-        ],
-      },
-      {
-        path: "jobOpportunitiesRelatedToSkills",
-        children: [
-          {
-            path: "index",
-            element: <JobOpportunitiesRelatedToSkills />,
-          },
-        ],
-      },
-      {
-        path: "showskills",
-        children: [
-          {
-            path: "index",
-            element: <GestionDeCompetencias />,
-          },
-        ],
-      },
-      {
         path: "selection-process",
         children: [
           {
