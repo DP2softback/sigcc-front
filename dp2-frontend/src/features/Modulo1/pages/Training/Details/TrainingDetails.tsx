@@ -205,7 +205,7 @@ const TrainingDetails = () => {
 
     const loadTrainingDetails = () => {
         setLoading(true);
-        axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/course_company_course/${trainingID}`)
+        axiosInt.get(`capacitaciones/course_company_course/${trainingID}`)
             .then(function (response)
             {
                 //setTraining(response.data);

@@ -368,24 +368,22 @@ const Training = () => {
         console.log(data)
 
         /* RUTA HARDCODEADA*/
-        navigate(`/modulo1/cursoempresa/creacion/1`);
-        /*
-        axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/course_company_course/', data)
+        //navigate(`/modulo1/cursoempresa/creacion/1`);
+        
+        axiosInt.post('capacitaciones/course_company_course/', data)
             .then(function (response) {
                 navigate(`/modulo1/cursoempresa/creacion/${response.data.id}`);
             })
             .catch(function (error) {
                 console.log(error);
             });
-            */
+            
     }
 
     const loadTrainings = () => {
         setLoading(true);
-        axiosInt.get('dev-modulo-capacitaciones/api/capacitaciones/course_company_course/')
+        axiosInt.get('capacitaciones/course_company_course/')
             .then(function (response) {
-                console.log(response)
-                console.log(moment(response.data.fecha_creacion).format("DD-MM-YYYY"))
                 setTrainingFilter(response.data);
                 setLoading(false);
             })
@@ -396,7 +394,7 @@ const Training = () => {
     }
 
     useEffect(() => {
-        //loadTrainings();    
+        loadTrainings();    
     }, []);
 
     return (

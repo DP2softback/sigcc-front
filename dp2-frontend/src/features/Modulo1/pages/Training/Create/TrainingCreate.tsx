@@ -14,7 +14,7 @@ import VideoUpload from '@features/Modulo1/components/VideoUpload';
 const data = {
     id: 1,
     nombre: "Ejemplo de Creación",
-    url_foto: 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg',
+    url_foto: null,
     descripcion: "Esto es un ejemplo de creación de un curso empresa",
     tipo: "A"
 }
@@ -263,14 +263,9 @@ const TrainingCreate = () => {
     }
 
     const deleteTopic = (index: number) => {
-        console.log(index)
-
         let newDataTopics = [...addedTopics]
 
         newDataTopics.splice(index, 1)
-
-        console.log(newDataTopics)
-        console.log(newDataTopics.length)
 
         if (newDataTopics.length === 0) {
             newDataTopics = []
@@ -344,7 +339,6 @@ const TrainingCreate = () => {
             }
         }
         
-        /* VER SI NO MUERE SIN ESTO */
         //setClassSessions([...classSessions, dataSession])
         
         console.log(dataSession)
@@ -371,13 +365,13 @@ const TrainingCreate = () => {
             }            
         }
 
-        axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/sesion_course_company/', dataSession)
+        axiosInt.post('capacitaciones/sesion_course_company/', dataSession)
             .then(function (response) {
                 console.log(response.data)
                 setSessionCreated(true)
             })
             .catch(function (error) {
-                console.log(error);
+                //console.log(error);
             });
     }
     /* CREATE NEW SESSION */
@@ -413,11 +407,8 @@ const TrainingCreate = () => {
     /* LOAD TRAINING DETAILS */
     const loadTrainingDetails = () => {
         setLoading(true);
-        axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/course_company_course/${trainingID}`)
+        axiosInt.get(`capacitaciones/course_company_course/${trainingID}`)
             .then(function (response) {
-                console.log(response.data)
-                console.log(response.data.sesiones.length)
-
                 setTraining(response.data);
                 setNombreT(response.data.nombre)
                 setDescripcionT(response.data.descripcion)
@@ -426,22 +417,23 @@ const TrainingCreate = () => {
                 setLoading(false);
             })
             .catch(function (error) {
-                console.log(error);
                 setLoading(false);
 
                 /* BORRAR LUEGO */
-                setTraining(data)
+                //setTraining(data)
+                //setNombreT(data.nombre)
+                //setDescripcionT(data.descripcion)
             });
     }
     /* LOAD TRAINING DETAILS */
 
     useEffect(() => {
         loadTrainingDetails();
-    }, [sessionCreated]);
+    }, []);
 
     const loadCompanies = (id: number) => {
         setLoading2(true);
-        axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/get_proveedores_empresa/${id}/`)
+        axiosInt.get(`capacitaciones/get_proveedores_empresa/${id}/`)
             .then(function (response) {
                 setCompanies(response.data);
                 setLoading2(false);
@@ -460,7 +452,7 @@ const TrainingCreate = () => {
 
     const loadHabilities = (id: number) => {
         setLoading3(true);
-        axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/get_habilidades_empresa/${id}/`)
+        axiosInt.get(`capacitaciones/get_habilidades_empresa/${id}/`)
             .then(function (response) {
                 setHabilities(response.data);
                 setLoading3(false);
@@ -479,7 +471,7 @@ const TrainingCreate = () => {
 
     const loadCategories = () => {
         setLoading1(true);
-        axiosInt.get('dev-modulo-capacitaciones/api/capacitaciones/get_categoria/')
+        axiosInt.get('capacitaciones/get_categoria/')
             .then(function (response) {
                 setCategories(response.data);
                 setLoading1(false);
@@ -503,7 +495,7 @@ const TrainingCreate = () => {
 
     const handleSuppliers = () => {
         setLoading4(true);
-        axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/get_personas_empresa_habilidades/', {
+        axiosInt.post('capacitaciones/get_personas_empresa_habilidades/', {
             id_proveedor: typeCompany.id,
             habilidades: checked
         })
