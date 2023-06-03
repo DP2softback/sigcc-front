@@ -1,0 +1,14 @@
+$change-up-color: $success;
+$change-down-color: $danger;
+
+.change {
+    &.up{
+        color: $change-up-color;
+    }
+    &.down{
+        color: $change-down-color;
+    }
+    + * {
+        margin-left: 5px;
+    }
+}

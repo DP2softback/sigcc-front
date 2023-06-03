@@ -1,0 +1,28 @@
+// Dots
+$dot-size:
+    "xs"    4px,
+    "sm"    6px,
+    "md"    8px,
+    "rg"    10px,
+    "lg"    12px,
+    "xl"    16px;
+
+.dot{
+    position: relative;
+    display: inline-block;
+    border-radius: 50%;
+    height: 8px;
+    width: 8px;
+    + *{
+        margin-left: 0.125rem;
+    }
+    &.sq{
+        border-radius: 3px;
+    }
+}
+@each $name, $value in $dot-size {
+    .dot-#{$name}{
+        height: $value;
+        width: $value;
+    }
+}

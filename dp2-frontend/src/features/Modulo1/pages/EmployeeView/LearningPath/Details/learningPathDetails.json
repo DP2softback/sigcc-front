@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "title": "ABC",
+        "description": "Lorem ipsum",
+        "photo": "https://img-c.udemycdn.com/course/750x422/1337000_0d99.jpg",
+        "progress": 90
+    },
+    {
+        "id": 1,
+        "title": "ABC",
+        "description": "Lorem ipsum",
+        "photo": "https://img-c.udemycdn.com/course/750x422/1337000_0d99.jpg",
+        "progress": 90
+    },
+    {
+        "id": 1,
+        "title": "ABC",
+        "description": "Lorem ipsum",
+        "photo": "https://img-c.udemycdn.com/course/750x422/1337000_0d99.jpg",
+        "progress": 90
+    },
+    {
+        "id": 1,
+        "title": "ABC",
+        "description": "Lorem ipsum",
+        "photo": "https://img-c.udemycdn.com/course/750x422/1337000_0d99.jpg",
+        "progress": 90
+    }
+]

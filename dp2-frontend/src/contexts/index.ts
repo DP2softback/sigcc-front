@@ -1,1 +1,2 @@
 /** HERE MAYBE YOU CAN DEFINE SOME CONTEXTS FOR YOUR MODULE */
+export default {};

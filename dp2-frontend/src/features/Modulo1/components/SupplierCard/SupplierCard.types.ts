@@ -1,6 +1,7 @@
 export type Props = {
-    id: string,
-    name: string,
+    id: number,
+    nombres: string,
+    apellidos: string,
     image: string, 
     button: string,
     buttonColor?: string, 

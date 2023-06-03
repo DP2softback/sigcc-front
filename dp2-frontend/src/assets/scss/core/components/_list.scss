@@ -1,0 +1,232 @@
+@use "sass:math";
+$nk-data-list-class: 'nk-data-list';
+
+.#{$nk-data-list-class}{
+    &-item{
+        display: flex;
+        .amount{
+            line-height: 1;
+        }
+        .media + .amount-wrap{
+            margin-left: 0.75rem;
+        }
+    }
+}
+
+.list-group{
+    &-wrap{
+        margin: -2px;
+        display: flex;
+        flex-wrap: wrap;
+        width:calc(100% + 4px);
+        > *{
+            flex-grow: 1;
+            border: 1px dashed $border-color;
+            margin: -.5px;
+        }
+    }
+    &-dotted{
+        border: 1px dashed $border-color;
+        border-radius: $border-radius;
+        overflow: hidden;
+    }
+    &-sm{
+        font-size: .813rem;
+    }
+    &-noborder{
+        --bs-list-group-border-width: 0;
+        --bs-list-group-item-padding-x: 0;
+        li{
+            display: flex;
+            align-items: center;
+            .icon{
+                font-size: 1.25rem;
+                width: 2rem;
+            }
+        }
+    }
+}
+
+@each $name, $value in $texts{
+    .list-group-#{$name}{
+        --bs-list-group-color: #{$value};
+    }
+}
+
+.nk-list{
+    &-option{
+        display: flex;
+        align-items: center;
+        margin: -0.5rem;
+        >*{
+            padding: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+        }
+        .icon {
+            width: 1.25rem;
+            display: inline-block;
+        }
+    }
+}
+// link list
+$link-list-btn-line-height:1.25rem;
+$link-list-btn-padding-x:.75rem;
+$link-list-btn-padding-y: ($size-rg - $link-list-btn-line-height)*.5;
+$link-list-btn-padding-y-sm: ($size-sm - $link-list-btn-line-height)*.5;
+$link-list-btn-padding-y-md: ($size-md - $link-list-btn-line-height)*.5;
+.link-list{
+    --#{$var-prefix}link-list-color: #{$base-text};
+    --#{$var-prefix}link-list-bg: transparent;
+    --#{$var-prefix}link-list-hover-color:#{$accent-color};
+    --#{$var-prefix}link-list-hover-bg: transparent;
+
+    --#{$var-prefix}link-list-font-size: .813rem;
+    --#{$var-prefix}link-list-line-height:#{$link-list-btn-line-height};
+    --#{$var-prefix}link-list-padding-y: #{$link-list-btn-padding-x*.5};
+    --#{$var-prefix}link-list-padding-x: 0;
+
+    --#{$var-prefix}link-list-icon-size: 1.25rem;
+    --#{$var-prefix}link-list-icon-width: 2rem;
+
+    --#{$var-prefix}link-list-btn-padding-y: #{$link-list-btn-padding-x*.5};
+    --#{$var-prefix}link-list-btn-padding-x: 0;
+    --#{$var-prefix}link-list-btn-border-radius: #{$nk-border-radius};
+
+    li{
+        padding: variable('link-list-padding-y') variable('link-list-padding-x');
+        margin-left: calc(variable('link-list-btn-padding-x') * -1);
+        margin-right: calc(variable('link-list-btn-padding-x') * -1);
+        a{
+            display: flex;
+            align-items: center;
+            font-size: variable('link-list-font-size');
+            line-height: variable('link-list-line-height');
+            color: variable('link-list-color');
+            background-color: variable('link-list-bg');
+            padding: variable('link-list-btn-padding-y') variable('link-list-btn-padding-x');
+            border-radius: variable('link-list-btn-border-radius');
+            .icon{
+                font-size: variable('link-list-icon-size');
+                line-height: variable('link-list-line-height');
+                width: variable('link-list-icon-width');
+            }
+            &:hover{
+                color: variable('link-list-hover-color');
+                background-color: variable('link-list-hover-bg');
+            }
+        }
+    }
+    &.is-compact{
+        --#{$var-prefix}link-list-padding-y: .25rem;
+    }
+}
+
+[class*="link-list-hover-bg"]{
+    $background: mix($accent-color,$white, 20%);
+    --#{$var-prefix}link-list-hover-color:#{$accent-color};
+    --#{$var-prefix}link-list-hover-bg: #{$background};
+
+    --#{$var-prefix}link-list-padding-y: 0;
+    --#{$var-prefix}link-list-padding-x: 0;
+
+    --#{$var-prefix}link-list-btn-padding-y: #{$link-list-btn-padding-y};
+    --#{$var-prefix}link-list-btn-padding-x: #{$link-list-btn-padding-x};
+
+    &.link-list-sm{
+        --#{$var-prefix}link-list-btn-padding-y: #{$link-list-btn-padding-y-sm};
+
+        --#{$var-prefix}link-list-font-size: 0.75rem;
+        --#{$var-prefix}link-list-icon-size: 1rem;
+        --#{$var-prefix}link-list-icon-width: 1.5rem;
+        --#{$var-prefix}link-list-btn-border-radius: #{$nk-border-radius-sm};
+    }
+    &.link-list-md{
+        --#{$var-prefix}link-list-btn-padding-y: #{$link-list-btn-padding-y-md};
+
+        --#{$var-prefix}link-list-font-size: .813rem;
+        --#{$var-prefix}link-list-icon-size: 1.125rem;
+        --#{$var-prefix}link-list-icon-width: 1.75rem;
+        --#{$var-prefix}link-list-btn-border-radius: #{$nk-border-radius-md};
+    }
+}
+
+@each $name, $value in $theme-colors{
+    .link-list-#{$name}{
+        --#{$var-prefix}link-list-color: #{$value};
+    }
+}
+@each $name, $value in $texts{
+    .link-list-#{$name}{
+        --#{$var-prefix}link-list-color: #{$value};
+    }
+}
+
+@each $name, $value in $theme-colors{
+    .link-list-hover-bg-#{$name}{
+        $background: mix($value,$white, 15%);
+        --#{$var-prefix}link-list-hover-color:#{$value};
+        --#{$var-prefix}link-list-hover-bg: #{$background};
+    }
+}
+
+[class*="link-list-bg"]{
+    $background: mix($accent-color,$white, 15%);
+
+    --#{$var-prefix}link-list-btn-padding-y: #{$link-list-btn-padding-y};
+    --#{$var-prefix}link-list-btn-padding-x: #{$link-list-btn-padding-x};
+
+}
+@each $name, $value in $theme-colors{
+    .link-list-bg-#{$name}{
+        $color: color-contrast($value);
+        $hover_bg: shade-color($value, 15%);
+        $hover_color: color-contrast($hover_bg);
+        --#{$var-prefix}link-list-color: #{$color};
+        --#{$var-prefix}link-list-bg: #{$value};
+        --#{$var-prefix}link-list-hover-color: #{$hover_color};
+        --#{$var-prefix}link-list-hover-bg: #{$hover_bg};
+    }
+}
+@each $name, $value in $theme-colors{
+    .link-list-bg-#{$name}-soft{
+        $color: color-contrast($value);
+        $bg: mix($value,$white, 15%);
+        $hover_color: color-contrast($value);
+        --#{$var-prefix}link-list-color: #{$value};
+        --#{$var-prefix}link-list-bg: #{$bg};
+        --#{$var-prefix}link-list-hover-color: #{$hover_color};
+        --#{$var-prefix}link-list-hover-bg: #{$value};
+    }
+}
+
+
+.list2col{
+    > li{
+        width: math.div(100%,2);
+    }
+}
+
+.list3col{
+    > li{
+        width: math.div(100%,3);
+    }
+}
+
+.list4col{
+    > li{
+        width: math.div(100%,4);
+    }
+}
+
+.list5col{
+    > li{
+        width: math.div(100%,5);
+    }
+}
+
+.list6col{
+    > li{
+        width: math.div(100%,6);
+    }
+}

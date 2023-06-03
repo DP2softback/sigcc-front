@@ -1,0 +1,28 @@
+@mixin text-bg-soft-variant(
+    $color,
+    $background: mix($color, $white, 12%),
+    $border: transparent
+  ) {
+    color: #{$color};
+    background-color: #{$background} !important;
+    border-color: #{$border};
+}
+@mixin text-bg-soft-variant-outline(
+    $color,
+    $background: mix($color, $white, 12%),
+    $border: mix($color, $white, 30%)
+  ) {
+    color: #{$color};
+    background-color: #{$background} !important;
+    border-color: #{$border};
+}
+
+@each $color, $value in $theme-colors {
+    //soft text bg
+    .text-bg-#{$color}-soft {
+        @include text-bg-soft-variant($value);
+    }
+    .text-bg-#{$color}-soft-outline {
+        @include text-bg-soft-variant-outline($value);
+    }
+}

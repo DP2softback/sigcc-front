@@ -1,0 +1,27 @@
+.offcanvas{
+    .offcanvas-header{
+        --#{$prefix}offcanvas-padding-y: #{$nk-offcanvas-header-padding-y};   
+    }
+    &-size{
+        &-sm{
+            --#{$prefix}offcanvas-padding-x: #{$nk-offcanvas-padding-x-sm};
+            --#{$prefix}offcanvas-padding-y: #{$nk-offcanvas-padding-y-sm};
+            &.offcanvas-start,&.offcanvas-end{
+                --#{$prefix}offcanvas-width: #{$nk-offcanvas-horizontal-width-sm};
+            }
+            .offcanvas-header{
+                --#{$prefix}offcanvas-padding-y: #{$nk-offcanvas-header-padding-y-sm};   
+            }
+        }
+        &-lg{
+            --#{$prefix}offcanvas-padding-x: #{$nk-offcanvas-padding-x-lg};
+            --#{$prefix}offcanvas-padding-y: #{$nk-offcanvas-padding-y-lg};
+            &.offcanvas-start,&.offcanvas-end{
+                --#{$prefix}offcanvas-width: #{$nk-offcanvas-horizontal-width-lg};
+            }
+            .offcanvas-header{
+                --#{$prefix}offcanvas-padding-y: #{$nk-offcanvas-header-padding-y-lg};   
+            }
+        }
+    }
+}
