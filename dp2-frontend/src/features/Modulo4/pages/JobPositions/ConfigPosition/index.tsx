@@ -4,10 +4,12 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
-import '@assets/scss/test.scss';
+// import '@assets/scss/style.scss';
+import Layout from "@layout/default/index";
 
 const ConfigPosition = () => {
 	return (
+		<Layout title="Grupo 4 App" content="container">
 		<PageContainer title="Create Job Position">
 			<EnhancedHeaderTitle pageTitle="Crear posición">
 				Configuración para la creación de una posición o
@@ -16,7 +18,7 @@ const ConfigPosition = () => {
 			<main>
 				{/* <Form> */}
 				<Form.Group as={Row} className="my-4">
-					<Form.Label required column sm={6}>Nombre de la oferta (*)</Form.Label>
+					<Form.Label required column sm={3}>Nombre de la oferta</Form.Label>
 					<Col>
 						<Form.Control
 							type="text"
@@ -27,7 +29,7 @@ const ConfigPosition = () => {
 						<Button className="w-100">Buscar</Button>
 					</Col>
 				</Form.Group>
-				<Row>
+				{/* <Row>
 					<Form.Label column="lg" lg={2}>
 						Large Text
 					</Form.Label>
@@ -38,7 +40,7 @@ const ConfigPosition = () => {
 							placeholder="Large text"
 						/>
 					</Col>
-				</Row>
+				</Row> */}
 				{/* <FormGroup className="d-flex align-items-center">
 						<FormLabel
 							style={{ whiteSpace: "nowrap" }}
@@ -58,6 +60,7 @@ const ConfigPosition = () => {
 				{/* </Form> */}
 			</main>
 		</PageContainer>
+		</Layout>
 	);
 };
 

@@ -6,7 +6,7 @@ type Props = {
 const EnhancedHeaderTitle = (props: Props) => {
 	return (
 		<>
-			<h1>{props.pageTitle}</h1>
+			<h1 className="display-1 mb-4">{props.pageTitle}</h1>
 			<p>{props.children}</p>
 		</>
 	);

@@ -1,0 +1,24 @@
+// Included Global Variables and Functions
+@import "core/functions";
+@import "vendors/nioicon/variables";
+@import "variables";
+@import "extend/bootstrap/variables";
+
+// Included Fonts
+@import "core/fonts";
+
+// Included Bootstrap
+@import "extend/bootstrap/bootstrap";
+@import "extend/bootstrap/extend";
+
+// Include Other Vendors
+@import "vendors/bundle";
+
+// Include Core Style
+@import "core/style";
+
+// Include prism
+@import "vendors/prism-theme";
+
+// Include highlight
+@import "core/preview";

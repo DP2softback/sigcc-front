@@ -1,0 +1,100 @@
+@use "sass:math";
+
+.media{
+    width: $size-rg;
+    height: $size-rg;
+    border-radius: $media-normal-radius;
+    font-size: math.div($size-rg,3);
+    flex-shrink: 0;
+    .icon{
+        font-size: math.div($size-rg,2);
+    }
+    img{
+        border-radius: inherit;
+    }
+    &-rounded{
+        border-radius: $media-rounded-radius;
+    }
+    &-circle{
+        border-radius: $media-circle-radius;
+    }
+    &-sharp{
+        border-radius: 0;
+    }
+    &-middle{
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    &-border{
+        border-width: $media-border;
+        border-style: solid;
+    }
+    &-text{
+        display: flex;
+        flex-direction: column;
+        .title{
+            font-weight: 500;
+            font-size: $media-title-font-size;
+            display: block;
+            color: $media-title-color;
+            + .date {
+                margin-top: 0.25rem;
+            }
+        }
+        a.title{
+            &:hover{
+                color: $primary;
+            }
+        }
+        .text,
+        .date {
+            display: block;
+            color: $base-light;
+        }
+    }
+    &-action{
+        flex-shrink: 0;
+        flex-grow: 0;
+        &-end{
+            margin-left: auto;
+        }
+    }
+    &-group{
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        .media + .media-text{
+            margin-left: $media-text-gap-x;
+        }
+        &-column{
+            flex-direction: column;
+            .media + .media-text{
+                margin-left: 0;
+                margin-top: $media-text-gap-x;
+            }
+        }
+        &-overlap{
+            .media + .media{
+                margin-left: -$media-negative-start-gap;
+            }
+            &.media-group-column{
+                .media + .media{
+                    margin-left: 0;
+                    margin-top: -$media-negative-start-gap;
+                }
+            }
+        }
+    }
+}
+
+@each $size, $value in $sizes {
+    .media-#{$size}{
+        width: $value;
+        height: $value;
+        font-size: math.div($value,3);
+        .icon{
+            font-size: math.div($value,2);
+        }
+    }
+}

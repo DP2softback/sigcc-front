@@ -1,0 +1,161 @@
+.#{$menu-class}{
+    padding: 1rem 0;
+    &-heading{
+        padding: $menu-heading-gap-y $menu-heading-gap-x;
+        &:not(:first-child){
+            padding-top: $menu-heading-gap-y-lg;
+        }
+        .overline-title{
+            white-space: nowrap;
+        }
+    }
+    &-link{
+        position: relative;
+        display: flex;
+        align-items: center;
+        color: $menu-link-color;
+        font-weight: $menu-link-font-weight;
+        font-size: $menu-link-font-size;
+        padding: $menu-link-gap-y $menu-link-gap-x;
+        background-color: transparent;
+        &::after{
+            position: absolute;
+            content: "";
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background-color: transparent;
+        }
+        &:hover{
+            color: $menu-link-hover-color;
+        }
+        .active > &{
+            color: $menu-link-hover-color;
+            background-color: $menu-link-hover-bg;
+            &::after{
+                background-color: $menu-link-hover-color;
+            }
+            .icon{
+                color: $menu-link-hover-color;
+            }
+        }
+    }
+    &-icon{
+        width: $menu-icon-width;
+        display: inline-flex;
+        justify-content: center;
+        margin-right: $menu-icon-gap;
+        .icon{
+            transition: color .3s;
+            font-size: $menu-icon-font-size;
+            color: $menu-icon-color;
+        }
+    }    
+    &-text{
+        flex-grow: 1;
+        display: inline-block;
+        white-space: nowrap;
+    }
+    &-item{
+        .#{$menu-class}{
+            &-sub{
+                margin-left: $menu-sub-gap-x;
+                .#{$menu-class}-sub{
+                    margin-left: $menu-sub-sub-gap-x;
+                }
+            }
+        }
+    }
+    &-sub{
+        .#{$menu-class}{
+            &-text{
+                padding-left: 0;
+            }
+            &-link{
+                padding-top: $menu-sub-link-gap-y;
+                padding-bottom: $menu-sub-link-gap-y;
+                font-size: $menu-sub-font-size;
+                font-weight: $menu-sub-font-weight;
+                color: $menu-sub-link-color;
+                background-color: transparent;
+                &::after{
+                    display: none;
+                }
+                &:hover{
+                    color: $menu-link-hover-color;
+                }
+            }
+            &-sub{
+                margin-top: .5rem;
+                margin-bottom: .5rem;
+                border-left: 1px solid $menu-border-color;
+            }
+        }
+        .active{
+            > .#{$menu-class}-link{
+                color: $menu-link-hover-color;
+            }
+        }
+    }
+
+    &-toggle{
+        position: relative;
+        &::before{
+            position: absolute;
+            font-family: $nio-font-family;
+            top: 50%;
+            content: $ni-chevron-down;
+            right: 1.5rem;
+            transform: translateY(-50%);
+            font-size: 18px;
+            transition: 0.4s;
+        }
+        .has-sub.active > &{
+            &::before{
+                transform: translateY(-50%) rotate(-180deg);
+            }
+        }
+        + .#{$menu-class}-sub{
+            display: none;
+        }
+    }
+    // for theme
+    .is-theme &{
+        .#{$menu-class}{
+            &-icon{
+                .icon{
+                    color: $menu-link-color-on-theme-sidebar;
+                }
+            }
+            &-link{
+                color: $menu-link-color-on-theme-sidebar;
+                opacity: 0.9;
+                &:hover{
+                    opacity: 1;
+                    color: $white;
+                }
+            }
+            &-heading{
+                &::before{
+                    background-color: $menu-sub-border-on-theme-sidebar !important;
+                }
+            }
+        }
+        .overline-title{
+            color: $menu-link-color-on-theme-sidebar;
+            opacity: 0.6;
+        }
+        .#{$menu-class}-sub .#{$menu-class}-sub{
+            border-left-color: $menu-sub-border-on-theme-sidebar;
+        }
+        .#{$menu-class}-sub{
+            .active{
+                > .#{$menu-class}-link{
+                    color: $menu-link-hover-color;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}

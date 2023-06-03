@@ -1,0 +1,177 @@
+.btn-md {
+    @include button-size($btn-padding-y-md, $btn-padding-x-md, $btn-font-size-md, $btn-border-radius-md);
+}
+.btn-xl {
+    @include button-size($btn-padding-y-xl, $btn-padding-x-xl, $btn-font-size-xl, $btn-border-radius-xl);
+}
+
+@mixin button-soft-variant(
+    $color,
+    $background: mix($color, $white, 15%),
+    $border: transparent
+  ) {
+    --#{$prefix}btn-color: #{$color};
+    --#{$prefix}btn-bg: #{$background};
+    --#{$prefix}btn-border-color: #{$border};
+}
+
+@mixin button-soft-outline-variant(
+    $color,
+    $background: mix($color, $white, 15%),
+    $border: mix($color, $white, 40%)
+  ) {
+    --#{$prefix}btn-color: #{$color};
+    --#{$prefix}btn-bg: #{$background};
+    --#{$prefix}btn-border-color: #{$border};
+}
+
+@mixin button-color-variant(
+    $color,
+  ) {
+    --#{$prefix}btn-color: #{$color};
+}
+
+@mixin button-hover-variant(
+    $color,
+    $text_color:color-contrast($color),
+    $background: $color,
+    $border: $color
+  ) {
+    --#{$prefix}btn-hover-color: #{$text_color};
+    --#{$prefix}btn-hover-bg: #{$background};
+    --#{$prefix}btn-hover-border-color: #{$background};
+}
+
+@mixin button-hover-soft-variant(
+    $color,
+    $background: mix($color, $white, 15%),
+    $border: transparent
+  ) {
+    --#{$prefix}btn-hover-color: #{$color};
+    --#{$prefix}btn-hover-bg: #{$background};
+    --#{$prefix}btn-hover-border-color: #{$background};
+}
+
+@each $color, $value in $theme-colors {
+    //soft buttons
+    .btn-soft.btn-#{$color} {
+        @include button-soft-variant($value);
+    }
+    //soft oultlined buttons
+    .btn-soft.btn-outline-#{$color} {
+        @include button-soft-outline-variant($value);
+    }
+    .btn-color-#{$color}{
+        @include button-color-variant($value)
+    }
+    .btn-hover-#{$color}{
+        @include button-hover-variant($value)
+    }
+    .btn-soft.btn-hover-#{$color} {
+        @include button-hover-soft-variant($value);
+    }
+}
+
+// btn icon
+.btn{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    &:hover,
+    &:active{
+        border-color: transparent !important;
+    }
+    img{
+        height: 1rem;
+    }
+    .icon{
+        font-size: 1.3em;
+        line-height: $field-line-height;
+    }
+    .icon + span,span + .icon{
+        margin-left: .625rem;
+    }
+    &-icon{
+        --#{$prefix}btn-padding-x:0;
+        width: $size-rg;
+        &.btn{
+            &-sm{
+                width: $size-sm;
+            }
+            &-md{
+                width: $size-md;
+            }
+            &-lg{
+                width: $size-lg;
+            }
+            &-xl{
+                width: $size-xl;
+            }
+        }
+        &::after{
+            display: none;
+        }
+    }
+    &-light,
+    &-outline-light {
+        color: $base-color;
+    }
+    &-no-hover{
+        &.active,
+        &:active,
+        &:focus,
+        &:hover{
+            border-color: transparent !important;
+        }
+    }
+}
+
+//btn zoom
+@mixin btn-zoom-active {
+    opacity: 1;
+    height: 120%;
+    width: 120%;
+}
+.btn-zoom{
+    position: relative;
+    z-index: 1;
+    color: $base-light;
+    border-color: transparent !important;
+    &:focus{
+        box-shadow: none;
+    }
+    &:before{
+        position: absolute;
+        z-index: -1;
+        height: 20px;
+        width: 20px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transform-origin: 50% 50%;
+        content: '';
+        background-color: $base-100;
+        border-radius: 50%;
+        opacity: 0;
+        transition: all .3s ease;
+        .show > &{
+            @include btn-zoom-active();
+        }
+    }
+    &::after{
+        display: none;
+    }
+    &:hover:before, 
+    &:focus:before, 
+    &.active:not(.revarse):before{
+        @include btn-zoom-active();
+    }
+    &.active:hover:before{
+        background-color: $base-200;
+    }
+    a:hover &{
+        &:before{
+            @include btn-zoom-active();
+        }
+    }
+}
