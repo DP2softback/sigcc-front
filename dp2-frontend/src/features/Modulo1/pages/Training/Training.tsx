@@ -340,19 +340,19 @@ const Training = () => {
         else {
             if (typeTraining === "Todos") {
                 filtered = training.filter((item: any) =>
-                    (item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")) >= formatDate(new Date(startDate + ' 00:00:00'))) && (item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")) <= formatDate(new Date(endDate + ' 00:00:00')))
+                    (item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY"))) >= formatDate(new Date(startDate + ' 00:00:00')) && (item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY"))) <= formatDate(new Date(endDate + ' 00:00:00'))
                 );
                 setTrainingFilter(filtered);
             } else {
                 filtered = training.filter((item: any) =>                    
-                    (item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")) >= formatDate(new Date(startDate + ' 00:00:00'))) && (item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")) <= formatDate(new Date(endDate + ' 00:00:00'))) && item.tipo == typeTraining
+                    (item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY"))) >= formatDate(new Date(startDate + ' 00:00:00')) && (item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY"))) <= formatDate(new Date(endDate + ' 00:00:00')) && item.tipo == typeTraining
                 );
                 setTrainingFilter(filtered);
             }
         }
     }
 
-    /* TRAINING FILTERS */
+    /* TRAINING FILTERS */  
 
     const switchRefTr = () => {
         refTrFree.current = !refTrFree.current
@@ -394,9 +394,9 @@ const Training = () => {
             .then(function (response) {
                 setTraining(response.data)
                 setTrainingFilter(response.data);
-                setUpcomingCourse(training.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, now7, 1)))
-                setCurrentCourse(training.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now7, '', 2)))
-                setFinishedCourse(training.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, '', 3)))
+                setUpcomingCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, now7, 1)))
+                setCurrentCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now7, '', 2)))
+                setFinishedCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, '', 3)))
                 setLoading(false);
             })
             .catch(function (error) {
