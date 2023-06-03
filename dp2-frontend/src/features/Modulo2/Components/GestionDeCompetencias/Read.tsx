@@ -5,7 +5,7 @@ import ActualizarCompetencia from './Update';
 import BorrarCompetencia from './Delete';
 import { Download,Upload,ArrowRightCircleFill,Pencil,Trash, Cast } from 'react-bootstrap-icons';
 import './Read.css';
-import axiosInt from "@config/axios";
+import axios from "axios";
 
 type Competencia = {
   id: number;
@@ -14,6 +14,32 @@ type Competencia = {
   descripcion: string;
   activo: boolean;
 };
+const url = "https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/";
+
+
+export async function getCompetencesTypes() {
+  try {
+    const { data, status } = await axios.get(
+      url + 'gaps/competenceTypes',
+      {
+        headers: {
+          Accept: 'application/json',
+        },
+      },
+    );
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message: ', error.message);
+      return error.message;
+    } else {
+      console.log('unexpected error: ', error);
+      return 'An unexpected error occurred';
+    }
+  }
+}
+
+
 
 const CompetenciasListar = () => {
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
@@ -27,7 +53,7 @@ const CompetenciasListar = () => {
     const [mostrarPopUpBorrar, setmostrarPopUpBorrar] = useState(false);
     const [competenciaSeleccionada, setCompetenciaSeleccionada] = useState(null);
     const [tablaApi, setTablaApi] = useState<Competencia[]>([]);
-
+    
     const tablaHardcode: Competencia[] = [
       {
         id: 1,
@@ -51,20 +77,14 @@ const CompetenciasListar = () => {
         activo: true
       }
     ];
-      useEffect(() => {
-        const obtenerCompetencias = async () => {
-          try {
-            const response = await axiosInt.get('https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/brechas/tipoCompetencias');
-            setTablaApi(response.data);
-          } catch (error) {
-            console.error(error);
-          }
-        };      
-        obtenerCompetencias();
-      }, []);
+    var aux
+    useEffect(() => {
+      aux =  getCompetencesTypes().then((data) => aux = data)
+    }, []);
 
-      
-    
+    console.log(aux)
+
+    //console.log(tablaApi)
     const [competenciasData, setCompetenciasData] = useState(tablaHardcode);
 
     const agregarCompetencia = (nuevaCompetencia) => {
