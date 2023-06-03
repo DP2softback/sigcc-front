@@ -138,6 +138,10 @@ const EstadisticasCompetencias = Loader(
   )
 );
 
+const JobOpportunitiesSelected = Loader(
+  lazy(() => import("@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/JobOpportunitySelected"))
+);
+
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
 const routes: RouteObject[] = [
@@ -281,6 +285,12 @@ const routes: RouteObject[] = [
           }
         ],
       },
+      
+    ],
+  },
+  {
+    path: "modulo2-skill-management",
+    children: [
       {
         path: "employeesGaps",
         children: [
@@ -297,6 +307,10 @@ const routes: RouteObject[] = [
             path: "index",
             element: <JobOpportunitiesRelatedToSkills />,
           },
+          {
+            path: "selectedJob",
+            element: <JobOpportunitiesSelected/>,
+          },
         ],
       },
       {
@@ -308,25 +322,32 @@ const routes: RouteObject[] = [
           },
         ],
       },
+      
       {
-        path: "showStatsArea",
-        children: [
-          {
-            path: "index",
-            element: <DetalleCompetenciasArea></DetalleCompetenciasArea>,
-          },
-        ],
-      },
-      {
-        path: "showPieChart",
+        path: "showAreaStatistics",
         children: [
           {
             path: "index",
             element: <EstadisticasCompetencias></EstadisticasCompetencias>,
           },
+
+          {
+            path: "showStatsPerArea",
+            element: <DetalleCompetenciasArea></DetalleCompetenciasArea>,
+          },
+
+          {
+            path: "showEmployeeCompetencies",
+            element: <span>poner la pantalla de competencias de un empleado</span>,
+          },
+
+          {
+            path: "showEmployeeNecessities",
+            element: <span> poner la pantalla de necesidades de empleado por area</span>,
+          },
         ],
       },
-    ],
+    ]
   },
 ];
 
