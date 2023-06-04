@@ -4,7 +4,7 @@ import '../../content/common.css';
 import axiosInt from '@config/axios';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import Sidebar from '@components/Sidebar';
-import sidebarItems from '@utils/sidebarItems'
+import sidebarItems from '../../utils/sidebarItems';
 import PictureUpload from '@features/Modulo1/components/PictureUpload';
 import Rate from '@features/Modulo1/components/Rate';
 import { ThreeDotsVertical, People, Clock } from 'react-bootstrap-icons'
@@ -134,7 +134,7 @@ function LearningPath (props: any)
                                     <input className="form-control" type="text" placeholder="Buscar" onChange={handleFilter} />
                                 </div>
                             </div>
-                            <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 align-items-stretch g-3 py-3'>
+                            <div className='row row-cols-1 row-cols-sm-2 row-cols-lg-3 align-items-stretch g-3 py-3'>
                                 {
                                     lpsFiltered.map((lp: {
                                         id: number,
@@ -149,17 +149,17 @@ function LearningPath (props: any)
                                         return <Fragment key={i}>
                                             <div className='col'>
                                                 <div className="card h-100">
-                                                    <div className="card-header lp-header justify-content-between d-flex px-2">
-                                                        <img className="rounded-circle border lp-thumb me-3" src={lp.url_foto} alt="..." />
-                                                        <div className="align-self-center">
-                                                            <h6 className="card-title">{lp.nombre}</h6>
-                                                        </div>
-                                                        <button className='btn btn-link'>
-                                                            <ThreeDotsVertical />
-                                                        </button>
-                                                    </div>
+                                                    <img src={lp.url_foto} className="card-img-top" alt="Card" />
                                                     <div className="card-body">
-                                                        <p className="card-text lp-description-wrap opacity-50"><small>{lp.descripcion}</small></p>
+                                                        <div className="lp-header justify-content-between d-flex">
+                                                            <div className="align-self-center">
+                                                                <h6 className="card-title">{lp.nombre}</h6>
+                                                            </div>
+                                                            <button className='btn btn-link'>
+                                                                <ThreeDotsVertical />
+                                                            </button>
+                                                        </div>
+                                                        <p className='mb-0'><small className="opacity-50">{lp.descripcion}</small></p>
                                                     </div>
                                                     <div className="card-footer lp-footer">
                                                         <div className='d-flex mb-3'>

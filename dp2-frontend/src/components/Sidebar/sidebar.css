@@ -11,6 +11,12 @@
 
 .app-sidebar {
     background: #0d6efd;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.sidebar-options {
+    flex-direction: column;
 }
 
 .app-sidebar .nav-link {
@@ -53,12 +59,49 @@
 }
 
 .expanded .sidebar-container {
-	width: 15rem;
+	width: 18rem;
 }
 
 .expanded .main-container {
-  margin-left: 15rem;
+  margin-left: 20rem;
 }
 .expanded .app-sidebar .nav-item .nav-item-label {
     display: initial;
+}
+
+@media (max-width: 576px) {
+    .sidebar-container {
+        position: fixed;
+        bottom: 0;
+    }
+    .main-container {
+        height: calc(100vh - 5rem);
+        overflow-y: auto;
+    }
+    .sidebar-container, .expanded .sidebar-container {
+        width: 100%;
+    }
+    .sidebar-options {
+        flex-direction: unset;
+    }
+    .app-sidebar {
+        flex-direction: unset;
+        height: 5rem;
+        justify-content: space-between!important;
+    }
+    .main-container, .expanded .main-container {
+        margin-left: 0;
+    }
+    .expanded .app-sidebar .nav-item .nav-item-label {
+        display: none;
+    }
+    .app-menu-btn {
+        display: none;
+    }
+    .sidebar-options-dropdown {
+        height: 100%;
+    }
+    .app-sidebar .nav-link svg {
+        margin-left: 0;
+    }
 }
