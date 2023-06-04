@@ -15,7 +15,10 @@ import { getEvaluationsHistory, getEmployeeEvaluationDashboard } from '@features
 
 const History = () => {
   const urlParams = new URLSearchParams(window.location.search);
+  
   const employeeId = parseInt(urlParams.get('id'));
+  const employeeName = urlParams.get('name');
+
   const [evaluations, setEvaluations] = useState([]);
   const [dashboard, setDashboard] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -50,18 +53,18 @@ const History = () => {
   );
 
   const chart = (
-    <div className='col-md-6 mb-32px'>
-      <div className='container-mt-32px'>
-      {dashboard && (
-        <Linechart
-          title={'Evaluaciones continuas'}
-          labelsX={dashboard.months}
-          dataInfoprops={dashboard.data}/>
-      )}
-      </div>
-
-    </div>
-  );
+		<div className="col-md-6 mb-32px">
+			<div className="container-mt-32px">
+				{dashboard && (
+					<Linechart
+						title={"Evaluaciones continuas"}
+						labelsX={dashboard.months}
+						dataInfoprops={dashboard.data}
+					/>
+				)}
+			</div>
+		</div>
+	);
 
   const table =(
     <div className='col-md-6'>
@@ -72,10 +75,10 @@ const History = () => {
   const content = (
     <>
       {evaluations && evaluations.length > 0 ? (
-        <>
+        <div className='row mt-32'>
           {table}
           {chart}
-        </>
+        </div>
       ) : (
         <NoDataFound />
       )}
@@ -90,7 +93,7 @@ const History = () => {
         </Button>
         <Button
           onClick={() => {
-            navigateTo(CONTINUOS_EVALUATION_CREATE, { id: employeeId });
+            navigateTo(CONTINUOS_EVALUATION_CREATE, { id: employeeId, name: employeeName });
           }}
         >
           Agregar nueva evaluación
@@ -110,10 +113,10 @@ const History = () => {
   return (
     <div>
       <Layout
-        title={'Evaluación continua - Angela Quispe Ramírez'}
+        title={`Evaluación continua - ${employeeName}`}
         body={body}
         route={CONTINUOS_EVALUATION_INDEX}
-        subtitle='Evaluaciones continuas de Angela Quispe Ramírez.'
+        subtitle={`Evaluaciones continuas de ${employeeName}.`}
       />
     </div>
   );

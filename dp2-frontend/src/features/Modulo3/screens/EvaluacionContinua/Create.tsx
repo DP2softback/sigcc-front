@@ -1,91 +1,45 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
 import BaseForm from './BaseForm';
+import { getPlantilla } from '@features/Modulo3/services/templates';
+import { useEffect, useState } from 'react';
+import { CONTINUOS_EVALUATION_TYPE, USER_ID } from '@features/Modulo3/utils/constants';
 
-const Create = () => {  
-  const employee = {
-    id: 1,
-    FullName: "Angela Quispe Ramirez",
-  };
+const Create = () => {
+  const urlParams = new URLSearchParams(window.location.search);
 
-  const categories = [
-    {
-      id: 1,
-      name: "Rendimiento",
-      subcategories: [
-        "Consecución de objetivos",
-        "Calidad del trabajo",
-        "Atención al detalle",
-        "Puntualidad de las entregas",
-        "Gestionar la carga de trabajo y cumplir los plazos",
-      ],
-    },
-    {
-      id: 2,
-      name: "Habilidades blandas",
-      subcategories: [
-        "Liderazgo",
-        "Comunicación",
-        "Resolución de problemas",
-        "Pensamiento crítico",
-        "Trabajo en equipo",
-      ],
-    },
-    {
-      id: 3,
-      name: "Conocimientos técnicos",
-      subcategories: [
-        "Capacidad analítica",
-        "Aprendizaje continuo y desarrollo profesional",
-        "Conocimientos técnicos",
-        "Conocimiento del producto",
-        "Resolución de problemas técnicos",
-      ],
-    },
-    {
-      id: 4,
-      name: "Orientación al cliente",
-      subcategories: [
-        "Respuesta a las consultas y peticiones",
-        "Comprender las necesidades y preferencias",
-        "Resolución eficaz de los problemas",
-        "Mejora continua de los productos o servicios",
-        "Creación y mantenimiento de relaciones positivas",
-      ],
-    },
-    {
-      id: 5,
-      name: "Creatividad e iniciativa",
-      subcategories: [
-        "Asunción de riesgos",
-        "Mentalidad abierta",
-        "Colaboración",
-        "Feedback",
-        "Nuevas ideas",
-      ],
-    },
-  ];
+  const [categories, setCategories] = useState([]);
+  const [employee, setEmployee] = useState({
+    id: parseInt(urlParams.get('id')),
+    name: urlParams.get('name')
+  })
+  const [evaluation, setEvaluation] = useState({
+    evaluatedId: employee.id,
+    evaluatorId: USER_ID,
+    associatedProject: '',
+    additionalComments: ''
+  });
+  const [isLoading, setIsLoading] = useState(true);
 
-  const projects = [
-    { id: 1, name: "BLF-KC-0012" },
-    { id: 2, name: "BLF-KC-0013" },
-    { id: 3, name: "BLF-KC-0014" },
-    { id: 4, name: "BLF-KC-0015" },
-    { id: 5, name: "BLF-KC-0016" },
-  ];
+  useEffect(() => {
+    setIsLoading(true);
+    (async () => {
+      const response = await getPlantilla(2, CONTINUOS_EVALUATION_TYPE);
+      if (response && response[0] && response[0].Categories) {
+        setCategories(response[0].Categories);
+      }
+      setIsLoading(false);
+    })();
+  }, []);
 
-  const form = {
-    evaluationCategory: 1,
-    projectId: 2,
-    evaluation: [0, 1, 2, 3, 4],
-    additionalComments: "Todo bien la verdad, sigue así.",
-  };
-  
   return (
     <BaseForm 
-      employee={employee} 
-      categories={categories} 
-      projects={projects}
+      employee={employee}
+      categories={categories}
+      evaluation={evaluation}
+      isLoading={isLoading}
+      setEvaluation={setEvaluation}
+      setIsLoading={setIsLoading}
       isReadOnly={false}
     />
   );
