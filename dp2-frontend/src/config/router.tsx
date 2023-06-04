@@ -160,6 +160,25 @@ const ConfigPosition = Loader(
   )
 );
 
+const JobOpportunitiesSelected = Loader(
+  lazy(() => import("@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/JobOpportunitySelected"))
+);
+
+const EstadisticasCompetencias = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/ConsolidadoCompetencias")
+  )
+);
+
+const DetalleCompetenciasArea = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/DetalleCompetenciasArea")
+  )
+);
+
+
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
 const routes: RouteObject[] = [
@@ -357,33 +376,6 @@ const routes: RouteObject[] = [
         ],
       },
       {
-        path: "employeesGaps",
-        children: [
-          {
-            path: "index",
-            element: <VisualizacionBrechasEmpleado />,
-          },
-        ],
-      },
-      {
-        path: "jobOpportunitiesRelatedToSkills",
-        children: [
-          {
-            path: "index",
-            element: <JobOpportunitiesRelatedToSkills />,
-          },
-        ],
-      },
-      {
-        path: "showskills",
-        children: [
-          {
-            path: "index",
-            element: <GestionDeCompetencias />,
-          },
-        ],
-      },
-      {
         path: "selection-process",
         children: [
           {
@@ -402,6 +394,68 @@ const routes: RouteObject[] = [
       },
     ],
   },
+  {
+    path: "modulo2-skill-management",
+    children: [
+      {
+        path: "employeesGaps",
+        children: [
+          {
+            path: "index",
+            element: <VisualizacionBrechasEmpleado />,
+          },
+        ],
+      },
+      {
+        path: "jobOpportunitiesRelatedToSkills",
+        children: [
+          {
+            path: "index",
+            element: <JobOpportunitiesRelatedToSkills />,
+          },
+          {
+            path: "selectedJob",
+            element: <JobOpportunitiesSelected/>,
+          },
+        ],
+      },
+      {
+        path: "showskills",
+        children: [
+          {
+            path: "index",
+            element: <GestionDeCompetencias />,
+          },
+        ],
+      },
+      
+      {
+        path: "showAreaStatistics",
+        children: [
+          {
+            path: "index",
+            element: <EstadisticasCompetencias></EstadisticasCompetencias>,
+          },
+
+          {
+            path: "showStatsPerArea",
+            element: <DetalleCompetenciasArea></DetalleCompetenciasArea>,
+          },
+
+          {
+            path: "showEmployeeCompetencies",
+            element: <span>poner la pantalla de competencias de un empleado</span>,
+          },
+
+          {
+            path: "showEmployeeNecessities",
+            element: <span> poner la pantalla de necesidades de empleado por area</span>,
+          },
+        ],
+      },
+    ]
+  },
+  
 ];
 
 export default routes;
