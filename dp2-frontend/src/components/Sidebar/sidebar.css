@@ -83,11 +83,16 @@
     }
     .sidebar-options {
         flex-direction: unset;
+        margin-top: .5rem;
     }
     .app-sidebar {
         flex-direction: unset;
-        height: 5rem;
+        height: 4.25rem;
         justify-content: space-between!important;
+    }
+
+    .app-sidebar .nav-item {
+        margin: 0 0 0 .5rem;
     }
     .main-container, .expanded .main-container {
         margin-left: 0;
