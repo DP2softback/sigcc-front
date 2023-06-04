@@ -9,6 +9,7 @@ import '../../../content/common.css';
 import { ArrowLeftCircleFill, People, BarChart } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router-dom';
 import Rate from '@features/Modulo1/components/Rate';
+import LearningPathAssignment from '../Assignment';
 
 
 function LearningPathDetails (props: any)
@@ -21,6 +22,7 @@ function LearningPathDetails (props: any)
     const [lpParticipants, setLPParticipants] = useState<any>("");
     const [lpRate, setLPRate] = useState<any>("");
     const [courses, setCourses] = useState<any>([]);
+    const [employees, setEmployees] = useState<any>([]);
 
     const navigate = useNavigate();
 
@@ -50,9 +52,23 @@ function LearningPathDetails (props: any)
             });
     }
 
+    const loadEmployees = () =>
+    {
+        axiosInt.get(`capacitaciones/learning_path/${learningPathId}/employees/`)
+            .then(function (response)
+            {
+                setEmployees(response.data);
+            })
+            .catch(function (error)
+            {
+                console.log(error);
+            });
+    }
+
     useEffect(() =>
     {
         loadsCourses();
+        loadEmployees();
     }, []);
 
     const handleRemoveCard = (id: number) =>
@@ -68,6 +84,19 @@ function LearningPathDetails (props: any)
                 console.log(error);
             });
     };
+
+    const handleAssignEmployees = (employees: Array<any>, closeFunction: any) =>
+    {
+        axiosInt.post('capacitaciones/learning_path/enroll_employess/', {
+            "id_lp": learningPathId,
+            "empleados": employees
+        }).then((res) =>
+        {
+            console.log(res.data);
+            window.location.reload();
+        })
+        closeFunction.current.click();
+    }
 
     return (
         <>
@@ -156,13 +185,47 @@ function LearningPathDetails (props: any)
                                     </>
                                 }
                             </div>
-                            <div className='mt-3 d-flex gap-2 w-100 justify-content-between'>
+                            <div className='border-top pt-3 d-flex gap-2 w-100 justify-content-between'>
                                 <h4>Empleados asignados</h4>
-                                <Link to={`/course/add/${learningPathId}`} className='btn btn-primary'>Agregar empleados</Link>
+                                <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#assignmentModal">Asignar empleados</button>
+                            </div>
+                            <div className="row mt-3 flex-nowrap overflow-x-auto">
+                                {employees.map((employee: any) => (
+                                    <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3" key={employee.id}>
+                                        <div className="card h-100">
+                                            <div className="card-body">
+                                                <h6 className="card-title">{employee.first_name} {employee.last_name}</h6>
+                                                <p><small className="opacity-50">{employee.email}</small></p>
+                                                {/* <button
+                                                    className="btn btn-danger"
+                                                    onClick={() => handleRemoveCard(employee.id)}
+                                                >
+                                                    Quitar
+                                                </button> */}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                                {
+                                    employees.length === 0 && <>
+                                        <div className='col'>
+                                            <div className='card'>
+                                                <div className='card-body'>
+                                                    <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                        <div className='vertical-align-child'>
+                                                            <h5 className='opacity-50 text-center'>Agrega empleados para empezar</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                }
                             </div>
                         </>
                 }
             </Sidebar>
+            <LearningPathAssignment assignFunction={handleAssignEmployees} />
         </>
     );
 }

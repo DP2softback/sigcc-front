@@ -1,0 +1,21 @@
+.container{
+    background: #f1f1f1;
+}
+
+.form-control{
+    background: #FFFFFF;
+   border-radius: 4px;
+}
+
+.imgMedio{
+    width: 50%;
+    position: absolute;
+    left: 0px;
+    height: 100%;
+}
+
+.text-center{
+    font-size: medium;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}

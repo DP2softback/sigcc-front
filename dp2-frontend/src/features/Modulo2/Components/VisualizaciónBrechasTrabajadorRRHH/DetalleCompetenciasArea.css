@@ -1,0 +1,26 @@
+.pantalla{
+    background-color: #f1f1f1;
+    padding-left: 20px;
+}
+
+.titles{
+padding-top: 20px;
+}
+
+.basicSearch{
+    width: 150%; 
+    height: 50%;
+    padding-top: 32px;
+}
+
+.botones{
+    padding-top: 32px;
+}
+
+.descargas{
+    padding-top: 20px;
+}
+
+.primera{
+    padding-bottom: 20px; 
+}

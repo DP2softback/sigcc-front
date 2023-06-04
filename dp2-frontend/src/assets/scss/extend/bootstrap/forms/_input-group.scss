@@ -1,0 +1,8 @@
+.input-group{
+    .datepicker-input{
+        &:last-of-type{
+            border-top-right-radius: $input-border-radius !important;
+            border-bottom-right-radius: $input-border-radius !important;
+        }
+    }
+}

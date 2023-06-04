@@ -1,15 +1,66 @@
 import { ajax } from '../tools/ajax';
-import { PERFORMANCE_EVALUATION_TYPE } from '../utils/constants.jsx';
+import { PERFORMANCE_EVALUATION_TYPE, BACKEND_URL, SAMPLE_TOKEN } from '../utils/constants';
 
-const env = import.meta.env;
-
-export const getPersonasACargo = async bossId => {  
+export const getEmployees = async (bossId, fechaInicio? : Date, fechaFin? : Date) => {  
   const optionsRequest = {
-    method: 'GET',
-    url: env.BACKEND_URL + 'api/v1/GetPersonasACargo',
-    params: {
+    method: 'POST',
+    url: BACKEND_URL + 'employees',
+    headers:{
+      Authorization: `Token ${SAMPLE_TOKEN}`
+    },
+    data: {
       id: bossId,
-      evaluationType: PERFORMANCE_EVALUATION_TYPE
+      evaluationType: PERFORMANCE_EVALUATION_TYPE,
+      fecha_inicio: fechaInicio,
+      fecha_fin: fechaFin
+    }
+  }
+  return await ajax(optionsRequest);
+}
+
+export const getEvaluationsHistory = async (employeeId, nivel? : number, fechaInicio? : Date, fechaFin? : Date) => {
+  const optionsRequest = {
+    method: 'POST',
+    url: BACKEND_URL + 'evaluations',
+    headers:{
+      Authorization: `Token ${SAMPLE_TOKEN}`
+    },
+    data: {
+      employee_id: employeeId,
+      evaluationType: PERFORMANCE_EVALUATION_TYPE,
+      nivel: nivel,
+      fecha_inicio: fechaInicio,
+      fecha_fin: fechaFin
+    }
+  }
+  return await ajax(optionsRequest);
+}
+
+export const getEmployeesEvaluationDashboard = async (bossId) => {
+  const optionsRequest = {
+    method: 'POST',
+    url: BACKEND_URL + 'LineChartEvaluaciones',
+    headers:{
+      Authorization: `Token ${SAMPLE_TOKEN}`
+    },
+    data: {
+      id: bossId,
+      evaluationType: PERFORMANCE_EVALUATION_TYPE,
+    }
+  }
+  return await ajax(optionsRequest);
+}
+
+export const getEmployeeEvaluationDashboard = async (employeeId) => {
+  const optionsRequest = {
+    method: 'POST',
+    url: BACKEND_URL + 'LineChartEvaluacionesPersona',
+    headers:{
+      Authorization: `Token ${SAMPLE_TOKEN}`
+    },
+    data: {
+      id: employeeId,
+      evaluationType: PERFORMANCE_EVALUATION_TYPE,
     }
   }
   return await ajax(optionsRequest);

@@ -1,0 +1,12 @@
+.table{
+    > :not(caption) > * > *:first-child{
+        .card &{
+            padding-left: $nk-card-spacer-x;
+        }
+    }
+    > :not(caption) > * > *:last-child{
+        .card &{
+            padding-right: $nk-card-spacer-x;
+        }
+    }
+}
