@@ -10,6 +10,8 @@ import Pagination from '@features/Modulo1/components/Pagination';
 import '../../../basic.css';
 import '../training.css';
 import VideoUpload from '@features/Modulo1/components/VideoUpload';
+import moment from 'moment';
+import 'moment-timezone';
 
 let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
 
@@ -306,6 +308,7 @@ const TrainingCreate = () => {
 
     /* CREATE NEW SESSION */
     const createSession = () => {
+        setSessionCreated(false)
         setLoading(true)
         let dataSession: SessionObj = {
             nombre: '',
@@ -314,19 +317,21 @@ const TrainingCreate = () => {
             responsables: []
         }
 
-        let fecha_ini = new Date(refTrDateStart.current?.value).toISOString()
-
         if (training.tipo === "A") {
             dataSession = {
                 curso_empresa_id: parseInt(trainingID),
                 nombre: refTrName.current?.value,
                 descripcion: refTrDescription.current?.value,
-                //url_video: refTrVideo.current.getUrl(),
+                url_video: refTrVideo.current.getUrl(),
                 temas: addedTopics,
                 responsables: addedSuppliersId
             }
         }
         else {
+            let fecha_ini = moment.tz(refTrDateStart.current?.value, 'America/Lima').format('YYYY-MM-DDTHH:mm:ssZ');
+
+            console.log(fecha_ini);
+
             if (training.tipo === "P") {
                 dataSession = {
                     curso_empresa_id: parseInt(trainingID),
@@ -357,12 +362,23 @@ const TrainingCreate = () => {
 
         console.log(dataSession)
 
+        axiosInt.post('capacitaciones/sesion_course_company/', dataSession)
+            .then(function (response) {
+                console.log(response.data)
+                setSessionCreated(true)
+                setLoading(false);
+            })
+            .catch(function (error) {
+                console.log(error);
+                setLoading(false);
+            });
+
         /* Clear inputs */
         refTrName.current.value = "";
         refTrDescription.current.value = "";
 
         if (training.tipo === "A") {
-            refTrVideo.current = null;
+            refTrVideo.current.value = null;
         }
         else {
             refTrDateStart.current.value = "";
@@ -378,15 +394,6 @@ const TrainingCreate = () => {
 
         setAddedTopics([]);
         /* Clear inputs */
-
-        axiosInt.post('capacitaciones/sesion_course_company/', dataSession)
-            .then(function (response) {
-                console.log(response.data)
-                setSessionCreated(true)
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
     }
     /* CREATE NEW SESSION */
 
