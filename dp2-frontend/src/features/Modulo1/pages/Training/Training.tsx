@@ -216,8 +216,6 @@ function formatDate(date: Date) {
 
 function compararFechas(fecha1: string, fecha2: string, fecha3: string, tipo: number): boolean {
 
-
-
     const fecha1Parts = fecha1.split('-');
     const dia1 = parseInt(fecha1Parts[0], 10);
     const mes1 = parseInt(fecha1Parts[1], 10) - 1; // Restamos 1 al mes para que coincida con el rango de 0 a 11 en la clase Date
@@ -231,7 +229,7 @@ function compararFechas(fecha1: string, fecha2: string, fecha3: string, tipo: nu
     const fecha1Comparar = new Date(anio1, mes1, dia1);
     const fecha2Comparar = new Date(anio2, mes2, dia2);
 
-    if (fecha3 != '') {
+    if (fecha3 != '' && tipo == 1) {
         const fecha3Parts = fecha3.split('-');
         const dia3 = parseInt(fecha3Parts[0], 10);
         const mes3 = parseInt(fecha3Parts[1], 10) - 1; // Restamos 1 al mes para que coincida con el rango de 0 a 11 en la clase Date
@@ -241,15 +239,17 @@ function compararFechas(fecha1: string, fecha2: string, fecha3: string, tipo: nu
         return fecha1Comparar.getTime() >= fecha2Comparar.getTime() && fecha1Comparar.getTime() <= fecha3Comparar.getTime();
     }
 
+    if (fecha3 != '' && tipo == 2) {
+        const fecha3Parts = fecha3.split('-');
+        const dia3 = parseInt(fecha3Parts[0], 10);
+        const mes3 = parseInt(fecha3Parts[1], 10) - 1; // Restamos 1 al mes para que coincida con el rango de 0 a 11 en la clase Date
+        const anio3 = parseInt(fecha3Parts[2], 10);
+        const fecha3Comparar = new Date(anio3, mes3, dia3);
 
-    switch (tipo) {
-        case 2:
-            return fecha1Comparar.getTime() > fecha2Comparar.getTime();
-        case 3:
-            return fecha1Comparar.getTime() < fecha2Comparar.getTime();
+        return (fecha1Comparar.getTime() <= fecha2Comparar.getTime() && fecha2Comparar.getTime() <= fecha3Comparar.getTime());
     }
 
-
+    return fecha1Comparar.getTime() < fecha2Comparar.getTime();
 }
 
 
@@ -263,9 +263,9 @@ const Training = () => {
 
     const [trainingFilter, setTrainingFilter] = useState<TrainingObj[]>([])
     const [training, setTraining] = useState<TrainingObj[]>([])
-    const [upcomingCourse, setUpcomingCourse] = useState<TrainingObj[]>(training.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, now7, 1)))
-    const [currentCourse, setCurrentCourse] = useState<TrainingObj[]>(training.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now7, '', 2)))
-    const [finishedCourse, setFinishedCourse] = useState<TrainingObj[]>(training.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, '', 3)))
+    const [upcomingCourse, setUpcomingCourse] = useState<TrainingObj[]>([])
+    const [currentCourse, setCurrentCourse] = useState<TrainingObj[]>([])
+    const [finishedCourse, setFinishedCourse] = useState<TrainingObj[]>([])
 
     const [startDate, setStarDate] = useState("0001-01-01")
     const [endDate, setEndDate] = useState("9999-12-31")
@@ -326,7 +326,7 @@ const Training = () => {
     }
 
     const handleChangeType = (e: any) => {
-        switch(e.target.value){
+        switch (e.target.value) {
             case "Todos": setTypeTraining(e.target.value); break;
             case "Presencial": setTypeTraining("P"); break;
             case "Virtual Sincrono": setTypeTraining("S"); break;
@@ -344,7 +344,7 @@ const Training = () => {
                 );
                 setTrainingFilter(filtered);
             } else {
-                filtered = training.filter((item: any) =>                    
+                filtered = training.filter((item: any) =>
                     (item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY"))) >= formatDate(new Date(startDate + ' 00:00:00')) && (item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY"))) <= formatDate(new Date(endDate + ' 00:00:00')) && item.tipo == typeTraining
                 );
                 setTrainingFilter(filtered);
@@ -352,7 +352,7 @@ const Training = () => {
         }
     }
 
-    /* TRAINING FILTERS */  
+    /* TRAINING FILTERS */
 
     const switchRefTr = () => {
         refTrFree.current = !refTrFree.current
@@ -395,7 +395,7 @@ const Training = () => {
                 setTraining(response.data)
                 setTrainingFilter(response.data);
                 setUpcomingCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, now7, 1)))
-                setCurrentCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now7, '', 2)))
+                setCurrentCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_ultima_sesion).format("DD-MM-YYYY")), 2)))
                 setFinishedCourse(response.data.filter((item: any) => compararFechas(item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, '', 3)))
                 setLoading(false);
             })
@@ -475,70 +475,9 @@ const Training = () => {
                             {trainingFilter == training ?
                                 <div>
                                     <div>
-                                        <div>
+                                        <div className='pb-3'>
                                             <h5>
-                                                Próximos a iniciar
-                                            </h5>
-                                        </div>
-
-                                        {upcomingCourse.length > 0 ?
-                                            <div style={{ display: "flex", flexDirection: "column" }}>
-                                                <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
-                                                    {
-                                                        upcomingCourseShow.map((tr) => {
-                                                            return (
-                                                                <TrainingCard key={tr.id}
-                                                                    id={tr.id}
-                                                                    name={tr.nombre}
-                                                                    photoURL={tr.url_foto === null ? (url_foto_default) : (tr.url_foto)}
-                                                                    description={tr.descripcion}
-                                                                    creationDate={moment(tr.fecha_creacion).format("DD-MM-YYYY")}
-                                                                    eventDate={tr.fecha_primera_sesion === null ? (moment(tr.fecha_creacion).format("DD-MM-YYYY")) : (moment(tr.fecha_primera_sesion).format("DD-MM-YYYY"))}
-                                                                    employees={tr.cantidad_empleados}
-                                                                />
-
-                                                            )
-                                                        })
-                                                    }
-                                                </div>
-
-                                                {upcomingCourse.length > mostrar &&
-                                                    <div>
-                                                        <div>
-                                                            <Pagination
-                                                                page={pageU}
-                                                                totalPages={totalPagesU}
-                                                                handlePagination={setPageU}
-                                                                setPosition={setPositionU}
-                                                                position={positionU}
-                                                                mostrar={mostrar}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                }
-
-                                            </div>
-                                            :
-                                            <div className='row align-items-stretch g-3 py-3'>
-                                                <div className='col'>
-                                                    <div className='card'>
-                                                        <div className='card-body'>
-                                                            <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                                <div className='vertical-align-child'>
-                                                                    <h5 className='opacity-50 text-center'>No hay proximos cursos</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        }
-                                    </div>
-
-                                    <div>
-                                        <div className='pt-3'>
-                                            <h5>
-                                                Curso Empresa vigentes
+                                                Cursos vigentes
                                             </h5>
                                         </div>
 
@@ -599,10 +538,74 @@ const Training = () => {
 
                                     </div>
 
-                                    <div>
-                                        <div className='pt-3'>
+
+                                    <div className='pt-4'>
+                                        <div className='pt-3 pb-3'>
                                             <h5>
-                                                Curso Empresa finalizados
+                                                Próximos a iniciar
+                                            </h5>
+                                        </div>
+
+                                        {upcomingCourse.length > 0 ?
+                                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                                <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
+                                                    {
+                                                        upcomingCourseShow.map((tr) => {
+                                                            return (
+                                                                <TrainingCard key={tr.id}
+                                                                    id={tr.id}
+                                                                    name={tr.nombre}
+                                                                    photoURL={tr.url_foto === null ? (url_foto_default) : (tr.url_foto)}
+                                                                    description={tr.descripcion}
+                                                                    creationDate={moment(tr.fecha_creacion).format("DD-MM-YYYY")}
+                                                                    eventDate={tr.fecha_primera_sesion === null ? (moment(tr.fecha_creacion).format("DD-MM-YYYY")) : (moment(tr.fecha_primera_sesion).format("DD-MM-YYYY"))}
+                                                                    employees={tr.cantidad_empleados}
+                                                                />
+
+                                                            )
+                                                        })
+                                                    }
+                                                </div>
+
+                                                {upcomingCourse.length > mostrar &&
+                                                    <div>
+                                                        <div>
+                                                            <Pagination
+                                                                page={pageU}
+                                                                totalPages={totalPagesU}
+                                                                handlePagination={setPageU}
+                                                                setPosition={setPositionU}
+                                                                position={positionU}
+                                                                mostrar={mostrar}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                            :
+                                            <div className='row align-items-stretch g-3 py-3'>
+                                                <div className='col'>
+                                                    <div className='card'>
+                                                        <div className='card-body'>
+                                                            <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                                <div className='vertical-align-child'>
+                                                                    <h5 className='opacity-50 text-center'>No hay proximos cursos</h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+
+
+
+                                    <div className='pt-4'>
+                                        <div className='pt-3 pb-3'>
+                                            <h5>
+                                                Cursos finalizados
                                             </h5>
                                         </div>
 
@@ -666,9 +669,9 @@ const Training = () => {
                                 :
                                 <div>
                                     <div>
-                                        <div>
+                                        <div className='pt-3 pb-3'>
                                             <h5>
-                                                Curso Empresa creados
+                                                Cursos creados
                                             </h5>
                                         </div>
 
