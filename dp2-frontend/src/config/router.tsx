@@ -124,6 +124,13 @@ const VisualizacionBrechasEmpleado = Loader(
   )
 );
 
+const VisualizacionOfertasLaborales = Loader(
+    lazy(
+        () =>
+            import("@features/Modulo4/pages/JobOffer/JobOffer")
+    )
+);
+
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
 const routes: RouteObject[] = [
@@ -293,9 +300,18 @@ const routes: RouteObject[] = [
             element: <GestionDeCompetencias />,
           },
         ],
-      },
+      }
     ],
   },
+  {
+    path: "modulo4",
+    children: [
+      {
+        path: "joboffer",
+        element: <VisualizacionOfertasLaborales />,
+      },
+    ],
+  }
 ];
 
 export default routes;
