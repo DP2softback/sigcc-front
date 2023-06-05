@@ -97,55 +97,55 @@ const datos = {
     ]
 }
 
-const employees: Employee[] = [
+const employeesData: Employee[] = [
     {
         id: "1",
-        name: "John Doe",
-        code: "123456789",
+        nombre: "John Doe",
+        empleado: "123456789",
         area: "Área de Base de datos",
-        position: "Manager",
+        posicion: "Manager",
         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
     },
     {
         id: "2",
-        name: "Jane Smith",
-        code: "123456789",
+        nombre: "Jane Smith",
+        empleado: "123456789",
         area: "Área de Base de datos",
-        position: "Developer",
+        posicion: "Developer",
         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
     },
     {
         id: "3",
-        name: "Bob Johnson",
-        code: "123456789",
+        nombre: "Bob Johnson",
+        empleado: "123456789",
         area: "Área de Base de datos",
-        position: "Designer",
+        posicion: "Designer",
         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
     },
     {
         id: "4",
-        name: "Sarah Lee",
-        code: "123456789",
+        nombre: "Sarah Lee",
+        empleado: "123456789",
         area: "Área de Base de datos",
-        position: "Tester",
+        posicion: "Tester",
         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
     },
     {
         id: "5",
-        name: "Tom Jackson",
-        code: "123456789",
+        nombre: "Tom Jackson",
+        empleado: "123456789",
         area: "Área de Base de datos",
-        position: "Analyst",
+        posicion: "Analyst",
         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
     }
 ];
 
 type Employee = {
     id: string;
-    name: string;
-    code: string;
-    area: string;
-    position: string;
+    nombre: string;
+    empleado: string;
+    area?: string;
+    posicion?: string;
     image: string;
 }
 
@@ -179,6 +179,7 @@ const TrainingDetails = () => {
     const [classSessions, setClassSessions] = useState<SessionObj[]>([])
     const [position, setPosition] = useState(0);
     const [prueba, setPrueba] = useState(0);
+    const [employees, setEmployees] = useState<Employee[]>([])
     const employeesToShow = employees.slice(position, position + 3);
     const botonEmployee = "Quitar";
 
@@ -201,7 +202,18 @@ const TrainingDetails = () => {
             {
                 setTraining(response.data);
                 setClassSessions(response.data.sesiones)
-                setLoading(false);
+
+                axiosInt.get(`capacitaciones/course_company_course_list_empployees/${trainingID}`)
+                    .then(function (response)
+                    {
+                        setEmployees(response.data);
+                        setLoading(false);
+                    })
+                    .catch(function (error)
+                    {
+                        console.log(error);
+                        setLoading(false);
+                    });
             })
             .catch(function (error)
             {
@@ -310,14 +322,14 @@ const TrainingDetails = () => {
                                             </div>
 
                                             <div className="employees-list cards">
-                                                {employeesToShow.map((employee) => (
-                                                    <EmployeeCard key={employee.id}
-                                                        id={employee.id}
-                                                        name={employee.name}
-                                                        photoURL={employee.image}
-                                                        area={employee.area}
-                                                        puesto={employee.position}
-                                                        codigo={employee.code}
+                                                {employeesToShow.map((employee, index) => (
+                                                    <EmployeeCard key={index}
+                                                        id={index}
+                                                        name={employee.nombre}
+                                                        photoURL={employee.image === (undefined) ? (url_foto_default) : (employee.image)}
+                                                        area={employee.area === (undefined) ? ("-") : (employee.area)}
+                                                        puesto={employee.posicion === (undefined) ? ("-") : (employee.posicion)}
+                                                        codigo={employee.empleado}
                                                         boton1={botonEmployee}
                                                         boton1Color={"#B02A37"}
                                                         option={setPrueba}
