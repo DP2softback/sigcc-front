@@ -1,4 +1,4 @@
-import BasicCard2 from '../../../Modulo1/components/BasicCard2/BasicCard2'
+import BasicCard3 from '../BasicCard3/BasicCard3'
 import { Calendar2, Calendar2Event, PeopleFill } from 'react-bootstrap-icons'
 
 const Offer = ({id, name, photoURL, description, creationDate, eventDate}) => {
@@ -26,7 +26,7 @@ const Offer = ({id, name, photoURL, description, creationDate, eventDate}) => {
     const ruta = `/modulo1/cursoempresa/detalle/${id}`
 
     return (
-        <BasicCard2
+        <BasicCard3
             id={id}
             image={"https://www.becas-santander.com/content/dam/becasmicrosites/blog/metodolog%C3%ADas-de-desarrollo-de-software.jpg"}
             imageStyle={'100px'}
