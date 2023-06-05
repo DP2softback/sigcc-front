@@ -4,7 +4,7 @@ import {useState, useRef, useEffect} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import Pagination from '@features/Modulo1/components/Pagination';
 import PictureUpload from '@features/Modulo1/components/PictureUpload';
-import './training.css';
+import './job-offer.css';
 import axiosInt from '@config/axios';
 import OfferCard from "@features/Modulo4/components/OfferCard/OfferCard";
 

@@ -131,6 +131,13 @@ const VisualizacionOfertasLaborales = Loader(
     )
 );
 
+const DetalleOfertaLaboral = Loader(
+    lazy(
+        () =>
+            import("@features/Modulo4/pages/JobOffer/Details/JobOfferDetails")
+    )
+);
+
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
 const routes: RouteObject[] = [
@@ -309,6 +316,10 @@ const routes: RouteObject[] = [
       {
         path: "joboffer",
         element: <VisualizacionOfertasLaborales />,
+      },
+      {
+        path: "joboffer/detail/:jobOfferId",
+        element: <DetalleOfertaLaboral />,
       },
     ],
   }

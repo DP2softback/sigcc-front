@@ -23,7 +23,7 @@ const Offer = ({id, name, photoURL, description, creationDate, eventDate}) => {
         }
     ]
 
-    const ruta = `/modulo1/cursoempresa/detalle/${id}`
+    const ruta = `/modulo4/joboffer/detail/${id}`
 
     return (
         <BasicCard3
