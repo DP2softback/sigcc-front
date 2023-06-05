@@ -13,6 +13,7 @@ const Create = () => {
     id: parseInt(urlParams.get('id')),
     name: urlParams.get('name')
   })
+  const [idPlantilla,setIdPlantilla]=useState(parseInt(urlParams.get('idPlantilla')));
   const [evaluation, setEvaluation] = useState({
     evaluatedId: employee.id,
     evaluatorId: USER_ID,
@@ -24,7 +25,7 @@ const Create = () => {
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-      const response = await getPlantilla(2, CONTINUOS_EVALUATION_TYPE);
+      const response = await getPlantilla(idPlantilla, CONTINUOS_EVALUATION_TYPE);
       if (response && response[0] && response[0].Categories) {
         setCategories(response[0].Categories);
       }
