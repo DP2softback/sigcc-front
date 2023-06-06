@@ -5,6 +5,7 @@ import {
 	useLayout,
 	useLayoutUpdate
 } from "../LayoutProvider";
+import { List, ArrowLeft } from "react-bootstrap-icons";
 
 const Sidebar = ({ icon, variant }: Partial<any>) => {
 	const layout = useLayout();
@@ -27,14 +28,18 @@ const Sidebar = ({ icon, variant }: Partial<any>) => {
 				variant={variant || "no-hover"}
 				onClick={layoutUpdate.sidebarMobile}
 				className={btnSmClass}>
-				<Icon name={icon || "arrow-left"} />
+				{
+					icon === 'menu' ? <List size="24px" /> : <ArrowLeft size="24px"  />
+				}
 			</Button>
 			<Button
 				size="sm"
 				variant={variant || "no-hover"}
 				onClick={layoutUpdate.sidebarMobile}
 				className={btnClass}>
-				<Icon name={icon || "arrow-left"} />
+				{
+					icon === 'menu' ? <List size="24px" /> : <ArrowLeft size="24px"  />
+				}
 			</Button>
 		</div>
 	);

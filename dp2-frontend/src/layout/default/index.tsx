@@ -25,7 +25,7 @@ const Default: React.FC<Props> = ({ title, content, ...props } : Props) => {
 				<AppMain>
 					<Sidebar />
 					<AppWrap>
-						{/* <Header /> */}
+						<Header />
 						<AppContent content={content}>
 							{props.children}
 						</AppContent>

@@ -47,10 +47,10 @@ const ConfigPosition = () => {
 							<Form.Control type="text" placeholder="Oferta laboral" />
 						</Col>
 						<Col sm={3}>
-							<Button className="w-100">Buscar</Button>
+							<Button className="w-100" style={{marginTop: '1rem'}}>Buscar</Button>
 						</Col>
 					</Form.Group>
-					<Form noValidate onSubmit={handleSubmit(onSubmit)}>
+					{/* <Form noValidate onSubmit={handleSubmit(onSubmit)}>
 						<Form.Group as={Col}>
 								<Form.Label column>Correo electronico</Form.Label>
 							<Col>
@@ -62,8 +62,8 @@ const ConfigPosition = () => {
 								/>
 							</Col>
 						</Form.Group>
-						<Button type="submit">Guardar</Button>
-					</Form>
+						<Button type="submit" style={{marginTop: '2rem'}}>Guardar</Button>
+					</Form> */}
 				</main>
 			</PageContainer>
 		</Layout>
