@@ -11,90 +11,89 @@ import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@config/paths';
 import { getAreas, getCategoriasContinua, getCategoriasDesempenio, getEmployeesEvaluationDashboard, getReportDesempenioLineChart, getReportContinuaLineChart, getPostAreas, getPostCategoriasContinua, getPostCategoriasDesempenio, getPostReportContinuaLineChart, getPostReportDesempenioLineChart } from '@features/Modulo3/services/reports';
 import { formatDashboardJson } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
-import { set } from 'zod';
 
 const dataAreas =     [
   {
     id: 1,
-    area: "Infraestructura"
+    name: "Infraestructura"
   },
   {
     id: 2,
-    area: "Seguridad"
+    name: "Seguridad"
   },
   {
     id: 3,
-    area: "Desarrollo"
+    name: "Desarrollo"
   },
   {
     id: 4,
-    area: "Soporte"
+    name: "Soporte"
   }
 ];
 
 const dataCategoriasEvaluacion = [
   {
     id: 1,
-    categoria: "Calidad del Trabajo"
+    name: "Calidad del Trabajo"
   },
   {
     id: 2,
-    categoria: "Habilidades Blandas"
+    name: "Habilidades Blandas"
   },
   {
     id: 3,
-    categoria: "Conocimientos"
+    name: "Conocimientos"
   },
   {
     id: 4,
-    categoria: "Productividad"
+    name: "Productividad"
   },
   {
     id: 5,
-    categoria: "Creatividad y Iniciativa"
+    name: "Creatividad y Iniciativa"
   }
 ];
 
 const dataCategoriasDesempenio =  [
   {
     id: 1,
-    categoria: "Calidad del Trabajo"
+    name: "Calidad del Trabajo"
   },
   {
     id: 2,
-    categoria: "Productividad"
+    name: "Productividad"
   },
   {
     id: 3,
-    categoria: "Comportamiento y actitud"
+    name: "Comportamiento y actitud"
   },
   {
     id: 4,
-    categoria: "Habilidades técnicas"
+    name: "Habilidades técnicas"
   },
   {
     id: 5,
-    categoria: "Comunicación"
+    name: "Comunicación"
   },
   {
     id: 6,
-    categoria: "Colaboración y trabajo en equipo"
+    name: "Colaboración y trabajo en equipo"
   },
   {
     id: 7,
-    categoria: "Habilidades de liderazgo"
+    name: "Habilidades de liderazgo"
   },
   {
     id: 8,
-    categoria: "Iniciativa y creatividad"
+    name: "Iniciativa y creatividad"
   },
   {
     id: 9,
-    categoria: "Cumplimiento de objetivos y metas"
+    name: "Cumplimiento de objetivos y metas"
   },
   {
     id: 10,
-    categoria: "Desarrollo profesional y personal"
+    name: "Desarrollo profesional y personal"
   }
 ]
 
@@ -102,8 +101,8 @@ const IndexEvaluacionContinua = () => {
   const [activeRepContinua, setActiveRepContinua] = useState(true);
 
   const [searchParams, setSearchParams] = useState({
-    area: {id:0 , area:"Todas las áreas"},
-    categoria: {id:0, categoria:"Todas las categorías"},
+    area: {id:0 , name:"Todas las áreas"},
+    categoria: {id:0, name:"Todas las categorías"},
     fechaInicio: null,
     fechaFin: null,
   });
@@ -140,14 +139,11 @@ const IndexEvaluacionContinua = () => {
         const dataAreas = await getAreas();
         const dataCategoriasContinua = await getCategoriasContinua();
         const dataCategoriasDesempenio = await getCategoriasDesempenio();
-        setAreas(dataAreas);          
-        setCategoriasContinua(dataCategoriasContinua);
-        setCategoriasDesempenio(dataCategoriasDesempenio);
-        console.log(areas);
-        console.log(categoriasContinua);
-        console.log(categoriasDesempenio); 
+        setAreas([{id:0 , name:"Todas las áreas"},...dataAreas]);          
+        setCategoriasContinua([{id:0 , name:"Todas las categorias"},...dataCategoriasContinua]);
+        setCategoriasDesempenio([{id:0 , name:"Todas las categorias"},...dataCategoriasDesempenio]);
       } catch (error){
-        console.log("Error: En el Fetch");
+        console.error("Error fetching data: ", error)
       }
           
       // const categoriasContinuaData = await getPostCategoriasContinua();
@@ -183,8 +179,8 @@ const IndexEvaluacionContinua = () => {
         <Linechart
           title={
             activeRepContinua
-              ? `Evaluaciones Continuas - ${searchParams.area.area}`
-              : `Evaluaciones de Desempeño - ${searchParams.area.area}`
+              ? `Evaluaciones Continuas - ${searchParams.area.name}`
+              : `Evaluaciones de Desempeño - ${searchParams.area.name}`
           }
           dataInfoprops={dashboard.data}
           labelsX={dashboard.months}
@@ -201,9 +197,13 @@ const IndexEvaluacionContinua = () => {
 
   const handleArea = (eventKey: string | null, event: React.SyntheticEvent<unknown>) => {
     const selected = areas.find(area => area.id === Number(eventKey));
+  
+      
+
+    console.log("Selected: ", selected);
     setSearchParams(prevState => ({
       ...prevState,
-      area: selected ? selected : {id:0 , area:"Todas las áreas"},
+      area: selected ? selected : {id:0 , name:"Todas las áreas"},
     }));
   };
 
@@ -211,7 +211,7 @@ const IndexEvaluacionContinua = () => {
     const selected = (activeRepContinua ? categoriasContinua : categoriasDesempenio).find(categoria => categoria.id === Number(eventKey));
     setSearchParams(prevState => ({
       ...prevState,
-      categoria: selected ? selected : {id:0, categoria:"Todas las categorías"},
+      categoria: selected ? selected : {id:0, name:"Todas las categorías"},
     }));
   }
 
@@ -233,8 +233,8 @@ const IndexEvaluacionContinua = () => {
     setActiveRepContinua(!activeRepContinua);
     setSearchParams(prevState => ({
       ...prevState,
-      area: {id:0 , area:"Todas las áreas"},
-      categoria: {id:0, categoria:"Todas las categorías"},
+      area: {id:0 , name:"Todas las áreas"},
+      categoria: {id:0, name:"Todas las categorías"},
     }));
   };
 
@@ -271,6 +271,7 @@ const IndexEvaluacionContinua = () => {
         }
         else{
           console.log("Error C: ", data);
+          console.log("Params: ", searchParams);
         }
         setIsLoading(false);
       };
@@ -287,6 +288,7 @@ const IndexEvaluacionContinua = () => {
         }
         else{
           console.log("Error D: ", data);
+          console.log("Params: ", searchParams);
         }
         setIsLoading(false);
       };
@@ -319,10 +321,9 @@ const IndexEvaluacionContinua = () => {
       <Form.Group controlId='reportes' className='ec-indexFilters'>        
           <Dropdown onSelect={handleArea}>
             <Dropdown.Toggle variant="outline-secondary" className="ec-indexButton">
-              {searchParams.area.area}
+              {searchParams.area.name}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item eventKey={0} value={0}>Todas las áreas</Dropdown.Item>
               {areas.map((area) => (
                 <Dropdown.Item eventKey={area.id} value={area.id}>{area.name}</Dropdown.Item>
               ))}              
@@ -330,10 +331,9 @@ const IndexEvaluacionContinua = () => {
           </Dropdown>    
           <Dropdown onSelect={handleCategoria}>
             <Dropdown.Toggle variant="outline-secondary" className="ec-indexButton">
-              {searchParams.categoria.categoria}
+              {searchParams.categoria.name}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item eventKey={0} value={0}>Todas las categorías</Dropdown.Item>
               {
                 (activeRepContinua ? categoriasContinua : categoriasDesempenio).map(categoria => (
                   <Dropdown.Item eventKey={categoria.id} value={categoria.id}>{categoria.name}</Dropdown.Item>
