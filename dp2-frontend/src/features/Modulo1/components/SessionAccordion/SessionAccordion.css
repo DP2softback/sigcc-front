@@ -1,0 +1,14 @@
+.accordion-footer{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.confirm{
+    display: flex;
+    justify-content: center;
+}
+
+.confirm-footer{
+    display: flex;
+    justify-content: space-evenly;
+}

@@ -7,7 +7,7 @@ import { People, ArrowLeftCircle, ArrowLeftCircleFill, ArrowRightCircle } from '
 import EmployeeCard from '@features/Modulo1/components/EmployeeCard/EmployeeCard';
 import '../../../../basic.css';
 import '../trainingE.css';
-import SessionAccordion from '@features/Modulo1/components/SessionAccordion';
+import SessionAccordionEmployee from '@features/Modulo1/components/SessionAccordion/SessionAccordionEmployee';
 
 let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
 
@@ -143,16 +143,22 @@ type TopicObj = {
     nombre: string;
 }
 
+type SupplierObj = {
+    id: number
+    nombres?: string;
+    apellidos?: string;
+}
+
 type SessionObj = {
-    curso_empresa_id: number;
+    id: number;
     nombre: string;
     descripcion: string;
     fecha_inicio: string;
-    //fecha_limite?: string;
     ubicacion?: string;
     aforo_maximo?: number;
     url_video?: string;
     temas: TopicObj[];
+    responsables: SupplierObj[];
 }
 
 type TrainingObj = {
@@ -171,7 +177,7 @@ let sessionsData: SessionObj[] = []
 
 const TrainingDetails = () => {
     const { trainingID } = useParams();
-    const [training, setTraining] = useState<any>(datos);
+    const [training, setTraining] = useState<any>([]);
     const [loading, setLoading] = useState(false);
     const [classSessions, setClassSessions] = useState<SessionObj[]>([])
 
@@ -194,10 +200,13 @@ const TrainingDetails = () => {
 
     const loadTrainingDetails = () => {
         setLoading(true);
-        axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/course_company_course/${trainingID}`)
+        console.log(trainingID)
+        axiosInt.get(`capacitaciones/course_company_course/${trainingID}`)
             .then(function (response)
             {
-                //setTraining(response.data);
+                console.log(response.data)
+                setTraining(response.data);
+                setClassSessions(response.data.sesiones)
                 setLoading(false);
             })
             .catch(function (error)
@@ -227,7 +236,7 @@ const TrainingDetails = () => {
                     )
                     :
                     (<>
-                        <div className='container row mt-3'>
+                        <div className='container row mt-3' style={{backgroundColor: "#F3F4F6"}}>
                             {/* TRAINING DATA */}
                             <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
                                 <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
@@ -261,9 +270,9 @@ const TrainingDetails = () => {
                             </div>
                             <div className='col' style={{ marginLeft: "60px" }}>
                                 <div className="row mb-3 ">
-                                    <h4 className='mt-3 mb-3 subarea'>Sesiones</h4>
-                                    {training.sesiones.length > 0 ?
-                                        (<SessionAccordion trainingType={training.tipo} sessions={training.sesiones} mode={"detailEmp"}/>)
+                                    <h4 className='mt-4 mb-3 subarea'>Sesiones</h4>
+                                    {classSessions.length > 0 ?
+                                        (<SessionAccordionEmployee trainingType={training.tipo} sessions={training.sesiones} mode={"detailEmp"}/>)
                                         :
                                         (
                                             <div className='row align-items-stretch g-3 py-3'>

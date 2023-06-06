@@ -272,6 +272,7 @@ const TrainingE = () => {
     const [upcomingCourse, setUpcomingCourse] = useState<TrainingObj[]>([])
     const [currentCourse, setCurrentCourse] = useState<TrainingObj[]>([])
     const [finishedCourse, setFinishedCourse] = useState<TrainingObj[]>([])
+    const [freeCourse, setFreeCourse] = useState<TrainingObj[]>([])
 
     const [startDate, setStarDate] = useState("0001-01-01")
     const [endDate, setEndDate] = useState("9999-12-31")
@@ -299,6 +300,11 @@ const TrainingE = () => {
     const totalPagesFi = Math.ceil(trainingFilter.length / mostrarF);
     const [positionFi, setPositionFi] = useState(0);
     const filterCourseShow = trainingFilter.slice(positionFi, positionFi + mostrarF);
+
+    const [pageFr, setPageFr] = useState(1)
+    const totalPagesFr = Math.ceil(freeCourse.length / mostrar);
+    const [positionFr, setPositionFr] = useState(0);
+    const freeCourseShow = freeCourse.slice(positionFr, positionFr + mostrar);
 
     const [optionCourse, setOptionCourse] = useState('Cursos asignados')
     const navigate = useNavigate();
@@ -357,7 +363,6 @@ const TrainingE = () => {
         axiosInt.get('capacitaciones/course_company_course_not_free/1')
             .then(function (response) {
                 setTraining(response.data)
-                console.log(response.data)
                 setTrainingFilter(response.data);
                 setUpcomingCourse(response.data.filter((item: any) => compararFechas(item.cursoEmpresa.fecha_primera_sesion === null ? (moment(item.cursoEmpresa.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.cursoEmpresa.fecha_primera_sesion).format("DD-MM-YYYY")), now, now7, 1)))
                 setCurrentCourse(response.data.filter((item: any) => compararFechas(item.cursoEmpresa.fecha_primera_sesion === null ? (moment(item.cursoEmpresa.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.cursoEmpresa.fecha_primera_sesion).format("DD-MM-YYYY")), now7, '', 2)))
@@ -380,7 +385,25 @@ const TrainingE = () => {
                 setUpcomingCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, now7, 1)))
                 setCurrentCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_ultima_sesion).format("DD-MM-YYYY")), 2)))
                 setFinishedCourse(response.data.filter((item: any) => compararFechas(item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, '', 3)))
-                setLoading(false);
+
+                axiosInt.get('capacitaciones/course_company_course_frees_all/')
+                    .then(function (response) {
+                        var filtered2 = response.data.filter((item: any) => {
+                            return training.every((added) => {
+                                return added.id != item.id;
+                            })
+                        })
+                        setFreeCourse(filtered2)
+                        setLoading1(false);
+                    })
+                    .catch(function (error) {
+                        setLoading1(false);
+                        // setTrainingFilter(datos);
+                        // console.log(error);
+                    });
+
+
+                setLoading1(false);
             })
             .catch(function (error) {
                 setLoading1(false);
@@ -398,7 +421,7 @@ const TrainingE = () => {
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/empleado/cursoEmpresa'>
+            <Sidebar items={sidebarItems} active='/modulo1/empleado/cursoempresa'>
                 <div className='row mt-3'>
                     <div className='col'>
                         <h1 className='screenTitle'>Curso Empresa</h1>
@@ -585,8 +608,6 @@ const TrainingE = () => {
                                             }
                                         </div>
 
-
-
                                         <div className='pt-4'>
                                             <div className='pt-3 pb-3'>
                                                 <h5>
@@ -656,11 +677,11 @@ const TrainingE = () => {
                                     :
                                     <div>
                                         <div>
-                                            <div>
+                                            {/* <div className='pb-3'>
                                                 <h5>
-                                                    Curso Empresa asignados
+                                                    Cursos asignados
                                                 </h5>
-                                            </div>
+                                            </div> */}
 
                                             {trainingFilter.length > 0 ?
                                                 <div style={{ display: "flex", flexDirection: "column" }}>
@@ -760,71 +781,9 @@ const TrainingE = () => {
                                 {trainingFilter == training ?
                                     <div>
                                         <div>
-                                            <div>
+                                            <div className='pb-3'>
                                                 <h5>
-                                                    Próximos a iniciar
-                                                </h5>
-                                            </div>
-
-                                            {upcomingCourse.length > 0 ?
-                                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                                    <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
-                                                        {
-                                                            upcomingCourseShow.map((tr) => {
-                                                                const partes = tr.fechaAsignacion.split("/");
-                                                                const fechaFormateada = `${partes[0]}-${partes[1]}-${partes[2].substr(0, 4)}`;
-                                                                return (
-                                                                    <TrainingCardE key={tr.id}
-                                                                        id={tr.id}
-                                                                        name={tr.cursoEmpresa.nombre}
-                                                                        photoURL={tr.cursoEmpresa.url_foto === null ? (url_foto_default) : (tr.cursoEmpresa.url_foto)}
-                                                                        description={tr.cursoEmpresa.descripcion}
-                                                                        creationDate={fechaFormateada}
-                                                                        eventDate={tr.cursoEmpresa.fecha_primera_sesion === null ? (moment(tr.cursoEmpresa.fecha_creacion).format("DD-MM-YYYY")) : (moment(tr.cursoEmpresa.fecha_primera_sesion).format("DD-MM-YYYY"))}
-                                                                        employees={tr.cursoEmpresa.cantidad_empleados}
-                                                                    />
-                                                                )
-                                                            })
-                                                        }
-                                                    </div>
-
-                                                    {upcomingCourse.length > mostrar &&
-                                                        <div>
-                                                            <div>
-                                                                <Pagination
-                                                                    page={pageU}
-                                                                    totalPages={totalPagesU}
-                                                                    handlePagination={setPageU}
-                                                                    setPosition={setPositionU}
-                                                                    position={positionU}
-                                                                    mostrar={mostrar}
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    }
-
-                                                </div>
-                                                :
-                                                <div className='row align-items-stretch g-3 py-3'>
-                                                    <div className='col'>
-                                                        <div className='card'>
-                                                            <div className='card-body'>
-                                                                <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                                    <div className='vertical-align-child'>
-                                                                        <h5 className='opacity-50 text-center'>No hay proximos cursos</h5>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            }
-                                        </div>
-
-                                        <div>
-                                            <div className='pt-3'>
-                                                <h5>
-                                                    Curso Empresa vigentes
+                                                    Cursos vigentes
                                                 </h5>
                                             </div>
 
@@ -886,10 +845,136 @@ const TrainingE = () => {
 
                                         </div>
 
-                                        <div>
-                                            <div className='pt-3'>
+                                        <div className='pt-4'>
+                                            <div className='pt-3 pb-3'>
                                                 <h5>
-                                                    Curso Empresa finalizados
+                                                    Próximos a iniciar
+                                                </h5>
+                                            </div>
+
+                                            {upcomingCourse.length > 0 ?
+                                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                                    <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
+                                                        {
+                                                            upcomingCourseShow.map((tr) => {
+                                                                const partes = tr.fechaAsignacion.split("/");
+                                                                const fechaFormateada = `${partes[0]}-${partes[1]}-${partes[2].substr(0, 4)}`;
+                                                                return (
+                                                                    <TrainingCardE key={tr.id}
+                                                                        id={tr.id}
+                                                                        name={tr.cursoEmpresa.nombre}
+                                                                        photoURL={tr.cursoEmpresa.url_foto === null ? (url_foto_default) : (tr.cursoEmpresa.url_foto)}
+                                                                        description={tr.cursoEmpresa.descripcion}
+                                                                        creationDate={fechaFormateada}
+                                                                        eventDate={tr.cursoEmpresa.fecha_primera_sesion === null ? (moment(tr.cursoEmpresa.fecha_creacion).format("DD-MM-YYYY")) : (moment(tr.cursoEmpresa.fecha_primera_sesion).format("DD-MM-YYYY"))}
+                                                                        employees={tr.cursoEmpresa.cantidad_empleados}
+                                                                    />
+                                                                )
+                                                            })
+                                                        }
+                                                    </div>
+
+                                                    {upcomingCourse.length > mostrar &&
+                                                        <div>
+                                                            <div>
+                                                                <Pagination
+                                                                    page={pageU}
+                                                                    totalPages={totalPagesU}
+                                                                    handlePagination={setPageU}
+                                                                    setPosition={setPositionU}
+                                                                    position={positionU}
+                                                                    mostrar={mostrar}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                </div>
+                                                :
+                                                <div className='row align-items-stretch g-3 py-3'>
+                                                    <div className='col'>
+                                                        <div className='card'>
+                                                            <div className='card-body'>
+                                                                <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                                    <div className='vertical-align-child'>
+                                                                        <h5 className='opacity-50 text-center'>No hay proximos cursos</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+
+
+                                        <div className='pt-4'>
+                                            <div className='pt-3 pb-3'>
+                                                <h5>
+                                                    Cursos disponibles
+                                                </h5>
+                                            </div>
+
+                                            {freeCourse.length > 0 ?
+                                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                                    <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
+                                                        {
+                                                            freeCourseShow.map((tr) => {
+                                                                const partes = tr.fechaAsignacion.split("/");
+                                                                const fechaFormateada = `${partes[0]}-${partes[1]}-${partes[2].substr(0, 4)}`;
+                                                                return (
+                                                                    <TrainingCardE key={tr.id}
+                                                                        id={tr.id}
+                                                                        name={tr.cursoEmpresa.nombre}
+                                                                        photoURL={tr.cursoEmpresa.url_foto === null ? (url_foto_default) : (tr.cursoEmpresa.url_foto)}
+                                                                        description={tr.cursoEmpresa.descripcion}
+                                                                        creationDate={fechaFormateada}
+                                                                        eventDate={tr.cursoEmpresa.fecha_primera_sesion === null ? (moment(tr.cursoEmpresa.fecha_creacion).format("DD-MM-YYYY")) : (moment(tr.cursoEmpresa.fecha_primera_sesion).format("DD-MM-YYYY"))}
+                                                                        employees={tr.cursoEmpresa.cantidad_empleados}
+                                                                    />
+
+                                                                )
+                                                            })
+                                                        }
+                                                    </div>
+
+                                                    {upcomingCourse.length > mostrar &&
+                                                        <div>
+                                                            <div>
+                                                                <Pagination
+                                                                    page={pageFr}
+                                                                    totalPages={totalPagesFr}
+                                                                    handlePagination={setPageFr}
+                                                                    setPosition={setPositionFr}
+                                                                    position={positionFr}
+                                                                    mostrar={mostrar}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                </div>
+                                                :
+                                                <div className='row align-items-stretch g-3 py-3'>
+                                                    <div className='col'>
+                                                        <div className='card'>
+                                                            <div className='card-body'>
+                                                                <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                                    <div className='vertical-align-child'>
+                                                                        <h5 className='opacity-50 text-center'>No hay cursos disponibles</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+
+                                        <div className='pt-4'>
+                                            <div className='pt-3 pb-3'>
+                                                <h5>
+                                                    Cursos finalizados
                                                 </h5>
                                             </div>
 
@@ -955,11 +1040,11 @@ const TrainingE = () => {
                                     :
                                     <div>
                                         <div>
-                                            <div>
+                                            {/* <div className='pb-3'>
                                                 <h5>
-                                                    Curso Empresa de libre disponibilidad
+                                                    Cursos de libre disponibilidad
                                                 </h5>
-                                            </div>
+                                            </div> */}
 
                                             {trainingFilter.length > 0 ?
                                                 <div style={{ display: "flex", flexDirection: "column" }}>

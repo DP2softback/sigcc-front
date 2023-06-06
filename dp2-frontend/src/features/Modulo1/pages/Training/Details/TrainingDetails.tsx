@@ -329,8 +329,9 @@ const TrainingDetails = () => {
                                                                 area={employee.area === (undefined) ? ("-") : (employee.area)}
                                                                 puesto={employee.posicion === (undefined) ? ("-") : (employee.posicion)}
                                                                 codigo={employee.empleado}
-                                                                boton1={botonEmployee}
-                                                                boton1Color={"#B02A37"}
+                                                                boton1={'NO'}
+                                                                boton1Texto={botonEmployee}
+                                                                boton1Color={''}
                                                                 option={setPrueba}
                                                             />
                                                         ))}

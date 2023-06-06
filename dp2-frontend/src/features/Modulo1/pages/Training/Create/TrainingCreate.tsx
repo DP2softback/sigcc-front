@@ -10,7 +10,7 @@ import Pagination from '@features/Modulo1/components/Pagination';
 import '../../../basic.css';
 import '../training.css';
 import VideoUpload from '@features/Modulo1/components/VideoUpload';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import 'moment-timezone';
 
 let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'

@@ -10,8 +10,7 @@ import Rate from '@features/Modulo1/components/Rate';
 import { ThreeDotsVertical, People, Clock } from 'react-bootstrap-icons'
 
 
-function LearningPath (props: any)
-{
+function LearningPath(props: any) {
     const [lps, setLps] = useState([]);
     const [loading, setLoading] = useState(false);
     const [lpsFiltered, setLpsFiltered] = useState([]);
@@ -34,8 +33,7 @@ function LearningPath (props: any)
     const minimumPassingScoreFERef = useRef(null);
     const photoRef = useRef(null);
 
-    const createLP = () =>
-    {
+    const createLP = () => {
         const data = {
             nombre: refLpName.current?.value,
             descripcion: refLpDescription.current?.value,
@@ -45,37 +43,30 @@ function LearningPath (props: any)
         }
 
         axiosInt.post('capacitaciones/learning_path/', data)
-            .then(function (response)
-            {
+            .then(function (response) {
                 navigate(`/modulo1/rutadeaprendizaje/detalle/${response.data.id}`);
             })
-            .catch(function (error)
-            {
+            .catch(function (error) {
             });
     }
-    const loadLPs = () =>
-    {
+    const loadLPs = () => {
         setLoading(true);
         axiosInt.get('capacitaciones/learning_path/')
-            .then(function (response)
-            {
+            .then(function (response) {
                 setLps(response.data);
                 setLpsFiltered(response.data);
                 setLoading(false);
             })
-            .catch(function (error)
-            {
+            .catch(function (error) {
                 setLoading(false);
             });
     }
 
-    useEffect(() =>
-    {
+    useEffect(() => {
         loadLPs();
     }, []);
 
-    const handleFilter = (e: any) =>
-    {
+    const handleFilter = (e: any) => {
         const searchTerm = e.target.value;
         const filtered = lps.filter((item: any) =>
             item.nombre.toLowerCase().includes(searchTerm.toLowerCase())
@@ -83,13 +74,11 @@ function LearningPath (props: any)
         setLpsFiltered(filtered);
     };
 
-    const handleAssesmentSaveSettings = () =>
-    {
+    const handleAssesmentSaveSettings = () => {
         setAssessmentParameters(assessmentTempParameters);
     }
 
-    const handleAssesmentParameters = () =>
-    {
+    const handleAssesmentParameters = () => {
         setAssessmentTempParameters({
             courseTriedNumber: courseTriedNumberRef.current.value,
             courseTriedNumberFE: courseTriedNumberFERef.current.value,
@@ -112,23 +101,12 @@ function LearningPath (props: any)
                             </div>
                         </> :
                         <>
-                            <div className='row'>
+                            <div className='row mt-3'>
                                 <div className='col'>
-                                    <h1>Rutas de aprendizaje</h1>
-                                    <p><small className='opacity-50'>Lista de rutas de aprendizaje creadas que los empleados pueden completar para adquirir habilidades y competencias específicas.</small></p>
+                                    <h1 className='screenTitle'>Rutas de aprendizaje</h1>
+                                    <p><small className='subtitle'>Lista de rutas de aprendizaje asignadas para adquirir habilidades y competencias específicas.</small></p>
                                 </div>
-                                <div style={{ flex: '0 0 15rem' }} className="col text-end">
-                                    <button type="button" className="btn btn-primary" data-bs-target="#createLPModalChoose" data-bs-toggle="modal">
-                                        <span className='me-3'>Crear ruta</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                            className="bi bi-plus-circle" viewBox="0 0 16 16">
-                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                            <path
-                                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
+                            </div>                         
                             <div className="row">
                                 <div className="col">
                                     <input className="form-control" type="text" placeholder="Buscar" onChange={handleFilter} />
@@ -144,8 +122,7 @@ function LearningPath (props: any)
                                         suma_valoraciones: number,
                                         cant_empleados: number,
                                         horas_duracion: number,
-                                    }, i: number) =>
-                                    {
+                                    }, i: number) => {
                                         return <Fragment key={i}>
                                             <div className='col'>
                                                 <div className="card h-100">
