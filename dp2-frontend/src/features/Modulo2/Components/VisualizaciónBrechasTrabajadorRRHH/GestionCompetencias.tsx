@@ -1,39 +1,75 @@
-import React, { useState } from 'react';
-import { Form, FormControl, InputGroup, Button, Table, Modal  } from 'react-bootstrap';
-import { Download,Upload,ArrowRightCircleFill,Pencil,Trash } from 'react-bootstrap-icons';
-import { set } from 'zod';
-import { useHref } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Button, Table} from 'react-bootstrap';
 import './GestionCompetencias.css'
+import {tipoCompetencia,CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
+
 const GestionCompetencia = () => {
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [nombreEmpleado, setNombreEmpleado] = useState('Ángela Quispe Ramírez');
     const [cargoEmpleado, setCargoEmpleado] = useState('Supervisor - Ärea de TI');
     const [tipoOrden, setTipoOrden] = useState('ascendente');
-    // Datos de ejemplo para la tabla
-    const tablaHardcode = [
-        { codigo: 'TEC000001', nombre: 'Liderazgo Técnico', tipo: 'Técnico', nivelActual: 'Bajo', nivelReq: 'Medio', brecha: 'Sí', observacion: 'Necesidad de curso de capacitación' },
-        { codigo: 'TEC000002', nombre: 'Comunicación Efectiva', tipo: 'Habilidades blandas', nivelActual: 'Medio', nivelReq: 'Medio', brecha: 'No', observacion: 'Nivel requerido es alcanzado' },
-        { codigo: 'TEC000003', nombre: 'Resolución de Problemas', tipo: 'Conocimiento', nivelActual: 'Alto', nivelReq: 'Alto', brecha: 'No', observacion: 'Nivel requerido es alcanzado' },
-        { codigo: 'TEC000004', nombre: 'Trabajo en Equipo', tipo: 'Técnico', nivelActual: 'Medio', nivelReq: 'Alto', brecha: 'Sí', observacion: 'Necesidad de curso de capacitación' },
-        { codigo: 'TEC000005', nombre: 'Creatividad e Innovación', tipo: 'Habilidades blandas', nivelActual: 'Bajo', nivelReq: 'Bajo', brecha: 'No', observacion: 'Nivel requerido es alcanzado' },
-        { codigo: 'TEC000006', nombre: 'Gestión del Tiempo', tipo: 'Conocimiento', nivelActual: 'Medio', nivelReq: 'Alto', brecha: 'Sí', observacion: 'Necesidad de curso de capacitación' },
-        { codigo: 'TEC000007', nombre: 'Pensamiento Analítico', tipo: 'Técnico', nivelActual: 'Bajo', nivelReq: 'Medio', brecha: 'Sí', observacion: 'Necesidad de curso de capacitación' },
-        { codigo: 'TEC000008', nombre: 'Negociación', tipo: 'Habilidades blandas', nivelActual: 'Medio', nivelReq: 'Alto', brecha: 'Sí', observacion: 'Necesidad de curso de capacitación' },
-        { codigo: 'TEC000009', nombre: 'Planificación Estratégica', tipo: 'Conocimiento', nivelActual: 'Alto', nivelReq: 'Alto', brecha: 'No', observacion: 'Nivel requerido es alcanzado' },
-        { codigo: 'TEC000010', nombre: 'Comunicación Interpersonal', tipo: 'Técnico', nivelActual: 'Bajo', nivelReq: 'Medio', brecha: 'Sí', observacion: 'Necesidad de curso de capacitación' },
-        { codigo: 'TEC000011', nombre: 'Liderazgo de Equipos', tipo: 'Habilidades blandas', nivelActual: 'Medio', nivelReq: 'Alto', brecha: 'Sí', observacion: 'Necesidad de curso de capacitación' },
-        { codigo: 'TEC000012', nombre: 'Resiliencia', tipo: 'Conocimiento', nivelActual: 'Alto', nivelReq: 'Medio', brecha: 'No', observacion: 'Nivel requerido es alcanzado' },
-        { codigo: 'TEC000013', nombre: 'Adaptabilidad', tipo: 'Técnico', nivelActual: 'Medio', nivelReq: 'Bajo', brecha: 'Sí', observacion: 'Necesidad de curso de capacitación' },
-        { codigo: 'TEC000014', nombre: 'Comunicación Escrita', tipo: 'Habilidades blandas', nivelActual: 'Bajo', nivelReq: 'Bajo', brecha: 'No', observacion: 'Nivel requerido es alcanzado' },
-        { codigo: 'TEC000015', nombre: 'Habilidades de Presentación', tipo: 'Conocimiento', nivelActual: 'Alto', nivelReq: 'Alto', brecha: 'No', observacion: 'Nivel requerido es alcanzado' },
-        { codigo: 'TEC000016', nombre: 'Resolución de Conflictos', tipo: 'Técnico', nivelActual: 'Medio', nivelReq: 'Medio', brecha: 'No', observacion: 'Nivel requerido es alcanzado' },
-        { codigo: 'TEC000017', nombre: 'Pensamiento Crítico', tipo: 'Habilidades blandas', nivelActual: 'Bajo', nivelReq: 'Bajo', brecha: 'No', observacion: 'Nivel requerido es alcanzado' },
-        { codigo: 'TEC000018', nombre: 'Empatía', tipo: 'Conocimiento', nivelActual: 'Medio', nivelReq: 'Medio', brecha: 'No', observacion: 'Nivel requerido es alcanzado' },
-        { codigo: 'TEC000019', nombre: 'Toma de Decisiones', tipo: 'Técnico', nivelActual: 'Alto', nivelReq: 'Alto', brecha: 'No', observacion: 'Nivel requerido es alcanzado' },
-        { codigo: 'TEC000020', nombre: 'Trabajo Bajo Presión', tipo: 'Habilidades blandas', nivelActual: 'Medio', nivelReq: 'Alto', brecha: 'Sí', observacion: 'Necesidad de curso de capacitación' },
-      ];
-      
-    const [competenciasData, setCompetenciasData] = useState(tablaHardcode);
+    const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
+    const [competenciasData, setCompetenciasData] = useState<CompetenciaTrabajador[]>([]);
+
+    useEffect(() => {        
+      const fetchTipoCompetencias = async () => {
+        try {
+  
+          const response = await fetch('https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competenceTypes', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Token 2e768413e0d75dd79983cd115422fee5291c668d',
+            },
+          });
+  
+          if (response.ok) {
+            const data = await response.json();
+            setTipoCompetencias(data);
+          } else {
+            console.log('Error al obtener los datos de competencias');
+          }
+        } catch (error) {
+          console.log('Error al obtener los datos de competencias:', error);
+        }
+      };
+
+      const fetchCompetencias = async () => {
+        try {
+          const body = {
+            idCompetencia: 0,
+            palabraClave: '', // Poner la palabra clave del buscador, si es nada poner ""
+            idTipoCompetencia: 0, // El idTipoCompetencia del buscador, si es todos poner 0
+            activo: 2, // El estado 0 o 1 (inactivo o activo), si es todos poner 2
+            idEmpleado: 1, // Poner el idEmpleado
+          };
+  
+          const response = await fetch(
+            'https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competenceSearch',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Token 2e768413e0d75dd79983cd115422fee5291c668d',
+              },
+              body: JSON.stringify(body),
+            }
+          );
+  
+          if (response.ok) {
+            const data = await response.json();
+            setCompetenciasData(data);
+          } else {
+            console.log('Error al obtener los datos de competencias');
+          }
+        } catch (error) {
+          console.log('Error al obtener los datos de competencias:', error);
+        }
+      };
+      fetchCompetencias();
+      fetchTipoCompetencias();
+    }, []);
+
     const handleOrdenarPorCampo = (campo) => {
         // Si se hace clic en el mismo campo, cambia el tipo de orden
         if (campo === campoOrdenamiento) {
@@ -43,49 +79,71 @@ const GestionCompetencia = () => {
           setTipoOrden('ascendente');
         }
       };
-    // Obtiene los datos ordenados
-      const datosFiltradosYOrdenados = competenciasData.sort((a, b) => {
-        if (a[campoOrdenamiento] < b[campoOrdenamiento]) {
-          return tipoOrden === 'ascendente' ? -1 : 1;
+    
+      const datosFiltradosYOrdenados = () => {
+        let datosOrdenados = [];
+        switch (campoOrdenamiento) {
+          case 'competence__code':
+            datosOrdenados = competenciasData.sort((a, b) =>
+              tipoOrden === 'ascendente'
+                ? a.competence__code.localeCompare(b.competence__code)
+                : b.competence__code.localeCompare(a.competence__code)
+            );
+            break;
+          case 'competence__name':
+            datosOrdenados = competenciasData.sort((a, b) =>
+              tipoOrden === 'ascendente'
+                ? a.competence__name.localeCompare(b.competence__name)
+                : b.competence__name.localeCompare(a.competence__name)
+            );
+            break;
+          case 'competence__type__name':
+            datosOrdenados = competenciasData.sort((a, b) =>
+              tipoOrden === 'ascendente'
+                ? a.competence__type__name.localeCompare(b.competence__type__name)
+                : b.competence__type__name.localeCompare(a.competence__type__name)
+            );
+            break;
+          default:
+            datosOrdenados = competenciasData;
         }
-        if (a[campoOrdenamiento] > b[campoOrdenamiento]) {
-          return tipoOrden === 'ascendente' ? 1 : -1;
-        }
-        return 0;
-      });
+    
+        return datosOrdenados;
+      };  
   
     const renderTablaCompetencias = () => {
+      const datosOrdenados = datosFiltradosYOrdenados();
         return (
             <Table striped bordered>
             <thead>
                 <tr>
-                    <th onClick={() => handleOrdenarPorCampo('codigo')}>
+                    <th onClick={() => handleOrdenarPorCampo('competence__code')}>
                     Código
-                    {campoOrdenamiento === 'codigo' && (
+                    {campoOrdenamiento === 'competence__code' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
-                    <th onClick={() => handleOrdenarPorCampo('nombre')}>
+                    <th onClick={() => handleOrdenarPorCampo('competence__name')}>
                     Nombre
-                    {campoOrdenamiento === 'nombre' && (
+                    {campoOrdenamiento === 'competence__name' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
-                    <th onClick={() => handleOrdenarPorCampo('tipo')}>
+                    <th onClick={() => handleOrdenarPorCampo('competence__type__name')}>
                     Tipo de competencia
-                    {campoOrdenamiento === 'tipo' && (
+                    {campoOrdenamiento === 'competence__type__name' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
-                    <th onClick={() => handleOrdenarPorCampo('nivelActual')}>
+                    <th onClick={() => handleOrdenarPorCampo('levelCurrent')}>
                     Nivel actual
-                    {campoOrdenamiento === 'nivelActual' && (
+                    {campoOrdenamiento === 'levelCurrent' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
-                    <th onClick={() => handleOrdenarPorCampo('nivelReq')}>
+                    <th onClick={() => handleOrdenarPorCampo('levelRequired')}>
                     Nivel requerido
-                    {campoOrdenamiento === 'nivelReq' && (
+                    {campoOrdenamiento === 'levelRequired' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
@@ -103,19 +161,24 @@ const GestionCompetencia = () => {
                     </th>
                 </tr>
             </thead>
-            <tbody>
-              {datosFiltradosYOrdenados.map((competencia, index) => (
-                <tr key={index}>
-                <td>{competencia.codigo}</td>
-                <td>{competencia.nombre}</td>
-                <td>{competencia.tipo}</td>
-                <td>{competencia.nivelActual}</td>
-                <td>{competencia.nivelReq}</td>
-                <td>{competencia.brecha}</td>
-                <td>{competencia.observacion}</td>
-                </tr>
-              ))}
-            </tbody>
+        <tbody>
+          {datosOrdenados.map((item, index) => {
+            const brecha = item.levelCurrent < item.levelRequired ? 'Si' : 'No';
+            const observacion = item.levelCurrent < item.levelRequired ? 'Necesidad de curso de capacitación' : 'Nivel requerido es alcanzado';
+
+            return (
+              <tr key={index}>
+                <td>{item.competence__code}</td>
+                <td>{item.competence__name}</td>
+                <td>{item.competence__type__name}</td>
+                <td>{item.levelCurrent}</td>
+                <td>{item.levelRequired}</td>
+                <td>{brecha}</td>
+                <td>{observacion}</td>
+              </tr>
+            );
+          })}
+        </tbody>
           </Table>
         );
       };
@@ -137,10 +200,15 @@ const GestionCompetencia = () => {
          {renderTablaCompetencias()}
       </div>
       <div className="col-sm-3 botones">
-              <Button variant="outline-primary" className="me-2" onClick={()=>{}}>
-                Regresar
-              </Button>
-            </div>
+        <Button variant="outline-primary" className="me-2" onClick={()=>{}}>
+          Regresar
+          </Button>
+      </div>
+      <div className="col-sm-3 botones">
+        <Button variant="outline-primary" className="me-2" onClick={()=>{}}>
+          Ver necesidades de capacitación
+          </Button>
+      </div>
     </div>
   );
 };

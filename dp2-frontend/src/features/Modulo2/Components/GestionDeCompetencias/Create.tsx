@@ -1,120 +1,118 @@
 import React, { useState } from 'react';
-import './Create.css';
-type Competencia = {
-  id: number;
-  abreviatura: string;
-  nombre: string;
-  descripcion: string;
-  activo: boolean;
-};
-const AgregarCompetencia = ({ agregarCompetencia }) => {
-  const [id, setId] = useState('');
-  const [abreviatura, setAbreviatura] = useState('');
-  const [nombre, setNombre] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [activo, setActivo] = useState(null);
+import { Competencia, tipoCompetencia } from './Tipos';
 
-  const handleGuardar = () => {
-    const nuevaCompetencia: Competencia = {
-      id: parseInt(id),
-      abreviatura: abreviatura,
-      nombre: nombre,
-      descripcion: descripcion,
-      activo: activo,
-    };
+type Props = {
+  agregarCompetencia: (nuevaCompetencia: Competencia) => void;
+  tipoCompetencias: tipoCompetencia[];
+};
+
+const AgregarCompetencia: React.FC<Props> = ({ agregarCompetencia, tipoCompetencias }) => {
+  const [nuevaCompetencia, setNuevaCompetencia] = useState<Competencia>({
+    id: 0,
+    code: '',
+    name: '',
+    description: '',
+    type: 0,
+    active: false,
+  });
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setNuevaCompetencia((prevCompetencia) => ({
+      ...prevCompetencia,
+      [name]: value,
+    }));
+  };
+
+  const handleTipoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedTipoId = parseInt(e.target.value);
+    const selectedTipoCompetencia = tipoCompetencias.find((tipo) => tipo.id === selectedTipoId);
+    setNuevaCompetencia((prevCompetencia) => ({
+      ...prevCompetencia,
+      type: selectedTipoCompetencia?.id || 0,
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     agregarCompetencia(nuevaCompetencia);
+    setNuevaCompetencia({
+      id: 0,
+      code: '',
+      name: '',
+      description: '',
+      type: 0,
+      active: false,
+    });
   };
 
   return (
-    <div className= "container-fluid">
-      <div className="row first">
-
-        <div className="col code">
-          <label htmlFor="id">ID:</label>
-          <input
-            type="text"
-            id="id"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-          />
-        </div>
-        <div className="col">
-          <div className='row'>
-            <label htmlFor="tipo">Abreviatura:</label>
-          </div>
-          <select
-            className='selectTipo'
-            id="tipo"
-            value={abreviatura}
-            onChange={(e) => setAbreviatura(e.target.value)}
-          >
-            <option value="">Seleccionar tipo</option>
-            <option value="Técnico">Técnico</option>
-            <option value="Conocimiento">Conocimiento</option>
-            <option value="Habilidades blandas">Habilidades blandas</option>
-
-          </select>
-        </div>
+    <form onSubmit={handleSubmit}>
+      <div className="form-group">
+        <label htmlFor="codigo">Código:</label>
+        <input
+          type="text"
+          className="form-control"
+          id="codigo"
+          name="code"
+          value={nuevaCompetencia?.code || ''}
+          onChange={handleChange}
+        />
       </div>
-      <div className="row second">
-        <div className='col'>
-          <label htmlFor="nombre">Nombre:</label>
-          <input
-            type="text"
-            id="nombre"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-          />
-        </div>
-        
-        <div className='col'>
-          <label htmlFor="estado">Activo:</label>
-            <div className='row'>
-            <div className='col'>
-              <input
-                type="radio"
-                id="activo"
-                name="estado"
-                value="Activo"
-                checked={activo == true}
-                onChange={() => setActivo(true)}
-              />
-
-              <label htmlFor="activo">Activo</label>
-            </div>
-            <div className='col'>
-              <input
-                type="radio"
-                id="inactivo"
-                name="estado"
-                value="Inactivo"
-                checked={activo == false}
-                onChange={() => setActivo(false)}
-              />
-              <label htmlFor="inactivo">Inactivo</label>
-            </div>
-          </div>
-        </div>
+      <div className="form-group">
+        <label htmlFor="nombre">Nombre:</label>
+        <input
+          type="text"
+          className="form-control"
+          id="nombre"
+          name="name"
+          value={nuevaCompetencia?.name || ''}
+          onChange={handleChange}
+        />
       </div>
-      <div className="row third">
-        <div className='col'>
-          <label htmlFor="descripcion">Descripción:</label>
-          <textarea
-            id="myTextarea"
-            name="descripcion"
-            placeholder="Ingrese la descripción"
-            value={descripcion}
-            onChange={(e) => setDescripcion(e.target.value)}
-            rows={4}
-            cols={50}
-          />
-        </div>      
+      <div className="form-group">
+        <label htmlFor="descripcion">Descripción:</label>
+        <input
+          type="text"
+          className="form-control"
+          id="descripcion"
+          name="description"
+          value={nuevaCompetencia?.description || ''}
+          onChange={handleChange}
+        />
       </div>
-     
+      <div className="form-group">
+        <label htmlFor="activo">Activo:</label>
+        <input
+          type="checkbox"
+          className="form-check-input"
+          id="activo"
+          name="active"
+          checked={nuevaCompetencia?.active || false}
+          onChange={handleChange}
+        />
+      </div>
 
-      <button className="btn btn-primary save" onClick={handleGuardar}>Guardar</button>
-
-    </div>
+      <div className="form-group">
+        <label htmlFor="tipo">Tipo de Competencia:</label>
+        <select
+          className="form-control"
+          id="tipo"
+          name="type"
+          value={nuevaCompetencia?.type || ''}
+          onChange={handleTipoChange}
+        >
+          <option value="">Seleccionar tipo de competencia</option>
+          {tipoCompetencias.map((tipo) => (
+            <option key={tipo.id} value={tipo.id}>
+              {tipo.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      
+      <button type="submit" className="btn btn-primary">Guardar</button>
+    </form>
   );
 };
 

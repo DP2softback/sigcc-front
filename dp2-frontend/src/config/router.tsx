@@ -178,6 +178,19 @@ const DetalleCompetenciasArea = Loader(
   )
 );
 
+const CompetenciasRead = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo2/Components/GestionDeCompetencias/Read")
+  )
+);
+
+const GestionCompetencia = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/GestionCompetencias")
+  )
+);
 
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
@@ -444,12 +457,12 @@ const routes: RouteObject[] = [
 
           {
             path: "showEmployeeCompetencies",
-            element: <span>poner la pantalla de competencias de un empleado</span>,
+            element: <CompetenciasRead></CompetenciasRead>,
           },
 
           {
             path: "showEmployeeNecessities",
-            element: <span> poner la pantalla de necesidades de empleado por area</span>,
+            element: <GestionCompetencia></GestionCompetencia>,
           },
         ],
       },
