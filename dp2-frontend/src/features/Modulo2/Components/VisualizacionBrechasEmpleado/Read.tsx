@@ -34,19 +34,18 @@ const Read = () => {
             tipoCom.push(temp2);
             response.data.forEach(res => tipoCom.push(res));
             setTipoCompetenciaString(temp.name);
+            setTipoCompetenciaSelected(temp);
             setTiposCompetencia(tipoCom);
-            console.log(tipoCom);
             const obj = {
                 idCompetencia: 0,
                 palabraClave: "",
                 idTipoCompetencia: 0,
                 activo: 1,
-                idEmpleado: 1
+                idEmpleado: 2 // Cambiar idEmpleado logeado
             }
             axiosEmployeeGaps
             .post("gaps/competenceSearch", obj)
             .then(function (response){
-                console.log(response);
                 setEmployeeCompetences(response.data);
             })
             .catch(function(error){
@@ -91,16 +90,16 @@ const Read = () => {
 
     const handleTipoCompetencias = (string) => {
         setTipoCompetenciaString(string);
-        setTipoCompetenciaSelected(tiposCompetencia.filter(competencia => competencia.name === string));
+        setTipoCompetenciaSelected(tiposCompetencia.filter(competencia => competencia.name === string)[0]);
     }
 
     const handleSearch = () => {
         const obj = {
             idCompetencia: 0,
             palabraClave: palabrasClave,
-            idTipoCompetencia: tipoCompetenciaSelected[0].id,
+            idTipoCompetencia: tipoCompetenciaSelected.id,
             activo: 1,
-            idEmpleado: 1
+            idEmpleado: 2 // Cambiar idEmpleado logeado
         }
         axiosEmployeeGaps
         .post("gaps/competenceSearch", obj)
@@ -206,6 +205,11 @@ const Read = () => {
                             </tbody>
                         </Table>
                     }
+                    </div>
+                    <div className="d-flex justify-content-end">
+                        <Button>
+                            Ver necesidades de capaticación
+                        </Button>
                     </div>
                 </div>
                 <div className='col-md-6'>
