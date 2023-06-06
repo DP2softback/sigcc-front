@@ -1,7 +1,7 @@
 import React from 'react'
 import JobOpportunityCard from '../JobOpportunityCard/JobOpportunityCard';
 
-const JobOpportunitiesRelatedToSkills = () => {
+const JobOpportunitiesHumanResources = () => {
 
     const data = [{image: "imagen 1", title: "UX/UI Designer", availability: "Disponible hace 10 días", description: "Lorem ipsum", labels: ['Creatividad', 'Comunicación', 'Trabajo en equipo']},
                   {image: "imagen 2", title: "Líder técnico de arquitectura", availability: "Disponible hace 13 días", description: "Lorem ipsum", labels: ['Liderazgo', 'Comunicación', 'Trabajo en equipo']},
@@ -10,14 +10,14 @@ const JobOpportunitiesRelatedToSkills = () => {
     return (
         <div className='container'>
             <div className='row'>
-                <h2>Oportunidades laborales afines a competencias</h2>
+                <h2>Puestos vacantes para ascensos</h2>
                 <p className="text-muted">Puestos vacantes que son afines a tus competencias</p>
                 <br/>
-                <h3>Puestos disponibles</h3>
+                <h3>Puestos vacantes</h3>
                 {data.map((jobOpt, index) => {
                     return (
                         <div className='col-4'>
-                            <JobOpportunityCard jobOpportunity={jobOpt} numBot={3}/>
+                            <JobOpportunityCard jobOpportunity={jobOpt} numBot={1} hhrr/>
                         </div>
                     )
                 })}
@@ -26,4 +26,4 @@ const JobOpportunitiesRelatedToSkills = () => {
     )
 }
 
-export default JobOpportunitiesRelatedToSkills;
+export default JobOpportunitiesHumanResources;
