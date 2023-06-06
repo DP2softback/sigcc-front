@@ -53,6 +53,10 @@ const M1ListLearningPathE = Loader(
   lazy(() => import("@features/Modulo1/pages/EmployeeView/LearningPath"))
 );
 
+const M1ListLearningPathEDetails = Loader(
+  lazy(() => import("@features/Modulo1/pages/EmployeeView/LearningPath/Details"))
+);
+
 const M1ListTrainingE = Loader(
   lazy(() => import("@features/Modulo1/pages/EmployeeView/Training"))
 );
@@ -239,8 +243,18 @@ const routes: RouteObject[] = [
           },
           {
             path: "rutadeaprendizaje",
-            element: <M1ListLearningPathE />,
+            children: [
+              {
+                path: "",
+                element: <M1ListLearningPathE />,
+              },
+              {
+                path: "detalle/:learningPathId",
+                element: <M1ListLearningPathEDetails />,
+              },
+            ],
           },
+
           {
             path: "cursoempresa",
             children: [

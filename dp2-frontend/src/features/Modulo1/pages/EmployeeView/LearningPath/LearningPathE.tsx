@@ -7,8 +7,8 @@ import Sidebar from '@components/Sidebar';
 import sidebarItems from '@features/Modulo1/utils/sidebarItemsE'
 import PictureUpload from '@features/Modulo1/components/PictureUpload';
 import Rate from '@features/Modulo1/components/Rate';
-import { ThreeDotsVertical, People, Clock } from 'react-bootstrap-icons'
-
+import { ThreeDotsVertical, People, Clock, CalendarDate } from 'react-bootstrap-icons'
+import moment, { invalid } from 'moment-timezone';
 
 function LearningPath(props: any) {
     const [lps, setLps] = useState([]);
@@ -51,8 +51,9 @@ function LearningPath(props: any) {
     }
     const loadLPs = () => {
         setLoading(true);
-        axiosInt.get('capacitaciones/learning_path/')
+        axiosInt.get('capacitaciones/learning_path/empleado/1/')
             .then(function (response) {
+                console.log(response.data)
                 setLps(response.data);
                 setLpsFiltered(response.data);
                 setLoading(false);
@@ -69,7 +70,7 @@ function LearningPath(props: any) {
     const handleFilter = (e: any) => {
         const searchTerm = e.target.value;
         const filtered = lps.filter((item: any) =>
-            item.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+            item.learning_path.nombre.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setLpsFiltered(filtered);
     };
@@ -106,7 +107,7 @@ function LearningPath(props: any) {
                                     <h1 className='screenTitle'>Rutas de aprendizaje</h1>
                                     <p><small className='subtitle'>Lista de rutas de aprendizaje asignadas para adquirir habilidades y competencias específicas.</small></p>
                                 </div>
-                            </div>                         
+                            </div>
                             <div className="row">
                                 <div className="col">
                                     <input className="form-control" type="text" placeholder="Buscar" onChange={handleFilter} />
@@ -114,50 +115,61 @@ function LearningPath(props: any) {
                             </div>
                             <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 align-items-stretch g-3 py-3'>
                                 {
-                                    lpsFiltered.map((lp: {
-                                        id: number,
-                                        nombre: string,
-                                        descripcion: string,
-                                        url_foto: string,
-                                        suma_valoraciones: number,
-                                        cant_empleados: number,
-                                        horas_duracion: number,
+                                    lpsFiltered.map((lp: {                                        
+                                        fecha_asignacion: string,
+                                        fecha_limite: string,
+                                        learning_path: {
+                                            id: number,
+                                            nombre: string,
+                                            descripcion: string,
+                                            url_foto: string,
+                                            suma_valoraciones: number,
+                                            horas_duracion: number,
+                                        }
+
                                     }, i: number) => {
                                         return <Fragment key={i}>
                                             <div className='col'>
                                                 <div className="card h-100">
                                                     <div className="card-header lp-header justify-content-between d-flex px-2">
-                                                        <img className="rounded-circle border lp-thumb me-3" src={lp.url_foto} alt="..." />
+                                                        <img className="rounded-circle border lp-thumb me-3" src={lp.learning_path.url_foto} alt="..." />
                                                         <div className="align-self-center">
-                                                            <h6 className="card-title">{lp.nombre}</h6>
+                                                            <h6 className="card-title">{lp.learning_path.nombre}</h6>
                                                         </div>
                                                         <button className='btn btn-link'>
                                                             <ThreeDotsVertical />
                                                         </button>
                                                     </div>
                                                     <div className="card-body">
-                                                        <p className="card-text lp-description-wrap opacity-50"><small>{lp.descripcion}</small></p>
+                                                        <p className="card-text lp-description-wrap opacity-50"><small>{lp.learning_path.descripcion}</small></p>
                                                     </div>
                                                     <div className="card-footer lp-footer">
                                                         <div className='d-flex mb-3'>
                                                             <Clock className='align-self-center me-3' />
                                                             <div className='w-100 d-flex justify-content-between'>
                                                                 <span>Duración: </span>
-                                                                <small className='fw-bold'>{lp.horas_duracion}</small>
+                                                                <small className='fw-bold'>{lp.learning_path.horas_duracion}</small>
                                                             </div>
                                                         </div>
-                                                        <div className='d-flex'>
-                                                            <People className='align-self-center me-3' />
+                                                        <div className='d-flex mb-3'>
+                                                            <CalendarDate className='align-self-center me-3' />
                                                             <div className='w-100 d-flex justify-content-between'>
-                                                                <span>Inscritos: </span>
-                                                                <small className='fw-bold'>{lp.cant_empleados}</small>
+                                                                <span>Fecha asignación: </span>
+                                                                <small className='fw-bold'>{(moment(lp.fecha_asignacion, "DD/MM/YYYY HH:mm:ss").format("DD-MM-YYYY")) }</small>
+                                                            </div>
+                                                        </div>
+                                                        <div className='d-flex mb-3'>
+                                                            <CalendarDate className='align-self-center me-3' />
+                                                            <div className='w-100 d-flex justify-content-between'>
+                                                                <span>Fecha límite: </span>
+                                                                <small className='fw-bold'>{(moment(lp.fecha_limite, "DD/MM/YYYY HH:mm:ss").format("DD-MM-YYYY")) }</small>
                                                             </div>
                                                         </div>
                                                         <div className="d-flex gap-2 w-100 justify-content-between pt-3">
                                                             <span>
-                                                                <Rate disabled={true} rate={lp.suma_valoraciones} />
+                                                                <Rate disabled={true} rate={lp.learning_path.suma_valoraciones} />
                                                             </span>
-                                                            <Link to={`/modulo1/rutadeaprendizaje/detalle/${lp.id}`} className="btn btn-primary float-right">Detalles</Link>
+                                                            <Link to={`/modulo1/empleado/rutadeaprendizaje/detalle/${lp.learning_path.id}`} className="btn btn-primary float-right">Ir al curso</Link>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -174,7 +186,7 @@ function LearningPath(props: any) {
                                                 <div className='card-body'>
                                                     <div className='vertical-align-parent' style={{ height: '10rem' }}>
                                                         <div className='vertical-align-child'>
-                                                            <h5 className='opacity-50 text-center'>Crea una ruta de aprendizaje para empezar</h5>
+                                                            <h5 className='opacity-50 text-center'>No hay rutas de aprendizajes asignadas</h5>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -185,74 +197,7 @@ function LearningPath(props: any) {
                             }
                         </>
                 }
-            </Sidebar>
-            <div className="modal fade" id="createLPModalChoose" aria-hidden="true" aria-labelledby="createLPModalChoose" tabIndex={-1}>
-                <div className="modal-dialog modal-dialog-centered">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title fs-5">Seleccione una opción</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-footer d-flex justify-content-between">
-                            <button className="btn btn-primary" data-bs-target="#createLPModal" data-bs-toggle="modal">Nueva ruta</button>
-                            <button className="btn btn-primary" data-bs-target="#createLPModalChoose" data-bs-toggle="modal">Utilizar una plantilla</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div className="modal fade" id="createLPModal" aria-hidden="true" aria-labelledby="createLPModal" tabIndex={-1}>
-                <div className="modal-dialog modal-lg modal-dialog-centered">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title fs-5">Crear ruta de aprendizaje</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-                            <div className='row'>
-                                <div className='col' style={{ flex: '0 0 8rem' }}>
-                                    <PictureUpload ref={photoRef} />
-                                </div>
-                                <div className='col'>
-                                    <div className="mb-3">
-                                        <label className="form-label">Nombre</label>
-                                        <input ref={refLpName} type="text" className="form-control" />
-                                    </div>
-                                    <div>
-                                        <label className="form-label">Descripción</label>
-                                        <textarea ref={refLpDescription} className="form-control" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='row border-top pt-3 mt-3'>
-                                <div className='col'>
-                                    <h6>Evaluaciones</h6>
-                                    <div className="row">
-                                        <label htmlFor="courseTriedNumber" className="col-sm-8 col-form-label">Número de intentos</label>
-                                        <div className="col-sm-4">
-                                            <input ref={courseTriedNumberRef} type="number" className="form-control" id="courseTriedNumber" defaultValue={assessmentParameters.courseTriedNumber} onChange={handleAssesmentParameters} />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='col'>
-                                    <h6>Evaluación final</h6>
-                                    <div className="row">
-                                        <label htmlFor="courseTriedNumberFE" className="col-sm-8 col-form-label">Número de intentos</label>
-                                        <div className="col-sm-4">
-                                            <input ref={courseTriedNumberFERef} type="number" className="form-control" id="courseTriedNumberFE" defaultValue={assessmentParameters.courseTriedNumberFE} onChange={handleAssesmentParameters} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="modal-footer d-flex justify-content-between">
-                            <span></span>
-                            <button className="btn btn-primary" data-bs-target="#createLPModal" data-bs-toggle="modal" onClick={createLP}>Crear</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </Sidebar>            
         </>
     );
 }
