@@ -167,14 +167,14 @@ const JobOpportunitiesSelected = Loader(
 const EstadisticasCompetencias = Loader(
   lazy(
     () =>
-      import("@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/ConsolidadoCompetencias")
+      import("@features/Modulo2/Components/VisualizacionBrechasTrabajadorRRHH/ConsolidadoCompetencias")
   )
 );
 
 const DetalleCompetenciasArea = Loader(
   lazy(
     () =>
-      import("@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/DetalleCompetenciasArea")
+      import("@features/Modulo2/Components/VisualizacionBrechasTrabajadorRRHH/DetalleCompetenciasArea")
   )
 );
 
@@ -188,7 +188,7 @@ const CompetenciasRead = Loader(
 const GestionCompetencia = Loader(
   lazy(
     () =>
-      import("@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/GestionCompetencias")
+      import("@features/Modulo2/Components/VisualizacionBrechasTrabajadorRRHH/GestionCompetencias")
   )
 );
 

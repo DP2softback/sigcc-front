@@ -1,7 +1,10 @@
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { useEffect, useState } from "react";
+import { Link, useNavigate  } from 'react-router-dom';
 import { Competencia, tipoCompetencia } from "../GestionDeCompetencias/Tipos";
+import DetalleCompetenciasArea from "./DetalleCompetenciasArea";
+import { set } from "lodash";
 
 const PieChart = ({ title, labels, datasets }) => {
     ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -29,12 +32,12 @@ const PieChart = ({ title, labels, datasets }) => {
   };
 
   const ConsolidadoCompetencias = () => {
+    const navigate = useNavigate();
       const [data1, setData1] = useState(null);
       const [data2, setData2] = useState(null);
       const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
+      const [tipoCompetencia, setTipoCompetencia] = useState<tipoCompetencia>(null);
       const [abbreviation, setAbbreviation] = useState('');
-
-
       useEffect(() => {        
         const fetchTipoCompetencias = async () => {
           try {
@@ -143,22 +146,24 @@ const PieChart = ({ title, labels, datasets }) => {
         fetchData();
         fetchTipoCompetencias();
       }, []);
-
+      
 
       const handleCompetenciaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {    
-        const selectedTipoCompetencia = tipoCompetencias.find((tipo) => tipo.id.toString() === event.target.value);
-        setAbbreviation(selectedTipoCompetencia.abbreviation);
+        const tipo  = tipoCompetencias.find((tipo) => tipo.id.toString() === event.target.value)
+        setTipoCompetencia(tipoCompetencias[0]);
+        console.log(tipoCompetencia)
+        setAbbreviation(tipo.abbreviation)
         setData1(data1);
         setData2(data2);
       }
       const handleBuscarClick = () => {
       };
-      
+      const handleClick = () => {        
+      navigate('/DetalleCompetenciasArea', { state: { tipoCompetencia } });
+      };
       const handleMostrarLineChartClick = () => {
       };
       
-      const handleVerDetalleAreaClick = () => {
-      };
   
       const labels= ['80% - 100%', '60% - 79%', '40% - 59%', '20% - 39%', '0% - 19%'];
       
@@ -185,7 +190,7 @@ const PieChart = ({ title, labels, datasets }) => {
             </div>
           </div>
 
-          {data1 && data2 && (
+          {abbreviation!='' && data1 && data2 && (
              <div className="row mt-4">
              <div className="col-md-6">
                <div className="card">
@@ -196,7 +201,6 @@ const PieChart = ({ title, labels, datasets }) => {
                      {/* Agregar aquí la leyenda del gráfico 1 */}
                    </div>
                    <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
-                   <button className="btn btn-secondary" onClick={handleVerDetalleAreaClick}>Ver detalle del área</button>
                  </div>
                </div>
              </div>
@@ -210,8 +214,8 @@ const PieChart = ({ title, labels, datasets }) => {
                      {/* Agregar aquí la leyenda del gráfico 2 */}
                    </div>
                    <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
-                   <button className="btn btn-secondary" onClick={handleVerDetalleAreaClick}>Ver detalle del área</button>
-                 </div>
+                   <button className="btn btn-secondary" onClick={handleClick}>Ver detalle del área</button>
+                   </div>
                </div>
              </div>
            </div>

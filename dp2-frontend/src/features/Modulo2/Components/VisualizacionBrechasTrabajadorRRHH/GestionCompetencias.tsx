@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react';
 import { Button, Table} from 'react-bootstrap';
 import './GestionCompetencias.css'
 import {tipoCompetencia,CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
+import { useLocation } from 'react-router-dom';
 
 const GestionCompetencia = () => {
+  const location = useLocation();
+  const { usuario } = location.state;
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [nombreEmpleado, setNombreEmpleado] = useState('Ángela Quispe Ramírez');
     const [cargoEmpleado, setCargoEmpleado] = useState('Supervisor - Ärea de TI');
@@ -37,15 +40,14 @@ const GestionCompetencia = () => {
       const fetchCompetencias = async () => {
         try {
           const body = {
-            idCompetencia: 0,
-            palabraClave: '', // Poner la palabra clave del buscador, si es nada poner ""
-            idTipoCompetencia: 0, // El idTipoCompetencia del buscador, si es todos poner 0
-            activo: 2, // El estado 0 o 1 (inactivo o activo), si es todos poner 2
+            estado: 0, //dejarlo así - luego se podrá poner 1,2,3
+            tipo: 0, //dejarlo así - luego se podrá poner 1,2,3
+            activo: 2, //dejarlo así - luego se podrá poner 0,1,2
             idEmpleado: 1, // Poner el idEmpleado
           };
   
           const response = await fetch(
-            'https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competenceSearch',
+            'https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/trainingNeedSearch',
             {
               method: 'POST',
               headers: {
@@ -147,15 +149,15 @@ const GestionCompetencia = () => {
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
-                    <th onClick={() => handleOrdenarPorCampo('brecha')}>
+                    <th onClick={() => handleOrdenarPorCampo('levelGap')}>
                     ¿Existe brecha?
-                    {campoOrdenamiento === 'brecha' && (
+                    {campoOrdenamiento === 'levelGap' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
-                    <th onClick={() => handleOrdenarPorCampo('observacion')}>
+                    <th onClick={() => handleOrdenarPorCampo('description')}>
                     Observación
-                    {campoOrdenamiento === 'observacion' && (
+                    {campoOrdenamiento === 'description' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
@@ -164,7 +166,7 @@ const GestionCompetencia = () => {
         <tbody>
           {datosOrdenados.map((item, index) => {
             const brecha = item.levelCurrent < item.levelRequired ? 'Si' : 'No';
-            const observacion = item.levelCurrent < item.levelRequired ? 'Necesidad de curso de capacitación' : 'Nivel requerido es alcanzado';
+            //const observacion = item.levelCurrent < item.levelRequired ? 'Necesidad de curso de capacitación' : 'Nivel requerido es alcanzado';
 
             return (
               <tr key={index}>
@@ -174,7 +176,7 @@ const GestionCompetencia = () => {
                 <td>{item.levelCurrent}</td>
                 <td>{item.levelRequired}</td>
                 <td>{brecha}</td>
-                <td>{observacion}</td>
+                <td>{item.description}</td>
               </tr>
             );
           })}

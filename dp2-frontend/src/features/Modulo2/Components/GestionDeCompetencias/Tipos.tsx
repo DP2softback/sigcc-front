@@ -23,6 +23,7 @@ export type CompetenciaTrabajador = {
   competence__type__name: string,
   levelCurrent: number,
   levelRequired: number,
-  likeness: number
+  levelGap: number,
+  description: string
 }
   
