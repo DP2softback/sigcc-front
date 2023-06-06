@@ -1,0 +1,7 @@
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+
+@include media-breakpoint-down(md) {
+  .row {
+    background-color: red;
+  }
+}

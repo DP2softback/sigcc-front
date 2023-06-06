@@ -207,12 +207,20 @@ function ConfigProcesoSeleccion(props: any) {
     // MODAL PARA CREAR ETAPA
     const [showModalCrearEtapaSele, setShowModalCrearEtapaSele] =
         useState(false);
+    const openModalCrearEtapaSele = () => {
+        setShowModalCrearEtapaSele(true);
+    };
     const handleModalCloseCrearEtapaSele = () => {
         setShowModal(false);
     };
     const handleButtonClickCrearEtapaSele = (buttonText) => {
         // Lógica para manejar el clic en el botón seleccionado
         console.log("Botón seleccionado:", buttonText);
+    };
+
+    const handleSaveChangesCrearEtapaSele = (buttonText) => {
+        // Lógica para manejar el clic en el botón seleccionado
+        setShowModalCrearEtapaSele(false);
     };
 
     // ESTOS MODAL SE USARAN EN LOS BOTONES DE ELIMINAR Y GUARDAR
@@ -439,8 +447,8 @@ function ConfigProcesoSeleccion(props: any) {
                                                         {/* Crear etapa */}
                                                         <Button
                                                             variant="light"
-                                                            onClick={() =>
-                                                                openModal(row)
+                                                            onClick={
+                                                                openModalCrearEtapaSele
                                                             }
                                                             className="custom-btn"
                                                         >
@@ -454,6 +462,7 @@ function ConfigProcesoSeleccion(props: any) {
                                                                 <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
                                                             </svg>
                                                         </Button>
+
                                                         {/* Editar etapa */}
                                                         <Button
                                                             variant="light"
@@ -655,45 +664,68 @@ function ConfigProcesoSeleccion(props: any) {
                         </Row>
                     </Form>
                 </div>
+
                 {/* Modal para crear etapa */}
                 <Modal
                     show={showModalCrearEtapaSele}
                     onHide={handleModalCloseCrearEtapaSele}
                 >
-                    <Modal.Header closeButton>
+                    <Modal.Header>
                         <Modal.Title>Seleccionar el siguiente paso</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <div className="d-flex justify-content-center">
-                            <Button
-                                variant="primary"
-                                className="mx-2"
-                                onClick={() =>
-                                    handleButtonClickCrearEtapaSele("Botón 1")
-                                }
-                            >
-                                Botón 1
-                            </Button>
-                            <Button
-                                variant="primary"
-                                className="mx-2"
-                                onClick={() =>
-                                    handleButtonClickCrearEtapaSele("Botón 2")
-                                }
-                            >
-                                Botón 2
-                            </Button>
-                            <Button
-                                variant="primary"
-                                className="mx-2"
-                                onClick={() =>
-                                    handleButtonClickCrearEtapaSele("Botón 3")
-                                }
-                            >
-                                Botón 3
-                            </Button>
+                            <ButtonGroup aria-label="Basic example">
+                                <Button
+                                    variant="primary"
+                                    className="mx-2"
+                                    onClick={() =>
+                                        handleButtonClickCrearEtapaSele(
+                                            "Generar entrevistas"
+                                        )
+                                    }
+                                >
+                                    Generar entrevista
+                                </Button>
+                                <Button
+                                    variant="primary"
+                                    className="mx-2"
+                                    onClick={() =>
+                                        handleButtonClickCrearEtapaSele(
+                                            "Formulario estándar"
+                                        )
+                                    }
+                                >
+                                    Formulario estándar
+                                </Button>
+                                <Button
+                                    variant="primary"
+                                    className="mx-2"
+                                    onClick={() =>
+                                        handleButtonClickCrearEtapaSele(
+                                            "Formulario personalizado"
+                                        )
+                                    }
+                                >
+                                    Formulario personalizado
+                                </Button>{" "}
+                            </ButtonGroup>
                         </div>
                     </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            variant="secondary"
+                            onClick={() => setShowModalCrearEtapaSele(false)}
+                        >
+                            Cancelar
+                        </Button>
+                        <Button
+                            variant="primary"
+                            onClick={handleSaveChangesCrearEtapaSele}
+                        >
+                            Guardar
+                        </Button>
+                    </Modal.Footer>
                 </Modal>
 
                 {/* Modal para crear asignar personal */}

@@ -4,9 +4,10 @@ type TemplateProps = {
     image: string, 
     imageStyle: string, 
     name: string, 
+    onClick: any,
 }
 
-const Template = ({ image, imageStyle, name}: TemplateProps) => {
+const Template = ({ image, imageStyle, name,onClick}: TemplateProps) => {
     let imageComp = null;
   
     if (image != null) {
@@ -20,7 +21,7 @@ const Template = ({ image, imageStyle, name}: TemplateProps) => {
     }
     
     return (
-        <div className='template-container'>
+        <div className='template-container' onClick={onClick}>
             <div className='template-header'>
             <div className="template-headerLine">
                     <div className='template-imageContainer'>{imageComp}</div>

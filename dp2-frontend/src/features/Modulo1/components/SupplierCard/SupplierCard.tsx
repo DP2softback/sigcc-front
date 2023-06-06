@@ -20,21 +20,22 @@ class SupplierCard extends Component<Props>
     render() {
 
         let imageComp = null;
-        let widthC = '300px';
+        let widthC = '250px';
 
         if (this.props.image != null) {
             imageComp = (
                 <img src={this.props.image}
-                    alt={`Imagen de ${this.props.name}`}
-                    className="basicCard-image"
+                    alt={`Imagen de ${this.props.nombres + ' ' + this.props.apellidos}`}
+                    className="supplierCard-image"
                     style={{ borderRadius: "100px" }}
                 />
             );
         }
         
         type Supplier = {
-            id: string;
-            name: string;
+            id: number;
+            nombres: string;
+            apellidos: string;
             image: string;
             capacities: any[];    
         }
@@ -42,7 +43,8 @@ class SupplierCard extends Component<Props>
         const suppliers: Supplier[] = [
             {
                 id: this.props.id,
-                name: this.props.name,
+                nombres: this.props.nombres,
+                apellidos: this.props.apellidos,
                 capacities: this.props.capacities,
                 image: this.props.image,
             }
@@ -50,7 +52,7 @@ class SupplierCard extends Component<Props>
         
 
         const handleClick = (e: any) => {
-            if(this.props.button === "Agregar"){
+            if(this.props.button === "Asignar"){
                 this.props.option(suppliers)
             }
         }
@@ -100,9 +102,9 @@ class SupplierCard extends Component<Props>
                 <div className='basicCard-container' style={{ width: widthC}}>
                     <div className='basicCard-header'>
                         <div className="basicCard-headerLine">
-                            <div className='basicCard-imageContainer'>{imageComp}</div>
+                            <div className='supplierCard-imageContainer'>{imageComp}</div>
                             <div className='basicCard-headerInfo'>
-                                <div className='basicCard-title'>{this.props.name}</div>                               
+                                <div className='supplierCard-title'>{this.props.nombres + ' ' + this.props.apellidos}</div>                               
                             </div>
                         </div>
                     </div>
