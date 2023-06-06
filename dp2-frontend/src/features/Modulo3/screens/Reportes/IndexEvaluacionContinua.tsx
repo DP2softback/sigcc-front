@@ -108,9 +108,9 @@ const IndexEvaluacionContinua = () => {
     fechaFin: null,
   });
   
-  const [areas, setAreas] = useState(dataAreas); // Cuando tengamos las apis dejarlo como array vacío
-  const [categoriasContinua, setCategoriasContinua] = useState(dataCategoriasEvaluacion); // Cuando tengamos las apis dejarlo como array vacío
-  const [categoriasDesempenio, setCategoriasDesempenio] = useState(dataCategoriasDesempenio); // Cuando tengamos las apis dejarlo como array vacío
+  const [areas, setAreas] = useState([]); // Cuando tengamos las apis dejarlo como array vacío
+  const [categoriasContinua, setCategoriasContinua] = useState([]); // Cuando tengamos las apis dejarlo como array vacío
+  const [categoriasDesempenio, setCategoriasDesempenio] = useState([]); // Cuando tengamos las apis dejarlo como array vacío
 
   const [dashboard, setDashboard] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -136,16 +136,19 @@ const IndexEvaluacionContinua = () => {
     // Invocaciones provisionales:
     const fetchData = async () => {
       setIsLoading(true);
-      // try{
-      //   const dataAreas = await getAreas();
-      //   const dataCategoriasContinua = await getCategoriasContinua();
-      //   const dataCategoriasDesempenio = await getCategoriasDesempenio();
-      //   setAreas(dataAreas);          
-      //   setCategoriasContinua(dataCategoriasContinua);
-      //   setCategoriasDesempenio(dataCategoriasDesempenio);
-      // } catch (error){
-      //   console.log("Error: En el Fetch");
-      // }
+      try{
+        const dataAreas = await getAreas();
+        const dataCategoriasContinua = await getCategoriasContinua();
+        const dataCategoriasDesempenio = await getCategoriasDesempenio();
+        setAreas(dataAreas);          
+        setCategoriasContinua(dataCategoriasContinua);
+        setCategoriasDesempenio(dataCategoriasDesempenio);
+        console.log(areas);
+        console.log(categoriasContinua);
+        console.log(categoriasDesempenio); 
+      } catch (error){
+        console.log("Error: En el Fetch");
+      }
           
       // const categoriasContinuaData = await getPostCategoriasContinua();
       // setCategoriasContinua(categoriasContinuaData);
@@ -321,7 +324,7 @@ const IndexEvaluacionContinua = () => {
             <Dropdown.Menu>
               <Dropdown.Item eventKey={0} value={0}>Todas las áreas</Dropdown.Item>
               {areas.map((area) => (
-                <Dropdown.Item eventKey={area.id} value={area.id}>{area.area}</Dropdown.Item>
+                <Dropdown.Item eventKey={area.id} value={area.id}>{area.name}</Dropdown.Item>
               ))}              
             </Dropdown.Menu>
           </Dropdown>    
@@ -333,7 +336,7 @@ const IndexEvaluacionContinua = () => {
               <Dropdown.Item eventKey={0} value={0}>Todas las categorías</Dropdown.Item>
               {
                 (activeRepContinua ? categoriasContinua : categoriasDesempenio).map(categoria => (
-                  <Dropdown.Item eventKey={categoria.id} value={categoria.id}>{categoria.categoria}</Dropdown.Item>
+                  <Dropdown.Item eventKey={categoria.id} value={categoria.id}>{categoria.name}</Dropdown.Item>
                 ))
               }
             </Dropdown.Menu>

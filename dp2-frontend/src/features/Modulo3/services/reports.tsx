@@ -21,7 +21,7 @@ export const getAreas = () => {
 
 export const getCategoriasContinua = () => {
   return axios
-    .get(`${BACKEND_URL}categorias/Continua`, {
+    .get(`${BACKEND_URL}categorias/continuas`, {
       headers: { Authorization: `Token ${SAMPLE_TOKEN}` },
     })
     .then((response) => response.data)
