@@ -164,6 +164,32 @@ const ConfigPosition = Loader(
   )
 );
 
+const CreateJobOffer = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo4/pages/JobPositions/CreateJobOffer")
+  )
+);
+
+const JobOpportunitiesSelected = Loader(
+  lazy(() => import("@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/JobOpportunitySelected"))
+);
+
+const EstadisticasCompetencias = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/ConsolidadoCompetencias")
+  )
+);
+
+const DetalleCompetenciasArea = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/DetalleCompetenciasArea")
+  )
+);
+
+
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
 const routes: RouteObject[] = [
@@ -371,6 +397,32 @@ const routes: RouteObject[] = [
         ],
       },
       {
+        path: "selection-process",
+        children: [
+          {
+            path: "create",
+            element: <ConfigSelectionProcess />,
+          },
+          {
+            path: "portal-create-job",
+            element: <ConfigOfertaLaboral />
+          },
+          {
+            path: "test",
+            element: <CreateJobOffer />
+          },
+          {
+            path: "test2",
+            element: <ConfigPosition />
+          }
+        ],
+      },
+    ],
+  },
+  {
+    path: "modulo2-skill-management",
+    children: [
+      {
         path: "employeesGaps",
         children: [
           {
@@ -386,6 +438,10 @@ const routes: RouteObject[] = [
             path: "index",
             element: <JobOpportunitiesRelatedToSkills />,
           },
+          {
+            path: "selectedJob",
+            element: <JobOpportunitiesSelected/>,
+          },
         ],
       },
       {
@@ -397,25 +453,34 @@ const routes: RouteObject[] = [
           },
         ],
       },
+      
       {
-        path: "selection-process",
+        path: "showAreaStatistics",
         children: [
           {
-            path: "create",
-            element: <ConfigSelectionProcess />,
+            path: "index",
+            element: <EstadisticasCompetencias></EstadisticasCompetencias>,
           },
+
           {
-            path: "portal-create-job",
-            element: <ConfigOfertaLaboral />
+            path: "showStatsPerArea",
+            element: <DetalleCompetenciasArea></DetalleCompetenciasArea>,
           },
+
           {
-            path: "test",
-            element: <ConfigPosition />
-          }
+            path: "showEmployeeCompetencies",
+            element: <span>poner la pantalla de competencias de un empleado</span>,
+          },
+
+          {
+            path: "showEmployeeNecessities",
+            element: <span> poner la pantalla de necesidades de empleado por area</span>,
+          },
         ],
       },
-    ],
+    ]
   },
+  
 ];
 
 export default routes;
