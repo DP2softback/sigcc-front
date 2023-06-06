@@ -7,7 +7,9 @@ import BasicCard from '@features/Modulo3/components/Cards/BasicCard/BasicCard';
 import Templates from '@features/Modulo3/jsons/Templates';
 import Template from '@features/Modulo3/components/Cards/Template/Template';
 import './Plantillas.css';
-import { EVALUATION_TEMPLATE_INDEX } from '@config/paths';
+import { EVALUATION_TEMPLATE_INDEX,EVALUATION_TEMPLATE_CREATE } from '@config/paths';
+import { navigateTo, navigateBack } from '@features/Modulo3/utils/functions';
+
 
 const Index = () => {
 
@@ -42,9 +44,18 @@ const Index = () => {
     );
 
 	const content = (
-        <div>
+        <>
         {templates}
+		<div className='text-end'>
+		<Button
+			onClick={() => {
+				navigateTo(EVALUATION_TEMPLATE_CREATE);
+			}}
+			>
+			Crear nueva plantilla
+		</Button>
         </div>
+		</>
     );
 
     const body = (
