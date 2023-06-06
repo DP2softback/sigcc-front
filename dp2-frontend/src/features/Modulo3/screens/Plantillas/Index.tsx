@@ -26,6 +26,9 @@ const Index = () => {
 			</Form.Group>
 		</Form>
 	)
+	const handleClic=()=>{
+
+	}
 
 	const templates = (
         <div className='pl-templates'>
@@ -35,7 +38,8 @@ const Index = () => {
                             <Template 
                                 image={template.image} 
                                 imageStyle={template.imageStyle} 
-                                name={template.name} 
+                                name={template.name}
+								onClick={()=>{handleClic}} 
                             />
                         </div>
                     )              

@@ -22,7 +22,7 @@ export default function TableHistoryContinua({ rows, isReadOnly = false }) {
           <th>Categoría</th>
           <th className='text-center'>Calificación</th>
           <th className='text-center'>Fecha de registro</th>
-          <th>Detalle</th>
+          <th className='text-center'>Detalle</th>
         </tr>
       </thead>
       <tbody>
