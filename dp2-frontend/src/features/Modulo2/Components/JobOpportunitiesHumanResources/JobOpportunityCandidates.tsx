@@ -86,7 +86,7 @@ const returnLevel = (number) => {
               </tbody>
           </Table>
         }
-        <button className='btn btn-outline-primary col-1 ms-3'>Regresar</button>
+        <button className='btn btn-outline-primary col-1 ms-3 btn-sm'>Regresar</button>
       </div>
     </div>
   )

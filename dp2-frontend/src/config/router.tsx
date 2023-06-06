@@ -118,6 +118,24 @@ const JobOpportunitiesRelatedToSkills = Loader(
   )
 );
 
+const JobOpportunitiesHumanResources = Loader(
+  lazy(
+    () =>
+      import(
+        "@features/Modulo2/Components/JobOpportunitiesHumanResources/index"
+      )
+  )
+);
+
+const JobOpportunitiesHRCandidates = Loader(
+  lazy(
+    () =>
+      import(
+        "@features/Modulo2/Components/JobOpportunitiesHumanResources/JobOpportunityCandidates"
+      )
+  )
+);
+
 const EvaluationTemplateIndex = Loader(
   lazy(() => import("@features/Modulo3/screens/Plantillas/Index"))
 );
@@ -416,6 +434,19 @@ const routes: RouteObject[] = [
           {
             path: "selectedJob",
             element: <JobOpportunitiesSelected/>,
+          },
+        ],
+      },
+      {
+        path: "JobOpportunitiesHumanResources",
+        children: [
+          {
+            path: "index",
+            element: <JobOpportunitiesHumanResources />,
+          },
+          {
+            path: "selectedJob",
+            element: <JobOpportunitiesHRCandidates/>,
           },
         ],
       },
