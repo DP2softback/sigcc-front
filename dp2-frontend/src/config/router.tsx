@@ -160,6 +160,14 @@ const ConfigPosition = Loader(
   )
 );
 
+const CreateJobOffer = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo4/pages/JobPositions/CreateJobOffer")
+  )
+);
+
+CreateJobOffer
 const JobOpportunitiesSelected = Loader(
   lazy(() => import("@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/JobOpportunitySelected"))
 );
@@ -388,7 +396,7 @@ const routes: RouteObject[] = [
           },
           {
             path: "test",
-            element: <ConfigPosition />
+            element: <CreateJobOffer />
           }
         ],
       },
