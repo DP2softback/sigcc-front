@@ -30,6 +30,10 @@ function LearningPathDetails(props: any) {
 
     let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
 
+    const handleChange = (id: number) => {
+        setActivo(id);
+    }
+
     const loadsCourses = () => {
         setLoading(true);
         axiosInt.get(`capacitaciones/learning_path/detalle_empleado/1/${learningPathId}/`)
@@ -38,7 +42,7 @@ function LearningPathDetails(props: any) {
                 setLPName(response.data.nombre);
                 setLPDescription(response.data.descripcion);
                 setLPPhoto(response.data.url_foto);
-                setCourses(response.data.cursos);
+                setCourses(response.data.cursos);                
                 setLoading(false);
             })
             .catch(function (error) {
@@ -65,7 +69,8 @@ function LearningPathDetails(props: any) {
                                     </div>
                                 </div>
                             </div>
-                        </> :
+                        </> 
+                        :
                         <>
                             <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
                                 <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
@@ -88,51 +93,48 @@ function LearningPathDetails(props: any) {
                                 </div>
                             </div>
 
-                            <div className='pt-5 pb-2' style={{display: "flex", justifyContent: "space-evenly"}}>
-                                <div style={{display: "flex"}}>
-                                    {courses.map((course: any) => (
-                                        <div style={{display: "flex", alignItems: "center"}}>
-                                            <div key={course.curso.id} className= {`circulo ${course.nro_orden-1 == activo ? 'activo' : ''}`}>{course.nro_orden-1}</div>
-                                            {(course.nro_orden-1) !== courses.length && <div className="linea" style={{paddingLeft: "2rem"}}></div>}
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/*            
-                            <div className="row mt-3 flex-nowrap overflow-x-auto">
-                                {courses.map((course: any) => (
-                                    <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3" key={course.curso.id}>
-                                        <div className="card h-100">
-                                            {/* <img
-                                                src={course.course_udemy_detail.image_480x270}
-                                                className="card-img-top"
-                                                alt="Card"
-                                            /> 
-                                            <div className="card-body">
-                                                <h6 className="card-title">{course.curso.nombre}</h6>
-                                                <p><small className="opacity-50">{course.curso.descripcion}</small></p>
-                                            </div>
+                            {courses.length > 0 ?
+                                <>
+                                    <div className='pt-5 pb-2' style={{ display: "flex", justifyContent: "space-evenly" }}>
+                                        <div style={{ display: "flex" }}>
+                                            {courses.map((course: any) => (
+                                                <div>
+                                                    <div style={{ display: "flex", alignItems: "center" }} onClick={() => handleChange(course.nro_orden)}>
+                                                        <div key={course.curso.id} className={`circulo ${course.nro_orden == activo ? 'activo' : ''}`}>{course.nro_orden}</div>
+                                                        {(course.nro_orden) !== courses.length && <div className="linea" style={{ paddingLeft: "2rem" }}></div>}
+                                                    </div>
+                                                    <div>Curso {course.nro_orden}</div>
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
-                                ))}
-                                {
-                                    courses.length === 0 && <>
-                                        <div className='col'>
-                                            <div className='card'>
-                                                <div className='card-body'>
-                                                    <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                        <div className='vertical-align-child'>
-                                                            <h5 className='opacity-50 text-center'>No hay cursos en la ruta de aprendizaje</h5>
-                                                        </div>
+
+
+                                    <div className='pt-4 pb-2' style={{display: "flex", justifyContent: "center"}}>
+                                        <div className="card mb-3" style={{ maxWidth: "45rem" }}>
+                                            <div className="row g-0">
+                                                <div className="col-md-4">
+                                                    <img src={url_foto_default} className="img-fluid rounded-start" style={{height: "100%"}}></img>
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <div className="card-body">
+                                                        <h5 className="card-title">{courses[activo - 1].curso.descripcion}</h5>
+                                                        <p className="card-text">{courses[activo - 1].curso.nombre}</p>
+                                                        <p className="card-text"><small className="text-body-secondary">Duración: {courses[activo - 1].curso.duracion}</small></p>
+                                                    </div>
+                                                    <div className="card-body">
+                                                        <button className='btn btn-primary'>Iniciar el curso</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </>
-                                }
-                            </div>
-                            */}
+                                    </div>
+                                </>
+                                :
+                                <>
+                                </>
+                            }
+
                         </>
                 }
             </Sidebar>

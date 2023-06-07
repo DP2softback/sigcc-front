@@ -366,8 +366,8 @@ const TrainingE = () => {
                 setTrainingFilter(response.data);
                 setUpcomingCourse(response.data.filter((item: any) => compararFechas(item.cursoEmpresa.fecha_primera_sesion === null ? (moment(item.cursoEmpresa.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.cursoEmpresa.fecha_primera_sesion).format("DD-MM-YYYY")), now, now7, 1)))
                 setCurrentCourse(response.data.filter((item: any) => compararFechas(item.cursoEmpresa.fecha_primera_sesion === null ? (moment(item.cursoEmpresa.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.cursoEmpresa.fecha_primera_sesion).format("DD-MM-YYYY")), now7, '', 2)))
-                setFinishedCourse(response.data.filter((item: any) => compararFechas(item.cursoEmpresa.fecha_primera_sesion === null ? (moment(item.cursoEmpresa.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.cursoEmpresa.fecha_primera_sesion).format("DD-MM-YYYY")), now, '', 3)))
                 setLoading(false);
+                setFinishedCourse(response.data.filter((item: any) => compararFechas(item.cursoEmpresa.fecha_primera_sesion === null ? (moment(item.cursoEmpresa.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.cursoEmpresa.fecha_primera_sesion).format("DD-MM-YYYY")), now, '', 3)))
             })
             .catch(function (error) {
                 setLoading(false);
@@ -384,7 +384,6 @@ const TrainingE = () => {
                 setTrainingFilter(response.data);
                 setUpcomingCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, now7, 1)))
                 setCurrentCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_ultima_sesion).format("DD-MM-YYYY")), 2)))
-                setFinishedCourse(response.data.filter((item: any) => compararFechas(item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, '', 3)))
 
                 axiosInt.get('capacitaciones/course_company_course_frees_all/')
                     .then(function (response) {
@@ -404,6 +403,7 @@ const TrainingE = () => {
 
 
                 setLoading1(false);
+                setFinishedCourse(response.data.filter((item: any) => compararFechas(item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, '', 3)))
             })
             .catch(function (error) {
                 setLoading1(false);
