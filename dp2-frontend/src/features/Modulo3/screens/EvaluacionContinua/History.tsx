@@ -12,6 +12,8 @@ import Linechart from '@features/Modulo3/components/Charts/Linechart/Linechart';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 import { getEvaluationsHistory, getEmployeeEvaluationDashboard } from '@features/Modulo3/services/continuousEvaluation';
+import ModalChooseTemplate from '@features/Modulo3/components/Modals/ModalChooseTemplate';
+import { CONTINUOS_EVALUATION_TYPE } from '@features/Modulo3/utils/constants';
 
 const History = () => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -22,7 +24,7 @@ const History = () => {
   const [evaluations, setEvaluations] = useState([]);
   const [dashboard, setDashboard] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [show,setShow]=useState(false);
   useEffect(() => {
     setIsLoading(true);
     (async () => {
@@ -93,7 +95,8 @@ const History = () => {
         </Button>
         <Button
           onClick={() => {
-            navigateTo(CONTINUOS_EVALUATION_CREATE, { id: employeeId, name: employeeName });
+            //navigateTo(CONTINUOS_EVALUATION_CREATE, { id: employeeId, name: employeeName });
+            setShow(true);
           }}
         >
           Agregar nueva evaluación
@@ -112,6 +115,7 @@ const History = () => {
 
   return (
     <div>
+      <ModalChooseTemplate show={show} setShow={setShow} tipo={CONTINUOS_EVALUATION_TYPE} employeeId={employeeId} employeeName={employeeName}></ModalChooseTemplate>
       <Layout
         title={`Evaluación continua - ${employeeName}`}
         body={body}
