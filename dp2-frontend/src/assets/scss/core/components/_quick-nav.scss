@@ -1,0 +1,16 @@
+.nk{
+    &-quick{
+        &-nav{
+            display: flex;
+            align-items: center;
+            margin: 0 -.25rem;
+            >*{
+                padding: 0 .25rem;
+            }
+            &-icon{
+                font-size: 1.5rem;
+                color: $base-color;
+            }
+        }
+    }
+}

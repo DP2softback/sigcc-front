@@ -1,0 +1,19 @@
+/* Error: Undefined variable.
+ *    ,
+ * 13 | $swal2-border-radius: $nk-border-radius !default;
+ *    |                       ^^^^^^^^^^^^^^^^^
+ *    '
+ *   src\assets\scss\vendors\sweetalert2\variables.scss 13:23    @import
+ *   src\assets\scss\vendors\sweetalert2\scss\_theming.scss 4:9  @import
+ *   src\assets\scss\vendors\sweetalert2\sweetalert2.scss 4:9    root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Undefined variable.\a    \2577 \a 13 \2502  $swal2-border-radius: $nk-border-radius !default;\d\a    \2502                        ^^^^^^^^^^^^^^^^^\a    \2575 \a   src\\assets\\scss\\vendors\\sweetalert2\\variables.scss 13:23    @import\a   src\\assets\\scss\\vendors\\sweetalert2\\scss\\_theming.scss 4:9  @import\a   src\\assets\\scss\\vendors\\sweetalert2\\sweetalert2.scss 4:9    root stylesheet";
+}
