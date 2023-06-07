@@ -173,7 +173,7 @@ const IndexEvaluacionContinua = () => {
     <div
       id="chart-container"
       className="col-md-12 mb-32px"
-      style={{ paddingBottom: '12px', marginBottom: '32px' }}
+      style={{ paddingBottom: '12px', marginBottom: '32px', marginTop: '20px' }}
     >          
       {dashboard && (
         <Linechart
