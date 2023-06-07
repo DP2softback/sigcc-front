@@ -8,7 +8,7 @@ import { Form, Button, Dropdown} from 'react-bootstrap';
 import { jsPDF } from 'jspdf';
 import domtoimage from 'dom-to-image';
 import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
-import { getAreas, getCategoriasContinua, getCategoriasDesempenio, getEmployeesEvaluationDashboard, getReportDesempenioLineChart, getReportContinuaLineChart, getPostAreas, getPostCategoriasContinua, getPostCategoriasDesempenio, getPostReportContinuaLineChart, getPostReportDesempenioLineChart } from '@features/Modulo3/services/reports';
+import { getAreas, getCategoriasContinua, getCategoriasDesempenio, postReportLineChart, getEmployeesEvaluationDashboard} from '@features/Modulo3/services/reports';
 import { formatDashboardJson } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 
@@ -105,6 +105,7 @@ const IndexEvaluacionDesempenho = () => {
     categoria: {id:0, name:"Todas las categorías"},
     fechaInicio: null,
     fechaFin: null,
+    evaluationType: "Evaluación de Desempeño"
   });
   
   const [areas, setAreas] = useState([]); // Cuando tengamos las apis dejarlo como array vacío
@@ -181,9 +182,6 @@ const IndexEvaluacionDesempenho = () => {
 
   const handleArea = (eventKey: string | null, event: React.SyntheticEvent<unknown>) => {
     const selected = areas.find(area => area.id === Number(eventKey));
-  
-      
-
     console.log("Selected: ", selected);
     setSearchParams(prevState => ({
       ...prevState,
@@ -223,18 +221,14 @@ const IndexEvaluacionDesempenho = () => {
   };
 
   const handleSearchClick = () => {
-    const { area, categoria, fechaInicio, fechaFin } = searchParams;
-    
-    if(fechaInicio === null || fechaFin === null) {
+    if(searchParams.fechaInicio === null || searchParams.fechaFin === null) {
       alert("Debe seleccionar un rango de fechas");
       return;
     }
-
-    if(fechaInicio > fechaFin) {
+    if(searchParams.fechaInicio > searchParams.fechaFin) {
       alert("La fecha de inicio no puede ser mayor a la fecha de fin");
       return;
     }
-
     if(searchParams.area.id === 0) {
       alert("Debe seleccionar un área");
       return;
@@ -247,7 +241,7 @@ const IndexEvaluacionDesempenho = () => {
     if(activeRepContinua) {
       const fetchData = async () => {
         setIsLoading(true);
-        const data = await getPostReportContinuaLineChart(searchParams.area.id, searchParams.categoria.id, searchParams.fechaInicio, searchParams.fechaFin);
+        const data = await postReportLineChart(searchParams.area.id, searchParams.categoria.id, searchParams.fechaInicio, searchParams.fechaFin, searchParams.evaluationType);
         if(data){
           setDashboard(formatDashboardJson(data));
           console.log("Data: ", data);
@@ -264,7 +258,7 @@ const IndexEvaluacionDesempenho = () => {
     else{
       const fetchData = async () => {
         setIsLoading(true);
-        const data = await getPostReportDesempenioLineChart(searchParams.area.id, searchParams.categoria.id, searchParams.fechaInicio, searchParams.fechaFin);
+        const data = await postReportLineChart(searchParams.area.id, searchParams.categoria.id, searchParams.fechaInicio, searchParams.fechaFin, searchParams.evaluationType);
         if(data){
           setDashboard(formatDashboardJson(data));
           console.log("Data: ", data);
@@ -341,7 +335,7 @@ const IndexEvaluacionDesempenho = () => {
         <Button variant='primary' className='ec-buttonBuscar' onClick={handleSearchClick}>Buscar</Button>        
         <Button variant='primary' className='ec-buttonExportar' onClick={handleButtonExportClick}>Exportar a PDF            
         </Button>
-        <Button variant='secondary' className='ec-buttonChangeMode' onClick={handleButtonModeClick}>{activeRepContinua? "Evaluación de Desempeño":"Evaluación Continua"}</Button>
+        {/* <Button variant='secondary' className='ec-buttonChangeMode' onClick={handleButtonModeClick}>{activeRepContinua? "Evaluación de Desempeño":"Evaluación Continua"}</Button> */}
       </Form.Group>            
     </Form>
   );
