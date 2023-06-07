@@ -1,0 +1,67 @@
+.logo{
+    &-wrap{
+        display: inline-flex;
+        position: relative;
+        height:20px;
+    }
+    &-link{
+        display: inline-flex;
+    }
+    &-svg{
+        height: 100%;
+        --logo-text-color: #{$base-dark};
+        --logo-sym-accent-1: #5F38F9;
+        --logo-sym-accent-2: #478FFC;
+        --logo-sym-secondary-1: #0080FF;
+        --logo-sym-secondary-2: #17C5EB;
+        .is-theme &,.is-dark &{
+            --logo-text-color: #{$white};
+        }
+    }
+    &-text{
+        color: var(--logo-text-color);
+        transition: .3s ease;;
+        .is-compact:not(:hover) &{
+            display: none;
+        }
+    }
+    &-img{
+        height: 100%;
+        &:not(:first-child){
+            position: absolute;
+            left: 0;
+        }
+    }
+    &-dark{
+        opacity: 1;
+        .is-theme &,.is-dark &{
+            opacity: 0;
+        }
+        .is-compact:not(:hover) &{
+            opacity: 0;
+        }
+    }
+    &-light{
+        opacity: 0;
+        .is-theme &,.is-dark &{
+            opacity: 1;
+        }
+        .is-compact:not(:hover) &{
+            opacity: 0;
+        }
+    }
+    &-icon{
+        opacity: 0;
+        .is-compact:not(:hover) &{
+            opacity: 1;
+        }
+    }
+}
+
+@include media-breakpoint-up(sm){
+    .logo{
+        &-wrap{
+            height:34px;
+        }
+    }
+}

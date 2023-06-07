@@ -1,0 +1,7 @@
+.box{
+    &-dotted{
+        border: 1px dashed $border-color;
+        border-radius: $border-radius;
+        padding: 1rem;
+    }
+}

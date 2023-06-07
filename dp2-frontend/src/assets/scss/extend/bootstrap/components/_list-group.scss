@@ -1,0 +1,43 @@
+$list-group-class: 'list-group';
+
+.#{$list-group-class}{
+    &-item{
+        &.active{
+            h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
+                color: currentColor;
+            }
+        }
+        .title{
+            color: $base-color;
+        }
+        .text{
+            color: $base-light;
+        }
+    }
+    &-heading{
+        border-bottom: 1px solid $border-light;
+        padding-bottom: 0.5rem;
+        margin-bottom: 0.25rem;
+        .title{
+            margin-bottom: 0;
+        }
+    }
+    &-borderless{
+        border-radius: 0;
+        .#{$list-group-class}{
+            &-item{
+                border: 0;
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+    }
+    &-sm{
+        .#{$list-group-class}{
+            &-item{
+                padding-top: $nk-list-group-item-padding-y-sm;
+                padding-bottom: $nk-list-group-item-padding-y-sm;
+            }
+        }
+    }
+}

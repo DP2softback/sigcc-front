@@ -1,0 +1,136 @@
+// Breakpoint
+$points : 'sm', 'md', 'lg', 'xl';
+
+// Base
+$content-gap-x: .5rem;
+$content-gap-y: 2rem;
+$content-gap-x-sm: 1rem;
+$content-gap-y-sm: 2.5rem;
+
+$logo-height: 40px;
+
+$menu-class: 'nk-menu';
+$transition: 0.4s;
+
+// menu link
+$menu-link-gap-y:  0.625rem;
+$menu-link-gap-x:  1.75rem;
+$menu-link-color: $base-color;
+$menu-link-font-weight: 400;
+$menu-link-font-size: 0.875rem;
+$menu-link-hover-color: lighten($primary,15%);
+$menu-link-hover-bg: rgba($primary, 0.04);
+
+// menu sub
+$menu-sub-link-gap-y: 0.5rem;
+$menu-sub-link-gap-x: 1rem;
+$menu-sub-font-size: 0.813rem;
+$menu-sub-font-weight: 400;
+$menu-sub-link-color: $base-text;
+$menu-border-color:   $border-color;
+
+// menu heading
+$menu-heading-gap-y: .75rem;
+$menu-heading-gap-y-lg: 2rem;
+$menu-heading-gap-x: $menu-link-gap-x;
+
+// menu icon
+$menu-icon-font-size: 1.125rem;
+$menu-icon-width:  $menu-icon-font-size;
+$menu-icon-gap:  0.875rem;
+$menu-icon-color: $base-color;
+
+$menu-sub-gap-x: 1.975rem;
+$menu-sub-sub-gap-x: 1.325rem;
+
+
+//header
+$header-gap-y: 0.5rem;
+$header-gap-x: $content-gap-x;
+$header-gap-x-sm: $content-gap-x-sm;
+$header-bg: $white;
+$header-box-shadow: 0 1px 0 rgba($border-light, 0.50);
+$header-height: $size-rg + $header-gap-y*2;
+$header-menu-width: 280px;
+
+$navbar-overlay:rgba($dark,.4);
+
+$nav-class: 'nk-nav';
+// nav
+$nav-gap-y: 0;
+$nav-gap-x: 1.25rem;
+
+// nav item
+$nav-item-gap-y: 0;
+$nav-item-gap-x: .75rem;
+
+// nav link
+$nav-link-color: $base-color;
+$nav-link-font-size: 0.875rem;
+$nav-link-font-weight: 400;
+$nav-link-gap-y-collapse: 0.625rem;
+$nav-link-gap-x-collapse: $nav-gap-x;
+$nav-link-gap-y: 0;
+$nav-link-gap-x: 0;
+$nav-link-border-radius: $border-radius;
+$nav-link-hover-color:$primary;
+$nav-link-line-height: 1.375rem;
+
+$nk-nav-heading-color:      $base-color;
+
+// nav sub
+$nav-sub-gap-y: 0.5rem;
+$nav-sub-gap-x: 1.5rem;
+$nav-sub-box-shadow: 0 4px 13px -2px rgba(#43476b, 0.15);
+$nav-sub-border-radius: 0 0 $border-radius $border-radius;
+$sub-bg: $white;
+$sub-min-width: 200px;
+$sub-min-width-lg: 280px;
+
+$nav-sub-sub-gap-x: 1.5rem;
+
+// mega 
+$nav-heading-gap: 1rem;
+$nav-col-min-width: 160px;
+$nav-col-gap-y: 1.5rem;
+$nav-col-gap-x: 1.5rem;
+$nav-media-min-width: 330px;
+
+// footer
+$footer-gap-y: $header-gap-y;
+$footer-gap-x: $content-gap-x;
+$footer-height: 4.5rem + $footer-gap-y*2;
+$footer-height-sm : 2.5rem + $footer-gap-y*2;
+
+// Sidebar
+$sidebar-bg: $white;
+$sidebar-box-shadow: 0 0 5px rgba($black, 0.1);
+$sidebar-head-gap-y: 0.875rem;
+$sidbar-head-gap-x: 1.375rem;
+$sidebar-width-normal:280px;
+$sidebar-width-compact:$menu-link-gap-x*2 + $menu-icon-width;
+
+$sidebar-overlay:                   rgba($dark,.4);
+
+//aside
+$aside-gutter-x: 1.5rem;
+
+// sidebar dark theme
+$sidebar-dark: $sidebar-dark-bg;
+$menu-link-color-on-theme-sidebar: $base-50;
+$menu-sub-border-on-theme-sidebar: rgba($white, 0.1);
+
+// header dark theme
+$header-dark: $header-dark-bg;
+$nav-link-color-on-theme-header: $base-50;
+$header-dark-bg-hover-base-color: $base-300;
+
+@import "layouts/base";
+@import "layouts/logo";
+@import "layouts/menu-main";
+@import "layouts/nav";
+@import "layouts/header";
+@import "layouts/sidebar";
+@import "layouts/compact";
+@import "layouts/footer";
+@import "layouts/aside";

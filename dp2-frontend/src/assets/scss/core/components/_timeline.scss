@@ -1,0 +1,70 @@
+$timeline-class: 'nk-timeline';
+.#{$timeline-class}{
+    &-heading{
+        padding-bottom: $nk-timeline-heading-gap-y;
+    }
+    &-group + .#{$timeline-class}-group{
+        padding-top: 32px;
+    }
+    &-item {
+        padding-top: $nk-timeline-item-gap-y;
+        padding-bottom: $nk-timeline-item-gap-y;
+        overflow: hidden;
+        &:not(:last-child){
+            .#{$timeline-class}-item-inner{
+                padding-bottom: $nk-timeline-item-inner-gap;
+            }
+        }
+        &-inner{
+            display: flex;
+            p{
+                margin-bottom: 0;
+            }
+            strong{
+                font-weight: 500;
+                color: $base-color;
+            }
+            .time{
+                display: block;
+            }
+            .time + p{
+                margin-top: 0.25rem;
+            }
+        }
+        &:last-child {
+            .#{$timeline-class}-symbol{
+                &::before{
+                    display: none;
+                }
+            }
+        }
+    }
+    &-symbol{
+        position: relative;
+        align-self: flex-start;
+        display: inline-flex;
+        &::before{
+            position: absolute;
+            content: "";
+            top: calc(100% + #{$nk-timeline-item-gap-y});
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100rem;
+            background-color: $base-300;
+            z-index: 1;
+        }
+        .media{
+            position: relative;
+            z-index: 4;
+        }
+        + .#{$timeline-class}-content{
+            padding-left: $nk-timeline-content-gap-x;
+        }
+    }
+    &-center {
+        .#{$timeline-class}-item-inner{
+            align-items: center;
+        }
+    }
+}
