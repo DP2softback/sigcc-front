@@ -8,93 +8,92 @@ import { Form, Button, Dropdown} from 'react-bootstrap';
 import { jsPDF } from 'jspdf';
 import domtoimage from 'dom-to-image';
 import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
-import { getAreas, getCategoriasContinua, getCategoriasDesempenio, getEmployeesEvaluationDashboard, getReportDesempenioLineChart, getReportContinuaLineChart, getPostAreas, getPostCategoriasContinua, getPostCategoriasDesempenio, getPostReportContinuaLineChart, getPostReportDesempenioLineChart } from '@features/Modulo3/services/reports';
+import { getAreas, getCategoriasContinua, getCategoriasDesempenio,postReportLineChart, getEmployeesEvaluationDashboard,} from '@features/Modulo3/services/reports';
 import { formatDashboardJson } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
-import { set } from 'zod';
 
 const dataAreas =     [
   {
     id: 1,
-    area: "Infraestructura"
+    name: "Infraestructura"
   },
   {
     id: 2,
-    area: "Seguridad"
+    name: "Seguridad"
   },
   {
     id: 3,
-    area: "Desarrollo"
+    name: "Desarrollo"
   },
   {
     id: 4,
-    area: "Soporte"
+    name: "Soporte"
   }
 ];
 
 const dataCategoriasEvaluacion = [
   {
     id: 1,
-    categoria: "Calidad del Trabajo"
+    name: "Calidad del Trabajo"
   },
   {
     id: 2,
-    categoria: "Habilidades Blandas"
+    name: "Habilidades Blandas"
   },
   {
     id: 3,
-    categoria: "Conocimientos"
+    name: "Conocimientos"
   },
   {
     id: 4,
-    categoria: "Productividad"
+    name: "Productividad"
   },
   {
     id: 5,
-    categoria: "Creatividad y Iniciativa"
+    name: "Creatividad y Iniciativa"
   }
 ];
 
 const dataCategoriasDesempenio =  [
   {
     id: 1,
-    categoria: "Calidad del Trabajo"
+    name: "Calidad del Trabajo"
   },
   {
     id: 2,
-    categoria: "Productividad"
+    name: "Productividad"
   },
   {
     id: 3,
-    categoria: "Comportamiento y actitud"
+    name: "Comportamiento y actitud"
   },
   {
     id: 4,
-    categoria: "Habilidades técnicas"
+    name: "Habilidades técnicas"
   },
   {
     id: 5,
-    categoria: "Comunicación"
+    name: "Comunicación"
   },
   {
     id: 6,
-    categoria: "Colaboración y trabajo en equipo"
+    name: "Colaboración y trabajo en equipo"
   },
   {
     id: 7,
-    categoria: "Habilidades de liderazgo"
+    name: "Habilidades de liderazgo"
   },
   {
     id: 8,
-    categoria: "Iniciativa y creatividad"
+    name: "Iniciativa y creatividad"
   },
   {
     id: 9,
-    categoria: "Cumplimiento de objetivos y metas"
+    name: "Cumplimiento de objetivos y metas"
   },
   {
     id: 10,
-    categoria: "Desarrollo profesional y personal"
+    name: "Desarrollo profesional y personal"
   }
 ]
 
@@ -102,15 +101,16 @@ const IndexEvaluacionContinua = () => {
   const [activeRepContinua, setActiveRepContinua] = useState(true);
 
   const [searchParams, setSearchParams] = useState({
-    area: {id:0 , area:"Todas las áreas"},
-    categoria: {id:0, categoria:"Todas las categorías"},
+    area: {id:0 , name:"Todas las áreas"},
+    categoria: {id:0, name:"Todas las categorías"},
     fechaInicio: null,
     fechaFin: null,
+    evaluationType: "Evaluación Continua"
   });
   
-  const [areas, setAreas] = useState(dataAreas); // Cuando tengamos las apis dejarlo como array vacío
-  const [categoriasContinua, setCategoriasContinua] = useState(dataCategoriasEvaluacion); // Cuando tengamos las apis dejarlo como array vacío
-  const [categoriasDesempenio, setCategoriasDesempenio] = useState(dataCategoriasDesempenio); // Cuando tengamos las apis dejarlo como array vacío
+  const [areas, setAreas] = useState([]); // Cuando tengamos las apis dejarlo como array vacío
+  const [categoriasContinua, setCategoriasContinua] = useState([]); // Cuando tengamos las apis dejarlo como array vacío
+  const [categoriasDesempenio, setCategoriasDesempenio] = useState([]); // Cuando tengamos las apis dejarlo como array vacío
 
   const [dashboard, setDashboard] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -136,22 +136,16 @@ const IndexEvaluacionContinua = () => {
     // Invocaciones provisionales:
     const fetchData = async () => {
       setIsLoading(true);
-      // try{
-      //   const dataAreas = await getAreas();
-      //   const dataCategoriasContinua = await getCategoriasContinua();
-      //   const dataCategoriasDesempenio = await getCategoriasDesempenio();
-      //   setAreas(dataAreas);          
-      //   setCategoriasContinua(dataCategoriasContinua);
-      //   setCategoriasDesempenio(dataCategoriasDesempenio);
-      // } catch (error){
-      //   console.log("Error: En el Fetch");
-      // }
-          
-      // const categoriasContinuaData = await getPostCategoriasContinua();
-      // setCategoriasContinua(categoriasContinuaData);
-
-      // const categoriasDesempenioData = await getPostCategoriasDesempenio();
-      // setCategoriasDesempenio(categoriasDesempenioData);
+      try{
+        const dataAreas = await getAreas();
+        const dataCategoriasContinua = await getCategoriasContinua();
+        const dataCategoriasDesempenio = await getCategoriasDesempenio();
+        setAreas([{id:0 , name:"Todas las áreas"},...dataAreas]);          
+        setCategoriasContinua([{id:0 , name:"Todas las categorias"},...dataCategoriasContinua]);
+        setCategoriasDesempenio([{id:0 , name:"Todas las categorias"},...dataCategoriasDesempenio]);
+      } catch (error){
+        console.error("Error fetching data: ", error)
+      }
 
       // const data = await getEmployeesEvaluationDashboard(5);
       // if(data){
@@ -174,14 +168,14 @@ const IndexEvaluacionContinua = () => {
     <div
       id="chart-container"
       className="col-md-12 mb-32px"
-      style={{ paddingBottom: '12px', marginBottom: '32px' }}
+      style={{ paddingBottom: '12px', marginBottom: '32px', marginTop: '20px' }}
     >          
       {dashboard && (
         <Linechart
           title={
             activeRepContinua
-              ? `Evaluaciones Continuas - ${searchParams.area.area}`
-              : `Evaluaciones de Desempeño - ${searchParams.area.area}`
+              ? `Evaluaciones Continuas - ${searchParams.area.name}`
+              : `Evaluaciones de Desempeño - ${searchParams.area.name}`
           }
           dataInfoprops={dashboard.data}
           labelsX={dashboard.months}
@@ -198,9 +192,13 @@ const IndexEvaluacionContinua = () => {
 
   const handleArea = (eventKey: string | null, event: React.SyntheticEvent<unknown>) => {
     const selected = areas.find(area => area.id === Number(eventKey));
+  
+      
+
+    console.log("Selected: ", selected);
     setSearchParams(prevState => ({
       ...prevState,
-      area: selected ? selected : {id:0 , area:"Todas las áreas"},
+      area: selected ? selected : {id:0 , name:"Todas las áreas"},
     }));
   };
 
@@ -208,7 +206,7 @@ const IndexEvaluacionContinua = () => {
     const selected = (activeRepContinua ? categoriasContinua : categoriasDesempenio).find(categoria => categoria.id === Number(eventKey));
     setSearchParams(prevState => ({
       ...prevState,
-      categoria: selected ? selected : {id:0, categoria:"Todas las categorías"},
+      categoria: selected ? selected : {id:0, name:"Todas las categorías"},
     }));
   }
 
@@ -230,24 +228,20 @@ const IndexEvaluacionContinua = () => {
     setActiveRepContinua(!activeRepContinua);
     setSearchParams(prevState => ({
       ...prevState,
-      area: {id:0 , area:"Todas las áreas"},
-      categoria: {id:0, categoria:"Todas las categorías"},
+      area: {id:0 , name:"Todas las áreas"},
+      categoria: {id:0, name:"Todas las categorías"},
     }));
   };
 
   const handleSearchClick = () => {
-    const { area, categoria, fechaInicio, fechaFin } = searchParams;
-    
-    if(fechaInicio === null || fechaFin === null) {
+    if(searchParams.fechaInicio === null || searchParams.fechaFin === null) {
       alert("Debe seleccionar un rango de fechas");
       return;
     }
-
-    if(fechaInicio > fechaFin) {
+    if(searchParams.fechaInicio > searchParams.fechaFin) {
       alert("La fecha de inicio no puede ser mayor a la fecha de fin");
       return;
     }
-
     if(searchParams.area.id === 0) {
       alert("Debe seleccionar un área");
       return;
@@ -260,7 +254,7 @@ const IndexEvaluacionContinua = () => {
     if(activeRepContinua) {
       const fetchData = async () => {
         setIsLoading(true);
-        const data = await getPostReportContinuaLineChart(searchParams.area.id, searchParams.categoria.id, searchParams.fechaInicio, searchParams.fechaFin);
+        const data = await postReportLineChart(searchParams.area.id, searchParams.categoria.id, searchParams.fechaInicio, searchParams.fechaFin, searchParams.evaluationType);
         if(data){
           setDashboard(formatDashboardJson(data));
           console.log("Data: ", data);
@@ -268,7 +262,9 @@ const IndexEvaluacionContinua = () => {
         }
         else{
           console.log("Error C: ", data);
+          console.log("Params: ", searchParams);
         }
+        console.log("Data del POST: ", data);
         setIsLoading(false);
       };
       fetchData();
@@ -276,7 +272,7 @@ const IndexEvaluacionContinua = () => {
     else{
       const fetchData = async () => {
         setIsLoading(true);
-        const data = await getPostReportDesempenioLineChart(searchParams.area.id, searchParams.categoria.id, searchParams.fechaInicio, searchParams.fechaFin);
+        const data = await postReportLineChart(searchParams.area.id, searchParams.categoria.id, searchParams.fechaInicio, searchParams.fechaFin, searchParams.evaluationType);
         if(data){
           setDashboard(formatDashboardJson(data));
           console.log("Data: ", data);
@@ -284,6 +280,7 @@ const IndexEvaluacionContinua = () => {
         }
         else{
           console.log("Error D: ", data);
+          console.log("Params: ", searchParams);
         }
         setIsLoading(false);
       };
@@ -316,24 +313,22 @@ const IndexEvaluacionContinua = () => {
       <Form.Group controlId='reportes' className='ec-indexFilters'>        
           <Dropdown onSelect={handleArea}>
             <Dropdown.Toggle variant="outline-secondary" className="ec-indexButton">
-              {searchParams.area.area}
+              {searchParams.area.name}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item eventKey={0} value={0}>Todas las áreas</Dropdown.Item>
               {areas.map((area) => (
-                <Dropdown.Item eventKey={area.id} value={area.id}>{area.area}</Dropdown.Item>
+                <Dropdown.Item eventKey={area.id} value={area.id}>{area.name}</Dropdown.Item>
               ))}              
             </Dropdown.Menu>
           </Dropdown>    
           <Dropdown onSelect={handleCategoria}>
             <Dropdown.Toggle variant="outline-secondary" className="ec-indexButton">
-              {searchParams.categoria.categoria}
+              {searchParams.categoria.name}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item eventKey={0} value={0}>Todas las categorías</Dropdown.Item>
               {
                 (activeRepContinua ? categoriasContinua : categoriasDesempenio).map(categoria => (
-                  <Dropdown.Item eventKey={categoria.id} value={categoria.id}>{categoria.categoria}</Dropdown.Item>
+                  <Dropdown.Item eventKey={categoria.id} value={categoria.id}>{categoria.name}</Dropdown.Item>
                 ))
               }
             </Dropdown.Menu>
@@ -354,7 +349,7 @@ const IndexEvaluacionContinua = () => {
         <Button variant='primary' className='ec-buttonBuscar' onClick={handleSearchClick}>Buscar</Button>        
         <Button variant='primary' className='ec-buttonExportar' onClick={handleButtonExportClick}>Exportar a PDF            
         </Button>
-        <Button variant='secondary' className='ec-buttonChangeMode' onClick={handleButtonModeClick}>{activeRepContinua? "Evaluación de Desempeño":"Evaluación Continua"}</Button>
+        {/* <Button variant='secondary' className='ec-buttonChangeMode' onClick={handleButtonModeClick}>{activeRepContinua? "Evaluación de Desempeño":"Evaluación Continua"}</Button> */}
       </Form.Group>            
     </Form>
   );
