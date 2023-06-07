@@ -11,7 +11,7 @@ const axiosInt = axios.create({
   baseURL: baseUrl,
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': 'Token 76722f7bbe0cf200d19620bb90dddc2671535ea5',
+    'Authorization': 'Token b7f640fc5d833b0329e6b1045f088c0fcf5f191e',
   }
 });
 
