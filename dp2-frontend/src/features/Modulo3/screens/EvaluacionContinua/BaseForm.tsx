@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./EvaluacionContinua.css";
-import { CONTINUOS_EVALUATION_HISTORY, CONTINUOS_EVALUATION_INDEX } from "@config/paths";
+import { CONTINUOS_EVALUATION_HISTORY, CONTINUOS_EVALUATION_INDEX } from "@features/Modulo3/routes/path";
 import Layout from "@features/Modulo3/components/Layout/Content/Content";
 import Section from "@features/Modulo3/components/Layout/Section/Section";
 import Matrix from "@features/Modulo3/components/Matrix/Matrix";

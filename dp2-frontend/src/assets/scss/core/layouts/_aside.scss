@@ -1,0 +1,14 @@
+.nk-aside{
+    &-heading{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem $aside-gutter-x .75rem;
+        > *{
+            display: flex;
+        } 
+    }
+    &-content{
+        padding: 0 $aside-gutter-x;
+    }
+}

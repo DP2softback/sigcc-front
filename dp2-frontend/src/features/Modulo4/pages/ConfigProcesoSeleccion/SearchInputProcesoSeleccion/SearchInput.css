@@ -1,0 +1,15 @@
+.selected {
+    background-color: rgb(77, 157, 168);
+}
+
+.custom-modal {
+    width: 100%; /* Asegura que el Modal ocupe el ancho completo */
+    display: flex; /* Utiliza flexbox para centrar el Modal */
+    align-items: center; /* Centra verticalmente el contenido del Modal */
+    justify-content: center; /* Centra horizontalmente el contenido del Modal */
+  }
+  
+  .custom-modal .modal-dialog {
+    width: 400px; /* Establece el ancho deseado */
+  }
+  

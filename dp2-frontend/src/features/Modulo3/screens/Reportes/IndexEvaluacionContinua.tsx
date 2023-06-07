@@ -7,7 +7,7 @@ import Linechart from '@features/Modulo3/components/Charts/Linechart/Linechart';
 import { Form, Button, Dropdown} from 'react-bootstrap';
 import { jsPDF } from 'jspdf';
 import domtoimage from 'dom-to-image';
-import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@config/paths';
+import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
 import { getAreas, getCategoriasContinua, getCategoriasDesempenio, getEmployeesEvaluationDashboard, getReportDesempenioLineChart, getReportContinuaLineChart, getPostAreas, getPostCategoriasContinua, getPostCategoriasDesempenio, getPostReportContinuaLineChart, getPostReportDesempenioLineChart } from '@features/Modulo3/services/reports';
 import { formatDashboardJson } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
