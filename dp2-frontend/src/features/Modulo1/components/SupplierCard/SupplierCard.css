@@ -1,7 +1,26 @@
-.supplierCard-row{
+.supplierCard-row {
     display: flex;
     align-items: center;
     flex-direction: row;
     margin-top: 10px;
     flex-wrap: wrap;
+}
+
+.supplierCard-title {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.supplierCard-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.supplierCard-imageContainer {
+    width: 60px;
+    height: 60px;
+    margin-right: 14px;
+    overflow: hidden;
 }

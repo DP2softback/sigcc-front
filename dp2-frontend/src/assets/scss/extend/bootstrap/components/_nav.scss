@@ -1,0 +1,85 @@
+.nav{
+    &-link{
+        line-height: 1.5rem;
+    }
+    &-sm{
+        .nav{
+            &-link{
+                padding: $nk-nav-link-padding-y-sm $nk-nav-link-padding-x-sm;
+            }
+        }
+    }
+    &-tabs{
+        &-s1{
+            .nav{
+                &-item{
+                    padding-right: $nk-nav-s1-item-gap-x;
+                    &:last-child{
+                        padding-right: 0;
+                    }
+                }
+                &-link{
+                    padding-left: $nk-nav-s1-link-padding-x;
+                    padding-right: $nk-nav-s1-link-padding-x;
+                    border: $nk-nav-s1-link-border;
+                    margin-bottom: 0;
+                    position: relative;
+                    &::after{
+                        left: 0;
+                        right: 0;
+                        bottom: -1px;
+                        height: 2px;
+                        position: absolute;
+                        content: "";
+                        background-color: $nk-nav-s1-link-divider-bg;
+                        width: 100%;
+                        opacity: 0;
+                        transform: scale(0.6);
+                        transition: 0.2s;
+                    }
+                    &.active{
+                        color: $nk-nav-s1-link-active-color;
+                        &::after{
+                            opacity: 1;
+                            transform: scale(1);
+                        }
+                    }
+                }
+            }
+        }
+        .nav-link{
+            line-height: $nk-nav-link-line-height;
+        }
+    }
+    &-pills{
+        &-border{
+            .nav{
+                &-link{
+                    border: 1px dashed $border-color;
+                    font-weight: 500;
+                    &:hover,
+                    &.active{
+                        color: $primary;
+                        background-color: mix($primary, $white, 5%);
+                        border-color: $primary;
+                    }
+                }
+            }
+        }
+        &-soft{
+            .nav{
+                &-link{
+                    font-weight: 500;
+                    &.active{
+                        background-color: mix($primary, $white, 15%);
+                        color: $primary;
+                    }
+                }
+            }
+        }
+        .nav-link{
+            border: $nav-tabs-border-width solid transparent;
+            line-height: $nk-nav-link-line-height;
+        }
+    }
+}

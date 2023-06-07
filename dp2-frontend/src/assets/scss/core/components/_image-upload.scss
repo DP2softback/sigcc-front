@@ -1,0 +1,8 @@
+.image-upload{
+    &-wrap{
+        background: $field-bg;
+        border: 1px solid $image-uploda-border-color;
+        border-radius: $image-uploda-border-radius;
+        padding: $image-uploda-gap;
+    }
+}

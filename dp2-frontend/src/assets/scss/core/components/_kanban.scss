@@ -1,0 +1,185 @@
+.kanban{
+    &-container {
+      * {
+        box-sizing: border-box;
+      }
+      position: relative;
+      box-sizing: border-box;
+      width: 100% !important;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    &-board {
+      position: relative;
+      background: $kanban-board-bg;
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      border-radius: $kanban-board-border-radius;
+      margin-bottom: 1.25rem;
+      margin-right: 1.25rem;
+      width: 250px;
+      header {
+        padding: $kanban-board-header-gap-y $kanban-board-header-gap-x;
+        border-bottom: 2px solid transparent;
+        .kanban-title-content {
+          display: flex;
+          align-items: center;
+          .title{
+            font-weight: 600;
+            margin: $kanban-board-header-title-margin;
+            color: $kanban-board-header-title-color;
+            font-size: $kanban-board-header-font-size;
+            line-height: 1.875rem;
+          }
+          .count{
+            border: 1px solid $kanban-board-border-color;
+            display: inline-block;
+            border-radius: $kanban-board-border-radius;
+            padding: $kanban-board-header-count-gap-y $kanban-board-header-count-gap-x;
+            font-size: $kanban-board-header-count-font-size;
+            font-weight: 600;
+            line-height: 1;
+            display: none;
+          }
+        }
+        .kanban-title-button {
+          float: right;
+        }
+      }
+      .kanban-drag {
+        padding: $kanban-board-drag-gap-y $kanban-board-drag-gap-x;
+      }
+    }
+    &-item {
+      background: $kanban-board-item-bg;
+      padding: $kanban-board-item-gap-y $kanban-board-item-gap-x;
+      margin-bottom: 20px;
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      font-size: $kanban-board-item-font-size;
+      border-radius: $kanban-board-border-radius;
+      box-shadow: $kanban-board-item-box-shadow;
+      &:hover {
+        cursor: move;
+      }
+      &:last-child {
+        margin: 0;
+      }
+      &-title {
+        .title{
+          font-weight: 600;
+          margin-bottom: $kanban-item-title-margin;
+          font-size: $kanban-item-title-font-size;
+        }
+      }
+    }
+}
+//kanban-custom-board
+.kanban-custom-board{
+  background-color: $white;
+  border-radius: $kanban-board-border-radius;
+  border: 1px solid $border-light;
+  overflow: auto;
+  width: 1290px !important;
+  flex-wrap: inherit;
+  .kanban{
+    &-item{
+      &-wrap {
+        flex: 1;
+        width: 250px;
+        &:not(:last-child){
+          border-right: 1px solid $border-light;
+        }
+      }
+      //box-shadow: $kanban-board-item-box-shadow-md;
+      border: 1px solid $border-light;
+    }
+    &-board{
+      background-color: transparent;
+      margin-right: 0;
+      margin-bottom: 0;
+      border-radius: 0;
+      width: 100%;
+      header{
+        padding-top: 0.375rem;
+        padding-bottom: 0.375rem;
+      }
+      .kanban-title-content .count{
+        display: inline-block;
+      }
+    }
+    &-light{
+      header{
+        border-color: $kanban-board-header-light;
+      }
+    }
+    &-primary{
+      header {
+        border-color: $kanban-board-header-primary;
+      }
+    }
+    &-warning{
+      header {
+        border-color: $kanban-board-header-warning;
+      }
+    }
+    &-success{
+      header {
+        border-color: $kanban-board-header-success;
+      }
+    }
+    &-danger{
+      header {
+        border-color: $kanban-board-header-danger;
+      }
+    }
+  }
+}
+//kanban-colored
+.kanban-colored {
+  .kanban {
+    &-board{
+      header{
+        border-top-left-radius: $kanban-board-border-radius;
+        border-top-right-radius: $kanban-board-border-radius;
+        .title{
+          color: $white;
+        }
+      }
+    }
+    &-primary{
+        header {
+          background-color: $kanban-board-header-primary;
+        }
+        .kanban-item{
+          box-shadow: none;
+          border: 1px solid transparent;
+          background-color: rgba($kanban-board-header-primary, 0.1);
+          color: $kanban-board-header-primary;
+          border-color: rgba($kanban-board-header-primary, 0.3);
+        }
+    }
+    &-warning{
+        header {
+          background-color: $kanban-board-header-warning;
+        }
+        .kanban-item{
+          box-shadow: none;
+          border: 1px solid transparent;
+          background-color: rgba($kanban-board-header-warning, 0.1);
+          color: $kanban-board-header-warning;
+          border-color: rgba($kanban-board-header-warning, 0.3);
+        }
+    }
+    &-success{
+        header{
+          background-color: $kanban-board-header-success;
+        }
+        .kanban-item{
+          box-shadow: none;
+          border: 1px solid transparent;
+          background-color: rgba($kanban-board-header-success, 0.1);
+          color: $kanban-board-header-success;
+          border-color: rgba($kanban-board-header-success, 0.3);
+        }
+    }
+  }
+}

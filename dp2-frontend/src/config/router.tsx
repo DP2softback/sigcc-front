@@ -21,6 +21,10 @@ const M1LearningPathDetails = Loader(
   lazy(() => import("@features/Modulo1/pages/LearningPath/Details"))
 );
 
+const M1LearningPathAssignment = Loader(
+  lazy(() => import("@features/Modulo1/pages/LearningPath/Assignment"))
+);
+
 const M1AddCourse = Loader(
   lazy(() => import("@features/Modulo1/pages/Course/AddCourse"))
 );
@@ -37,8 +41,24 @@ const M1TrainingDetails = Loader(
   lazy(() => import("@features/Modulo1/pages/Training/Details"))
 );
 
+const M1TrainingAttendance = Loader(
+  lazy(() => import("@features/Modulo1/pages/Training/Attendance"))
+);
+
 const M1TrainingAssignment = Loader(
   lazy(() => import("@features/Modulo1/pages/Training/Assignment"))
+);
+
+const M1ListLearningPathE = Loader(
+  lazy(() => import("@features/Modulo1/pages/EmployeeView/LearningPath"))
+);
+
+const M1ListTrainingE = Loader(
+  lazy(() => import("@features/Modulo1/pages/EmployeeView/Training"))
+);
+
+const M1TrainingEDetails = Loader(
+  lazy(() => import("@features/Modulo1/pages/EmployeeView/Training/Details"))
 );
 
 const ConfigSelectionProcess = Loader(
@@ -47,6 +67,10 @@ const ConfigSelectionProcess = Loader(
 
 const ConfigOfertaLaboral = Loader(
   lazy(() => import("@features/Modulo4/pages/ConfigOfertaLaboral"))
+);
+
+const ConfigProcesoSeleccion = Loader(
+  lazy(() => import("@features/Modulo4/pages/ConfigProcesoSeleccion"))
 );
 
 const EvaluacionContinuaIndex = Loader(
@@ -86,7 +110,12 @@ const GestionDeCompetencias = Loader(
 );
 
 const JobOpportunitiesRelatedToSkills = Loader(
-  lazy(() => import("@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/index"))
+  lazy(
+    () =>
+      import(
+        "@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/index"
+      )
+  )
 );
 
 const EvaluationTemplateIndex = Loader(
@@ -124,11 +153,22 @@ const VisualizacionBrechasEmpleado = Loader(
   )
 );
 
-const DetalleCompetenciasArea = Loader(
+const ConfigPosition = Loader(
   lazy(
     () =>
-      import("@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/DetalleCompetenciasArea")
+      import("@features/Modulo4/pages/JobPositions/ConfigPosition")
   )
+);
+
+const CreateJobOffer = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo4/pages/JobPositions/CreateJobOffer")
+  )
+);
+
+const JobOpportunitiesSelected = Loader(
+  lazy(() => import("@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/JobOpportunitySelected"))
 );
 
 const EstadisticasCompetencias = Loader(
@@ -137,6 +177,14 @@ const EstadisticasCompetencias = Loader(
       import("@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/ConsolidadoCompetencias")
   )
 );
+
+const DetalleCompetenciasArea = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/DetalleCompetenciasArea")
+  )
+);
+
 
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
@@ -163,6 +211,10 @@ const routes: RouteObject[] = [
             path: "detalle/:learningPathId",
             element: <M1LearningPathDetails />,
           },
+          {
+            path: "asignacion/:learningPathId",
+            element: <M1LearningPathAssignment />,
+          },
         ],
       },
       {
@@ -187,13 +239,62 @@ const routes: RouteObject[] = [
           },
           {
             path: "detalle/:trainingID",
-            element: <M1TrainingDetails />,
+            children: [
+              {
+                path: "",
+                element: <M1TrainingDetails />,
+              },
+              {
+                path: "asistencia/:sessionID",
+                element: <M1TrainingAttendance />,
+              },
+            ],
           },
           {
             path: "asignacion/:trainingID",
             element: <M1TrainingAssignment />,
           },
         ],
+      },
+      {
+        path: "empleado",
+        children: [
+          {
+            path: "",
+            element: <M1ListLearningPathE />,
+          },
+          {
+            path: "rutadeaprendizaje",
+            element: <M1ListLearningPathE />,
+          },
+          {
+            path: "cursoempresa",
+            children: [
+              {
+                path: "",
+                element: <M1ListTrainingE />,
+              },
+              {
+                path: "sessions/:trainingID",
+                element: <M1TrainingEDetails />,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+
+  {
+    path: "modulo4",
+    children: [
+      {
+        path: "configurar-oferta-laboral",
+        element: <ConfigOfertaLaboral />,
+      },
+      {
+        path: "configurar-proceso-seleccion",
+        element: <ConfigProcesoSeleccion />,
       },
     ],
   },
@@ -278,9 +379,35 @@ const routes: RouteObject[] = [
           {
             path: "performance-evaluation",
             element: <ReporteEvaluacionDesempenho />,
+          },
+        ],
+      },
+      {
+        path: "selection-process",
+        children: [
+          {
+            path: "create",
+            element: <ConfigSelectionProcess />,
+          },
+          {
+            path: "portal-create-job",
+            element: <ConfigOfertaLaboral />
+          },
+          {
+            path: "test",
+            element: <CreateJobOffer />
+          },
+          {
+            path: "test2",
+            element: <ConfigPosition />
           }
         ],
       },
+    ],
+  },
+  {
+    path: "modulo2-skill-management",
+    children: [
       {
         path: "employeesGaps",
         children: [
@@ -297,6 +424,10 @@ const routes: RouteObject[] = [
             path: "index",
             element: <JobOpportunitiesRelatedToSkills />,
           },
+          {
+            path: "selectedJob",
+            element: <JobOpportunitiesSelected/>,
+          },
         ],
       },
       {
@@ -308,26 +439,34 @@ const routes: RouteObject[] = [
           },
         ],
       },
+      
       {
-        path: "showStatsArea",
-        children: [
-          {
-            path: "index",
-            element: <DetalleCompetenciasArea></DetalleCompetenciasArea>,
-          },
-        ],
-      },
-      {
-        path: "showPieChart",
+        path: "showAreaStatistics",
         children: [
           {
             path: "index",
             element: <EstadisticasCompetencias></EstadisticasCompetencias>,
           },
+
+          {
+            path: "showStatsPerArea",
+            element: <DetalleCompetenciasArea></DetalleCompetenciasArea>,
+          },
+
+          {
+            path: "showEmployeeCompetencies",
+            element: <span>poner la pantalla de competencias de un empleado</span>,
+          },
+
+          {
+            path: "showEmployeeNecessities",
+            element: <span> poner la pantalla de necesidades de empleado por area</span>,
+          },
         ],
       },
-    ],
+    ]
   },
+  
 ];
 
 export default routes;
