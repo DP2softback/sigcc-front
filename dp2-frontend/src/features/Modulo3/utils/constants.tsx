@@ -8,6 +8,8 @@ export const REPORT_PERFORMANCE_EVALUATION = 'Reporte de Evaluaciones de Desempe
 
 export const DAYS_UNIT = 'días';
 
-export const BACKEND_URL = 'https://bgtxob5h4c.execute-api.us-east-1.amazonaws.com/dev-evaluations/api/v1/';
+export const BACKEND_URL = 'https://payd6uk5t9.execute-api.us-east-1.amazonaws.com/dev-eval/api/v1/';
 
-export const SAMPLE_TOKEN = '69c3e022d9fb5b65101ac32bd33aa4b0aca2cc40'
+export const SAMPLE_TOKEN = '90833f32c0b04ddb0754ddd74c864354baf1940d';
+
+export const USER_ID = 5;

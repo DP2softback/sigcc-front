@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
-import { CONTINUOS_EVALUATION_INDEX, CONTINUOS_EVALUATION_HISTORY } from '@config/paths';
+import { CONTINUOS_EVALUATION_INDEX, CONTINUOS_EVALUATION_HISTORY } from '@features/Modulo3/routes/path';
 import { navigateTo, formatDashboardJson, formatNumber } from '@features/Modulo3/utils/functions';
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
@@ -35,33 +35,32 @@ const Index = () => {
   }, []);
 
   const filters = (
-    <Form>
-      <Form.Group controlId="searchEmployees" className="ec-indexFilters">
-        <InputGroup>
-          <InputGroup.Text id="ec-indexSearch">
-            <Search />
-          </InputGroup.Text>
-          <Form.Control
-            placeholder="Buscar trabajador o puesto"
-            aria-describedby="ec-indexSearch"
-          />
-        </InputGroup>
-        <Form.Control
-          type="date"
-          placeholder="Fecha inicio"
-          className="ec-indexFilterElement"
-        />
-        <Form.Control
-          type="date"
-          placeholder="Fecha fin"
-          className="ec-indexFilterElement"
-        />
-        <Button variant="primary" className="ec-indexFilterElement">
-          Buscar
-        </Button>
-      </Form.Group>
-    </Form>
-  );
+		<Form.Group
+			controlId="searchEmployees"
+			className="d-flex"
+		>
+			<InputGroup className="flex-grow-1 me-2">
+				<InputGroup.Text id="ec-indexSearch">
+					<Search />
+				</InputGroup.Text>
+				<Form.Control
+					placeholder="Buscar trabajador o puesto"
+					aria-describedby="ec-indexSearch"
+				/>
+			</InputGroup>
+			<Form.Control
+				type="date"
+				placeholder="Fecha inicio"
+				className="me-2"
+			/>
+			<Form.Control
+				type="date"
+				placeholder="Fecha fin"
+				className="me-2"
+			/>
+			<Button variant="primary">Buscar</Button>
+		</Form.Group>
+	);
 
   const firstTwoEmployees = (
     <div className="ec-indexFirstTwoEmployees col-md-4">
@@ -72,7 +71,10 @@ const Index = () => {
               key={employee.id}
               className="mb-32px cursor-pointer"
               onClick={() => {
-                navigateTo(CONTINUOS_EVALUATION_HISTORY, { id: employee.id });
+                navigateTo(CONTINUOS_EVALUATION_HISTORY, {
+									id: employee.id,
+									name: employee.name
+								});
               }}>
               <Employee
                 id={employee.id}
@@ -99,7 +101,10 @@ const Index = () => {
           key={employee.id}
           className="col-md-4 mb-32px cursor-pointer"
           onClick={() => {
-            navigateTo(CONTINUOS_EVALUATION_HISTORY, { id: employee.id });
+            navigateTo(CONTINUOS_EVALUATION_HISTORY, {
+              id: employee.id,
+              name: employee.name
+            });
           }}>
           <Employee
             id={employee.id}
@@ -129,11 +134,11 @@ const Index = () => {
 
   const content =
     employees && employees.length > 0 ? (
-      <>
+      <div className='row mt-32'>
         {firstTwoEmployees}
         {chart}
         {restEmployees}
-      </>
+      </div>
     ) : (
       <NoDataFound/>
     );
