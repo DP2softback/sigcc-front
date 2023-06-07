@@ -4,7 +4,7 @@ import React,{useEffect, useState} from 'react';
 import { Form, Button, InputGroup, Accordion, OverlayTrigger, Tooltip, FormCheck, Dropdown  } from 'react-bootstrap';
 import cat from '@features/Modulo3/jsons/Categories';
 import "./Plantillas.css"
-import {EVALUATION_TEMPLATE_INDEX} from '@config/paths';
+import {EVALUATION_TEMPLATE_INDEX} from '@features/Modulo3/routes/path';
 import { navigateTo } from '@features/Modulo3/utils/functions.jsx';
 import ModalAddCategorie from '@features/Modulo3/components/Modals/ModalAddCategorie';
 import ImageUploader from '@features/Modulo3/components/Images/ImageUploader';

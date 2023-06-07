@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionDeDesempenho.css';
-import { PERFORMANCE_EVALUATION_INDEX, PERFORMANCE_EVALUATION_HISTORY } from '@config/paths';
+import { PERFORMANCE_EVALUATION_INDEX, PERFORMANCE_EVALUATION_HISTORY } from '@features/Modulo3/routes/path';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import { Search } from 'react-bootstrap-icons'
@@ -114,13 +114,13 @@ const Index = () => {
     </div>
   );
 
-  const content = employees &&
-    employees.length > 0 ? (
-      <>
+  const content =
+    employees && employees.length > 0 ? (
+      <div className='row mt-32'>
         {firstTwoEmployees}
         {chart}
         {restEmployees}
-      </>
+      </div>
     ) : (
       <NoDataFound/>
     );

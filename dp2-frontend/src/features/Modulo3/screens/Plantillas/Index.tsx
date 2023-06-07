@@ -7,7 +7,7 @@ import BasicCard from '@features/Modulo3/components/Cards/BasicCard/BasicCard';
 import Templates from '@features/Modulo3/jsons/Templates';
 import Template from '@features/Modulo3/components/Cards/Template/Template';
 import './Plantillas.css';
-import { EVALUATION_TEMPLATE_INDEX } from '@config/paths';
+import { EVALUATION_TEMPLATE_INDEX } from '@features/Modulo3/routes/path';
 
 const Index = () => {
 
