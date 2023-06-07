@@ -4,7 +4,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import BarChart1 from './Barchart1';
 import './Read.css'
-import { getCompetencesTypes, getEmployeeCompetences } from '@features/Modulo2/services/EmployeeGapsServices';
+import axiosEmployeeGaps from '@features/Modulo2/services/EmployeeGapsServices';
 
 const Read = () => {
 
@@ -16,17 +16,10 @@ const Read = () => {
     const [tiposCompetencia, setTiposCompetencia] = useState(null);
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [employeeCompetences, setEmployeeCompetences] = useState(null);
-    const [competenciasData, setCompetenciasData] = useState([
-        { competence__name: 'Programación en Java', competence__type__name: 'Técnico', levelCurrent: 2, levelRequired: 3, likeness: 66 },
-        { competence__name: 'Liderazgo', competence__type__name: 'Habilidades blandas', levelCurrent: 4, levelRequired: 4, likeness: 100 },
-        { competence__name: 'Programación modular', competence__type__name: 'Conocimiento', levelCurrent: 4, levelRequired: 5, likeness: 80 },
-        { competence__name: 'Uso de Microsoft Word', competence__type__name: 'Técnico', levelCurrent: 2, levelRequired: 5, likeness: 40 },
-        { competence__name: 'Innovación', competence__type__name: 'Habilidades blandas', levelCurrent: 3, levelRequired: 4, likeness: 75 },
-        { competence__name: 'Gestión del Tiempo', competence__type__name: 'Conocimiento', levelCurrent: 1, levelRequired: 4, likeness: 25 }
-    ]);
 
     React.useEffect(() => {
-        getCompetencesTypes()
+        axiosEmployeeGaps
+        .get("gaps/competenceTypes")
         .then(function (response){
             let temp = {
                 id: -1,
@@ -39,53 +32,26 @@ const Read = () => {
             let tipoCom = [];
             tipoCom.push(temp);
             tipoCom.push(temp2);
-            response.forEach(res => tipoCom.push(res));
+            response.data.forEach(res => tipoCom.push(res));
             setTipoCompetenciaString(temp.name);
+            setTipoCompetenciaSelected(temp);
             setTiposCompetencia(tipoCom);
             const obj = {
                 idCompetencia: 0,
                 palabraClave: "",
                 idTipoCompetencia: 0,
                 activo: 1,
-                idEmpleado: 3
+                idEmpleado: 2 // Cambiar idEmpleado logeado
             }
-            getEmployeeCompetences(obj)
+            axiosEmployeeGaps
+            .post("gaps/competenceSearch", obj)
             .then(function (response){
-                setEmployeeCompetences(response);
+                setEmployeeCompetences(response.data);
             })
             .catch(function(error){
                 console.log(error);
             })
         })
-        // let temp = {
-        //     id: -1,
-        //     name: "Tipos de competencia"
-        // }
-        // let temp2 = {
-        //     id: 0,
-        //     name: "Todas"
-        // }
-        // let temp3 = {
-        //     id: 1,
-        //     name: "Técnico"
-        // }
-        // let temp4 = {
-        //     id: 1,
-        //     name: "Habilidades blandas"
-        // }
-        // let temp5 = {
-        //     id: 1,
-        //     name: "Conocimiento"
-        // }
-        // let tipoCom = [];
-        // tipoCom.push(temp);
-        // tipoCom.push(temp2);
-        // tipoCom.push(temp3);
-        // tipoCom.push(temp4);
-        // tipoCom.push(temp5);
-        // setTipoCompetenciaString(temp.name);
-        // setTiposCompetencia(tipoCom);
-        // setEmployeeCompetences(competenciasData);
     }, []);
 
     //para el grafico
@@ -124,34 +90,22 @@ const Read = () => {
 
     const handleTipoCompetencias = (string) => {
         setTipoCompetenciaString(string);
-        setTipoCompetenciaSelected(tiposCompetencia.filter(competencia => competencia.name === string));
+        setTipoCompetenciaSelected(tiposCompetencia.filter(competencia => competencia.name === string)[0]);
     }
 
     const handleSearch = () => {
         const obj = {
             idCompetencia: 0,
             palabraClave: palabrasClave,
-            idTipoCompetencia: tipoCompetenciaSelected[0].id,
+            idTipoCompetencia: tipoCompetenciaSelected.id,
             activo: 1,
-            idEmpleado: 3
+            idEmpleado: 2 // Cambiar idEmpleado logeado
         }
-        getEmployeeCompetences(obj)
+        axiosEmployeeGaps
+        .post("gaps/competenceSearch", obj)
         .then(function (response){
-            setEmployeeCompetences(response);
+            setEmployeeCompetences(response.data);
         })
-        // let competenciasFiltradas = competenciasData;
-        // if (tipoCompetenciaString && tipoCompetenciaString !== "Tipos de competencia" && tipoCompetenciaString !== "Todas") {
-        //     competenciasFiltradas = competenciasFiltradas.filter(competencia => competencia.competence__type__name === tipoCompetenciaString);
-        // }
-        // if (palabrasClave) {
-        //     const palabrasClaveLower = palabrasClave.toLowerCase();
-        //     competenciasFiltradas = competenciasFiltradas.filter(competencia =>
-        //         competencia.competence__name.toLowerCase().includes(palabrasClaveLower) ||
-        //         returnLevel(competencia.levelCurrent).toLowerCase().includes(palabrasClaveLower) ||
-        //         returnLevel(competencia.levelRequired).toLowerCase().includes(palabrasClaveLower)
-        //     );
-        // }
-        // setEmployeeCompetences(competenciasFiltradas);
     }
 
     const returnLevel = (number) => {
@@ -251,6 +205,11 @@ const Read = () => {
                             </tbody>
                         </Table>
                     }
+                    </div>
+                    <div className="d-flex justify-content-end">
+                        <Button>
+                            Ver necesidades de capaticación
+                        </Button>
                     </div>
                 </div>
                 <div className='col-md-6'>
