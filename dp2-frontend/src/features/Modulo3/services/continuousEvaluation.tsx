@@ -65,3 +65,17 @@ export const getEmployeeEvaluationDashboard = async (employeeId) => {
   }
   return await ajax(optionsRequest);
 }
+
+export const saveEvaluation = async (evaluation) => {
+  evaluation.evaluationType = CONTINUOS_EVALUATION_TYPE;
+  evaluation.isFinished = 1;
+  const optionsRequest = {
+    method: 'POST',
+    url: BACKEND_URL + 'eval',
+    headers:{
+      Authorization: `Token ${SAMPLE_TOKEN}`
+    },
+    data: evaluation
+  }
+  return await ajax(optionsRequest);
+}

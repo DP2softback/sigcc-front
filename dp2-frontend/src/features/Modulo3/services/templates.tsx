@@ -17,6 +17,22 @@ export const getCategories = async() =>{
         return await ajax(optionsRequest);
 }
 
+export const getPlantillas = async() =>{
+  const optionsRequest = {
+      method: 'POST',
+      url: BACKEND_URL + 'PlantillasPorGrupo',
+      headers:{
+          Authorization: `Token ${SAMPLE_TOKEN}`
+        },
+      data: 
+        {
+          
+      }
+        
+      }
+      return await ajax(optionsRequest);
+}
+
 export const getPlantilla = async(idPlantilla,type) =>{
     const optionsRequest = {
         method: 'POST',

@@ -1,6 +1,5 @@
 import './Content.css';
-import Sidebar from '@components/Sidebar';
-import sidebarItems from '@utils/sidebarItems';
+import Layout from "@layout/default/index";
 
 type LayoutProps = {
   title: string,
@@ -9,7 +8,7 @@ type LayoutProps = {
   subtitle?: string
 }
 
-const Layout = ({title, body, subtitle, route=''} : LayoutProps) => {
+const Content = ({title, body, subtitle, route=''} : LayoutProps) => {
   const header = (
     <div className='header'>
       <div className='screenTitle'>{title}</div>
@@ -18,14 +17,11 @@ const Layout = ({title, body, subtitle, route=''} : LayoutProps) => {
   )
 
   return (
-    <Sidebar items={sidebarItems} active={route}>
-      <div className='content'>
-        {header}
-        {body}
-      </div>
-    </Sidebar>
-
+    <Layout>
+      {header}
+      {body}
+    </Layout>
   );
 };
 
-export default Layout;
+export default Content;

@@ -2,7 +2,7 @@ import {  Table } from 'react-bootstrap';
 import { formatDate, navigateTo } from '@features/Modulo3/utils/functions';
 import './TableHistoryContinua.css';
 import { ArrowRightCircleFill } from 'react-bootstrap-icons';
-import { CONTINUOS_EVALUATION_DETAIL } from '@config/paths';
+import { CONTINUOS_EVALUATION_DETAIL } from '@features/Modulo3/routes/path';
 
 export default function TableHistoryContinua({ rows, isReadOnly = false }) {
   function getBackgroundColor(categoryIndex: number) {
@@ -22,7 +22,7 @@ export default function TableHistoryContinua({ rows, isReadOnly = false }) {
           <th>Categoría</th>
           <th className='text-center'>Calificación</th>
           <th className='text-center'>Fecha de registro</th>
-          <th>Detalle</th>
+          <th className='text-center'>Detalle</th>
         </tr>
       </thead>
       <tbody>
