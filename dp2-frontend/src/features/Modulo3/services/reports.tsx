@@ -190,16 +190,16 @@ export const postReportLineChart = async (areaid, categoriaid, dateFechaInicio, 
     "category-id": areaid,
     "area-id": categoriaid,
     "evaluationType": evaluationType,
-    "fecha_inicio": dateFechaInicio,
-    "fecha_fin": dateFechaFin
+    // "fecha_inicio": dateFechaInicio,
+    // "fecha_fin": dateFechaFin
   }
   
   try {
-    const response = await axios.post(`${BACKEND_URL}reporte`,
+    const response = await axios.post(`${BACKEND_URL}LineChartEvaluacionesReporte`,
       body,
       {
         headers:{
-          Authorization: `Token ${SAMPLE_TOKEN}`,
+          "Authorization": `Token ${SAMPLE_TOKEN}`,
           "Content-Type": 'application/json'
         }
       }

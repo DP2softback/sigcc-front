@@ -255,15 +255,15 @@ const IndexEvaluacionContinua = () => {
       const fetchData = async () => {
         setIsLoading(true);
         const data = await postReportLineChart(searchParams.area.id, searchParams.categoria.id, searchParams.fechaInicio, searchParams.fechaFin, searchParams.evaluationType);
-        // if(data){
-        //   setDashboard(formatDashboardJson(data));
-        //   console.log("Data: ", data);
-        //   console.log("Dashboard: ", dashboard);
-        // }
-        // else{
-        //   console.log("Error C: ", data);
-        //   console.log("Params: ", searchParams);
-        // }
+        if(data){
+          setDashboard(formatDashboardJson(data));
+          console.log("Data: ", data);
+          console.log("Dashboard: ", dashboard);
+        }
+        else{
+          console.log("Error C: ", data);
+          console.log("Params: ", searchParams);
+        }
         console.log("Data del POST: ", data);
         setIsLoading(false);
       };
