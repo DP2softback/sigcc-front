@@ -176,7 +176,6 @@ function ConfigOfertaLaboral(props: any) {
 	};
 
 	return (
-		<Sidebar items={sidebarItems} active="/modulo1/configurar-oferta-laboral">
 			<div
 				style={{
 					paddingLeft: "2rem",
@@ -453,7 +452,6 @@ function ConfigOfertaLaboral(props: any) {
 					</Form>
 				</div>
 			</div>
-		</Sidebar>
 	);
 }
 
