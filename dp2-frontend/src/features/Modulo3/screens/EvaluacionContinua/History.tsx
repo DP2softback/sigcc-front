@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
 import { CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
-import { formatDashboardJson, navigateBack } from '@features/Modulo3/utils/functions';
+import { formatDashboardJson, navigateBack, navigateTo } from '@features/Modulo3/utils/functions';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons'
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
@@ -89,7 +89,7 @@ const History = () => {
         <Button
           variant='outline-primary me-2'
           onClick={() => {
-            navigateBack();
+            navigateTo(CONTINUOS_EVALUATION_INDEX);
           }}
         >
           Volver

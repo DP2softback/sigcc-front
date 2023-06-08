@@ -1,5 +1,5 @@
 import { ajax } from '../tools/ajax';
-import { BACKEND_URL, SAMPLE_TOKEN } from '../utils/constants';
+import { BACKEND_URL, TOKEN } from '../utils/constants';
 import { sortEvaluationsByDate, sortEvaluationsByTimeSinceLastEvaluation } from '../utils/functions';
 
 export const getEmployeesShared = async (bossId: number, evaluationType : string, fechaInicio? : Date, fechaFin? : Date) => {  
@@ -7,7 +7,7 @@ export const getEmployeesShared = async (bossId: number, evaluationType : string
     method: 'POST',
     url: BACKEND_URL + 'employees',
     headers:{
-      Authorization: `Token ${SAMPLE_TOKEN}`
+      Authorization: `Token ${TOKEN}`
     },
     data: {
       id: bossId,
@@ -24,7 +24,7 @@ export const getEvaluationsHistoryShared = async (employeeId: number, evaluation
     method: 'POST',
     url: BACKEND_URL + 'evaluations',
     headers:{
-      Authorization: `Token ${SAMPLE_TOKEN}`
+      Authorization: `Token ${TOKEN}`
     },
     data: {
       employee_id: employeeId,
@@ -42,7 +42,7 @@ export const getEmployeesEvaluationDashboardShared = async (bossId: number, eval
     method: 'POST',
     url: BACKEND_URL + 'LineChartEvaluaciones',
     headers:{
-      Authorization: `Token ${SAMPLE_TOKEN}`
+      Authorization: `Token ${TOKEN}`
     },
     data: {
       id: bossId,
@@ -57,7 +57,7 @@ export const getEmployeeEvaluationDashboardShared = async (employeeId: number, e
     method: 'POST',
     url: BACKEND_URL + 'LineChartEvaluacionesPersona',
     headers:{
-      Authorization: `Token ${SAMPLE_TOKEN}`
+      Authorization: `Token ${TOKEN}`
     },
     data: {
       id: employeeId,

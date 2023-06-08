@@ -82,8 +82,8 @@ const Index = () => {
                 photoURL={examplePhoto}
                 position={employee.position.name}
                 code={formatNumber(employee.id)}
-                lastEvaluation={employee.time_since_last_evaluation ? employee.time_since_last_evaluation : 'No realizada'}
-                lastEvaluationUnit={employee.time_since_last_evaluation ? DAYS_UNIT : ''}
+                lastEvaluation={employee.time_since_last_evaluation != null ? employee.time_since_last_evaluation : 'No realizada'}
+                lastEvaluationUnit={employee.time_since_last_evaluation != null ? DAYS_UNIT : ''}
                 area={employee.area.name}
                 email={employee.email}
               />
@@ -112,8 +112,8 @@ const Index = () => {
             photoURL={examplePhoto}
             position={employee.position.name}
             code={formatNumber(employee.id)}
-            lastEvaluation={employee.time_since_last_evaluation ? employee.time_since_last_evaluation : 'No realizada'}
-            lastEvaluationUnit={employee.time_since_last_evaluation ? DAYS_UNIT : ''}
+            lastEvaluation={employee.time_since_last_evaluation != null ? employee.time_since_last_evaluation : 'No realizada'}
+            lastEvaluationUnit={employee.time_since_last_evaluation != null ? DAYS_UNIT : ''}
             area={employee.area.name}
             email={employee.email}
           />

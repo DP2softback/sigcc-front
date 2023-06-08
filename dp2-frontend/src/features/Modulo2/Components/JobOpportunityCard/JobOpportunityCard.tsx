@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import './JobOpportunityCard.css'
 
 const JobOpportunityCard = (props) => {
-    const {jobOpportunity} = props;
+    const {jobOpportunity, numBot, hhrr} = props;
     return (
         <div className='container card-job-opp'>
             <div className='row'>
@@ -32,17 +32,19 @@ const JobOpportunityCard = (props) => {
                     )
                 })}
             </div>
+
+
+            
             <div className='row row-cols-auto d-flex justify-content-between'>
                 <div className='col'>
-                    <Button className='btn btn-sm btn-job-opp'>Detalle del puesto</Button>
+                    {numBot === 3 && <Button className='btn btn-sm btn-job-opp'>Detalle del puesto</Button>}
                 </div>
                 <div className='col'>
-                    <Button className='btn btn-sm btn-job-opp btn-acept'>Aceptar postulación</Button>
-                    <Button className='btn btn-sm btn-job-opp'>Declinar postulación</Button>
+                    {numBot === 3 && <Button className='btn btn-sm btn-job-opp btn-acept'>Aceptar postulación</Button>}
+                    <Button className='btn btn-sm btn-job-opp'>{hhrr ? 'Ver posibles candidatos' : 'Declinar postulación'}</Button>
                 </div>
-                
             </div>
-            
+                        
         </div>
   )
 }

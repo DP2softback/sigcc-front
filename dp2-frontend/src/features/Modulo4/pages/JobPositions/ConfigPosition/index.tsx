@@ -25,16 +25,13 @@ const ConfigPosition = () => {
 		defaultValues: emailDefaults
 	});
 
-	console.log(emailDefaults);
-
 	const onSubmit = (data: any) => {
 		// Handle form submission\
 		console.log(data);
 	};
 
 	return (
-		<Layout title="Grupo 4 App" content="container">
-			<PageContainer title="Create Job Position">
+		<>
 				<EnhancedHeaderTitle pageTitle="Crear posición">
 					Configuración para la creación de una posición o puesto laboral
 				</EnhancedHeaderTitle>
@@ -50,23 +47,8 @@ const ConfigPosition = () => {
 							<Button className="w-100" style={{marginTop: '1rem'}}>Buscar</Button>
 						</Col>
 					</Form.Group>
-					{/* <Form noValidate onSubmit={handleSubmit(onSubmit)}>
-						<Form.Group as={Col}>
-								<Form.Label column>Correo electronico</Form.Label>
-							<Col>
-								<CustomFormField
-									name="email"
-									placeholder=""
-									control={control}
-									rules={testSchema.shape.email}
-								/>
-							</Col>
-						</Form.Group>
-						<Button type="submit" style={{marginTop: '2rem'}}>Guardar</Button>
-					</Form> */}
 				</main>
-			</PageContainer>
-		</Layout>
+		</>
 	);
 };
 
