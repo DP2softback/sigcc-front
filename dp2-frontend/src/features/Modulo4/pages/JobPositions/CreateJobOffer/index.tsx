@@ -6,8 +6,8 @@ import { CreateJobOfferProvider } from "@features/Modulo4/contexts/CreateJobOfff
 const CreateJobOffer = () => {
 	return (
 		<>
-			<EnhancedHeaderTitle pageTitle="Crear posición">
-				Configuración para la creación de una posición o puesto laboral
+			<EnhancedHeaderTitle pageTitle="Registro en oferta laboral">
+				A continuacion, ingresa tus datos para crearte un perfil en nuestro sistema
 			</EnhancedHeaderTitle>
 			<main>
 				<CreateJobOfferProvider>
