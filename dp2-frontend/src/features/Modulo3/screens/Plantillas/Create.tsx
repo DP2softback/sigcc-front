@@ -42,14 +42,15 @@ const Create = () => {
   const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
-    (async () => {
-      const response = await getCategoriesSubs();
-      if(response) setCategorias(response);
-      console.log("a",response)
-      setIsLoading(false);
-    })();
-  }, []);
+      setIsLoading(true);
+      (async () => {
+        console.log("selecteda",selectedOption)
+          const response = await getCategoriesSubs(selectedOption);
+          if(response) setCategorias(response);
+        console.log("cat",categorias)
+        setIsLoading(false);
+      })();
+  }, [selectedOption]);
 
   const handleGuardar = () => {
     const aux = {
@@ -156,333 +157,335 @@ const Create = () => {
         <ImageUploader onImageSelect={handleImageChange} />
       </Form.Group>     
     </Form>
-);
+  );
 
-//Idea1
-// const handleRadioChange = (categoryName: string, index: number) => {
-//   let nuevo = {
-//     categoriaNombre: categoryName,
-//     subcategory: []
-//   };
+  //Idea1
+  // const handleRadioChange = (categoryName: string, index: number) => {
+  //   let nuevo = {
+  //     categoriaNombre: categoryName,
+  //     subcategory: []
+  //   };
 
-//   let lista = data ? [...data.categorias] : [];
+  //   let lista = data ? [...data.categorias] : [];
 
-//   if (selectedOption === 'Evaluación continua') {
-//     // Si se selecciona una categoría en Evaluación continua,
-//     // se deseleccionan las demás categorías
-//     lista = lista.map(cat => ({
-//       ...cat,
-//       subcategory: []
-//     }));
-//   }
+  //   if (selectedOption === 'Evaluación continua') {
+  //     // Si se selecciona una categoría en Evaluación continua,
+  //     // se deseleccionan las demás categorías
+  //     lista = lista.map(cat => ({
+  //       ...cat,
+  //       subcategory: []
+  //     }));
+  //   }
 
-//   const existingCategoryIndex = lista.findIndex(cat => cat.categoriaNombre === categoryName);
+  //   const existingCategoryIndex = lista.findIndex(cat => cat.categoriaNombre === categoryName);
 
-//   if (existingCategoryIndex !== -1) {
-//     // Si la categoría ya está seleccionada, se remueve
-//     lista.splice(existingCategoryIndex, 1);
-//   } else {
-//     // Si la categoría no está seleccionada, se agrega
-//     lista.push(nuevo);
-//   }
+  //   if (existingCategoryIndex !== -1) {
+  //     // Si la categoría ya está seleccionada, se remueve
+  //     lista.splice(existingCategoryIndex, 1);
+  //   } else {
+  //     // Si la categoría no está seleccionada, se agrega
+  //     lista.push(nuevo);
+  //   }
 
-//   setData({
-//     ...data,
-//     categorias: lista
-//   });
+  //   setData({
+  //     ...data,
+  //     categorias: lista
+  //   });
 
-//   console.log("dataC",data)
-// };
+  //   console.log("dataC",data)
+  // };
 
-//Funcionamiento para EvaDesem
-// const handleRadioChange = (categoryName: string,index: number) => {
-//   console.log("index",index)
-//   let nuevo={
-//     categoriaNombre: categoryName,
-//     subcategory:[]
-//   }
-//   let lista
-//   if(data==null) lista=[]  
-//   else lista=data.categorias;
-  
-//   // if(data.categorias && data.categorias.find(cat => categoryName==cat.categoriaNombre)) 
-//   //   lista=lista.filter(cat => cat.categoriaNombre!=categoryName)
-//   // else lista.push(nuevo)
-//   if (data && data.categorias && data.categorias.find(cat => categoryName === cat.categoriaNombre)) {
-//     lista = lista.filter(cat => cat.categoriaNombre !== categoryName);
-//   } else {
-//     lista.push(nuevo);
-//   }
-  
-//   console.log("lista",lista)
-//   setData({
-//     ...data,
-//     categorias: lista,
-//   })
-//   console.log("data",data)
-// }
+  //Funcionamiento para EvaDesem
+  // const handleRadioChange = (categoryName: string,index: number) => {
+  //   console.log("index",index)
+  //   let nuevo={
+  //     categoriaNombre: categoryName,
+  //     subcategory:[]
+  //   }
+  //   let lista
+  //   if(data==null) lista=[]  
+  //   else lista=data.categorias;
+    
+  //   // if(data.categorias && data.categorias.find(cat => categoryName==cat.categoriaNombre)) 
+  //   //   lista=lista.filter(cat => cat.categoriaNombre!=categoryName)
+  //   // else lista.push(nuevo)
+  //   if (data && data.categorias && data.categorias.find(cat => categoryName === cat.categoriaNombre)) {
+  //     lista = lista.filter(cat => cat.categoriaNombre !== categoryName);
+  //   } else {
+  //     lista.push(nuevo);
+  //   }
+    
+  //   console.log("lista",lista)
+  //   setData({
+  //     ...data,
+  //     categorias: lista,
+  //   })
+  //   console.log("data",data)
+  // }
 
-//EvaCont
-// const handleRadioChange = (categoryName: string) => {
-//   setData({
-//     ...data,
-//     categoriaNombre: categoryName,
-//     subcategory: [],
-//   })
-// }
+  //EvaCont
+  // const handleRadioChange = (categoryName: string) => {
+  //   setData({
+  //     ...data,
+  //     categoriaNombre: categoryName,
+  //     subcategory: [],
+  //   })
+  // }
 
-//Real
-const handleRadioChange = (categoryName: string,index: number) => {
-  
-  if(selectedOption=='Evaluación continua'){
-    let nuevo=[{categoriaNombre: categoryName, subcategory:[]}]
-    setData({
-      categorias: nuevo,
-    })
-  }else{
-    let nuevo={categoriaNombre: categoryName, subcategory:[]}
-    //guardo las categorias ya seleccionadas
-    let lista = data ? [...data.categorias] : [];
-    //verifico si la cat para eliminarla o pusherla
-    if (data && data.categorias && data.categorias.find(cat => categoryName === cat.categoriaNombre)) {
-      lista = lista.filter(cat => cat.categoriaNombre !== categoryName);
-    } else {
-      lista.push(nuevo);
+  //Real
+  const handleRadioChange = (categoryName: string,index: number) => {
+    
+    if(selectedOption==CONTINUOS_EVALUATION_TYPE){
+      let nuevo=[{categoriaNombre: categoryName, subcategory:[]}]
+      setData({
+        categorias: nuevo,
+      })
+    }else{
+      let nuevo={categoriaNombre: categoryName, subcategory:[]}
+      //guardo las categorias ya seleccionadas
+      let lista = data ? [...data.categorias] : [];
+      //verifico si la cat para eliminarla o pusherla
+      if (data && data.categorias && data.categorias.find(cat => categoryName === cat.categoriaNombre)) {
+        lista = lista.filter(cat => cat.categoriaNombre !== categoryName);
+      } else {
+        lista.push(nuevo);
+      }
+      setData({
+        ...data,
+        categorias: lista,
+      })
     }
-    setData({
-      ...data,
-      categorias: lista,
-    })
+    console.log("dataC",data)
   }
-  console.log("dataC",data)
-}
 
-//Idea2
-// const handleSubcategoryRadioChange = (e: any, subcategoria: string, catIndex: number, subId: string) => {
-//   const lista = data?.categorias[catIndex]?.subcategory || [];
-//   const nuevo = { id: subId, name: subcategoria };
+  //Idea2
+  // const handleSubcategoryRadioChange = (e: any, subcategoria: string, catIndex: number, subId: string) => {
+  //   const lista = data?.categorias[catIndex]?.subcategory || [];
+  //   const nuevo = { id: subId, name: subcategoria };
 
-//   if (selectedOption === 'Evaluación continua') {
-//     // Si se está en Evaluación continua, solo se permite seleccionar una subcategoría por categoría
-//     const selectedSubcategories = lista.filter(sub => sub.name === subcategoria);
+  //   if (selectedOption === 'Evaluación continua') {
+  //     // Si se está en Evaluación continua, solo se permite seleccionar una subcategoría por categoría
+  //     const selectedSubcategories = lista.filter(sub => sub.name === subcategoria);
 
-//     if (selectedSubcategories.length > 0) {
-//       // Si la subcategoría ya está seleccionada, se deselecciona
-//       const updatedList = lista.filter(sub => sub.name !== subcategoria);
-//       const updatedCategories = data.categorias.map((cat, index) => ({
-//         ...cat,
-//         subcategory: catIndex === index ? updatedList : cat.subcategory
-//       }));
+  //     if (selectedSubcategories.length > 0) {
+  //       // Si la subcategoría ya está seleccionada, se deselecciona
+  //       const updatedList = lista.filter(sub => sub.name !== subcategoria);
+  //       const updatedCategories = data.categorias.map((cat, index) => ({
+  //         ...cat,
+  //         subcategory: catIndex === index ? updatedList : cat.subcategory
+  //       }));
 
-//       setData({
-//         ...data,
-//         categorias: updatedCategories
-//       });
-//       return;
-//     }
-//   }
+  //       setData({
+  //         ...data,
+  //         categorias: updatedCategories
+  //       });
+  //       return;
+  //     }
+  //   }
 
-//   // Si no se cumple la regla de Evaluación continua o la subcategoría no estaba seleccionada, se agrega a la lista
-//   const updatedList = [...lista, nuevo];
-//   const updatedCategories = data.categorias.map((cat, index) => ({
-//     ...cat,
-//     subcategory: catIndex === index ? updatedList : cat.subcategory
-//   }));
+  //   // Si no se cumple la regla de Evaluación continua o la subcategoría no estaba seleccionada, se agrega a la lista
+  //   const updatedList = [...lista, nuevo];
+  //   const updatedCategories = data.categorias.map((cat, index) => ({
+  //     ...cat,
+  //     subcategory: catIndex === index ? updatedList : cat.subcategory
+  //   }));
 
-//   setData({
-//     ...data,
-//     categorias: updatedCategories
-//   });
+  //   setData({
+  //     ...data,
+  //     categorias: updatedCategories
+  //   });
 
-//   console.log("dataS",data)
-// };
+  //   console.log("dataS",data)
+  // };
 
 
-//Funcioamiento para EvaDesem
-// const handleSubcategoryRadioChange = (e: any,subcategoria: string, catIndex: number, subId: string) => {
-//   // let lista=data.categorias[catIndex].subcategory;
-//   let lista = data?.categorias[catIndex]?.subcategory || [];
-//   console.log("e",e)
-//   let nuevo={id:subId, name: subcategoria}
-//   if(data.categorias[catIndex].subcategory.find(sub => subcategoria==sub.name)) 
-//     lista=lista.filter(sub => sub.name!=subcategoria)
-//   else lista.push(nuevo)
-//   // e.target.checked ? lista.push(subcategoria) : lista.filter(sub => sub!=subcategoria)
-//   let aux=data.categorias;
-//   aux[catIndex].subcategory=lista
-//   console.log("nuevo",nuevo)
-//   console.log("lista",lista)
-//   console.log("aux",aux)
-//   setData({
-//     ...data,
-//     categorias: aux,
-//   })
-//   console.log("data",data)
-// }
+  //Funcioamiento para EvaDesem
+  // const handleSubcategoryRadioChange = (e: any,subcategoria: string, catIndex: number, subId: string) => {
+  //   // let lista=data.categorias[catIndex].subcategory;
+  //   let lista = data?.categorias[catIndex]?.subcategory || [];
+  //   console.log("e",e)
+  //   let nuevo={id:subId, name: subcategoria}
+  //   if(data.categorias[catIndex].subcategory.find(sub => subcategoria==sub.name)) 
+  //     lista=lista.filter(sub => sub.name!=subcategoria)
+  //   else lista.push(nuevo)
+  //   // e.target.checked ? lista.push(subcategoria) : lista.filter(sub => sub!=subcategoria)
+  //   let aux=data.categorias;
+  //   aux[catIndex].subcategory=lista
+  //   console.log("nuevo",nuevo)
+  //   console.log("lista",lista)
+  //   console.log("aux",aux)
+  //   setData({
+  //     ...data,
+  //     categorias: aux,
+  //   })
+  //   console.log("data",data)
+  // }
 
-//EvaCont
-// const handleSubcategoryRadioChange = (e: any,subcategoria: string) => {
-//   let lista=data.subcategory
-//   console.log("e",e)
-//   if(data.subcategory.find(sub => subcategoria==sub)) 
-//     lista=lista.filter(sub => sub!=subcategoria)
-//   else lista.push(subcategoria)
-//   // e.target.checked ? lista.push(subcategoria) : lista.filter(sub => sub!=subcategoria)
-//   setData({
-//     ...data,
-//     subcategory: lista,
-//   })
-//   console.log("data",data)
-// }
+  //EvaCont
+  // const handleSubcategoryRadioChange = (e: any,subcategoria: string) => {
+  //   let lista=data.subcategory
+  //   console.log("e",e)
+  //   if(data.subcategory.find(sub => subcategoria==sub)) 
+  //     lista=lista.filter(sub => sub!=subcategoria)
+  //   else lista.push(subcategoria)
+  //   // e.target.checked ? lista.push(subcategoria) : lista.filter(sub => sub!=subcategoria)
+  //   setData({
+  //     ...data,
+  //     subcategory: lista,
+  //   })
+  //   console.log("data",data)
+  // }
 
-//Real
-const handleSubcategoryRadioChange = (e: any,subcategoria: string, categoryName: string, subId: string) => {
-  if(selectedOption=='Evaluación continua'){
-    //guardo las subcategorias actuales
-    console.log("dataBeforeLista",data,data?.categorias[0]?.subcategory.length)
-    let lista = data?.categorias[0]?.subcategory || [];
-    console.log("listaContSubcat",lista,lista.length)
-    //creo la nueva entrada
-    let nuevo={id:subId, name: subcategoria}
-    //verifica si la subcat ya esta para quitarla o pushearla
-    if(data?.categorias[0]?.subcategory?.find(sub => subcategoria==sub.name)){ 
-      lista=lista.filter(sub => sub.name!=subcategoria)
-      console.log("1")
-    }
-    else{ 
-      lista.push(nuevo) 
-      console.log("2")
-    }
-    console.log("listaContSubcatPushed",lista)
-    //guardo la categoria actual
-    let aux=data.categorias
-    console.log("aux",aux)
-    //le pongo las nuevas subcats
-    aux[0].subcategory=lista
-    //actualizo data
-    setData({
-      ...data,
-      categorias: aux,
-    })
-    // setData(prevData => ({
-    //   ...prevData,
-    //   categorias: aux,
-    // }));
-    //console.log("data",data)
-  }else{
-    //consigo el indice de la categoria
-    const catIndex = data?.categorias.findIndex(cat => cat.categoriaNombre === categoryName);
-    //guardo las subcategorias actuales
-    let lista = data?.categorias[catIndex]?.subcategory || [];
-    //creo la nueva entrada
-    let nuevo={id:subId, name: subcategoria}
-    //verifica si la subcat ya esta para quitarla o pushearla
-    if(catIndex>=0){
-      if(data.categorias[catIndex].subcategory.find(sub => subcategoria==sub.name)) 
+  //Real
+  const handleSubcategoryRadioChange = (e: any,subcategoria: string, categoryName: string, subId: string) => {
+    if(selectedOption==CONTINUOS_EVALUATION_TYPE){
+      //guardo las subcategorias actuales
+      console.log("dataBeforeLista",data,data?.categorias[0]?.subcategory.length)
+      let lista = data?.categorias[0]?.subcategory || [];
+      console.log("listaContSubcat",lista,lista.length)
+      //creo la nueva entrada
+      let nuevo={id:subId, name: subcategoria}
+      //verifica si la subcat ya esta para quitarla o pushearla
+      if(data?.categorias[0]?.subcategory?.find(sub => subcategoria==sub.name)){ 
         lista=lista.filter(sub => sub.name!=subcategoria)
-      else lista.push(nuevo)
+      }
+      else{ 
+        lista.push(nuevo) 
+      }
       //guardo la categoria actual
       let aux=data.categorias
       //le pongo las nuevas subcats
-      aux[catIndex].subcategory=lista
+      aux[0].subcategory=lista
       //actualizo data
       setData({
         ...data,
         categorias: aux,
       })
+    }else{
+      //consigo el indice de la categoria
+      const catIndex = data?.categorias.findIndex(cat => cat.categoriaNombre === categoryName);
+      //guardo las subcategorias actuales
+      let lista = data?.categorias[catIndex]?.subcategory || [];
+      //creo la nueva entrada
+      let nuevo={id:subId, name: subcategoria}
+      //verifica si la subcat ya esta para quitarla o pushearla
+      if(catIndex>=0){
+        if(data.categorias[catIndex].subcategory.find(sub => subcategoria==sub.name)) 
+          lista=lista.filter(sub => sub.name!=subcategoria)
+        else lista.push(nuevo)
+        //guardo la categoria actual
+        let aux=data.categorias
+        //le pongo las nuevas subcats
+        aux[catIndex].subcategory=lista
+        //actualizo data
+        setData({
+          ...data,
+          categorias: aux,
+        })
+      }
     }
+    console.log("dataS",data)
   }
-  console.log("dataS",data)
-}
 
 
-const isSubcategorySelected = (categoryName: string, subcategoryName: string): boolean => {
-  // const category = data?.categorias.find(cat => cat.categoriaNombre === categoryName);
-  const catIndex = data?.categorias.findIndex(cat => cat.categoriaNombre === categoryName);
-  //console.log("subcatSelectes",category)
-  return data?.categorias[catIndex]?.subcategory.some(sub => sub.name === subcategoryName) || false;
-  // return category?.subcategory.some(sub => sub.name === subcategoryName) || false;
-};
+  const isSubcategorySelected = (categoryName: string, subcategoryName: string): boolean => {
+    // const category = data?.categorias.find(cat => cat.categoriaNombre === categoryName);
+    const catIndex = data?.categorias.findIndex(cat => cat.categoriaNombre === categoryName);
+    //console.log("subcatSelectes",category)
+    return data?.categorias[catIndex]?.subcategory.some(sub => sub.name === subcategoryName) || false;
+    // return category?.subcategory.some(sub => sub.name === subcategoryName) || false;
+  };
 
 
-const accordion = (
-  <Accordion alwaysOpen={false} style={{ marginTop: '15px' }}>
-    {categorias && categorias.map((categoria, index) => (
-      <Accordion.Item eventKey={categoria["category-id"]} key={categoria["category-id"]}>
-        <Accordion.Header>
-          <FormCheck
-            name='opciones'
-            type={selectedOption === 'Evaluación continua' ? 'radio' : 'checkbox'}
-            label={categoria["category-name"]}
-            // label={categoria.name}
-            // checked={selectedOptions[categoria.id] === categoria.name}
-            onChange={() => handleRadioChange(categoria["category-name"],index)}
-            // onChange={() => handleRadioChange(categoria["category-name"])}
-            // onChange={() => handleRadioChange(categoria.name)}
-            //disabled={!isSelected(categoria.name) && categoria.subcategories && categoria.subcategories.length > 0}
-          />
-        </Accordion.Header>
-        <Accordion.Body>
-          <div className="accordionExpPla-bodyitems">
-            {/* {categorias && categoria.subcategories.map((subcategoria, index) => ( */}
-            {categorias && categoria.subcategory.map((subcategoria, subIndex) => (
-              <FormCheck
-                // key={subcategoria}
-                key={subcategoria.id}
-                type="checkbox"
-                // label={subcategoria}
-                label={subcategoria.name}
-                // checked={data.subcategory.find(sub => subcategoria==sub) ? true : false}
-                // checked={data && data.categorias[index].subcategory && data.categorias[index].subcategory.length>0 && data.categorias[index].subcategory.find(sub => subcategoria.name==sub) ? true : false}
-                // checked={data.categorias[index].subcategory.find(sub => subcategoria.name==sub) ? true : false}
-                // checked={
-                //   data &&
-                //   data.categorias &&
-                //   data.categorias[index] &&
-                //   data.categorias[index].subcategory &&
-                //   data.categorias[index].subcategory.length > 0 &&
-                //   data.categorias[index].subcategory.find(sub => sub.name === subcategoria.name)
-                //     ? true
-                //     : false
-                // }
-                onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria.name,categoria["category-name"],subcategoria.id)}
-                checked={isSubcategorySelected(categoria["category-name"], subcategoria.name)}
-                //disabled={!isSelected(categoria.name)}
-                
-                // checked={data.subcategory.find(sub => subcategoria.name==sub) ? true : false}
-                // disabled={}
-                // onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria)}
-                
-                // onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria.name)}
-              />
-            ))}
-          </div>
+  const accordion = (
 
-          {/* <div className="row ingreso-sub mt-32">
-            <Form.Control
-              className="input-sub"
-              placeholder="Ingrese una nueva subcategoría"
-              value={inputValues[categoria.id] || ''}
-              onChange={(event) =>
-                handleInputChange(categoria.id, event.target.value)
-              }
+    //(selectedOption==CONTINUOS_EVALUATION_TYPE || selectedOption==PERFORMANCE_EVALUATION_TYPE) ? 
+    // (selectedOption!="") ?
+
+    <Accordion alwaysOpen={false} style={{ marginTop: '15px' }}>
+      {categorias && categorias.map((categoria, index) => (
+        <Accordion.Item eventKey={categoria["category-id"]} key={categoria["category-id"]}>
+          <Accordion.Header>
+            <FormCheck
+              name='opciones'
+              type={selectedOption === CONTINUOS_EVALUATION_TYPE ? 'radio' : 'checkbox'}
+              label={categoria["category-name"]}
+              // label={categoria.name}
+              // checked={selectedOptions[categoria.id] === categoria.name}
+              onChange={() => handleRadioChange(categoria["category-name"],index)}
+              // onChange={() => handleRadioChange(categoria["category-name"])}
+              // onChange={() => handleRadioChange(categoria.name)}
+              //disabled={!isSelected(categoria.name) && categoria.subcategories && categoria.subcategories.length > 0}
             />
-            <Button
-              className="boton-subcategorie mt-32"
-              variant="secondary"
-              onClick={() => handleAddSubcategory(categoria.id)}
-            >
-              <span>+</span>
-            </Button>
-          </div> */}
-        </Accordion.Body>
-      </Accordion.Item>
-    ))}
-    {/* <div className="text-end mt-32">
-      <Button onClick={() => setShowAC(true)}>+ Añadir nueva categoría</Button>
-    </div> */}
-  </Accordion>
-);
+          </Accordion.Header>
+          <Accordion.Body>
+            <div className="accordionExpPla-bodyitems">
+              {/* {categorias && categoria.subcategories.map((subcategoria, index) => ( */}
+              {categorias && categoria.subcategory.map((subcategoria, subIndex) => (
+                <FormCheck
+                  // key={subcategoria}
+                  key={subcategoria.id}
+                  type="checkbox"
+                  // label={subcategoria}
+                  label={subcategoria.name}
+                  // checked={data.subcategory.find(sub => subcategoria==sub) ? true : false}
+                  // checked={data && data.categorias[index].subcategory && data.categorias[index].subcategory.length>0 && data.categorias[index].subcategory.find(sub => subcategoria.name==sub) ? true : false}
+                  // checked={data.categorias[index].subcategory.find(sub => subcategoria.name==sub) ? true : false}
+                  // checked={
+                  //   data &&
+                  //   data.categorias &&
+                  //   data.categorias[index] &&
+                  //   data.categorias[index].subcategory &&
+                  //   data.categorias[index].subcategory.length > 0 &&
+                  //   data.categorias[index].subcategory.find(sub => sub.name === subcategoria.name)
+                  //     ? true
+                  //     : false
+                  // }
+                  onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria.name,categoria["category-name"],subcategoria.id)}
+                  checked={isSubcategorySelected(categoria["category-name"], subcategoria.name)}
+                  //disabled={!isSelected(categoria.name)}
+                  
+                  // checked={data.subcategory.find(sub => subcategoria.name==sub) ? true : false}
+                  // disabled={}
+                  // onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria)}
+                  
+                  // onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria.name)}
+                />
+              ))}
+            </div>
+
+            {/* <div className="row ingreso-sub mt-32">
+              <Form.Control
+                className="input-sub"
+                placeholder="Ingrese una nueva subcategoría"
+                value={inputValues[categoria.id] || ''}
+                onChange={(event) =>
+                  handleInputChange(categoria.id, event.target.value)
+                }
+              />
+              <Button
+                className="boton-subcategorie mt-32"
+                variant="secondary"
+                onClick={() => handleAddSubcategory(categoria.id)}
+              >
+                <span>+</span>
+              </Button>
+            </div> */}
+          </Accordion.Body>
+        </Accordion.Item>
+      ))}
+      {/* <div className="text-end mt-32">
+        <Button onClick={() => setShowAC(true)}>+ Añadir nueva categoría</Button>
+      </div> */}
+    </Accordion>
+
+    // :
+
+    // (
+    //   <div>Seleccione un tipo de evaluación</div>
+    // )
+
+  );
 
   const content = 
     categorias && categorias.length>0 ? (
@@ -500,8 +503,12 @@ const accordion = (
         <Toast.Body>Se ha creado la plantilla con éxito.</Toast.Body>
     </Toast>
     </>
-    ) : ( 
-    <NoDataFound/>
+    ) : (selectedOption==CONTINUOS_EVALUATION_TYPE || selectedOption==PERFORMANCE_EVALUATION_TYPE ?
+      <NoDataFound/> :
+    (
+      <div style={{marginTop:"30px"}}>Seleccione un tipo de evaluación</div>
+    )     
+
   );
 
   const body = (
