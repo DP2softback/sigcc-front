@@ -35,7 +35,6 @@ const Create = () => {
   const [file, setFile] = useState(null);
   const [inputValues, setInputValues] = useState({});
   const [selectedOption, setSelectedOption] = useState('');
-  // const [data, setData] = useState(dataIni);
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [plantillaName, setPlantillaName] = useState('');
@@ -44,10 +43,8 @@ const Create = () => {
   useEffect(() => {
       setIsLoading(true);
       (async () => {
-        // //console.log("selecteda",selectedOption)
           const response = await getCategoriesSubs(selectedOption);
           if(response) setCategorias(response);
-        // //console.log("cat",categorias)
         setIsLoading(false);
       })();
   }, [selectedOption]);
@@ -64,16 +61,8 @@ const Create = () => {
         aux.subCategories.push({ id: subcategoria.id,nombre:subcategoria.name });
       });
     });
-
-    //aux["subcategorias"][0]={...aux["subcategorias"][0],nombre: "subcategoria"}
-    
-    //console.log("aux",aux);
-    // //console.log("plantillaName",plantillaName)
-    // //console.log(categorias);
     (async () => { 
-      //console.log("entro");
       const response = await guardarPlantilla(aux);
-      //console.log("response",response);
       if (response){
         setShowNotification(true); 
       }
@@ -96,9 +85,7 @@ const Create = () => {
   const handleImageChange = (image: File | null) => {
     // Hacer algo con la imagen seleccionada
     if (image) {
-      //console.log('Imagen seleccionada:', image);
     } else {
-      //console.log('Imagen borrada');
     }
   };
 
@@ -159,79 +146,6 @@ const Create = () => {
     </Form>
   );
 
-  //Idea1
-  // const handleRadioChange = (categoryName: string, index: number) => {
-  //   let nuevo = {
-  //     categoriaNombre: categoryName,
-  //     subcategory: []
-  //   };
-
-  //   let lista = data ? [...data.categorias] : [];
-
-  //   if (selectedOption === 'Evaluación continua') {
-  //     // Si se selecciona una categoría en Evaluación continua,
-  //     // se deseleccionan las demás categorías
-  //     lista = lista.map(cat => ({
-  //       ...cat,
-  //       subcategory: []
-  //     }));
-  //   }
-
-  //   const existingCategoryIndex = lista.findIndex(cat => cat.categoriaNombre === categoryName);
-
-  //   if (existingCategoryIndex !== -1) {
-  //     // Si la categoría ya está seleccionada, se remueve
-  //     lista.splice(existingCategoryIndex, 1);
-  //   } else {
-  //     // Si la categoría no está seleccionada, se agrega
-  //     lista.push(nuevo);
-  //   }
-
-  //   setData({
-  //     ...data,
-  //     categorias: lista
-  //   });
-
-  //   //console.log("dataC",data)
-  // };
-
-  //Funcionamiento para EvaDesem
-  // const handleRadioChange = (categoryName: string,index: number) => {
-  //   //console.log("index",index)
-  //   let nuevo={
-  //     categoriaNombre: categoryName,
-  //     subcategory:[]
-  //   }
-  //   let lista
-  //   if(data==null) lista=[]  
-  //   else lista=data.categorias;
-    
-  //   // if(data.categorias && data.categorias.find(cat => categoryName==cat.categoriaNombre)) 
-  //   //   lista=lista.filter(cat => cat.categoriaNombre!=categoryName)
-  //   // else lista.push(nuevo)
-  //   if (data && data.categorias && data.categorias.find(cat => categoryName === cat.categoriaNombre)) {
-  //     lista = lista.filter(cat => cat.categoriaNombre !== categoryName);
-  //   } else {
-  //     lista.push(nuevo);
-  //   }
-    
-  //   //console.log("lista",lista)
-  //   setData({
-  //     ...data,
-  //     categorias: lista,
-  //   })
-  //   //console.log("data",data)
-  // }
-
-  //EvaCont
-  // const handleRadioChange = (categoryName: string) => {
-  //   setData({
-  //     ...data,
-  //     categoriaNombre: categoryName,
-  //     subcategory: [],
-  //   })
-  // }
-
   //Real
   const handleRadioChange = (categoryName: string,index: number) => {
     
@@ -255,86 +169,7 @@ const Create = () => {
         categorias: lista,
       })
     }
-    //console.log("dataC",data)
   }
-
-  //Idea2
-  // const handleSubcategoryRadioChange = (e: any, subcategoria: string, catIndex: number, subId: string) => {
-  //   const lista = data?.categorias[catIndex]?.subcategory || [];
-  //   const nuevo = { id: subId, name: subcategoria };
-
-  //   if (selectedOption === 'Evaluación continua') {
-  //     // Si se está en Evaluación continua, solo se permite seleccionar una subcategoría por categoría
-  //     const selectedSubcategories = lista.filter(sub => sub.name === subcategoria);
-
-  //     if (selectedSubcategories.length > 0) {
-  //       // Si la subcategoría ya está seleccionada, se deselecciona
-  //       const updatedList = lista.filter(sub => sub.name !== subcategoria);
-  //       const updatedCategories = data.categorias.map((cat, index) => ({
-  //         ...cat,
-  //         subcategory: catIndex === index ? updatedList : cat.subcategory
-  //       }));
-
-  //       setData({
-  //         ...data,
-  //         categorias: updatedCategories
-  //       });
-  //       return;
-  //     }
-  //   }
-
-  //   // Si no se cumple la regla de Evaluación continua o la subcategoría no estaba seleccionada, se agrega a la lista
-  //   const updatedList = [...lista, nuevo];
-  //   const updatedCategories = data.categorias.map((cat, index) => ({
-  //     ...cat,
-  //     subcategory: catIndex === index ? updatedList : cat.subcategory
-  //   }));
-
-  //   setData({
-  //     ...data,
-  //     categorias: updatedCategories
-  //   });
-
-  //   //console.log("dataS",data)
-  // };
-
-
-  //Funcioamiento para EvaDesem
-  // const handleSubcategoryRadioChange = (e: any,subcategoria: string, catIndex: number, subId: string) => {
-  //   // let lista=data.categorias[catIndex].subcategory;
-  //   let lista = data?.categorias[catIndex]?.subcategory || [];
-  //   //console.log("e",e)
-  //   let nuevo={id:subId, name: subcategoria}
-  //   if(data.categorias[catIndex].subcategory.find(sub => subcategoria==sub.name)) 
-  //     lista=lista.filter(sub => sub.name!=subcategoria)
-  //   else lista.push(nuevo)
-  //   // e.target.checked ? lista.push(subcategoria) : lista.filter(sub => sub!=subcategoria)
-  //   let aux=data.categorias;
-  //   aux[catIndex].subcategory=lista
-  //   //console.log("nuevo",nuevo)
-  //   //console.log("lista",lista)
-  //   //console.log("aux",aux)
-  //   setData({
-  //     ...data,
-  //     categorias: aux,
-  //   })
-  //   //console.log("data",data)
-  // }
-
-  //EvaCont
-  // const handleSubcategoryRadioChange = (e: any,subcategoria: string) => {
-  //   let lista=data.subcategory
-  //   //console.log("e",e)
-  //   if(data.subcategory.find(sub => subcategoria==sub)) 
-  //     lista=lista.filter(sub => sub!=subcategoria)
-  //   else lista.push(subcategoria)
-  //   // e.target.checked ? lista.push(subcategoria) : lista.filter(sub => sub!=subcategoria)
-  //   setData({
-  //     ...data,
-  //     subcategory: lista,
-  //   })
-  //   //console.log("data",data)
-  // }
 
   //Real
   const handleSubcategoryRadioChange = (e: any,subcategoria: string, categoryName: string, subId: string) => {
@@ -389,18 +224,12 @@ const Create = () => {
 
 
   const isSubcategorySelected = (categoryName: string, subcategoryName: string): boolean => {
-    // const category = data?.categorias.find(cat => cat.categoriaNombre === categoryName);
     const catIndex = data?.categorias.findIndex(cat => cat.categoriaNombre === categoryName);
-    ////console.log("subcatSelectes",category)
     return data?.categorias[catIndex]?.subcategory.some(sub => sub.name === subcategoryName) || false;
-    // return category?.subcategory.some(sub => sub.name === subcategoryName) || false;
   };
 
 
   const accordion = (
-
-    //(selectedOption==CONTINUOS_EVALUATION_TYPE || selectedOption==PERFORMANCE_EVALUATION_TYPE) ? 
-    // (selectedOption!="") ?
 
     <Accordion alwaysOpen={false} style={{ marginTop: '15px' }}>
       {categorias && categorias.map((categoria, index) => (
@@ -478,12 +307,6 @@ const Create = () => {
         <Button onClick={() => setShowAC(true)}>+ Añadir nueva categoría</Button>
       </div> */}
     </Accordion>
-
-    // :
-
-    // (
-    //   <div>Seleccione un tipo de evaluación</div>
-    // )
 
   );
 
