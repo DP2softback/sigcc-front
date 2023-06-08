@@ -24,7 +24,7 @@ export const sideBarItemsGroup2: TSidebarItemGroup[] = [
 				route: `/${GAPS_ANALYSIS_MODULE}/${COMPETENCES}/${INDEX}`
 			},
 			{
-				name: "Brechas de empleados",
+				name: "Competencias por área",
 				icon: People,
 				roles: [Roles.HR_ADMIN, Roles.HR_WORKER, Roles.GENERAL_MANAGER],
 				hasChildren: false,
