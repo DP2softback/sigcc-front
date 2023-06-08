@@ -2,6 +2,7 @@ import { useEffect, useContext } from "react";
 import { Button, Form, Col, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 import {
 	CandidateInfoSchema,
 	CandidateForm,
@@ -15,6 +16,7 @@ const CandidateRegisterForm: React.FC = () => {
 	const { currentControl, setCurrentControl } = useContext(
 		CreateJobOfferContext
 	);
+	const navigate = useNavigate();
 
 	const {
 		handleSubmit,
@@ -27,6 +29,7 @@ const CandidateRegisterForm: React.FC = () => {
 	const onSubmit = (data: CandidateForm): void => {
 		console.log("data: ");
 		console.log(data);
+		navigate("/selection-offers-and-positions/job-offers/list");
 	};
 
 	useEffect(() => {
