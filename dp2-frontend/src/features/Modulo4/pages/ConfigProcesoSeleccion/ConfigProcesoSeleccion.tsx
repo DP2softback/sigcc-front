@@ -29,31 +29,53 @@ import SearchInput from "./SearchInputProcesoSeleccion/SearchInput";
 import SearchInputResponsables from "./SearchInputProcesoSeleccion/SearchInput";
 import CustomInput from "@features/Modulo4/components/CustomInput";
 import { TextCenter } from "react-bootstrap-icons";
+import { ajax } from "@features/Modulo4/tools/ajax";
+import moment from "moment";
+
+import SearchInputResponsablesNuevo from "./SearchInputResponsablesNuevo/SearchInputResponsable";
+import {
+	BACKEND_URL_CREATE_PROCESO_SELECCION,
+	SAMPLE_TOKEN
+} from "@features/Modulo4/utils/constants";
 
 //idPuesto: idPuesto,
 
 function ConfigProcesoSeleccion(props: any) {
-	const createPS = () => {
-		const data = {
-			idPuestoLaboral: selectedIdPuestoLaboral,
-			nombrePuesto: selectedPuestoLaboral,
-			cantVacantes: cantVacantes,
-			etapasProceso: rows,
-			responsables: null
-		};
-		console.log(data);
+	const createPS = async () => {
 		console.log(rows);
-
-		/*
-		axiosInt
-			.post("capacitaciones/learning_path/", data)
-			.then(function (response) {
-				navigate(`/modulo1/rutadeaprendizaje/detalle/${response.data.id}`);
+		const listaEtapas = rows.map(
+			({
+				tipoEtapa,
+				id,
+				fechaInicio,
+				fechaFin,
+				nombreEtapa,
+				descripcionEtapa
+			}) => ({
+				stage_type: 1,
+				order: id,
+				start_date: moment(fechaInicio).format("YYYY-MM-DD"),
+				end_date: moment(fechaFin).format("YYYY-MM-DD"),
+				name: nombreEtapa,
+				description: descripcionEtapa
 			})
-			.catch(function (error) {
-				console.log(error);
-			});
-			*/
+		);
+
+		const dataPost = {
+			position: selectedIdPuestoLaboral,
+			available_positions_quantity: cantVacantes,
+			process_stages: listaEtapas
+		};
+
+		const optionsRequest = {
+			method: "POST",
+			url: BACKEND_URL_CREATE_PROCESO_SELECCION + "",
+			headers: {
+				Authorization: `Token ${SAMPLE_TOKEN}`
+			},
+			data: dataPost
+		};
+		return await ajax(optionsRequest);
 	};
 
 	const loadLPs = () => {
@@ -107,16 +129,6 @@ function ConfigProcesoSeleccion(props: any) {
 		setIsSelectedNombreOfertaValid(isValid);
 		setSelectedPuestoLaboral(optionValue);
 	};
-
-	useEffect(() => {
-		console.log(selectedPuestoLaboral);
-	}, [selectedPuestoLaboral]);
-
-	/*
-	useEffect(() => {
-		console.log(isSelectedNombreOfertaValid);
-	}, [isSelectedNombreOfertaValid]);
-	*/
 
 	const handlecantVacantes = (event: any) => {
 		const optionValue = event.target.value;
@@ -203,9 +215,11 @@ function ConfigProcesoSeleccion(props: any) {
 		setIdCounter((prevCounter) => prevCounter + 1); // Incrementar el contador en 1
 	};
 
+	/*
 	useEffect(() => {
 		console.log(rows);
 	}, [rows]);
+	*/
 
 	const handleDeleteRow = (id: number) => {
 		setRows((prevRows) => prevRows.filter((row) => row.id !== id));
@@ -238,10 +252,10 @@ function ConfigProcesoSeleccion(props: any) {
 	const [showModalBuscadorResponsable, setShowModalBuscadorResponsable] =
 		useState(false);
 	const handleShowBuscadorResponsableFromButtom = () => {
-		setShowModalBuscador(true);
+		setShowModalBuscadorResponsable(true);
 	};
 	const handleCloseBuscadorResponsableFromButtom = () => {
-		setShowModalBuscador(false);
+		setShowModalBuscadorResponsable(false);
 	};
 	const handleOptionSelectBuscadorResponsable = (selectedOptionPuesto) => {
 		setSelectedIdPuestoLaboral(selectedOptionPuesto.id);
@@ -260,504 +274,509 @@ function ConfigProcesoSeleccion(props: any) {
 	};
 
 	return (
-			<div
-				style={{
-					paddingLeft: "2rem",
-					paddingRight: "4rem"
-				}}>
-				<div className="row">
-					<div className="col">
-						<h1>Configurar proceso de selección</h1>
-						<p>
-							<small className="opacity-50" style={{ marginBottom: "10rem" }}>
-								Portal que presenta la configuración disponible para el proceso
-								de selección de una posición.
-							</small>
-						</p>
-					</div>
+		<div
+			style={{
+				paddingLeft: "2rem",
+				paddingRight: "4rem"
+			}}>
+			<div className="row">
+				<div className="col">
+					<h1>Configurar proceso de selección</h1>
+					<p>
+						<small className="opacity-50" style={{ marginBottom: "10rem" }}>
+							Portal que presenta la configuración disponible para el proceso de
+							selección de una posición.
+						</small>
+					</p>
 				</div>
+			</div>
 
-				<div className="row">
-					<Form noValidate validated={validated} onSubmit={handleSubmit}>
-						<Form.Group className="mb-2" as={Row}>
-							<Col>
+			<div className="row" style={{ paddingTop: "1rem" }}>
+				<Form noValidate validated={validated} onSubmit={handleSubmit}>
+					<Form.Group as={Row} className="mb-3">
+						<Form.Group as={Row}>
+							<Form.Label style={{ fontSize: "15px" }}>
+								Nombre del proceso de selección para un puesto:
+							</Form.Label>
+						</Form.Group>
+						<Form.Group xs={10} as={Col}>
+							<Form.Control
+								as="textarea"
+								type="text"
+								placeholder="Nombre del puesto"
+								value={selectedPuestoLaboralFijo}
+								rows={2}
+								readOnly={true}
+								disabled={true}
+							/>
+						</Form.Group>{" "}
+						<Form.Group xs={2} as={Col}>
+							<Button
+								style={{
+									width: "10rem",
+									maxWidth: "10rem"
+								}}
+								onClick={handleShowBuscadorFromButtom}>
+								Buscar puesto de trabajo
+							</Button>
+						</Form.Group>
+					</Form.Group>
+					<Form.Group className="mb-2" as={Row}>
+						<Col>
+							<Row>
 								<Form.Label sm="2" style={{ fontSize: "15px" }}>
 									Nombre del proceso de selección para un puesto:
 								</Form.Label>
+							</Row>
+							<Row>
+								<Form.Group xs={12} as={Col}>
+									<Form.Control
+										as="textarea"
+										type="text"
+										placeholder="Especificar el nombre del proceso de selección"
+										value={selectedPuestoLaboral}
+										onChange={handleNombrePuestoSeleccionado}
+										rows={2}
+										disabled={selectedPuestoLaboral == "" ? true : false}
+										required
+										className={!isSelectedNombreOfertaValid ? "is-invalid" : ""}
+									/>
+									<Form.Control.Feedback></Form.Control.Feedback>
+								</Form.Group>
+							</Row>
+						</Col>
+					</Form.Group>
+					<Form.Group className="mb-2" as={Row}>
+						<Form.Group className="mb-2" as={Col}>
+							<Form.Group className="mb-2" as={Row}>
+								<Form.Label
+									column
+									style={{
+										alignItems: "center",
+										justifyContent: "center",
+										height: "2rem",
+										fontSize: "15px"
+									}}>
+									Cantidad de vacantes:
+								</Form.Label>
+							</Form.Group>
+							<Form.Control
+								style={{ width: "15rem", maxWidth: "15rem" }}
+								type="text"
+								placeholder="Número de vacantes"
+								value={cantVacantes}
+								onChange={handlecantVacantes}
+								required
+							/>
+							<Form.Control.Feedback></Form.Control.Feedback>
+						</Form.Group>
+						<Form.Group className="mb-2" as={Col}>
+							<Col>
 								<Row>
-									<Col xs="8">
-										<Form.Control
-											as="textarea"
-											type="text"
-											placeholder="Especificar el nombre del proceso de selección"
-											value={selectedPuestoLaboral}
-											onChange={handleNombrePuestoSeleccionado}
-											rows={2}
-											disabled={selectedPuestoLaboral == "" ? true : false}
-											required
-											className={
-												!isSelectedNombreOfertaValid ? "is-invalid" : ""
-											}
-										/>
-										<Form.Control.Feedback></Form.Control.Feedback>
-									</Col>
-									<Col xs="2">
-										<Form.Control
-											as="textarea"
-											type="text"
-											placeholder="Nombre del puesto"
-											value={selectedPuestoLaboralFijo}
-											rows={2}
-											readOnly={true}
-											disabled={true}></Form.Control>
-									</Col>
-									<Col>
-										<Button
-											style={{ width: "12rem", maxWidth: "12rem" }}
-											onClick={handleShowBuscadorFromButtom}>
-											Buscar puesto de trabajo
-										</Button>
-									</Col>
+									<Form.Label
+										column
+										style={{
+											alignItems: "center",
+											justifyContent: "center",
+											fontSize: "15px"
+										}}>
+										Responsables del proceso:
+									</Form.Label>
 								</Row>
 							</Col>
+							<Row>
+								<Col>
+									<Form.Control
+										type="text"
+										placeholder="Cantidad responsables"
+										required
+										disabled
+										style={{ width: "15rem", maxWidth: "15rem" }}
+									/>
+									<Form.Control.Feedback></Form.Control.Feedback>
+								</Col>
+								<Col>
+									<div style={{ paddingLeft: "5rem" }}>
+										<Button
+											variant="primary"
+											style={{
+												width: "11rem",
+												maxWidth: "11rem"
+											}}
+											className="ml-auto custom"
+											onClick={handleShowBuscadorResponsableFromButtom}>
+											Gestión responsables
+										</Button>
+									</div>
+								</Col>
+							</Row>
 						</Form.Group>
-
-						<Form.Group className="mb-2" as={Row}>
-							<Form.Label
-								column
-								sm="2"
-								style={{
-									alignItems: "center",
-									justifyContent: "center",
-									height: "2rem",
-									fontSize: "15px"
+					</Form.Group>
+					<br />
+					<Form.Group className="mb-2">
+						<Row>
+							<Col
+								md={{
+									span: 3
 								}}>
-								Cantidad de vacantes:
-							</Form.Label>
-							<Col md={{ span: 2 }}>
-								<Form.Control
-									type="text"
-									placeholder="Número de vacantes"
-									value={cantVacantes}
-									onChange={handlecantVacantes}
-									required
-								/>
-								<Form.Control.Feedback></Form.Control.Feedback>
+								<h5>
+									<small className="opacity-90" style={{ marginTop: "100px" }}>
+										Etapas del proceso de selección.
+									</small>
+								</h5>
 							</Col>
-						</Form.Group>
-
-						<Form.Group className="mb-2" as={Row}>
-							<Form.Label
-								column
-								sm="2"
-								style={{
-									alignItems: "center",
-									justifyContent: "center",
-									height: "2rem",
-									fontSize: "15px"
+							<Col
+								md={{
+									span: 1,
+									offset: 7
 								}}>
-								Responsables del proceso:
-							</Form.Label>
-							<Col md={{ span: 2 }}>
-								<Form.Control
-									type="text"
-									placeholder="Cantidad responsables"
-									value={cantVacantes}
-									onChange={handlecantVacantes}
-									required
-								/>
-								<Form.Control.Feedback></Form.Control.Feedback>
-							</Col>
-							<Col md={{ span: 2 }}>
 								<Button
 									variant="primary"
-									style={{ width: "5rem", maxWidth: "12rem" }}
-									className="ml-auto custom"
-									onClick={handleShowBuscadorResponsableFromButtom}>
-									Gestionar responsables
+									onClick={() => openModal(null)}
+									style={{ width: "10rem", maxWidth: "10rem" }}
+									className="ml-auto custom">
+									Agregar etapa
 								</Button>
 							</Col>
-						</Form.Group>
+						</Row>
+					</Form.Group>
+					<Form.Group
+						className="mb-1"
+						as={Row}
+						controlId="validationCustom04"
+						style={{
+							border: "1px solid #ddd",
+							borderRadius: "4px",
+							maxHeight: "18rem",
+							overflowY: "auto",
+							borderCollapse: "collapse",
+							marginBottom: "18rem",
+							height: "500px"
+						}}>
+						{/*---------------------------------------------------------------------------- */}
+						{/* AQUI EMPIEZA TODA LA TABLA*/}
 
-						<br />
+						<Table striped={true} bordered>
+							<thead
+								style={{
+									position: "sticky",
+									top: 0,
+									backgroundColor: "white",
+									zIndex: "1"
+								}}>
+								<tr>
+									<th style={{ width: "4rem" }}>Orden</th>
+									<th style={{ width: "13rem" }}>Tipo de etapa</th>
+									<th style={{ width: "16rem" }}>Nombre de la etapa</th>
+									<th style={{ width: "10rem" }}>Fecha de Inicio</th>
+									<th style={{ width: "10rem" }}>Fecha de Fin</th>
+									<th>Estado</th>
+									<th style={{ width: "12rem" }}>Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								{rows.map((row) => (
+									<tr key={row.id}>
+										<td>{row.id}</td>
+										<td>{row.tipoEtapa}</td>
+										<td>{row.nombreEtapa}</td>
+										<td>
+											{row.fechaInicio instanceof Date
+												? row.fechaInicio.toLocaleDateString()
+												: row.fechaInicio}
+										</td>
+										<td>
+											{row.fechaFin instanceof Date
+												? row.fechaFin.toLocaleDateString()
+												: row.fechaFin}
+										</td>
+										<td>{row.estado}</td>
+										<td>
+											<ButtonGroup>
+												{/* Revisar etapa */}
+												<Button variant="light" className="custom-btn">
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														width="16"
+														height="16"
+														fill="currentColor"
+														viewBox="0 0 16 16">
+														<path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+													</svg>
+												</Button>
+												{/* Crear etapa */}
+												<Button variant="light" className="custom-btn">
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														width="16"
+														height="16"
+														fill="currentColor"
+														viewBox="0 0 16 16">
+														<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+													</svg>
+												</Button>
+												{/* Editar etapa */}
+												<Button variant="light" onClick={() => openModal(row)}>
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														width="16"
+														height="16"
+														fill="currentColor"
+														viewBox="0 0 16 16">
+														<path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+														<path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+													</svg>
+												</Button>
+												{/* Eliminar etapa */}
+												<Button
+													variant="danger"
+													onClick={() => handleDeleteRow(row.id)}>
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														width="16"
+														height="16"
+														fill="currentColor"
+														viewBox="0 0 16 16">
+														<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+														<path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+													</svg>
+												</Button>
+											</ButtonGroup>
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</Table>
 
-						<Form.Group className="mb-2">
+						<Modal show={showModal} onHide={closeModal}>
+							<Modal.Header closeButton>
+								<Modal.Title>
+									{selectedRow ? "Editar Información" : "Agregar Información"}
+								</Modal.Title>
+							</Modal.Header>
+							<Modal.Body>
+								<Form>
+									<Form.Group>
+										<Form.Label>Seleccionar el tipo de etapa:</Form.Label>
+										<Dropdown drop="down-centered" align="end" className="mb-2">
+											<Dropdown.Toggle
+												variant="secondary"
+												id="dropdown-basic"
+												style={{ width: "100%", textAlign: "left" }}>
+												{
+													"Seleccionar el tipo de etapa del proceso de selección:"
+												}
+											</Dropdown.Toggle>
+
+											<Dropdown.Menu style={{ width: "100%" }}>
+												{optionsTipoEtapaSelec.map((optionRow) => (
+													<Dropdown.Item
+														key={optionRow.value}
+														onClick={() =>
+															handleOptionsTipoEtapaSelec(optionRow.label)
+														}>
+														{optionRow.label}
+													</Dropdown.Item>
+												))}
+											</Dropdown.Menu>
+										</Dropdown>
+										<Form.Control
+											type="text"
+											name="tipoEtapa"
+											value={
+												selectedRow ? selectedRow.tipoEtapa : newRow.tipoEtapa
+											}
+											placeholder="Tipo de etapa"
+											onChange={handleInputChange}
+											style={{ maxHeight: "8rem" }}
+											readOnly={true}
+											className="readonly-text"
+										/>
+										<Form.Label
+											id="passwordHelpBlock"
+											muted
+											style={{ fontSize: "0.8rem", maxHeight: "2rem" }}>
+											* Una vez creado no se puede modificar el tipo de etapa.
+										</Form.Label>
+									</Form.Group>
+									<hr /> {/* Línea de separación */}
+									<Form.Group>
+										<Form.Label>Nombre de la etapa:</Form.Label>
+										<Form.Control
+											type="text"
+											name="nombreEtapa"
+											value={
+												selectedRow
+													? selectedRow.nombreEtapa
+													: newRow.nombreEtapa
+											}
+											placeholder="Aquí va el nombre de la etapa"
+											onChange={handleInputChange}
+											style={stylesSelect}
+										/>
+									</Form.Group>
+									<Form.Group>
+										<Form.Label>Descripción de la etapa:</Form.Label>
+										<Form.Control
+											as="textarea"
+											type="text"
+											rows={2}
+											name="descripcionEtapa"
+											value={
+												selectedRow
+													? selectedRow.descripcionEtapa
+													: newRow.descripcionEtapa
+											}
+											placeholder="Aquí va la descripción de la etapa del proceso de selección"
+											onChange={handleInputChange}
+											style={stylesSelect}
+										/>
+									</Form.Group>
+									<Form.Group>
+										<Form.Label>Fecha de inicio:</Form.Label>
+										<Form.Control
+											type="date"
+											name="fechaInicio"
+											value={
+												selectedRow
+													? new Date(selectedRow.fechaInicio)
+															.toISOString()
+															.slice(0, 10)
+													: new Date(newRow.fechaInicio)
+															.toISOString()
+															.slice(0, 10)
+											}
+											onChange={handleInputChange}
+											style={stylesSelect}
+										/>
+									</Form.Group>
+									<Form.Group>
+										<Form.Label>Fecha fin:</Form.Label>
+										<Form.Control
+											type="date"
+											name="fechaFin"
+											value={
+												selectedRow
+													? new Date(selectedRow.fechaFin)
+															.toISOString()
+															.slice(0, 10)
+													: new Date(newRow.fechaFin).toISOString().slice(0, 10)
+											}
+											onChange={handleInputChange}
+											style={stylesSelect}
+										/>
+									</Form.Group>
+								</Form>
+							</Modal.Body>
+							<Modal.Footer>
+								<Button variant="secondary" onClick={closeModal}>
+									Cancelar
+								</Button>
+								<Button variant="primary" onClick={handleAddRow}>
+									{selectedRow ? "Guardar Cambios" : "Agregar"}
+								</Button>
+							</Modal.Footer>
+						</Modal>
+					</Form.Group>
+					{/* AQUI termina LA TABLA*/}
+					{/*---------------------------------------------------------------------------- */}
+					<Row style={{ position: "static", borderTop: "10rem" }}>
+						<p></p>
+						<p></p>
+						<Form.Group>
 							<Row>
 								<Col
 									md={{
-										span: 3
+										span: 2
 									}}>
-									<h5>
-										<small
-											className="opacity-90"
-											style={{ marginTop: "100px" }}>
-											Etapas del proceso de selección.
-										</small>
-									</h5>
+									<Button
+										variant="danger"
+										style={{ width: "10rem", maxWidth: "10rem" }}
+										onClick={() => setShowDeleteModal(true)}>
+										Eliminar proceso
+									</Button>
 								</Col>
 								<Col
 									md={{
-										span: 1,
-										offset: 7
+										span: 2,
+										offset: 8
 									}}>
 									<Button
+										type="submit"
 										variant="primary"
-										onClick={() => openModal(null)}
-										style={{ width: "5rem", maxWidth: "12rem" }}
-										className="ml-auto custom">
-										Agregar etapa
+										style={{ width: "10rem", maxWidth: "10rem" }}
+										onClick={() => {
+											if (
+												selectedPuestoLaboral != "" &&
+												typeof +cantVacantes == "number" &&
+												+cantVacantes != 0
+											) {
+												setShowSaveModal(true);
+											} else {
+												setIsSelectedNombreOfertaValid(false);
+											}
+										}}>
+										Guardar Cambios
 									</Button>
 								</Col>
 							</Row>
 						</Form.Group>
-
-						<Form.Group
-							className="mb-1"
-							as={Row}
-							controlId="validationCustom04"
-							style={{
-								border: "1px solid #ddd",
-								borderRadius: "4px",
-								maxHeight: "18rem",
-								overflowY: "auto",
-								borderCollapse: "collapse",
-								marginBottom: "18rem",
-								height: "500px"
-							}}>
-							{/*---------------------------------------------------------------------------- */}
-							{/* AQUI EMPIEZA TODA LA TABLA*/}
-
-							<Table striped={true} bordered>
-								<thead
-									style={{
-										position: "sticky",
-										top: 0,
-										backgroundColor: "white",
-										zIndex: "1"
-									}}>
-									<tr>
-										<th style={{ width: "4rem" }}>Orden</th>
-										<th style={{ width: "13rem" }}>Tipo de etapa</th>
-										<th style={{ width: "16rem" }}>Nombre de la etapa</th>
-										<th style={{ width: "10rem" }}>Fecha de Inicio</th>
-										<th style={{ width: "10rem" }}>Fecha de Fin</th>
-										<th>Estado</th>
-										<th style={{ width: "12rem" }}>Acciones</th>
-									</tr>
-								</thead>
-								<tbody>
-									{rows.map((row) => (
-										<tr key={row.id}>
-											<td>{row.id}</td>
-											<td>{row.tipoEtapa}</td>
-											<td>{row.nombreEtapa}</td>
-											<td>
-												{row.fechaInicio instanceof Date
-													? row.fechaInicio.toLocaleDateString()
-													: row.fechaInicio}
-											</td>
-											<td>
-												{row.fechaFin instanceof Date
-													? row.fechaFin.toLocaleDateString()
-													: row.fechaFin}
-											</td>
-											<td>{row.estado}</td>
-											<td>
-												<ButtonGroup>
-													{/* Revisar etapa */}
-													<Button variant="light" className="custom-btn">
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															width="16"
-															height="16"
-															fill="currentColor"
-															viewBox="0 0 16 16">
-															<path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
-														</svg>
-													</Button>
-													{/* Crear etapa */}
-													<Button variant="light" className="custom-btn">
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															width="16"
-															height="16"
-															fill="currentColor"
-															viewBox="0 0 16 16">
-															<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-														</svg>
-													</Button>
-													{/* Editar etapa */}
-													<Button
-														variant="light"
-														onClick={() => openModal(row)}>
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															width="16"
-															height="16"
-															fill="currentColor"
-															viewBox="0 0 16 16">
-															<path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
-															<path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
-														</svg>
-													</Button>
-													{/* Eliminar etapa */}
-													<Button
-														variant="danger"
-														onClick={() => handleDeleteRow(row.id)}>
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															width="16"
-															height="16"
-															fill="currentColor"
-															viewBox="0 0 16 16">
-															<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
-															<path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
-														</svg>
-													</Button>
-												</ButtonGroup>
-											</td>
-										</tr>
-									))}
-								</tbody>
-							</Table>
-
-							<Modal show={showModal} onHide={closeModal}>
-								<Modal.Header closeButton>
-									<Modal.Title>
-										{selectedRow ? "Editar Información" : "Agregar Información"}
-									</Modal.Title>
-								</Modal.Header>
-								<Modal.Body>
-									<Form>
-										<Form.Group>
-											<Form.Label>Seleccionar el tipo de etapa:</Form.Label>
-											<Dropdown
-												drop="down-centered"
-												align="end"
-												className="mb-2">
-												<Dropdown.Toggle
-													variant="secondary"
-													id="dropdown-basic"
-													style={{ width: "100%", textAlign: "left" }}>
-													{
-														"Seleccionar el tipo de etapa del proceso de selección:"
-													}
-												</Dropdown.Toggle>
-
-												<Dropdown.Menu style={{ width: "100%" }}>
-													{optionsTipoEtapaSelec.map((optionRow) => (
-														<Dropdown.Item
-															key={optionRow.value}
-															onClick={() =>
-																handleOptionsTipoEtapaSelec(optionRow.label)
-															}>
-															{optionRow.label}
-														</Dropdown.Item>
-													))}
-												</Dropdown.Menu>
-											</Dropdown>
-											<Form.Control
-												type="text"
-												name="tipoEtapa"
-												value={
-													selectedRow ? selectedRow.tipoEtapa : newRow.tipoEtapa
-												}
-												placeholder="Tipo de etapa"
-												onChange={handleInputChange}
-												style={{ maxHeight: "8rem" }}
-												readOnly={true}
-												className="readonly-text"
-											/>
-											<Form.Label
-												id="passwordHelpBlock"
-												muted
-												style={{ fontSize: "0.8rem", maxHeight: "2rem" }}>
-												* Una vez creado no se puede modificar el tipo de etapa.
-											</Form.Label>
-										</Form.Group>
-										<hr /> {/* Línea de separación */}
-										<Form.Group>
-											<Form.Label>Nombre de la etapa:</Form.Label>
-											<Form.Control
-												type="text"
-												name="nombreEtapa"
-												value={
-													selectedRow
-														? selectedRow.nombreEtapa
-														: newRow.nombreEtapa
-												}
-												placeholder="Aquí va el nombre de la etapa"
-												onChange={handleInputChange}
-												style={stylesSelect}
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Descripción de la etapa:</Form.Label>
-											<Form.Control
-												as="textarea"
-												type="text"
-												rows={2}
-												name="descripcionEtapa"
-												value={
-													selectedRow
-														? selectedRow.descripcionEtapa
-														: newRow.descripcionEtapa
-												}
-												placeholder="Aquí va la descripción de la etapa del proceso de selección"
-												onChange={handleInputChange}
-												style={stylesSelect}
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Fecha de inicio:</Form.Label>
-											<Form.Control
-												type="date"
-												name="fechaInicio"
-												value={
-													selectedRow
-														? new Date(selectedRow.fechaInicio)
-																.toISOString()
-																.slice(0, 10)
-														: new Date(newRow.fechaInicio)
-																.toISOString()
-																.slice(0, 10)
-												}
-												onChange={handleInputChange}
-												style={stylesSelect}
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Fecha fin:</Form.Label>
-											<Form.Control
-												type="date"
-												name="fechaFin"
-												value={
-													selectedRow
-														? new Date(selectedRow.fechaFin)
-																.toISOString()
-																.slice(0, 10)
-														: new Date(newRow.fechaFin)
-																.toISOString()
-																.slice(0, 10)
-												}
-												onChange={handleInputChange}
-												style={stylesSelect}
-											/>
-										</Form.Group>
-									</Form>
-								</Modal.Body>
-								<Modal.Footer>
-									<Button variant="secondary" onClick={closeModal}>
-										Cancelar
-									</Button>
-									<Button variant="primary" onClick={handleAddRow}>
-										{selectedRow ? "Guardar Cambios" : "Agregar"}
-									</Button>
-								</Modal.Footer>
-							</Modal>
-						</Form.Group>
-						{/* AQUI termina LA TABLA*/}
-						{/*---------------------------------------------------------------------------- */}
-
-						<Row style={{ position: "static", borderTop: "10rem" }}>
-							<p></p>
-							<p></p>
-							<Form.Group>
-								<Row>
-									<Col
-										md={{
-											span: 2
-										}}>
-										<Button
-											variant="danger"
-											style={{ width: "11rem", maxWidth: "11rem" }}
-											onClick={() => setShowDeleteModal(true)}>
-											Eliminar proceso
-										</Button>
-									</Col>
-									<Col
-										md={{
-											span: 2,
-											offset: 8
-										}}>
-										<Button
-											type="submit"
-											variant="primary"
-											style={{ width: "11rem", maxWidth: "11rem" }}
-											onClick={() => {
-												if (
-													selectedPuestoLaboral != "" &&
-													typeof +cantVacantes == "number" &&
-													+cantVacantes != 0
-												) {
-													setShowSaveModal(true);
-												} else {
-													setIsSelectedNombreOfertaValid(false);
-												}
-											}}>
-											Guardar Cambios
-										</Button>
-									</Col>
-								</Row>
-							</Form.Group>
-						</Row>
-					</Form>
-				</div>
-
-				{/* Modal para crear asignar personal */}
-
-				{/* Modal para Eliminar */}
-				<Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
-					<Modal.Header closeButton>
-						<Modal.Title>Confirmar Eliminación</Modal.Title>
-					</Modal.Header>
-					<Modal.Body>
-						¿Estás seguro de que deseas eliminar esta oferta laboral?
-					</Modal.Body>
-					<Modal.Footer>
-						<Button
-							variant="secondary"
-							onClick={() => setShowDeleteModal(false)}>
-							Cancelar
-						</Button>
-						<Button variant="danger" onClick={handleDelete}>
-							Eliminar
-						</Button>
-					</Modal.Footer>
-				</Modal>
-
-				{/* Modal para Guardar Cambios */}
-				<Modal show={showSaveModal} onHide={() => setShowSaveModal(false)}>
-					<Modal.Header closeButton>
-						<Modal.Title>Guardar Cambios</Modal.Title>
-					</Modal.Header>
-					<Modal.Body>
-						¿Deseas guardar los cambios realizados en la oferta laboral?
-					</Modal.Body>
-					<Modal.Footer>
-						<Button variant="secondary" onClick={() => setShowSaveModal(false)}>
-							Cancelar
-						</Button>
-						<Button variant="primary" onClick={handleSaveChanges}>
-							Guardar
-						</Button>
-					</Modal.Footer>
-				</Modal>
-
-				{showModalBuscador && (
-					<SearchInput
-						onClose={handleCloseBuscadorFromButtom}
-						onSelect={handleOptionSelectBuscador}
-					/>
-				)}
-
-				{showModalBuscadorResponsable && (
-					<SearchInputResponsables
-						onClose={handleCloseBuscadorResponsableFromButtom}
-						onSelect={handleOptionSelectBuscadorResponsable}
-					/>
-				)}
+					</Row>
+				</Form>
 			</div>
+
+			{/* Modal para crear asignar personal */}
+
+			{/* Modal para Eliminar */}
+			<Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+				<Modal.Header closeButton>
+					<Modal.Title>Confirmar Eliminación</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					¿Estás seguro de que deseas eliminar esta oferta laboral?
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+						Cancelar
+					</Button>
+					<Button variant="danger" onClick={handleDelete}>
+						Eliminar
+					</Button>
+				</Modal.Footer>
+			</Modal>
+
+			{/* Modal para Guardar Cambios */}
+			<Modal show={showSaveModal} onHide={() => setShowSaveModal(false)}>
+				<Modal.Header closeButton>
+					<Modal.Title>Guardar Cambios</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					¿Deseas guardar los cambios realizados en la oferta laboral?
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant="secondary" onClick={() => setShowSaveModal(false)}>
+						Cancelar
+					</Button>
+					<Button variant="primary" onClick={handleSaveChanges}>
+						Guardar
+					</Button>
+				</Modal.Footer>
+			</Modal>
+
+			{showModalBuscador && (
+				<SearchInput
+					onClose={handleCloseBuscadorFromButtom}
+					onSelect={handleOptionSelectBuscador}
+				/>
+			)}
+
+			{showModalBuscadorResponsable && (
+				<SearchInputResponsablesNuevo
+					onClose={handleCloseBuscadorResponsableFromButtom}
+					onSelect={handleOptionSelectBuscadorResponsable}
+				/>
+			)}
+		</div>
 	);
 }
 
