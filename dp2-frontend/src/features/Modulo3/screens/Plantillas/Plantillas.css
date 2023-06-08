@@ -61,11 +61,85 @@
 }
 
 .pl-indexFilterElement{
-  margin-left: 20px;
+  margin-left: 0.5em;
 }
 
 .pl-templates{
   display: grid;
   grid-template-columns: repeat(3,1fr);
   grid-gap: 20px;
+}
+
+.boton-subcategorie{
+  border: 1px solid #007bff;
+  width:36px;
+  height:36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-top: 3px;
+  padding-right: 12px;
+}
+
+.input-sub{
+  width: 90%;
+  margin-left: 32px;
+}
+
+.ingreso-sub{
+    display: flex;
+  flex-direction: row;
+}
+.boton-dejar{
+  border: 1px solid #007bff;
+}
+
+.mr-20{
+  margin-right: 20px;
+}
+
+.sub-image{
+  padding-right: 32px;
+}
+
+.dropdown-edit{
+  background-color: white !important;
+  color: black !important;
+  border-color: #ced4da !important; 
+  width: 100%;
+}
+
+.label-estilizado {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.accordionExpPla-bodyitems{
+  margin-left: 20px;
+}
+
+.flex1{
+  flex: 1;
+  padding-right: 32px;
+}
+.notification {
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  opacity: 1;
+  background-color: #ffffff;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
 }

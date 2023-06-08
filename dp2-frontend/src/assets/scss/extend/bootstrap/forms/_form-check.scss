@@ -1,0 +1,90 @@
+@use "sass:math";
+
+.form-check{
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    &-inline{
+        display: inline-flex;
+    }
+    &-label{
+        line-height: $field-check-label-line-height;
+        padding-left: $field-check-label-gap;
+        font-size: $field-check-label-font-size;
+    }
+    &-input{
+        float: none !important;
+        margin-top: math.div($field-check-label-line-height - $field-check-input-size, 2);
+        &:only-child{
+            margin-top: $form-check-margin-bottom;
+            align-self: center;
+        }
+    }
+    &-reverse{
+        flex-direction: row-reverse;
+        .form-check-label{
+            padding-left: 0;
+            padding-right: $field-check-label-gap;
+        }
+    }
+    &-sm{
+        min-height: $field-check-label-line-height-sm;
+        .form-check{
+            &-label{
+                line-height: $field-check-label-line-height-sm;
+                padding-left: $field-check-label-gap-sm;
+                font-size: $field-check-label-font-size-sm;
+            }
+            &-input{
+                margin-top: math.div($field-check-label-line-height-sm - $field-check-input-size-sm, 2);
+                height: $field-check-input-size-sm;
+                width: $field-check-input-size-sm;
+            }
+        }
+        &.form-switch{
+            .form-check-input{
+                width: $field-switch-width-sm;
+            }
+        }
+    }
+    &-lg{
+        min-height: $field-check-label-line-height-lg;
+        .form-check{
+            &-label{
+                line-height: $field-check-label-line-height-lg;
+                padding-left: $field-check-label-gap-lg;
+                font-size: $field-check-label-font-size-lg;
+            }
+            &-input{
+                margin-top: math.div($field-check-label-line-height-lg - $field-check-input-size-lg, 2);
+                height: $field-check-input-size-lg;
+                width: $field-check-input-size-lg;
+            }
+        }
+        &.form-switch{
+            .form-check-input{
+                width: $field-switch-width-lg;
+            }
+        }
+    }
+    &-xl{
+        min-height: $field-check-label-line-height-xl;
+        .form-check{
+            &-label{
+                line-height: $field-check-label-line-height-xl;
+                padding-left: $field-check-label-gap-xl;
+                font-size: $field-check-label-font-size-xl;
+            }
+            &-input{
+                margin-top: math.div($field-check-label-line-height-xl - $field-check-input-size-xl, 2);
+                height: $field-check-input-size-xl;
+                width: $field-check-input-size-xl;
+            }
+        }
+        &.form-switch{
+            .form-check-input{
+                width: $field-switch-width-xl;
+            }
+        }
+    }
+}

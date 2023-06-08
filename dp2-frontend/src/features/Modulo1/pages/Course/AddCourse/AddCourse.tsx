@@ -115,7 +115,7 @@ function AddCourse (props: any)
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'>
+            {/* <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'> */}
                 {
                     loadingInit ?
                         <>
@@ -191,7 +191,7 @@ function AddCourse (props: any)
                             </div>
                         </>
                 }
-            </Sidebar>
+            {/* </Sidebar> */}
 
             <div className="modal fade" id="detailsModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">

@@ -16,7 +16,7 @@ class BasicCard2 extends Component<Props>
     render() {
 
         let imageComp = null;
-        let widthC = '460px';
+        let widthC = "24rem";
 
         if (this.props.image != null) {
             imageComp = (
@@ -100,7 +100,7 @@ class BasicCard2 extends Component<Props>
 
         return (
             <>
-                <div className='basicCard-container' style={{ width: widthC }}>
+                <div className='basicCard-container'>
                     <div className='basicCard-header'>
                         <div className="basicCard-headerLine">
                             <div className='basicCard-imageContainer'>{imageComp}</div>

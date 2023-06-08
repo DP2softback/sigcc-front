@@ -1,6 +1,5 @@
 import * as routes from "@config/paths";
-import { ContinuousEvaluation } from '@assets/icons/ContinuousEvaluation';
-import { PerformanceEvaluation } from '@assets/icons/PerformanceEvaluation';
+import { BsArrowRepeat, BsFileEarmarkRichtext, BsJournalCheck, BsFillBarChartFill } from "react-icons/bs";
 
 const sidebarItems = [
   {
@@ -37,12 +36,22 @@ const sidebarItems = [
   {
     to: routes.CONTINUOS_EVALUATION_INDEX,
     label: "Evaluación continua",
-    icon: <ContinuousEvaluation/>,
+    icon: <BsArrowRepeat />,
   },
   {
     to: routes.PERFORMANCE_EVALUATION_INDEX,
     label: "Evaluación de desempeño",
-    icon: <PerformanceEvaluation/>,
+    icon: <BsJournalCheck />,
+  },
+  {
+    to: routes.EVALUATION_TEMPLATE_INDEX,
+    label: "Plantillas",
+    icon: <BsFileEarmarkRichtext />,
+  },
+  {
+    to: routes.REPORT_CONTINUOS_EVALUATION_INDEX,
+    label: "Reportes",
+    icon: <BsFillBarChartFill />,
   },
 ];
 

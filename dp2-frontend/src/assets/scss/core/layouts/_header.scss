@@ -1,0 +1,109 @@
+
+$header-menu-zindex: 1025;
+// header
+.nk{
+    &-header{
+        z-index: 1024;
+        border-bottom: 1px solid $border-light;
+        background-color: $header-bg;
+        padding: $header-gap-y $header-gap-x;
+        box-shadow: $header-box-shadow;
+        min-height:$header-height;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        &-logo{
+            display: flex;
+            align-items: center;
+        }
+        &-wrap{
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        &-fixed{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            transition: 0.4s;
+            + .nk-content{
+                margin-top: $header-height;
+            }
+        }
+        &.is-theme{
+            background-color: $header-dark;
+        }
+    }
+}
+@include media-breakpoint-up(sm){
+    .nk-header{
+        padding: $header-gap-y $header-gap-x-sm;
+    }
+}
+$navbar-overlay-transition : 400ms ease;
+
+.navbar{
+    &-overlay{
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: $navbar-overlay;
+        z-index: 1025;
+        animation: overlay-fade-out $navbar-overlay-transition 1;
+    }
+    &-shown{
+        overflow: hidden;
+        .navbar-overlay{
+            animation: overlay-fade-in $navbar-overlay-transition 1;
+        }
+    }
+}
+
+@each $point in $points {
+    @include media-breakpoint-up($point){
+       [data-sidebar-collapse="#{$point}"]{
+            .nk-header-logo{
+                display: none;
+            }
+       }
+    }
+}
+
+.nk-navbar{
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: $header-menu-zindex;
+    background: $header-bg;
+    width:$header-menu-width;
+    transform: translateX(100%);
+    height: 100vh;
+    &.navbar-active{
+        transform:none;
+    }
+    &.navbar-mobile{
+        transition: .4s ease;
+    }
+}
+
+@each $point in $points {
+    @include media-breakpoint-up($point){
+       [data-navbar-collapse="#{$point}"]{
+            .nk-navbar{
+                position: static;
+                width: auto;
+                transform:none;
+                height: auto;
+                background-color: transparent;
+                &-toggle{
+                    display: none;
+                }
+            }
+       }
+    }
+}

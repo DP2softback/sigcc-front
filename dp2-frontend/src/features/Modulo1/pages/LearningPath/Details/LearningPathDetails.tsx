@@ -157,7 +157,7 @@ function LearningPathDetails (props: any)
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'>
+            {/* <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'> */}
                 {
                     loading ?
                         <>
@@ -215,7 +215,7 @@ function LearningPathDetails (props: any)
                                             <div className="card h-100">
                                                 <img
                                                     src={course.course_udemy_detail.image_480x270}
-                                                    className="card-img-top"
+                                                    className="card-img-top lp-card-img"
                                                     alt="Card"
                                                 />
                                                 <div className="card-body">
@@ -306,7 +306,7 @@ function LearningPathDetails (props: any)
                             </div>
                         </>
                 }
-            </Sidebar>
+            {/* </Sidebar> */}
             <LearningPathAssignment assignFunction={handleAssignEmployees} />
             {
                 coursesQuizStatuses.includes(0) ?

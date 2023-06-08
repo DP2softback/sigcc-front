@@ -46,7 +46,7 @@ const M1TrainingDetails = Loader(
 );
 
 const M1TrainingAttendance = Loader(
-  lazy(() => import('@features/Modulo1/pages/Training/Attendance'))
+  lazy(() => import("@features/Modulo1/pages/Training/Attendance"))
 );
 
 const M1TrainingAssignment = Loader(
@@ -54,15 +54,19 @@ const M1TrainingAssignment = Loader(
 );
 
 const M1ListLearningPathE = Loader(
-  lazy(() => import('@features/Modulo1/pages/EmployeeView/LearningPath'))
+  lazy(() => import("@features/Modulo1/pages/EmployeeView/LearningPath"))
+);
+
+const M1ListLearningPathEDetails = Loader(
+  lazy(() => import("@features/Modulo1/pages/EmployeeView/LearningPath/Details"))
 );
 
 const M1ListTrainingE = Loader(
-  lazy(() => import('@features/Modulo1/pages/EmployeeView/Training'))
+  lazy(() => import("@features/Modulo1/pages/EmployeeView/Training"))
 );
 
 const M1TrainingEDetails = Loader(
-  lazy(() => import('@features/Modulo1/pages/EmployeeView/Training/Details'))
+  lazy(() => import("@features/Modulo1/pages/EmployeeView/Training/Details"))
 );
 
 const ConfigSelectionProcess = Loader(
@@ -71,6 +75,10 @@ const ConfigSelectionProcess = Loader(
 
 const ConfigOfertaLaboral = Loader(
   lazy(() => import("@features/Modulo4/pages/ConfigOfertaLaboral"))
+);
+
+const ConfigProcesoSeleccion = Loader(
+  lazy(() => import("@features/Modulo4/pages/ConfigProcesoSeleccion"))
 );
 
 const EvaluacionContinuaIndex = Loader(
@@ -109,6 +117,33 @@ const GestionDeCompetencias = Loader(
   lazy(() => import("@features/Modulo2/Components/GestionDeCompetencias/Read"))
 );
 
+const JobOpportunitiesRelatedToSkills = Loader(
+  lazy(
+    () =>
+      import(
+        "@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/index"
+      )
+  )
+);
+
+const JobOpportunitiesHumanResources = Loader(
+  lazy(
+    () =>
+      import(
+        "@features/Modulo2/Components/JobOpportunitiesHumanResources/index"
+      )
+  )
+);
+
+const JobOpportunitiesHRCandidates = Loader(
+  lazy(
+    () =>
+      import(
+        "@features/Modulo2/Components/JobOpportunitiesHumanResources/JobOpportunityCandidates"
+      )
+  )
+);
+
 const EvaluationTemplateIndex = Loader(
   lazy(() => import("@features/Modulo3/screens/Plantillas/Index"))
 );
@@ -143,6 +178,39 @@ const VisualizacionBrechasEmpleado = Loader(
       import("@features/Modulo2/Components/VisualizacionBrechasEmpleado/Read")
   )
 );
+
+const ConfigPosition = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo4/pages/JobPositions/ConfigPosition")
+  )
+);
+
+const CreateJobOffer = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo4/pages/JobPositions/CreateJobOffer")
+  )
+);
+
+const JobOpportunitiesSelected = Loader(
+  lazy(() => import("@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/JobOpportunitySelected"))
+);
+
+const EstadisticasCompetencias = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/ConsolidadoCompetencias")
+  )
+);
+
+const DetalleCompetenciasArea = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/DetalleCompetenciasArea")
+  )
+);
+
 
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
@@ -200,17 +268,17 @@ const routes: RouteObject[] = [
             element: <M1TrainingCreate />,
           },
           {
-            path: 'detalle/:trainingID',
-            children:[
+            path: "detalle/:trainingID",
+            children: [
               {
-                path: '',
+                path: "",
                 element: <M1TrainingDetails />,
               },
               {
-                path: 'asistencia/:sessionID',
-                element: <M1TrainingAttendance />
+                path: "asistencia/:sessionID",
+                element: <M1TrainingAttendance />,
               },
-            ]
+            ],
           },
           {
             path: "asignacion/:trainingID",
@@ -219,38 +287,62 @@ const routes: RouteObject[] = [
         ],
       },
       {
-        path: 'empleado',
+        path: "empleado",
         children: [
           {
-            path: '',
-            element: <M1ListLearningPathE />
-          },  
-          {
-            path: 'rutadeaprendizaje',
-            element: <M1ListLearningPathE />
+            path: "",
+            element: <M1ListLearningPathE />,
           },
           {
-            path: 'cursoempresa',
+            path: "rutadeaprendizaje",
             children: [
               {
-                path: '',
-                element: <M1ListTrainingE />
+                path: "",
+                element: <M1ListLearningPathE />,
               },
               {
-                path: 'sessions/:trainingID',
-                element: <M1TrainingEDetails />
-              }
-            ]
+                path: "detalle/:learningPathId",
+                element: <M1ListLearningPathEDetails />,
+              },
+            ],
           },
-        ]
+
+          {
+            path: "cursoempresa",
+            children: [
+              {
+                path: "",
+                element: <M1ListTrainingE />,
+              },
+              {
+                path: "sessions/:trainingID",
+                element: <M1TrainingEDetails />,
+              },
+            ],
+          },
+        ],
       },
-    ]
+    ],
   },
+
   {
-    path: "skillManagement",
+    path: "modulo4",
     children: [
       {
-        path: "continuousEvaluation",
+        path: "configurar-oferta-laboral",
+        element: <ConfigOfertaLaboral />,
+      },
+      {
+        path: "configurar-proceso-seleccion",
+        element: <ConfigProcesoSeleccion />,
+      },
+    ],
+  },
+  {
+    path: "skill-management",
+    children: [
+      {
+        path: "continuous-evaluation",
         children: [
           {
             path: "index",
@@ -271,7 +363,7 @@ const routes: RouteObject[] = [
         ],
       },
       {
-        path: "performanceEvaluation",
+        path: "performance-evaluation",
         children: [
           {
             path: "index",
@@ -292,7 +384,7 @@ const routes: RouteObject[] = [
         ],
       },
       {
-        path: "evaluationTemplate",
+        path: "evaluation-template",
         children: [
           {
             path: "index",
@@ -321,21 +413,73 @@ const routes: RouteObject[] = [
         path: "report",
         children: [
           {
-            path: "continuousEvaluation",
+            path: "continuous-evaluation",
             element: <ReporteEvaluacionContinua />,
           },
           {
-            path: "performanceEvaluation",
+            path: "performance-evaluation",
             element: <ReporteEvaluacionDesempenho />,
+          },
+        ],
+      },
+      {
+        path: "selection-process",
+        children: [
+          {
+            path: "create",
+            element: <ConfigSelectionProcess />,
+          },
+          {
+            path: "portal-create-job",
+            element: <ConfigOfertaLaboral />
+          },
+          {
+            path: "test",
+            element: <CreateJobOffer />
+          },
+          {
+            path: "test2",
+            element: <ConfigPosition />
           }
         ],
       },
+    ],
+  },
+  {
+    path: "modulo2-skill-management",
+    children: [
       {
         path: "employeesGaps",
         children: [
           {
             path: "index",
             element: <VisualizacionBrechasEmpleado />,
+          },
+        ],
+      },
+      {
+        path: "jobOpportunitiesRelatedToSkills",
+        children: [
+          {
+            path: "index",
+            element: <JobOpportunitiesRelatedToSkills />,
+          },
+          {
+            path: "selectedJob",
+            element: <JobOpportunitiesSelected/>,
+          },
+        ],
+      },
+      {
+        path: "JobOpportunitiesHumanResources",
+        children: [
+          {
+            path: "index",
+            element: <JobOpportunitiesHumanResources />,
+          },
+          {
+            path: "selectedJob",
+            element: <JobOpportunitiesHRCandidates/>,
           },
         ],
       },
@@ -348,8 +492,34 @@ const routes: RouteObject[] = [
           },
         ],
       },
-    ],
+      
+      {
+        path: "showAreaStatistics",
+        children: [
+          {
+            path: "index",
+            element: <EstadisticasCompetencias></EstadisticasCompetencias>,
+          },
+
+          {
+            path: "showStatsPerArea",
+            element: <DetalleCompetenciasArea></DetalleCompetenciasArea>,
+          },
+
+          {
+            path: "showEmployeeCompetencies",
+            element: <span>poner la pantalla de competencias de un empleado</span>,
+          },
+
+          {
+            path: "showEmployeeNecessities",
+            element: <span> poner la pantalla de necesidades de empleado por area</span>,
+          },
+        ],
+      },
+    ]
   },
+  
 ];
 
 export default routes;

@@ -1,88 +1,93 @@
 import "./Matrix.css";
-import RadioButton from "../RadioButton/RadioButton";
+import RadioButton from "@features/Modulo3/components/Shared/RadioButton/RadioButton";
 import { useEffect, useState } from "react";
 
 type MatrixProps = {
-  header: string[];
-  rows: string[];
-  evaluation?: number[];
-  isReadOnly?: boolean;
+	header: string[];
+	rows: any[];
+	evaluation?: any;
+	setEvaluation?: any;
+	isReadOnly?: boolean;
 };
 
-const Matrix = ({ header, rows, evaluation, isReadOnly }: MatrixProps) => {
-  const [newEvaluation, setEvaluation] = useState(evaluation != null ? evaluation : []);
+const Matrix = ({header, rows, evaluation, setEvaluation, isReadOnly}: MatrixProps) => {
+	const headerStyle = `matrixHeader ${isReadOnly ? "matrixWhiteReadOnly" : ""}`;
+	const blueBackgroundColor = isReadOnly ? "matrixBlueReadOnly" : "matrixRowBGBlue";
+	const whiteBackgroundColor = isReadOnly ? "matrixWhiteReadOnly" : "matrixRowBGWhite";
 
-  const headerStyle = `matrixHeader ${isReadOnly ? 'matrixWhiteReadOnly' : ''}`;
+	const headerComponent = (
+		<div className={headerStyle}>
+			{header.map((item) => {
+				return (
+					<div className="matrixHeaderItem" key={item}>
+						{item}
+					</div>
+				);
+			})}
+		</div>
+	);
 
-  function changeEvaluation(index: number, value: number) {
-    let modEvaluation = [...newEvaluation];
-    modEvaluation[index] = value;
-    setEvaluation(modEvaluation);
-  }
+	const bodyComponent = (
+		<div className="matrixBody">
+			{rows.map((row, categoryIndex) => {
+				return displayRow(categoryIndex, row, header);
+			})}
+		</div>
+	);
 
-  function getBackgroundColor(categoryIndex: number) {
-    return isReadOnly
-      ? categoryIndex % 2 == 0
-        ? "matrixBlueReadOnly"
-        : "matrixWhiteReadOnly"
-      : categoryIndex % 2 == 0
-        ? "matrixRowBGBlue"
-        : "matrixRowBGWhite";
-  }
+	function displayRow(categoryIndex: number, row: any, header: string[]) {
+		const rowStyle = `matrixRow ${getBackgroundColor(categoryIndex)}`;
+		return (
+			<div key={categoryIndex} className={rowStyle}>
+				<div className="matrixRowName">{row.name}</div>
+				{header.map((item, optionIndex) => {
+					return (
+						<div className="matrixRowRadio" key={item}>
+							<RadioButton
+								parentIndex={row.id}
+								optionIndex={optionIndex}
+								value={
+									evaluation.subcategories.find(
+										(sub) => sub.id == row.id
+									).score == optionIndex
+								}
+								handleClick={changeEvaluation}
+								isReadOnly={isReadOnly}
+							/>
+						</div>
+					);
+				})}
+			</div>
+		);
+	}
 
-  function displayRow(categoryIndex: number, row: string, header: string[], changeEvaluation: (index: number, value: number) => void) {
-    const rowStyle = `matrixRow ${getBackgroundColor(categoryIndex)}`;
-    return (
-      <div key={categoryIndex} className={rowStyle}>
-        <div className="matrixRowName">{row}</div>
-        {header.map((item, optionIndex) => {
-          return (
-            <div className="matrixRowRadio" key={item}>
-              <RadioButton
-                parentIndex={categoryIndex}
-                optionIndex={optionIndex}
-                value={newEvaluation[categoryIndex] == optionIndex}
-                handleClick={changeEvaluation}
-                isReadOnly={isReadOnly}
-              />
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
+	function getBackgroundColor(categoryIndex: number) {
+		return categoryIndex % 2 == 0 ? blueBackgroundColor : whiteBackgroundColor;
+	}
 
-  const headerComponent = (
-    <div className={headerStyle}>
-      {header.map((item) => {
-        return (
-          <div className="matrixHeaderItem" key={item}>
-            {item}
-          </div>
-        );
-      })}
-    </div>
-  );
+	function changeEvaluation(id: number, value: number) {
+		setEvaluation((prevState) => ({
+			...prevState,
+			subcategories: prevState.subcategories.map(
+				(subcategory) => {
+					if (subcategory.id === id) {
+						return {
+							...subcategory,
+							score: value
+						};
+					}
+					return subcategory;
+				}
+			)
+		}));
+	}
 
-  const bodyComponent = (
-    <div className="matrixBody">
-      {rows.map((row, categoryIndex) => {
-        return displayRow(categoryIndex, row, header, changeEvaluation);
-      })}
-    </div>
-  );
-
-  useEffect(() => {
-    if(!isReadOnly) setEvaluation([]);
-  }, [rows])
-
-  return (
-    <div>
-      {headerComponent}
-      {bodyComponent}
-    </div>
-  );
+	return (
+		<div>
+			{headerComponent}
+			{bodyComponent}
+		</div>
+	);
 };
 
 export default Matrix;
-

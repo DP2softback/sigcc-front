@@ -22,8 +22,8 @@
 }
 
 .matrixRow{
-  padding: 0px 40px 0px 16px;
-  height: 54px;
+  padding: 5px 40px 5px 16px;
+  min-height: 54px;
   display: flex;
   flex-direction: row;
 }

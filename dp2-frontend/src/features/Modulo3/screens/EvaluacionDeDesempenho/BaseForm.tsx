@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Button } from 'react-bootstrap';
 import { useState } from 'react';
-import { PERFORMANCE_EVALUATION_INDEX } from '@config/paths';
+import { PERFORMANCE_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
 
 type BaseFormProps = {
   employee: any;

@@ -1,2 +1,2 @@
-import LearningPath from "./LearningPath";
-export default LearningPath;
+import LearningPathE from "./LearningPathE";
+export default LearningPathE;

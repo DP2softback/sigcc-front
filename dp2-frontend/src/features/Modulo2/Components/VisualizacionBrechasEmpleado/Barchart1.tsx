@@ -1,7 +1,5 @@
 import React from 'react'
 import { Bar } from 'react-chartjs-2'
-
-
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -12,7 +10,6 @@ import {
     Legend,
 } from 'chart.js';
 
-
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -21,26 +18,44 @@ ChartJS.register(
     Tooltip,
     Legend 
 );
-//const colorsLineDefault = [ 'rgba(251,227,142,0.7)', 'rgba(154,137,255,0.7)','rgba(254,208,238,0.7)','rgba(208,232,255,0.7)','rgba(169,244,208,0.7)'] //Amarrillo, Morado, Rosado, celeste y Verde
-//MUY BAJO: 1 MUY ALTO: 5
+
 const labelsXDefault = ['Programación en Java', 'Liderazgo', 'Programación', 'Uso de Microsoft Word', 'Innovación', 'Gestión del Tiempo'];
-const dataBar = {
-    labels: labelsXDefault,
-    datasets: [
-        {
-          label: 'Nivel Requerido',
-          data: [2,4,3,4,3,2],
-          backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        },
-        {
-          label: 'Nivel Alcanzado',
-          data: [3,4,4,4,3,3],
-          backgroundColor: 'rgba(53, 162, 235, 0.5)',
-        },
+// const dataBar = {
+//     labels: labelsXDefault,
+//     datasets: [
+//         {
+//           label: 'Nivel Requerido',
+//           data: [2,4,3,4,3,2],
+//           backgroundColor: 'rgba(255, 99, 132, 0.5)',
+//         },
+//         {
+//           label: 'Nivel Alcanzado',
+//           data: [3,4,4,4,3,3],
+//           backgroundColor: 'rgba(53, 162, 235, 0.5)',
+//         },
        
-      ],
+//       ],
     
+// };
+
+var dataBar = {
+  labels: labelsXDefault,
+  datasets: [
+      {
+        label: 'Nivel Requerido',
+        data: [],
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      },
+      {
+        label: 'Nivel Alcanzado',
+        data: [],
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      },
+     
+    ],
+  
 };
+
 const optionsBar = {
     responsive: true,
     plugins: {
@@ -94,23 +109,45 @@ const hardcode = [
     { nombre: 'Trabajo Bajo Presión',  nivelActual: 'Bajo', nivelRequerido: 'Alto'  },
 ];
  */
-const BarChart1 = () => {
+const BarChart1 = (props) => {
+    const { dataBarProps } = props;
+    const [dataBarTot, setDataBarTot] = React.useState({labels: null, datasets: []}); 
 
-    const dataInfo = [
-    { descripcion: 'Programación en Java', values: [1, 3, 2, 2, 3, 5] },
-    { descripcion: 'Liderazgo', values: [4, 1, 3, 5, 3, 4] },
-    { descripcion: 'Programación modular', values: [2, 5, 1, 2, 3, 4] },
-    { descripcion: 'Innovación', values: [5, 3, 4, 3, 2, 5] },
-    { descripcion: 'Gestión del Tiempo', values: [3, 2, 2, 1, 5, 5] }
-    ]
-
-    
+    React.useEffect(() => {
+      if(dataBarProps !== null){
+        var labelsTab = [];
+        var dataBarReq = [];
+        var dataBarAlc = [];
+        for(var i=0; i<dataBarProps.length; i++){
+          labelsTab.push(dataBarProps[i].competence__name)
+          dataBarReq.push(dataBarProps[i].levelRequired)
+          dataBarAlc.push(dataBarProps[i].levelCurrent)
+        }
+        setDataBarTot({
+          labels: labelsTab,
+          datasets: [
+            {
+              label: 'Nivel Requerido',
+              data: dataBarReq,
+              backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            },
+            {
+              label: 'Nivel Alcanzado',
+              data: dataBarAlc,
+              backgroundColor: 'rgba(53, 162, 235, 0.5)',
+            },
+          ]
+        })
+      }
+      
+    }, [dataBarProps])
 
     return (
         <div className='chart'>
-            <Bar data={dataBar} options={optionsBar} style={{display: 'flex'}} />
+            <Bar data={dataBarTot} options={optionsBar} style={{display: 'flex'}} />
         </div>
     )
 }
 
 export default BarChart1;
+

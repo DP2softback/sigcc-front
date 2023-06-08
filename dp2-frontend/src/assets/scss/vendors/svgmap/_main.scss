@@ -1,0 +1,7 @@
+@import 'variables';
+@import 'map';
+@import 'tooltip';
+
+.js-svgmap-zoom-off .svgMap-map-controls-wrapper {
+    display: none;
+}

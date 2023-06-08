@@ -1,22 +1,12 @@
-import { useState } from 'react'
-import { useRoutes } from 'react-router-dom';
-import { AuthProvider } from '@contexts/TokenAuthContext';
-import routes from '@config/router';
-import Authenticated from '@components/Authenticated';
+import { useRoutes } from "react-router-dom";
+import store from "@redux/store";
+import { Provider } from "react-redux";
+import router from "@routes/router";
 
-const App = () => {
+const App: React.FC = () => {
+	const content = useRoutes(router);
 
-  const content = useRoutes(routes);
-
-  return (
-    <>
-      <AuthProvider>
-        <Authenticated>
-          { content }
-        </Authenticated>
-      </AuthProvider>
-    </>
-  )
-}
+	return <Provider store={store}>{content}</Provider>;
+};
 
 export default App;

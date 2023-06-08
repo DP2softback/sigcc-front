@@ -1,6 +1,6 @@
 import moment from 'moment'
-import { Calendar2Event, Clipboard2Check, GeoFill, JournalBookmarkFill, PeopleFill } from 'react-bootstrap-icons'
-import { Props, SessionObj, TopicObj } from './SessionAccordion.types'
+import { Calendar2Event, Clipboard2Check, GeoFill, JournalBookmarkFill, PeopleFill, PersonBadge } from 'react-bootstrap-icons'
+import { Props, SessionObj, SupplierObj, TopicObj } from './SessionAccordion.types'
 import { Link } from 'react-router-dom'
 
 let dateNow = moment(new Date()).format("DD/MM/YYYY")
@@ -86,15 +86,35 @@ const SessionAccordion = (Props: Props) => {
                                                     <p style={{textAlign: "justify"}}>{session.descripcion}</p>
                                                     <p><GeoFill /><b style={{ paddingLeft: "0.5rem" }}>Ubicación:</b> {session.ubicacion}</p>
                                                     <p><PeopleFill /><b style={{ paddingLeft: "0.5rem" }}>Aforo máximo:</b> {session.aforo_maximo}</p>
+                                                    <p><PersonBadge /><b style={{ paddingLeft: "0.5rem" }}>Responsables de la sesión:</b></p>
+                                                    {
+                                                        session.responsables.map((supplier: SupplierObj, i: number) => {
+                                                            return(
+                                                                <div className='row' key={i}>
+                                                                    <div className='col mb-2'>
+                                                                        <strong>{i+1}.</strong> {supplier.nombres + " " + supplier.apellidos}
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        })
+                                                    }
                                                 </div>
                                                 <div className='col-6' style={{borderLeftStyle: "groove", paddingLeft: "1rem"}}>
                                                     <div className='row mb-3'>
                                                         <div className='col'>
                                                             <p><JournalBookmarkFill /><b style={{ paddingLeft: "0.5rem" }}>Temas de la sesión</b></p>
                                                         </div>
-                                                        <div style={{ flex: '0 0 15rem' }} className='col text-end'>
-                                                            {compareDates(dateNow, moment(session.fecha_inicio).format("DD/MM/YYYY"), session.id)}
-                                                        </div>
+                                                        {
+                                                            Props.mode === ("create" || "detailEmp") ? 
+                                                            (<></>) 
+                                                            : 
+                                                            (
+                                                                <div style={{ flex: '0 0 15rem' }} className='col text-end'>
+                                                                    {compareDates(dateNow, moment(session.fecha_inicio).format("DD/MM/YYYY"), session.id)}
+                                                                </div>
+                                                            )
+                                                        }
+                                                        
                                                     </div>                                                    
                                                     {
                                                         session.temas.map((topic: TopicObj, i: number) => {
@@ -122,6 +142,18 @@ const SessionAccordion = (Props: Props) => {
                                                                 <div className='row' key={i}>
                                                                     <div className='col mb-2'>
                                                                         <strong>{i+1}.</strong> {topic.nombre}
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        })
+                                                    }
+                                                    <p><PersonBadge /><b style={{ paddingLeft: "0.5rem" }}>Responsables de la sesión:</b></p>
+                                                    {
+                                                        session.responsables.map((supplier: SupplierObj, i: number) => {
+                                                            return(
+                                                                <div className='row' key={i}>
+                                                                    <div className='col mb-2'>
+                                                                        <strong>{i+1}.</strong> {supplier.nombres + " " + supplier.apellidos}
                                                                     </div>
                                                                 </div>
                                                             )

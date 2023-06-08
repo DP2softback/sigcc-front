@@ -1,0 +1,14 @@
+// progress size
+$progress-size:
+"xs"    4px,
+"sm"    6px,
+"md"    8px,
+"rg"    10px,
+"lg"    12px,
+"xl"    16px;
+
+@each $name, $value in $progress-size {
+    .progress-#{$name}{
+        height: $value;
+    }
+}

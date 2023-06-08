@@ -3,9 +3,18 @@
 	background-color: #E7F1FF;
 }
 
-.TableHistoryContinua{
-    .icono{
-        align-content: center;
-        padding-left: 5%;
-    }
+.bg-white {
+	background-color: white;
+}
+
+.bg-whiteReadOnly {
+	background-color: #E9ECEF !important;
+}
+
+.bg-blue {
+	background-color: #E7F1FF;
+}
+
+.bg-blueReadOnly {
+	background-color: white !important;
 }
