@@ -185,8 +185,8 @@ function ConfigOfertaLaboral(props: any) {
 					<h1>Configurar oferta laboral</h1>
 					<p>
 						<small className="opacity-50" style={{ marginBottom: "10rem" }}>
-							Portal que presenta la configuración disponible para el proceso de
-							selección de una oferta laboral.
+							Portal que presenta la configuración disponible para la oferta
+							laboral de un proceso de selección.
 						</small>
 					</p>
 				</div>

@@ -47,10 +47,24 @@ const SearchInput = ({ onClose, onSelect }) => {
 		// Lógica para realizar la búsqueda y actualizar los resultados
 
 		const results = [
-			{ id: 1, nombre: "Puesto 1", fecha: "2023-03-04" },
-			{ id: 2, nombre: "Puesto 2", fecha: "2023-03-04" },
-			{ id: 3, nombre: "Puesto 3", fecha: "2023-03-04" },
-			{ id: 4, nombre: "Puesto 4", fecha: "2023-03-04" }
+			{ id: 1, nombre: "Ingeniero de Software Senior", fecha: "2023-03-04" },
+			{ id: 2, nombre: "Desarrollador Full Stack", fecha: "2023-03-05" },
+			{
+				id: 3,
+				nombre: "Especialista en Marketing Digital",
+				fecha: "2023-03-06"
+			},
+			{ id: 4, nombre: "Analista de Datos", fecha: "2023-03-07" },
+			{ id: 5, nombre: "Diseñador UX/UI", fecha: "2023-03-08" },
+			{ id: 6, nombre: "Project Manager", fecha: "2023-03-09" },
+			{ id: 7, nombre: "Consultor Financiero", fecha: "2023-03-10" },
+			{
+				id: 8,
+				nombre: "Especialista en Recursos Humanos",
+				fecha: "2023-03-11"
+			},
+			{ id: 9, nombre: "Técnico de Soporte IT", fecha: "2023-03-12" },
+			{ id: 10, nombre: "Ingeniero de Redes", fecha: "2023-03-13" }
 		];
 		setSearchResults(results);
 		setFilteredResults(
@@ -125,9 +139,8 @@ const SearchInput = ({ onClose, onSelect }) => {
 									backgroundColor: "white"
 								}}>
 								<tr>
-									<th style={{ width: "2rem" }}>ID</th>
-									<th style={{ width: "1rem" }}>Fecha de creación</th>
-									<th style={{ width: "3rem" }}>Nombre</th>
+									<th style={{ width: "0.2rem" }}>Fecha de creación</th>
+									<th style={{ width: "12rem" }}>Nombre</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -138,7 +151,6 @@ const SearchInput = ({ onClose, onSelect }) => {
 										className={
 											selectedResult === result.nombre ? "selected" : ""
 										}>
-										<td>{result.id}</td>
 										<td>{result.fecha}</td>
 										<td>{result.nombre}</td>
 									</tr>

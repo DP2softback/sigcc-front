@@ -18,7 +18,7 @@ import { SELECTION_PROCESS_AND_JOB_OFFERS_MODULE,
 const defaultRoutes: RouteObject[] = [
 	{
 		path: "/",
-		element: <Navigate to={`${SELECTION_PROCESS_AND_JOB_OFFERS_MODULE}/${JOB_OFFERS}/${CREATE_JOB_OFFER}`} replace />
+		element: <Navigate to={`${SELECTION_PROCESS_AND_JOB_OFFERS_MODULE}/${JOB_OFFERS}/${LIST_JOB_OFFERS}`} replace />
 	},
 	{
 		path: "login",
