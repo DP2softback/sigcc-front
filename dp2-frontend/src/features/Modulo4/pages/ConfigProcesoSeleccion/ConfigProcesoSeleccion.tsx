@@ -553,7 +553,9 @@ function ConfigProcesoSeleccion(props: any) {
 							<Modal show={showModal} onHide={closeModal}>
 								<Modal.Header closeButton>
 									<Modal.Title>
-										{selectedRow ? "Editar Información" : "Agregar Información"}
+										{selectedRow
+											? "Editar Información de la etapa"
+											: "Agregar Información de la etapa"}
 									</Modal.Title>
 								</Modal.Header>
 								<Modal.Body>
@@ -605,7 +607,8 @@ function ConfigProcesoSeleccion(props: any) {
 												id="passwordHelpBlock"
 												muted
 												style={{ fontSize: "0.8rem", maxHeight: "2rem" }}>
-												* Una vez creado no se puede modificar el tipo de etapa.
+												* Una vez seleccionado no se puede modificar el tipo de
+												etapa.
 											</Form.Label>
 										</Form.Group>
 										<Form.Group>
