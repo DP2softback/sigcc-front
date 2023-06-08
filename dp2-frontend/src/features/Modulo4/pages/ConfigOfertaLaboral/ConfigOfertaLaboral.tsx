@@ -13,7 +13,6 @@ import {
 	FormLabel,
 	FormSelect
 } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Table, Button, Modal } from "react-bootstrap";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -22,7 +21,7 @@ import { Fragment, ChangeEvent, useEffect, useRef, useState } from "react";
 import Sidebar from "@components/Sidebar";
 import sidebarItems from "../../utils/sidebarItems";
 import PhotoCard from "@features/Modulo4/components/PhotoCard";
-import SearchInput from "@features/Modulo4/components/SearchInput";
+import SearchInput from "./SearchInputOfertaLaboral/SearchInput";
 import CustomInput from "@features/Modulo4/components/CustomInput";
 import { TextCenter } from "react-bootstrap-icons";
 
@@ -84,6 +83,7 @@ function ConfigOfertaLaboral(props: any) {
 
 	// NombreOferta
 	const [selectedNombreOferta, setSelectedNombreOferta] = useState("");
+	const [selectedNombreOfertaFijo, setSelectedNombreOfertaFijo] = useState("");
 	const [isSelectedNombreOfertaValid, setIsSelectedNombreOfertaValid] =
 		useState(true);
 
@@ -151,7 +151,8 @@ function ConfigOfertaLaboral(props: any) {
 	};
 	const handleOptionSelectBuscador = (selectedOption) => {
 		console.log(selectedOption);
-		setSelectedNombreOferta(selectedOption);
+		setSelectedNombreOferta(selectedOption.nombre + " - Oferta laboral");
+		setSelectedNombreOfertaFijo(selectedOption.nombre);
 		setIsSelectedNombreOfertaValid(true);
 	};
 
@@ -174,7 +175,6 @@ function ConfigOfertaLaboral(props: any) {
 	};
 
 	return (
-		<Sidebar items={sidebarItems} active="/modulo1/configurar-oferta-laboral">
 			<div
 				style={{
 					paddingLeft: "2rem",
@@ -249,24 +249,36 @@ function ConfigOfertaLaboral(props: any) {
 						<div className="col-9">
 							<Form.Group as={Row} controlId="validationCustom01">
 								<Form.Group xs={10} as={Col} controlId="formGridCity">
-									<Form.Label>Nombre del proceso de seleccion: (*)</Form.Label>
+									<Form.Label style={{ fontSize: "15px" }}>
+										Nombre de la oferta laboral para un proceso de seleccion:
+										(*)
+									</Form.Label>
 									<Row>
-										<Col xs="10">
+										<Col xs="8">
 											<Form.Control
 												as="textarea"
 												type="text"
-												placeholder="Especificar el nombre del proceso de seleccion"
+												placeholder="Especificar el nombre de la oferta laboral"
 												value={selectedNombreOferta}
 												required
 												onChange={handleNombreOferta}
 												rows={3}
-												//disabled
+												disabled={selectedNombreOferta == "" ? true : false}
 												//readOnly // Hace que el input sea de solo lectura
 												className={
 													!isSelectedNombreOfertaValid ? "is-invalid" : ""
 												}
 											/>
 											<Form.Control.Feedback></Form.Control.Feedback>
+										</Col>
+										<Col xs="2">
+											<Form.Control
+												as="textarea"
+												type="text"
+												placeholder="Nombre proceso selección"
+												value={selectedNombreOfertaFijo}
+												rows={3}
+												readOnly={true}></Form.Control>
 										</Col>
 										<Col>
 											<Button onClick={handleShowBuscadorFromButtom}>
@@ -304,7 +316,9 @@ function ConfigOfertaLaboral(props: any) {
 							</Form.Group>
 							<Row>
 								<Form.Group className="mb-3">
-									<Form.Label>Introducción a la oferta laboral:</Form.Label>
+									<Form.Label style={{ fontSize: "15px" }}>
+										Introducción a la oferta laboral:
+									</Form.Label>
 									<Form.Control
 										as="textarea"
 										type="text"
@@ -321,7 +335,9 @@ function ConfigOfertaLaboral(props: any) {
 								<Form.Group
 									className="mb-3"
 									controlId="exampleForm.ControlTextarea1">
-									<Form.Label>Descripción del puesto:</Form.Label>
+									<Form.Label style={{ fontSize: "15px" }}>
+										Descripción del puesto:
+									</Form.Label>
 									<Form.Control
 										as="textarea"
 										placeholder="Descripción del puesto."
@@ -337,7 +353,9 @@ function ConfigOfertaLaboral(props: any) {
 								<Form.Group
 									className="mb-3"
 									controlId="exampleForm.ControlTextarea1">
-									<Form.Label>Descripción de las responsabilidades:</Form.Label>
+									<Form.Label style={{ fontSize: "15px" }}>
+										Descripción de las responsabilidades:
+									</Form.Label>
 									<Form.Control
 										as="textarea"
 										placeholder="Descripción de las responsabilidades."
@@ -433,7 +451,6 @@ function ConfigOfertaLaboral(props: any) {
 					</Form>
 				</div>
 			</div>
-		</Sidebar>
 	);
 }
 

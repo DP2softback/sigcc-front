@@ -47,10 +47,10 @@ const SearchInput = ({ onClose, onSelect }) => {
 		// Lógica para realizar la búsqueda y actualizar los resultados
 
 		const results = [
-			{ id: 1, nombre: "Puesto 1", fecha: "2023-03-04" },
-			{ id: 2, nombre: "Puesto 2", fecha: "2023-03-04" },
-			{ id: 3, nombre: "Puesto 3", fecha: "2023-03-04" },
-			{ id: 4, nombre: "Puesto 4", fecha: "2023-03-04" }
+			{ id: 1, nombre: "Puesto 1 - Proceso seleccion", fecha: "A" },
+			{ id: 2, nombre: "Puesto 2 - Proceso seleccion", fecha: "A" },
+			{ id: 3, nombre: "Puesto 3 - Proceso seleccion", fecha: "A" },
+			{ id: 4, nombre: "Puesto 4 - Proceso seleccion", fecha: "A" }
 		];
 		setSearchResults(results);
 		setFilteredResults(

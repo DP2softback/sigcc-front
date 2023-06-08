@@ -1,27 +1,42 @@
-import { useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import useAuth from '@hooks/useAuth';
-import Login from '@components/Login/Login';
+import { useState } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentToken, selectCurrentUser } from "@redux/slices/authSlice";
+import Login from "@components/Login/Login";
+import { Roles } from "@routes/types/roles";
 
-const Authenticated = (props) => {
-  const { children } = props;
-  const auth = useAuth();
-  const location = useLocation();
-  const [requestedLocation, setRequestedLocation] = useState(null);
+type AuthenticatedProps = {
+	children?: React.ReactNode;
+	allowedRoles: Roles[];
+};
 
-  if (!auth.isAuthenticated) {
-    if (location.pathname !== requestedLocation) {
-      setRequestedLocation(location.pathname);
-    }
-    return <Login />;
-  }
+const Authenticated: React.FC<AuthenticatedProps> = (
+	props: AuthenticatedProps
+) => {
+	const user = useSelector(selectCurrentUser);
+	const token = useSelector(selectCurrentToken);
 
-  if (requestedLocation && location.pathname !== requestedLocation) {
-    setRequestedLocation(null);
-    return <Navigate to={requestedLocation} />;
-  }
+	const location = useLocation();
+	const [requestedLocation, setRequestedLocation] = useState(null);
 
-  return <>{children}</>;
+	if (
+		!user?.roles?.find((role) =>
+			props.allowedRoles?.includes(Roles.HR_ADMIN)
+		) ||
+		!token
+	) {
+		if (location.pathname !== requestedLocation) {
+			setRequestedLocation(location.pathname);
+		}
+		return <Login />;
+	}
+
+	if (requestedLocation && location.pathname !== requestedLocation) {
+		setRequestedLocation(null);
+		return <Navigate to={requestedLocation} />;
+	}
+
+	return <Navigate to={"/"} />;
 };
 
 export default Authenticated;
