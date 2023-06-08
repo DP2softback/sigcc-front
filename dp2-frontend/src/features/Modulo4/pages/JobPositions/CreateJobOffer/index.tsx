@@ -7,8 +7,9 @@ const CreateJobOffer = () => {
 	
 
 	return (
-		<PageContainer title="Create Job Position">
-			<EnhancedHeaderTitle pageTitle="Crear posición">
+
+			<>
+				<EnhancedHeaderTitle pageTitle="Crear posición">
 				Configuración para la creación de una posición o puesto laboral
 			</EnhancedHeaderTitle>
 			<main>
@@ -16,7 +17,8 @@ const CreateJobOffer = () => {
 				  <CandidateRegisterForm />
         </CreateJobOfferProvider>
 			</main>
-		</PageContainer>
+			</>
+
 	);
 };
 
