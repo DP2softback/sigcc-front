@@ -284,17 +284,18 @@ function ConfigProcesoSeleccion(props: any) {
 						<Form.Group className="mb-2" as={Row}>
 							<Col>
 								<Form.Label sm="2" style={{ fontSize: "15px" }}>
-									Nombre del proceso de selección para el puesto:
+									Nombre del proceso de selección para un puesto:
 								</Form.Label>
 								<Row>
 									<Col xs="8">
 										<Form.Control
 											as="textarea"
 											type="text"
-											placeholder="Especificar el nombre del proceso de selección para el puesto"
+											placeholder="Especificar el nombre del proceso de selección"
 											value={selectedPuestoLaboral}
 											onChange={handleNombrePuestoSeleccionado}
 											rows={2}
+											disabled={selectedPuestoLaboral == "" ? true : false}
 											required
 											className={
 												!isSelectedNombreOfertaValid ? "is-invalid" : ""
@@ -306,9 +307,11 @@ function ConfigProcesoSeleccion(props: any) {
 										<Form.Control
 											as="textarea"
 											type="text"
+											placeholder="Nombre del puesto"
 											value={selectedPuestoLaboralFijo}
 											rows={2}
-											readOnly={true}></Form.Control>
+											readOnly={true}
+											disabled={true}></Form.Control>
 									</Col>
 									<Col>
 										<Button
