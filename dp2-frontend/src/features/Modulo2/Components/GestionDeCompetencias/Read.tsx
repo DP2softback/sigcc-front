@@ -5,6 +5,7 @@ import AgregarCompetencia from './Create';
 import ActualizarCompetencia from './Update';
 import BorrarCompetencia from './Delete';
 import {Competencia,tipoCompetencia} from './Tipos'
+import './Read.css';
 
 const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
 
@@ -315,67 +316,83 @@ const borrarCompetencia = async (id) => {
   }
 
   return (
-    <div>
+    <div className='pantalla'>
       <div className='titles'>
       <h2>Gestión de Competencias</h2>
       <p className="text-muted">Agrega, edita y desactiva competencias.</p>
       </div>
 
-      <Form.Group controlId="search">
-        <Form.Control
-          type="text"
-          placeholder="Buscar competencia..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </Form.Group>
+      <div className='container-fluid'>
+        <div className='row'>
+          <div className='col-sm-3 basicSearch'>
+            <Form.Group controlId="search">
+              <Form.Control
+                type="text"
+                placeholder="Buscar competencia..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </Form.Group>
+          </div>
 
-      <Form.Group className="mb-3" controlId="tipoFiltro">
-          <Form.Control as="select" value={tipoFiltro} onChange={(e) => setTipoFiltro(parseInt(e.target.value))}>
-            <option value="">Todos los tipos</option>
-            {tipoCompetencias.map((tipo) => (
-              <option key={tipo.id} value={tipo.id}>
-                {tipo.name}
-              </option>
-            ))}
-          </Form.Control>
-        </Form.Group>
+          <div className='col-sm-3 botones'>
+            <Form.Group className="mb-3" controlId="tipoFiltro">
+                <Form.Control as="select" value={tipoFiltro} onChange={(e) => setTipoFiltro(parseInt(e.target.value))}>
+                  <option value="">Todos los tipos</option>
+                  {tipoCompetencias.map((tipo) => (
+                    <option key={tipo.id} value={tipo.id}>
+                      {tipo.name}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+            </div>
 
-      <Form.Group controlId="estadoFiltro">
-        <Form.Control as="select" value={estadoFiltro} onChange={(e) =>{ setEstadoFiltro(e.target.value); console.log(e.target.value)}}>
-          <option value="">Todos los estados</option>
-          <option value="Activo">Activo</option>
-          <option value="Inactivo">Inactivo</option>
-        </Form.Control>
-      </Form.Group>
+            <div className='col-sm-3 botones'>
+              <Form.Group controlId="estadoFiltro">
+                <Form.Control as="select" value={estadoFiltro} onChange={(e) =>{ setEstadoFiltro(e.target.value); console.log(e.target.value)}}>
+                  <option value="">Todos los estados</option>
+                  <option value="Activo">Activo</option>
+                  <option value="Inactivo">Inactivo</option>
+                </Form.Control>
+              </Form.Group>
+            </div>
+         </div>
+            <div className='row'>
 
-      <Button variant="primary" onClick={handleLimpiarFiltros}>
-        Limpiar filtros
-      </Button>{' '}
 
-      <Button variant="primary" onClick={handleSearch}>
-        Buscar
-      </Button>{' '}
-
-      <div className="col-sm-3 botones">
-                <Button variant="outline-primary" className="me-2">
-                <Download></Download>
-                  <i className="bi bi-upload"></i> Importar lista
-                </Button>
-                <p className="text-muted">Maximum file size 2MB</p>
+            <div className="col-sm-3 botones">
+                    <Button variant="outline-primary" className="me-2">
+                    <Download></Download>
+                      <i className="bi bi-upload"></i> Importar lista
+                    </Button>
+                    <p className="text-muted">Maximum file size 2MB</p>
               </div>
               <div className="col-sm-3 botones">
-                <Button variant="outline-primary">
-                <Upload></Upload>
-                  <i className="bi bi-download"></i> Exportar lista
-                </Button>
-                <p className="text-muted">Maximum file size 2MB</p>
+                    <Button variant="outline-primary">
+                    <Upload></Upload>
+                      <i className="bi bi-download"></i> Exportar lista
+                    </Button>
+                    <p className="text-muted">Maximum file size 2MB</p>
               </div>
 
-
-      <Button variant="primary" onClick={handleMostrarPopUpCrear}>
-        Agregar competencia
-      </Button>
+              <div className="col-sm-3 botones2 justify-content-center">
+                <Button variant="outline-secondary" className='Search' onClick={handleLimpiarFiltros}>
+                  Limpiar filtros
+                </Button>{' '}
+                <Button variant="primary" className='Search' onClick={handleSearch}>
+                  Buscar
+                </Button>{' '}
+              </div>
+        
+              <div className="col-sm-3 botones2 justify-content-center">          
+                <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
+                  Agregar competencia
+                </Button>
+              </div>  
+          </div>
+        </div>  
+  
 
       <Modal show={mostrarPopUpCrear} onHide={handleCerrarPopUpCrear}>
         <Modal.Header closeButton>
@@ -383,9 +400,11 @@ const borrarCompetencia = async (id) => {
         </Modal.Header>
         <Modal.Body>
           <AgregarCompetencia agregarCompetencia={agregarCompetencia} tipoCompetencias ={tipoCompetencias}/>
-          <Button variant="secondary" onClick={handleCerrarPopUpCrear}>
+          <div className='botonCerrar'>
+          <Button variant="secondary"  onClick={handleCerrarPopUpCrear}>
             Cerrar
           </Button>
+          </div>
         </Modal.Body>
       </Modal>
 
@@ -394,10 +413,13 @@ const borrarCompetencia = async (id) => {
           <Modal.Title>Actualizar Competencia</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          
           <ActualizarCompetencia actualizarCompetencia={actualizarCompetencia} competencia={competenciaSeleccionada} tipoCompetencias ={tipoCompetencias}/>
-          <Button variant="secondary" onClick={handleCerrarPopUpActualizar}>
-            Cerrar
-          </Button>
+          <div className='botonCerrar'>
+            <Button variant="secondary" onClick={handleCerrarPopUpActualizar}>
+              Cerrar
+            </Button>
+          </div>
         </Modal.Body>
       </Modal>
 
@@ -408,9 +430,11 @@ const borrarCompetencia = async (id) => {
         </Modal.Header>
         <Modal.Body>
           <BorrarCompetencia borrarCompetencia={borrarCompetencia} competencia={competenciaSeleccionada}/>
+          <div className='botonCerrar2'>
           <Button variant="secondary" onClick={handleCerrarPopUpBorrar}>
             Cerrar
           </Button>
+          </div>
         </Modal.Body>
       </Modal>
 

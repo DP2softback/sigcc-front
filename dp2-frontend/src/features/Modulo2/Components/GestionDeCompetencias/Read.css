@@ -8,7 +8,7 @@ padding-top: 20px;
 }
 
 .basicSearch{
-    width: 150%; 
+    width: 50%; 
     height: 50%;
     padding-top: 32px;
 }
@@ -21,3 +21,30 @@ padding-top: 20px;
     padding-top: 20px;
 }
 
+.botones2{
+    padding-top: 32px;
+    padding-right: 5px;
+
+}
+
+.Search{
+
+width: 48%;
+}
+
+.Search2{
+
+    width: 98%;
+}
+
+.botonCerrar{
+position: absolute;
+left: 290px;
+top: 335px;
+}
+
+.botonCerrar2{
+    position: absolute;
+    left: 290px;
+    top: 95px;
+}

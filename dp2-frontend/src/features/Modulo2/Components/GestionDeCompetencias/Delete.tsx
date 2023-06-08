@@ -15,11 +15,13 @@ const BorrarCompetencia: React.FC<Props> = ({ borrarCompetencia, competencia }) 
   };
 
   return (
-    <div>
+    <div className='container-fluid'>
       <p>¿Estás seguro de que deseas borrar la competencia "{competencia?.name}"?</p>
-      <Button variant="danger" onClick={handleBorrarCompetencia}>
-        Borrar
-      </Button>
+      <div className='espacio'>
+        <Button variant="danger" onClick={handleBorrarCompetencia}>
+          Borrar
+        </Button>
+      </div>
     </div>
   );
 };

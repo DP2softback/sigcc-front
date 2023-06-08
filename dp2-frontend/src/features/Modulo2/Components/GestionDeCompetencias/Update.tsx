@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {Competencia,tipoCompetencia} from './Tipos'
+import './Update.css';
 
 type Props = {
   actualizarCompetencia: (competenciaActualizada: Competencia) => void;
@@ -40,6 +41,7 @@ const ActualizarCompetencia: React.FC<Props> = ({ actualizarCompetencia, compete
 
   return (
     <form onSubmit={handleSubmit}>
+      <div className='container-fluid'>
       <div className="form-group">
         <label htmlFor="codigo">Código:</label>
         <input
@@ -103,7 +105,10 @@ const ActualizarCompetencia: React.FC<Props> = ({ actualizarCompetencia, compete
         </select>
       </div>
       
-      <button type="submit" className="btn btn-primary">Guardar</button>
+        <div className='espacio'>
+              <button type="submit" className="btn btn-primary">Guardar</button>
+        </div>
+      </div>
     </form>
   );
 };
