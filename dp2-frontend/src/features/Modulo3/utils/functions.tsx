@@ -29,6 +29,34 @@ export function formatNumber(number: number): string {
   return paddedNumber;
 }
 
+export const sortEvaluationsByDate = (evaluations: any[]): any[] => {
+  const sortedEvaluations = [...evaluations];
+
+  sortedEvaluations.sort((a, b) => {
+    const dateA = new Date(a.evaluationDate);
+    const dateB = new Date(b.evaluationDate);
+    return dateB.getTime() - dateA.getTime();
+  });
+
+  return sortedEvaluations;
+};
+
+export const sortEvaluationsByTimeSinceLastEvaluation = (evaluations: any[]): any[] => {
+  const sortedEvaluations = [...evaluations];
+
+  sortedEvaluations.sort((a, b) => {
+    if (a.time_since_last_evaluation === null) {
+      return -1;
+    } else if (b.time_since_last_evaluation === null) {
+      return 1;
+    } else {
+      return b.time_since_last_evaluation - a.time_since_last_evaluation;
+    }
+  });
+
+  return sortedEvaluations;
+};
+
 export function formatDashboardJson(jsonData: any[]): any {
   if (!jsonData || jsonData.length < 0) return { months: [], data: [] };
 

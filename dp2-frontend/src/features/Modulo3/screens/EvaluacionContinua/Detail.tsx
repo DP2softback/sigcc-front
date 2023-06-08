@@ -2,13 +2,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./EvaluacionContinua.css";
 import BaseForm from "./BaseForm";
 import { useEffect, useState } from "react";
-import { getPlantilla } from "@features/Modulo3/services/templates";
-import { CONTINUOS_EVALUATION_TYPE } from "@features/Modulo3/utils/constants";
+import { getEvaluation } from "@features/Modulo3/services/continuousEvaluation";
 
 const Detail = () => {
   const urlParams = new URLSearchParams(window.location.search);
 
-  const [categories, setCategories] = useState([]);
   const [employee, setEmployee] = useState({
     id: parseInt(urlParams.get('id')),
     name: urlParams.get('name')
@@ -19,9 +17,9 @@ const Detail = () => {
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-      const response = await getPlantilla(2, CONTINUOS_EVALUATION_TYPE);
-      if (response && response[0] && response[0].Categories) {
-        setCategories(response[0].Categories);
+      const response = await getEvaluation(parseInt(urlParams.get('evaluationId')));
+      if (response) {
+        setEvaluation(response);
       }
       setIsLoading(false);
     })();
@@ -30,7 +28,7 @@ const Detail = () => {
   return (
     <BaseForm
       employee={employee}
-      categories={categories}
+      categories={[]}
       evaluation={evaluation}
       isLoading={isLoading}
       isReadOnly={true}

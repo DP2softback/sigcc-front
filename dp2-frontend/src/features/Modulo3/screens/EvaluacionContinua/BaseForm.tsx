@@ -24,13 +24,16 @@ type BaseFormProps = {
 const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, setIsLoading, isReadOnly}: BaseFormProps) => {
 	const aditionTitleStyle = { marginBottom: "20px" };
   const [selectedCategory, setSelectedCategory] = useState(null);
-
-	const evaluationCategory = (
+	
+	const evaluationCategory = isReadOnly ? (
+		evaluation &&
+		evaluation.categoryName && (
+			<Form.Control type="text" disabled value={evaluation.categoryName[0]} />
+		)
+	) : (
 		<Form.Select
-			disabled={isReadOnly}
 			value={evaluation && evaluation.categoryId}
-			onChange={onCategoryChange()}
-		>
+			onChange={onCategoryChange()}>
 			<option hidden>Seleccionar</option>
 			{categories.map((category) => {
 				return (
@@ -47,22 +50,33 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 			type="text"
 			placeholder="Ingrese el proyecto asocidado"
 			value={evaluation && evaluation.associatedProject}
+			disabled={isReadOnly}
 			onChange={onProjectChange()}
 		></Form.Control>
 	);
 
-	const evaluationMatrix = (
-		evaluation && evaluation.categoryId != null ? (
+	const evaluationMatrix = isReadOnly ? (
+		evaluation && evaluation.subcategories ? (
 			<Matrix
-				header={["Muy mala","Mala","Regular","Buena","Muy buena"]}
-				rows={selectedCategory.subcategories}
+				header={["Muy mala", "Mala", "Regular", "Buena", "Muy buena"]}
+				rows={evaluation.subcategories}
 				evaluation={evaluation}
 				setEvaluation={setEvaluation}
 				isReadOnly={isReadOnly}
 			/>
 		) : (
-			<div>Seleccione una categoría a evaluar</div>
+			<></>
 		)
+	) : evaluation && evaluation.categoryId ? (
+		<Matrix
+			header={["Muy mala", "Mala", "Regular", "Buena", "Muy buena"]}
+			rows={selectedCategory.subcategories}
+			evaluation={evaluation}
+			setEvaluation={setEvaluation}
+			isReadOnly={isReadOnly}
+		/>
+	) : (
+		<div>Seleccione una categoría a evaluar</div>
 	);
 
 	const additionalComments = (
