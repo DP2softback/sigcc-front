@@ -13,7 +13,8 @@ import {
 	SELECTION_PROCESS,
 	CREATE_SELECTION_PROCESS,
 	LIST_SELECTION_PROCESS,
-	DETAIL_JOB_OFFER
+	DETAIL_JOB_OFFER,
+	REGISTER_IN_JOB_OFFER
 } from "./path";
 
 const Loader = (Component) => (props) =>
@@ -51,6 +52,10 @@ const DetalleOfertaLaboral = Loader(
 	lazy(() => import("@features/Modulo4/pages/JobOffer/Details/JobOfferDetails"))
 );
 
+const RegisterInOferta = Loader(
+	lazy(() => import("@features/Modulo4/pages/JobPositions/CreateJobOffer/index"))
+);
+
 export const routes: RouteObject[] = [
 	{
 		path: SELECTION_PROCESS_AND_JOB_OFFERS_MODULE,
@@ -69,6 +74,20 @@ export const routes: RouteObject[] = [
 									Roles.CANDIDATE
 								]}>
 								<ConfigOfertaLaboral />
+							</AppLayout>
+						)
+					},
+					{
+						path: REGISTER_IN_JOB_OFFER,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
+									Roles.HR_WORKER,
+									Roles.CANDIDATE
+								]}>
+								<RegisterInOferta />
 							</AppLayout>
 						)
 					},

@@ -4,7 +4,7 @@ import UpdateCompetencia from './Update';
 import DeleteCompetencia from './Delete';
 import {ArrowRightCircleFill,Pencil,Trash } from 'react-bootstrap-icons';
 import { useLocation,  useNavigate  } from 'react-router-dom';
-import './DetalleCompetenciasarea.css'
+import './DetalleCompetenciasArea.css'
 import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos';
 const DetalleCompetenciasArea = () => {
   const navigate = useNavigate();

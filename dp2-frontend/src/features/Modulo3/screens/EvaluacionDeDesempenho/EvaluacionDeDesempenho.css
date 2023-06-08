@@ -29,7 +29,6 @@
   margin-top: 32px;
 }
 
-.noDataFoundIcon{
-  width: 45%;
-  height: 45%;
+.cursor-pointer{
+  cursor: pointer;
 }
