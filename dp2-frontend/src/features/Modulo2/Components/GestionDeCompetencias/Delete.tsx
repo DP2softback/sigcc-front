@@ -1,27 +1,28 @@
 import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
+import {Competencia,tipoCompetencia} from './Tipos'
 
-const BorrarCompetencia = ({ competencia, borrarCompetencia }) => {
-  const [id, setId] = useState(competencia.id);
+type Props = {
+  borrarCompetencia: (id: number) => void;
+  competencia: Competencia | null;
+};
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    borrarCompetencia(id);
-    setId('');
+const BorrarCompetencia: React.FC<Props> = ({ borrarCompetencia, competencia }) => {
+  const handleBorrarCompetencia = () => {
+    if (competencia) {
+      borrarCompetencia(competencia.id);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label className="form-group">
-        <label htmlFor="id">ID:</label>
-        <label
-          className="form-control"
-          id="id"
-        >id: {id}</label>
-      </label>
-      <button type="submit" className="btn btn-danger">
-        Borrar
-      </button>
-    </form>
+    <div className='container-fluid'>
+      <p>¿Estás seguro de que deseas borrar la competencia "{competencia?.name}"?</p>
+      <div className='espacio'>
+        <Button variant="danger" onClick={handleBorrarCompetencia}>
+          Borrar
+        </Button>
+      </div>
+    </div>
   );
 };
 

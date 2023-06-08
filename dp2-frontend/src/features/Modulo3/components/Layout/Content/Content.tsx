@@ -1,5 +1,4 @@
 import './Content.css';
-import Layout from "@layout/default/index";
 
 type LayoutProps = {
   title: string,
@@ -17,10 +16,10 @@ const Content = ({title, body, subtitle, route=''} : LayoutProps) => {
   )
 
   return (
-    <Layout>
+    <>
       {header}
       {body}
-    </Layout>
+    </>
   );
 };
 
