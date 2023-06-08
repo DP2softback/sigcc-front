@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { Form, FormControl, InputGroup, Button, Table, Modal  } from 'react-bootstrap';
 import UpdateCompetencia from './Update';
 import DeleteCompetencia from './Delete';
-import { Download,Upload,ArrowRightCircleFill,Pencil,Trash } from 'react-bootstrap-icons';
-import { set } from 'zod';
-import { useHref } from 'react-router-dom';
+import {ArrowRightCircleFill,Pencil,Trash } from 'react-bootstrap-icons';
+import { useLocation,  useNavigate  } from 'react-router-dom';
 import './DetalleCompetenciasArea.css'
 const DetalleCompetenciasArea = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { tipoCompetencia } = location.state;
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [tipoOrden, setTipoOrden] = useState('ascendente');
     const [puesto, setPuesto] = useState('');
@@ -282,6 +284,10 @@ const DetalleCompetenciasArea = () => {
         setPuesto('');
     };
 
+    const handleClick = (usuario) => {        
+      navigate('/GestionCompetencias', { state: { usuario } });
+      };
+
     const handleOrdenarPorCampo = (campo) => {
         // Si se hace clic en el mismo campo, cambia el tipo de orden
         if (campo === campoOrdenamiento) {
@@ -392,7 +398,8 @@ const DetalleCompetenciasArea = () => {
                 <td>{competencia.telefono}</td>
                 <td>{competencia.estado}</td>
                 <td>
-                    <Button variant="link" size="sm">
+                    <Button variant="link" size="sm" onClick={
+                      ()=>{handleClick(competencia);}}>
                     <ArrowRightCircleFill color='gray'></ArrowRightCircleFill>
                       <i className="bi bi-box-arrow-in-right"></i>
                     </Button>

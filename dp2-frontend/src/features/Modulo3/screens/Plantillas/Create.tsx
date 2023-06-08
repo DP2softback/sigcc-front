@@ -7,36 +7,39 @@ import {EVALUATION_TEMPLATE_INDEX} from '@features/Modulo3/routes/path';
 import { navigateTo } from '@features/Modulo3/utils/functions.jsx';
 import ImageUploader from '@features/Modulo3/components/Images/ImageUploader';
 import "./Plantillas.css"
-import { getCategoriesSubs } from '@features/Modulo3/services/templates';
+import { getCategoriesSubs, guardarPlantilla } from '@features/Modulo3/services/templates';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
+import { Toast } from 'react-bootstrap';
+import { PERFORMANCE_EVALUATION_TYPE,CONTINUOS_EVALUATION_TYPE } from '../../utils/constants'; 
 
 const dataIni ={
   categoriaNombre: "",
   subcategory: [],
 }
 
-// const dataIni2 ={
-//   categorias: [
-//     {
-//       categoriaNombre: "",
-//       subcategory:[ {
-//         id: "",
-//         name: ""}
-//       ]
-//     }
-//   ]
-// }
+const dataIni2 ={
+  categorias: [
+    {
+      categoriaNombre: "",
+      subcategory:[ {
+        id: "",
+        name: ""}
+      ]
+    }
+  ]
+}
 
 const Create = () => {
-
-  const [showAC,setShowAC]=useState(false);
   const [categorias,setCategorias]= useState([]);
   const [file, setFile] = useState(null);
   const [inputValues, setInputValues] = useState({});
   const [selectedOption, setSelectedOption] = useState('');
-  const [data, setData] = useState(dataIni);
+  // const [data, setData] = useState(dataIni);
+  const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [plantillaName, setPlantillaName] = useState('');
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -47,6 +50,39 @@ const Create = () => {
       setIsLoading(false);
     })();
   }, []);
+
+  const handleGuardar = () => {
+    const aux = {
+      "evaluationType": selectedOption,
+      "nombre": plantillaName,
+      "subCategories": []
+    };
+
+    data.categorias.forEach(categoria => {
+      categoria.subcategory.forEach(subcategoria => {
+        aux.subCategories.push({ id: subcategoria.id,nombre:subcategoria.name });
+      });
+    });
+
+    //aux["subcategorias"][0]={...aux["subcategorias"][0],nombre: "subcategoria"}
+    
+    console.log("aux",aux);
+    // console.log("plantillaName",plantillaName)
+    // console.log(categorias);
+    (async () => { 
+      console.log("entro");
+      const response = await guardarPlantilla(aux);
+      console.log("response",response);
+      if (response){
+        setShowNotification(true); 
+      }
+    })();
+  };
+
+  const closeNotification = () => {
+    setShowNotification(false);
+    navigateTo(EVALUATION_TEMPLATE_INDEX);
+  };
 
   const handleInputChange = (categoriaId, value) => {
     setInputValues({ ...inputValues, [categoriaId]: value });
@@ -90,17 +126,21 @@ const Create = () => {
       </div>
       <select style={{borderRadius:5, height:'36px', paddingLeft: '10px', borderColor:'#ced4da', }} id="dropdown" value={selectedOption} onChange={(e) => handleOptionSelect(e.target.value)}>
         <option >Selecciona el tipo</option>
-        <option >Evaluación continua</option>
-        <option >Evaluación de desempeño</option>
+        <option >{CONTINUOS_EVALUATION_TYPE}</option>
+        <option >{PERFORMANCE_EVALUATION_TYPE}</option>
       </select>
     </div>
   );
+
+  const handleChangePlantillaName = (event) => {
+    setPlantillaName(event.target.value);
+  };
 
   const filters = (
     <Form className='ec-indexFilters'>
       <Form.Group className='flex1'>
         <label className='label-estilizado' htmlFor='nombrePlantilla'>Nombre de plantilla</label>
-        <Form.Control placeholder='Ingrese el nombre' id="nombrePlantilla"/>
+        <Form.Control placeholder='Ingrese el nombre' id="nombrePlantilla" value={plantillaName} onChange={handleChangePlantillaName}/>
       </Form.Group>
       <Form.Group className='flex1'>
         <div >
@@ -108,8 +148,8 @@ const Create = () => {
         </div>
         <Form.Select value={selectedOption} onChange={(e) => handleOptionSelect(e.target.value)}>
           <option hidden>Seleccione el tipo de evaluación</option>
-          <option >Evaluación continua</option>
-          <option >Evaluación de desempeño</option>
+          <option >{CONTINUOS_EVALUATION_TYPE}</option>
+          <option >{PERFORMANCE_EVALUATION_TYPE}</option>
         </Form.Select>
       </Form.Group>
       <Form.Group className='sub-image flex1'>
@@ -118,32 +158,150 @@ const Create = () => {
     </Form>
 );
 
-// const handleRadioChange = (categoryName: string) => {
+//Idea1
+// const handleRadioChange = (categoryName: string, index: number) => {
+//   let nuevo = {
+//     categoriaNombre: categoryName,
+//     subcategory: []
+//   };
+
+//   let lista = data ? [...data.categorias] : [];
+
+//   if (selectedOption === 'Evaluación continua') {
+//     // Si se selecciona una categoría en Evaluación continua,
+//     // se deseleccionan las demás categorías
+//     lista = lista.map(cat => ({
+//       ...cat,
+//       subcategory: []
+//     }));
+//   }
+
+//   const existingCategoryIndex = lista.findIndex(cat => cat.categoriaNombre === categoryName);
+
+//   if (existingCategoryIndex !== -1) {
+//     // Si la categoría ya está seleccionada, se remueve
+//     lista.splice(existingCategoryIndex, 1);
+//   } else {
+//     // Si la categoría no está seleccionada, se agrega
+//     lista.push(nuevo);
+//   }
+
+//   setData({
+//     ...data,
+//     categorias: lista
+//   });
+
+//   console.log("dataC",data)
+// };
+
+//Funcionamiento para EvaDesem
+// const handleRadioChange = (categoryName: string,index: number) => {
+//   console.log("index",index)
 //   let nuevo={
 //     categoriaNombre: categoryName,
 //     subcategory:[]
 //   }
 //   let lista
-//   if(data) lista=[]  
+//   if(data==null) lista=[]  
 //   else lista=data.categorias;
-//   lista.push(nuevo)
+  
+//   // if(data.categorias && data.categorias.find(cat => categoryName==cat.categoriaNombre)) 
+//   //   lista=lista.filter(cat => cat.categoriaNombre!=categoryName)
+//   // else lista.push(nuevo)
+//   if (data && data.categorias && data.categorias.find(cat => categoryName === cat.categoriaNombre)) {
+//     lista = lista.filter(cat => cat.categoriaNombre !== categoryName);
+//   } else {
+//     lista.push(nuevo);
+//   }
+  
+//   console.log("lista",lista)
 //   setData({
 //     ...data,
 //     categorias: lista,
 //   })
+//   console.log("data",data)
 // }
 
-const handleRadioChange = (categoryName: string) => {
-  setData({
-    ...data,
-    categoriaNombre: categoryName,
-    subcategory: [],
-  })
+//EvaCont
+// const handleRadioChange = (categoryName: string) => {
+//   setData({
+//     ...data,
+//     categoriaNombre: categoryName,
+//     subcategory: [],
+//   })
+// }
+
+//Real
+const handleRadioChange = (categoryName: string,index: number) => {
+  
+  if(selectedOption=='Evaluación continua'){
+    let nuevo=[{categoriaNombre: categoryName, subcategory:[]}]
+    setData({
+      categorias: nuevo,
+    })
+  }else{
+    let nuevo={categoriaNombre: categoryName, subcategory:[]}
+    //guardo las categorias ya seleccionadas
+    let lista = data ? [...data.categorias] : [];
+    //verifico si la cat para eliminarla o pusherla
+    if (data && data.categorias && data.categorias.find(cat => categoryName === cat.categoriaNombre)) {
+      lista = lista.filter(cat => cat.categoriaNombre !== categoryName);
+    } else {
+      lista.push(nuevo);
+    }
+    setData({
+      ...data,
+      categorias: lista,
+    })
+  }
+  console.log("dataC",data)
 }
 
+//Idea2
+// const handleSubcategoryRadioChange = (e: any, subcategoria: string, catIndex: number, subId: string) => {
+//   const lista = data?.categorias[catIndex]?.subcategory || [];
+//   const nuevo = { id: subId, name: subcategoria };
 
+//   if (selectedOption === 'Evaluación continua') {
+//     // Si se está en Evaluación continua, solo se permite seleccionar una subcategoría por categoría
+//     const selectedSubcategories = lista.filter(sub => sub.name === subcategoria);
+
+//     if (selectedSubcategories.length > 0) {
+//       // Si la subcategoría ya está seleccionada, se deselecciona
+//       const updatedList = lista.filter(sub => sub.name !== subcategoria);
+//       const updatedCategories = data.categorias.map((cat, index) => ({
+//         ...cat,
+//         subcategory: catIndex === index ? updatedList : cat.subcategory
+//       }));
+
+//       setData({
+//         ...data,
+//         categorias: updatedCategories
+//       });
+//       return;
+//     }
+//   }
+
+//   // Si no se cumple la regla de Evaluación continua o la subcategoría no estaba seleccionada, se agrega a la lista
+//   const updatedList = [...lista, nuevo];
+//   const updatedCategories = data.categorias.map((cat, index) => ({
+//     ...cat,
+//     subcategory: catIndex === index ? updatedList : cat.subcategory
+//   }));
+
+//   setData({
+//     ...data,
+//     categorias: updatedCategories
+//   });
+
+//   console.log("dataS",data)
+// };
+
+
+//Funcioamiento para EvaDesem
 // const handleSubcategoryRadioChange = (e: any,subcategoria: string, catIndex: number, subId: string) => {
-//   let lista=data.categorias[catIndex].subcategory;
+//   // let lista=data.categorias[catIndex].subcategory;
+//   let lista = data?.categorias[catIndex]?.subcategory || [];
 //   console.log("e",e)
 //   let nuevo={id:subId, name: subcategoria}
 //   if(data.categorias[catIndex].subcategory.find(sub => subcategoria==sub.name)) 
@@ -162,22 +320,93 @@ const handleRadioChange = (categoryName: string) => {
 //   console.log("data",data)
 // }
 
-const handleSubcategoryRadioChange = (e: any,subcategoria: string) => {
-  let lista=data.subcategory
-  console.log("e",e)
-  if(data.subcategory.find(sub => subcategoria==sub)) 
-    lista=lista.filter(sub => sub!=subcategoria)
-  else lista.push(subcategoria)
-  // e.target.checked ? lista.push(subcategoria) : lista.filter(sub => sub!=subcategoria)
-  setData({
-    ...data,
-    subcategory: lista,
-  })
-  console.log("data",data)
+//EvaCont
+// const handleSubcategoryRadioChange = (e: any,subcategoria: string) => {
+//   let lista=data.subcategory
+//   console.log("e",e)
+//   if(data.subcategory.find(sub => subcategoria==sub)) 
+//     lista=lista.filter(sub => sub!=subcategoria)
+//   else lista.push(subcategoria)
+//   // e.target.checked ? lista.push(subcategoria) : lista.filter(sub => sub!=subcategoria)
+//   setData({
+//     ...data,
+//     subcategory: lista,
+//   })
+//   console.log("data",data)
+// }
+
+//Real
+const handleSubcategoryRadioChange = (e: any,subcategoria: string, categoryName: string, subId: string) => {
+  if(selectedOption=='Evaluación continua'){
+    //guardo las subcategorias actuales
+    console.log("dataBeforeLista",data,data?.categorias[0]?.subcategory.length)
+    let lista = data?.categorias[0]?.subcategory || [];
+    console.log("listaContSubcat",lista,lista.length)
+    //creo la nueva entrada
+    let nuevo={id:subId, name: subcategoria}
+    //verifica si la subcat ya esta para quitarla o pushearla
+    if(data?.categorias[0]?.subcategory?.find(sub => subcategoria==sub.name)){ 
+      lista=lista.filter(sub => sub.name!=subcategoria)
+      console.log("1")
+    }
+    else{ 
+      lista.push(nuevo) 
+      console.log("2")
+    }
+    console.log("listaContSubcatPushed",lista)
+    //guardo la categoria actual
+    let aux=data.categorias
+    console.log("aux",aux)
+    //le pongo las nuevas subcats
+    aux[0].subcategory=lista
+    //actualizo data
+    setData({
+      ...data,
+      categorias: aux,
+    })
+    // setData(prevData => ({
+    //   ...prevData,
+    //   categorias: aux,
+    // }));
+    //console.log("data",data)
+  }else{
+    //consigo el indice de la categoria
+    const catIndex = data?.categorias.findIndex(cat => cat.categoriaNombre === categoryName);
+    //guardo las subcategorias actuales
+    let lista = data?.categorias[catIndex]?.subcategory || [];
+    //creo la nueva entrada
+    let nuevo={id:subId, name: subcategoria}
+    //verifica si la subcat ya esta para quitarla o pushearla
+    if(catIndex>=0){
+      if(data.categorias[catIndex].subcategory.find(sub => subcategoria==sub.name)) 
+        lista=lista.filter(sub => sub.name!=subcategoria)
+      else lista.push(nuevo)
+      //guardo la categoria actual
+      let aux=data.categorias
+      //le pongo las nuevas subcats
+      aux[catIndex].subcategory=lista
+      //actualizo data
+      setData({
+        ...data,
+        categorias: aux,
+      })
+    }
+  }
+  console.log("dataS",data)
 }
 
+
+const isSubcategorySelected = (categoryName: string, subcategoryName: string): boolean => {
+  // const category = data?.categorias.find(cat => cat.categoriaNombre === categoryName);
+  const catIndex = data?.categorias.findIndex(cat => cat.categoriaNombre === categoryName);
+  //console.log("subcatSelectes",category)
+  return data?.categorias[catIndex]?.subcategory.some(sub => sub.name === subcategoryName) || false;
+  // return category?.subcategory.some(sub => sub.name === subcategoryName) || false;
+};
+
+
 const accordion = (
-  <Accordion alwaysOpen={false}>
+  <Accordion alwaysOpen={false} style={{ marginTop: '15px' }}>
     {categorias && categorias.map((categoria, index) => (
       <Accordion.Item eventKey={categoria["category-id"]} key={categoria["category-id"]}>
         <Accordion.Header>
@@ -187,8 +416,10 @@ const accordion = (
             label={categoria["category-name"]}
             // label={categoria.name}
             // checked={selectedOptions[categoria.id] === categoria.name}
-            onChange={() => handleRadioChange(categoria["category-name"])}
+            onChange={() => handleRadioChange(categoria["category-name"],index)}
+            // onChange={() => handleRadioChange(categoria["category-name"])}
             // onChange={() => handleRadioChange(categoria.name)}
+            //disabled={!isSelected(categoria.name) && categoria.subcategories && categoria.subcategories.length > 0}
           />
         </Accordion.Header>
         <Accordion.Body>
@@ -202,12 +433,27 @@ const accordion = (
                 // label={subcategoria}
                 label={subcategoria.name}
                 // checked={data.subcategory.find(sub => subcategoria==sub) ? true : false}
-                // checked={data && data.categorias[index].subcategory.find(sub => subcategoria.name==sub) ? true : false}
-                checked={data.subcategory.find(sub => subcategoria.name==sub) ? true : false}
+                // checked={data && data.categorias[index].subcategory && data.categorias[index].subcategory.length>0 && data.categorias[index].subcategory.find(sub => subcategoria.name==sub) ? true : false}
+                // checked={data.categorias[index].subcategory.find(sub => subcategoria.name==sub) ? true : false}
+                // checked={
+                //   data &&
+                //   data.categorias &&
+                //   data.categorias[index] &&
+                //   data.categorias[index].subcategory &&
+                //   data.categorias[index].subcategory.length > 0 &&
+                //   data.categorias[index].subcategory.find(sub => sub.name === subcategoria.name)
+                //     ? true
+                //     : false
+                // }
+                onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria.name,categoria["category-name"],subcategoria.id)}
+                checked={isSubcategorySelected(categoria["category-name"], subcategoria.name)}
+                //disabled={!isSelected(categoria.name)}
+                
+                // checked={data.subcategory.find(sub => subcategoria.name==sub) ? true : false}
                 // disabled={}
                 // onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria)}
-                // onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria.name,index,subcategoria.id)}
-                onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria.name)}
+                
+                // onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria.name)}
               />
             ))}
           </div>
@@ -243,10 +489,16 @@ const accordion = (
     <>
       {accordion}
       <div className="text-end mt-32" >
-        <Button>
+        <Button onClick={handleGuardar}>
           Guardar
         </Button>
       </div>
+      <Toast show={showNotification} onClose={closeNotification} className="notification">
+        <Toast.Header>
+          <strong className="me-auto">Notificación</strong>
+        </Toast.Header>
+        <Toast.Body>Se ha creado la plantilla con éxito.</Toast.Body>
+    </Toast>
     </>
     ) : ( 
     <NoDataFound/>

@@ -12,10 +12,33 @@
     position: absolute;
     left: 0px;
     height: 100%;
+    
 }
 
 .text-center{
     font-size: medium;
     padding-top: 15px;
     padding-bottom: 15px;
+}
+
+@media screen and (max-width: 600px) {
+    .Ocultar{
+        display:none;
+    }
+}
+
+.Portal{
+    padding-top: 15px;
+}
+
+.PortalTexto{
+    padding-top: 10px;
+    padding-left: 50px;
+    margin-left: 0px;
+}
+
+
+.Title{
+    font-weight: 2000;
+    font-size: xx-large;
 }
