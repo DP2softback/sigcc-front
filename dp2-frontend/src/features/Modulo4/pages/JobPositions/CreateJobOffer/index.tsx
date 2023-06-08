@@ -4,21 +4,17 @@ import CandidateRegisterForm from "./CandidateRegisterForm";
 import { CreateJobOfferProvider } from "@features/Modulo4/contexts/CreateJobOfffer";
 
 const CreateJobOffer = () => {
-	
-
 	return (
-
-			<>
-				<EnhancedHeaderTitle pageTitle="Crear posición">
+		<>
+			<EnhancedHeaderTitle pageTitle="Crear posición">
 				Configuración para la creación de una posición o puesto laboral
 			</EnhancedHeaderTitle>
 			<main>
-        <CreateJobOfferProvider>
-				  <CandidateRegisterForm />
-        </CreateJobOfferProvider>
+				<CreateJobOfferProvider>
+					<CandidateRegisterForm />
+				</CreateJobOfferProvider>
 			</main>
-			</>
-
+		</>
 	);
 };
 
