@@ -187,11 +187,15 @@ export const getPostReportDesempenioLineChart = async (areaid, categoriaid, date
 // EL POST DEL REPORTE PARA EVALUACION CONTINUA Y DESEMPEÑO
 export const postReportLineChart = async (areaid, categoriaid, dateFechaInicio, dateFechaFin, evaluationType) => {
   const body ={
-    "category-id": areaid,
-    "area-id": categoriaid,
     "evaluationType": evaluationType,
     "fecha_inicio": dateFechaInicio,
     "fecha_fin": dateFechaFin
+  }
+  if(areaid!==0){
+    body["area-id"]=areaid
+  }
+  if(categoriaid!==0){
+    body["category-id"]=categoriaid
   }
   console.log("body: ", body);
   try {
