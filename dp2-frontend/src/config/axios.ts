@@ -11,8 +11,8 @@ const axiosInt = axios.create({
   baseURL: baseUrl,
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': localStorage.getItem('token')
-    ? 'Token ' + localStorage.getItem('token')
+    'Authorization': localStorage.getItem('accessToken')
+    ? 'Token ' + localStorage.getItem('accessToken')
     : null,
 }
 });
