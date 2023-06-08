@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap';
 import './JobOpportunityCard.css'
 import { useNavigate } from 'react-router-dom';
 import { EMPLOYEES_JOB_CANDIDATES, EMPLOYEES_JOB_OPPORTUNITIES, GAPS_ANALYSIS_MODULE } from '@features/Modulo2/routes/path';
+import JobOppImage from '../../../../assets/images/image-job-opp.png';
 
 const JobOpportunityCard = (props) => {
     const {jobOpportunity, numBot, hhrr} = props;
@@ -12,7 +13,8 @@ const JobOpportunityCard = (props) => {
         <div className='container card-job-opp'>
             <div className='row'>
                 <div className='col-4 d-flex align-items-center justify-content-center'>
-                    {jobOpportunity.image}
+                    {<img className='image-job-opp' src={JobOppImage}>
+                    </img>}
                 </div>
                 <div className='col-6'>
                     <div className='row title-job-opp'>

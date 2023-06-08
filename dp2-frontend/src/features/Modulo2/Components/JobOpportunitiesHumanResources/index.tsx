@@ -7,6 +7,8 @@ const JobOpportunitiesHumanResources = () => {
                   {image: "imagen 2", title: "Líder técnico de arquitectura", availability: "Disponible hace 13 días", description: "Responsable de dar forma a la arquitectura planteada por el Arquitecto de software, haciendo énfasis en las especificaciones que  no se presentan en detalle.", labels: ['Liderazgo', 'Comunicación', 'Trabajo en equipo']},
                   {image: "imagen 3", title: "Analista de sistemas", availability: "Disponible hace 15 días", description: "Identificar las necesidades de los sistemas TIC de una empresa y de elaborar un proyecto que ofrezca una solución integrada.", labels: ['Análisis de sistemas', 'Innovación', 'Creatividad']}]
 
+
+    
     return (
         <div className='container'>
             <div className='row'>
