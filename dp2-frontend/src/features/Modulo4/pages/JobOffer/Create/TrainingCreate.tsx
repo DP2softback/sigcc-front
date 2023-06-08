@@ -345,7 +345,7 @@ const TrainingCreate = () => {
                         </button>
                     </div>
 
-                    <div className='mt-3'>
+                    {/* <div className='mt-3'>
                         {classSessions.length > 0 ?
                             (<SessionAccordion sessions={classSessions} />)
                             :
@@ -355,7 +355,7 @@ const TrainingCreate = () => {
                                 </h6>
                             </>)
                         }
-                    </div>
+                    </div> */}
 
 
                 </div>
@@ -559,7 +559,7 @@ const TrainingCreate = () => {
                                 <div >
                                     {suppliers.length ?
                                         <>
-                                            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "10px" }}>
+                                            {/* <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "10px" }}>
                                                 {
                                                     supplierFilter.map((tr) => {
                                                         return (
@@ -575,7 +575,7 @@ const TrainingCreate = () => {
                                                         )
                                                     })
                                                 }
-                                            </div>
+                                            </div> */}
 
                                             {supplierFilter.length == 0 &&
                                                 <div style={{ display: "flex", justifyContent: "center" }}>
