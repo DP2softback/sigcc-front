@@ -13,7 +13,6 @@ import {
 	FormLabel,
 	FormSelect
 } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Table, Button, Modal } from "react-bootstrap";
 
 import { Link, useNavigate } from "react-router-dom";

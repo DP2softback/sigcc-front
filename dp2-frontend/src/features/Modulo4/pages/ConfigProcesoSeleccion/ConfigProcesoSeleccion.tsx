@@ -15,7 +15,6 @@ import {
 	FormLabel,
 	FormSelect
 } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Table, Button, Modal } from "react-bootstrap";
 import "./ConfigProcesoSeleccion.css";
 import Overlay from "react-bootstrap/Overlay";
