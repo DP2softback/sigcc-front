@@ -182,7 +182,7 @@ const IndexEvaluacionDesempenho = () => {
 
   const handleArea = (eventKey: string | null, event: React.SyntheticEvent<unknown>) => {
     const selected = areas.find(area => area.id === Number(eventKey));
-    console.log("Selected: ", selected);
+    console.log("Selected Area: ", selected);
     setSearchParams(prevState => ({
       ...prevState,
       area: selected ? selected : {id:0 , name:"Todas las áreas"},
@@ -191,6 +191,7 @@ const IndexEvaluacionDesempenho = () => {
 
   const handleCategoria = (eventKey: string | null, event: React.SyntheticEvent<unknown>) => {
     const selected = (activeRepContinua ? categoriasContinua : categoriasDesempenio).find(categoria => categoria.id === Number(eventKey));
+    console.log("Selected Categoria: ", selected);
     setSearchParams(prevState => ({
       ...prevState,
       categoria: selected ? selected : {id:0, name:"Todas las categorías"},
@@ -238,10 +239,19 @@ const IndexEvaluacionDesempenho = () => {
       return;
     }
 
+    console.log("Params: ", searchParams);
+
+    //Upate searchParams.fechaInicio and searchParams.fechaFin to ISOString
+    const searchParamsCopy = {...searchParams};
+    searchParamsCopy.fechaInicio = searchParams.fechaInicio.toISOString().split('T')[0];
+    searchParamsCopy.fechaFin = searchParams.fechaFin.toISOString().split('T')[0];
+    
+    console.log("Params Updated: ", searchParamsCopy);
+
     if(activeRepContinua) {
       const fetchData = async () => {
         setIsLoading(true);
-        const data = await postReportLineChart(searchParams.area.id, searchParams.categoria.id, searchParams.fechaInicio, searchParams.fechaFin, searchParams.evaluationType);
+        const data = await postReportLineChart(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(data){
           setDashboard(formatDashboardJson(data));
           console.log("Data: ", data);
@@ -249,7 +259,7 @@ const IndexEvaluacionDesempenho = () => {
         }
         else{
           console.log("Error C: ", data);
-          console.log("Params: ", searchParams);
+          console.log("Params: ", searchParamsCopy);
         }
         setIsLoading(false);
       };
@@ -258,7 +268,7 @@ const IndexEvaluacionDesempenho = () => {
     else{
       const fetchData = async () => {
         setIsLoading(true);
-        const data = await postReportLineChart(searchParams.area.id, searchParams.categoria.id, searchParams.fechaInicio, searchParams.fechaFin, searchParams.evaluationType);
+        const data = await postReportLineChart(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(data){
           setDashboard(formatDashboardJson(data));
           console.log("Data: ", data);
@@ -266,7 +276,7 @@ const IndexEvaluacionDesempenho = () => {
         }
         else{
           console.log("Error D: ", data);
-          console.log("Params: ", searchParams);
+          console.log("Params: ", searchParamsCopy);
         }
         setIsLoading(false);
       };

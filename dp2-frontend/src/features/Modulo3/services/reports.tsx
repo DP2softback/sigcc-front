@@ -190,10 +190,10 @@ export const postReportLineChart = async (areaid, categoriaid, dateFechaInicio, 
     "category-id": areaid,
     "area-id": categoriaid,
     "evaluationType": evaluationType,
-    // "fecha_inicio": dateFechaInicio,
-    // "fecha_fin": dateFechaFin
+    "fecha_inicio": dateFechaInicio,
+    "fecha_fin": dateFechaFin
   }
-  
+  console.log("body: ", body);
   try {
     const response = await axios.post(`${BACKEND_URL}LineChartEvaluacionesReporte`,
       body,
@@ -204,7 +204,7 @@ export const postReportLineChart = async (areaid, categoriaid, dateFechaInicio, 
         }
       }
     );
-    console.log(response.data);
+    console.log("Respuesta del Post: ",response.data);
     return response.data;
   } catch (error) {
     console.log("Hubo un error con la solicitud:", error);
