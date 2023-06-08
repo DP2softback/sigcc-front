@@ -41,7 +41,7 @@ const Read = () => {
                 palabraClave: "",
                 idTipoCompetencia: 0,
                 activo: 1,
-                idEmpleado: 2 // Cambiar idEmpleado logeado
+                idEmpleado: 1// Cambiar idEmpleado logeado
             }
             axiosEmployeeGaps
             .post("gaps/competenceSearch", obj)
@@ -99,7 +99,7 @@ const Read = () => {
             palabraClave: palabrasClave,
             idTipoCompetencia: tipoCompetenciaSelected.id,
             activo: 1,
-            idEmpleado: 2 // Cambiar idEmpleado logeado
+            idEmpleado: 1 // Cambiar idEmpleado logeado
         }
         axiosEmployeeGaps
         .post("gaps/competenceSearch", obj)
