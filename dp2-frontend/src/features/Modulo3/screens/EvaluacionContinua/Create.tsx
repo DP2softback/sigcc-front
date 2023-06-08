@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
 import BaseForm from './BaseForm';
 import { getPlantilla } from '@features/Modulo3/services/templates';
