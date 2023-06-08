@@ -151,7 +151,7 @@ function LearningPath (props: any)
                                         return <Fragment key={i}>
                                             <div className='col'>
                                                 <div className="card h-100">
-                                                    <img src={lp.url_foto} className="card-img-top" alt="Card" />
+                                                    <img src={lp.url_foto} className="card-img-top lp-card-img" alt="Card" />
                                                     <div className="card-body">
                                                         <div className="lp-header justify-content-between d-flex">
                                                             <div className="align-self-center">

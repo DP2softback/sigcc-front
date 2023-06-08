@@ -15,3 +15,7 @@
 .hidden {
     display: none;
 }
+
+.lp-card-img {
+    height: 12rem;
+}
