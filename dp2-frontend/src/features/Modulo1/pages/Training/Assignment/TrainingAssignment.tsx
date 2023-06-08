@@ -322,11 +322,11 @@ const TrainingAssignment = () => {
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
+            {/* <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'> */}
                 {
                     loading ?
                         (
-                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)', display: "flex", alignItems: "center", justifyContent: "center"  }}>
                                 <div className='vertical-align-child'>
                                     <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
                                         <span className="visually-hidden">Loading...</span>
@@ -336,7 +336,7 @@ const TrainingAssignment = () => {
                         )
                         :
                         <>
-                            <div className='container row mt-3' style={{ backgroundColor: "#F3F4F6" }}>
+                            <div className='row'>
 
                                 <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
                                     <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
@@ -428,7 +428,7 @@ const TrainingAssignment = () => {
                                                 </div>
                                             }
 
-                                            <div style={{ paddingLeft: "1rem", position: employeeFilter.length == 0 ? 'relative' : 'static', right: employeeFilter.length == 0 ? '-21.9rem' : '', }}>
+                                            <div style={{ paddingLeft: "1rem", position: employeeFilter.length == 0 ? 'relative' : 'static', right: employeeFilter.length == 0 ? '-20rem' : '', }}>
                                                 {addedEmployees.length ?
                                                     <>
                                                         <div style={{ backgroundColor: "#D8E0E8", width: "17.3rem", borderRadius: "4px", overflow: "hidden", boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}>
@@ -481,7 +481,7 @@ const TrainingAssignment = () => {
                                             </div>
                                         </div>
                                         <div className="modal-footer">
-                                            <button className='btn btn-primary' style={{ marginTop: "15px", marginBottom: "15px" }} onClick={assignEmployees}>Asignar empleados</button>
+                                            <button className='btn btn-primary' data-bs-dismiss="modal" style={{ marginTop: "15px", marginBottom: "15px" }} onClick={assignEmployees}>Asignar empleados</button>
                                         </div>
                                     </div>
                                 </div>
@@ -492,7 +492,7 @@ const TrainingAssignment = () => {
 
 
 
-            </Sidebar>
+            {/* </Sidebar> */}
         </>
     )
 }

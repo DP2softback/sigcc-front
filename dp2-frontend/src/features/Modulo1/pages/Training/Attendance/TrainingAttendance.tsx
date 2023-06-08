@@ -126,7 +126,7 @@ const TrainingAttendance = () => {
     
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
+            {/* <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'> */}
                 {
                     loading ?
                     (
@@ -140,7 +140,7 @@ const TrainingAttendance = () => {
                     )
                     :
                     (<>
-                        <div className='container row mt-3'>
+                        <div className='row'>
                             {/* SESSION DATA */}
                             <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
                                 <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
@@ -188,7 +188,7 @@ const TrainingAttendance = () => {
                     </>
                     )
                 }
-            </Sidebar>
+            {/* </Sidebar> */}
         </>
     )
 }

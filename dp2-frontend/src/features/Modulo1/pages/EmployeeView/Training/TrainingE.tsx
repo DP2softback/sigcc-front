@@ -28,6 +28,7 @@ type TrainingObj = {
     fechaAsignacion: string;
     porcentajeProgreso: string;
     cursoEmpresa: {
+        id: number,
         nombre: string,
         url_foto: string,
         descripcion: string,
@@ -363,6 +364,7 @@ const TrainingE = () => {
         setLoading(true);
         axiosInt.get('capacitaciones/course_company_course_not_free/1')
             .then(function (response) {
+                console.log(response.data)
                 setTraining(response.data)
                 setTrainingFilter(response.data);
                 setUpcomingCourse(response.data.filter((item: any) => compararFechas(item.cursoEmpresa.fecha_primera_sesion === null ? (moment(item.cursoEmpresa.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.cursoEmpresa.fecha_primera_sesion).format("DD-MM-YYYY")), now, now7, 1)))
@@ -422,7 +424,7 @@ const TrainingE = () => {
 
     return (
         <>
-            <Layout title="Grupo 1 App" content="container">
+            {/* <Layout title="Grupo 1 App" content="container"> */}
                 {/* <Sidebar items={sidebarItems} active='/modulo1/empleado/cursoempresa'> */}
                 <div className='row'>
                     <div className='col'>
@@ -500,7 +502,7 @@ const TrainingE = () => {
                                                                     return (
                                                                         <div className='col-md-4'>
                                                                             <TrainingCardE key={tr.id}
-                                                                                id={tr.id}
+                                                                                id={tr.cursoEmpresa.id}
                                                                                 name={tr.cursoEmpresa.nombre}
                                                                                 photoURL={tr.cursoEmpresa.url_foto === null ? (url_foto_default) : (tr.cursoEmpresa.url_foto)}
                                                                                 description={tr.cursoEmpresa.descripcion}
@@ -1140,7 +1142,7 @@ const TrainingE = () => {
 
 
                 {/* </Sidebar > */}
-            </Layout>
+            {/* </Layout> */}
         </>
     )
 }

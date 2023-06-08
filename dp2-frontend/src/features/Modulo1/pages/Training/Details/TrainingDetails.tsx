@@ -232,7 +232,7 @@ const TrainingDetails = () => {
 
     return (
         <>
-            <Layout title="Grupo 1 App" content="container">
+            {/* <Layout title="Grupo 1 App" content="container"> */}
                 {/* <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'> */}
                 {
                     loading ?
@@ -391,7 +391,7 @@ const TrainingDetails = () => {
 
                         )
                 }
-            </Layout >
+            {/* </Layout > */}
         </>
     )
 }

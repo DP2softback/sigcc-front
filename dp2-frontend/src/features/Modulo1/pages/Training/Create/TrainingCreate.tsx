@@ -563,7 +563,7 @@ const TrainingCreate = () => {
             idSupplier = {
                 id: addedSupplier[0].id
             }
-            setAddedSuppliersId([...addedSuppliersId, idSupplier])            
+            setAddedSuppliersId([...addedSuppliersId, idSupplier])
         }
         async function UpdateFilter() {
             var filtered2 = supplierFilter.filter((item: any) => {
@@ -583,12 +583,13 @@ const TrainingCreate = () => {
 
 
     return (
-        // <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
-        <Layout title="Grupo 1 App" content="container">
+        <>
+            {/* // <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'> */}
+            {/* // <Layout title="Grupo 1 App" content="container"> */}
             {
                 loading ?
                     (
-                        <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)', display: "flex", alignItems: "center", justifyContent: "center"  }}>
+                        <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)', display: "flex", alignItems: "center", justifyContent: "center" }}>
                             <div className='vertical-align-child'>
                                 <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
                                     <span className="visually-hidden">Loading...</span>
@@ -635,13 +636,12 @@ const TrainingCreate = () => {
                                 </div>
                             </div>
 
-                            {/* SESSION */}
-                            <div className='row mt-3' style={{ marginLeft: "54px" }}>
-                                <div className='col'>
-                                    <h4 className='mt-3 subarea'>Sesiones</h4>
-                                </div>
-                                <div style={{ flex: '0 0 15rem' }} className='col text-end'>
-                                    {/* Button trigger modal */}
+                        </div>
+
+                        <div className='row'>
+                            <div className='col' style={{ marginLeft: "60px" }}>
+                                <div className='mt-4 mb-3' style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                    <h4 className='subarea'>Sesiones</h4>
                                     <button type='button' className='btn btn-primary' data-bs-target='#createSessionModal' data-bs-toggle='modal'>
                                         <div style={{ display: "flex", alignItems: "center" }}>
                                             <span className='me-3'>Nueva sesión</span>
@@ -650,29 +650,30 @@ const TrainingCreate = () => {
                                     </button>
                                 </div>
 
-                                <div>
-                                    {classSessions.length > 0 ?
-                                        (<SessionAccordion trainingType={training.tipo} sessions={classSessions} mode={"create"}/>)
-                                        :
-                                        (
-                                            <div className='row align-items-stretch g-3 py-3'>
-                                                <div className='col'>
-                                                    <div className='card'>
-                                                        <div className='card-body'>
-                                                            <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                                <div className='vertical-align-child'>
-                                                                    <h5 className='opacity-50 text-center'>Crea una sesión para comenzar</h5>
-                                                                </div>
+                                {classSessions.length ?
+                                    (<SessionAccordion trainingType={training.tipo} sessions={classSessions} mode={"create"} />)
+                                    :
+                                    (
+                                        <div className='row align-items-stretch g-3 py-3'>
+                                            <div className='col'>
+                                                <div className='card'>
+                                                    <div className='card-body'>
+                                                        <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                            <div className='vertical-align-child'>
+                                                                <h5 className='opacity-50 text-center'>Crea una sesión para comenzar</h5>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        )
-                                    }
-                                </div>
+                                        </div>
+                                    )
+                                }
                             </div>
+
                         </div>
+
+
 
                         {/* CREATE SESSION MODAL */}
                         <div className="modal fade" id="createSessionModal" aria-hidden="true" aria-labelledby="createSessionModal" tabIndex={-1}>
@@ -1070,9 +1071,11 @@ const TrainingCreate = () => {
                         </div>
                     </>)
             }
-        {/* </Sidebar > */}
-        </Layout>
+            {/* </Sidebar > */}
+            {/* </Layout> */}
+        </>
     )
+
 }
 
 export default TrainingCreate

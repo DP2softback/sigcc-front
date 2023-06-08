@@ -2,6 +2,7 @@ import { TSidebarItemGroup } from "@routes/types/sidebarItem";
 import { Roles } from "@routes/types/roles";
 import { ArrowRepeat, JournalCheck, FileEarmarkText, GraphUp } from "react-bootstrap-icons";
 import {
+	TRAINING_MANAGMENT_MODULE,
 	LEARNING_PATH_INDEX,
 	ORG_COURSE_INDEX,
 	EMP_LEARNING_PATH_INDEX,
@@ -10,7 +11,7 @@ import {
 
 export const sideBarItemsGroup1: TSidebarItemGroup[] = [
 	{
-		groupName: "Gestión de capacidades",
+		groupName: "Gestión de capacitaciones",
 		roles: [Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.HEAD_OF_AREA, Roles.WORKER],
 		children: [
 			{
@@ -18,28 +19,28 @@ export const sideBarItemsGroup1: TSidebarItemGroup[] = [
 				icon: ArrowRepeat,
 				roles: [Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.HEAD_OF_AREA],
 				hasChildren: false,
-                route: LEARNING_PATH_INDEX
+                route: `/${TRAINING_MANAGMENT_MODULE}/${LEARNING_PATH_INDEX}`
 			},
 			{
 				name: "Curso Empresa",
 				icon: JournalCheck,
 				roles: [Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.HEAD_OF_AREA],
 				hasChildren: false,
-                route: ORG_COURSE_INDEX
+                route: `/${TRAINING_MANAGMENT_MODULE}/${ORG_COURSE_INDEX}`
 			},
             {
-				name: "Ruta de Aprendizaje",
+				name: "Ruta de Aprendizaje E",
 				icon: ArrowRepeat,
-				roles: [Roles.WORKER],
+				roles: [Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.WORKER],
 				hasChildren: false,
-                route: EMP_LEARNING_PATH_INDEX
+                route: `/${TRAINING_MANAGMENT_MODULE}/${EMP_LEARNING_PATH_INDEX}`
 			},
 			{
-				name: "Curso Empresa",
+				name: "Curso Empresa E",
 				icon: JournalCheck,
-				roles: [Roles.WORKER],
+				roles: [Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.WORKER],
 				hasChildren: false,
-                route: EMP_ORG_COURSE_INDEX
+                route: `/${TRAINING_MANAGMENT_MODULE}/${EMP_ORG_COURSE_INDEX}`
 			},     
 		]
 	}

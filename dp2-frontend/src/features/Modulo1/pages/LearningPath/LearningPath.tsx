@@ -8,6 +8,7 @@ import sidebarItems from '../../utils/sidebarItems';
 import PictureUpload from '@features/Modulo1/components/PictureUpload';
 import Rate from '@features/Modulo1/components/Rate';
 import { ThreeDotsVertical, People, Clock } from 'react-bootstrap-icons'
+import Layout from "@layout/default/index";
 
 
 function LearningPath (props: any)
@@ -99,7 +100,8 @@ function LearningPath (props: any)
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'>
+            {/* <Layout title="Grupo 1 App" content="container"> */}
+            {/* <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'> */}
                 {
                     loading ?
                         <>
@@ -208,7 +210,9 @@ function LearningPath (props: any)
                             }
                         </>
                 }
-            </Sidebar>
+            {/* </Sidebar> */}
+            {/* </Layout> */}
+            
             <div className="modal fade" id="createLPModalChoose" aria-hidden="true" aria-labelledby="createLPModalChoose" tabIndex={-1}>
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">

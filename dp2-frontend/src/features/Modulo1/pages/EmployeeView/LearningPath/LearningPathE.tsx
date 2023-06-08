@@ -91,7 +91,7 @@ function LearningPath(props: any) {
 
     return (
         <>
-            <Layout title="Grupo 1 App" content="container">
+            {/* <Layout title="Grupo 1 App" content="container"> */}
             {/* <Sidebar items={sidebarItems} active='/modulo1/empleado/rutadeaprendizaje'> */}
                 {
                     loading ?
@@ -201,7 +201,7 @@ function LearningPath(props: any) {
                         </>
                 }
             {/* </Sidebar>  */}
-            </Layout>           
+            {/* </Layout>            */}
         </>
     );
 }

@@ -1,22 +1,24 @@
-/*----- Ruta de Aprendizaje -----*/
-export const LEARNING_PATH_INDEX = '/modulo1/rutadeaprendizaje';
-export const LEARNING_PATH_ADDCOURSE = '/modulo1/curso/agregar/:learningPathId';
-export const LEARNING_PATH_DETAIL = '/modulo1/rutadeaprendizaje/detalle/:learningPathId';
-export const LEARNING_PATH_ASSIGNMENT = '/modulo1/rutadeaprendizaje/asignacion/:learningPathId';
+export const TRAINING_MANAGMENT_MODULE = 'modulo1';
+
+/*---- Ruta de Aprendizaje -----*/
+export const LEARNING_PATH_INDEX = 'rutadeaprendizaje';
+export const LEARNING_PATH_ADDCOURSE = 'curso/agregar/:learningPathId';
+export const LEARNING_PATH_DETAIL = 'detalle/:learningPathId';
+export const LEARNING_PATH_ASSIGNMENT = 'asignacion/:learningPathId';
 
 /*----- Curso Empresa -----*/
-export const ORG_COURSE_INDEX = '/modulo1/cursoempresa';
-export const ORG_COURSE_CREATE = '/modulo1/cursoempresa/creacion/:trainingID';
-export const ORG_COURSE_DETAIL = '/modulo1/cursoempresa/detalle/:trainingID';
-export const ORG_COURSE_ATTENDANCE = '/modulo1/cursoempresa/detalle/:trainingID/asistencia/:sessionID';
-export const ORG_COURSE_ASSIGNMENT = '/modulo1/cursoempresa/asignacion/:trainingID';
+export const ORG_COURSE_INDEX = 'cursoempresa';
+export const ORG_COURSE_CREATE = 'creacion/:trainingID';
+export const ORG_COURSE_DETAIL = 'detalle/:trainingID';
+export const ORG_COURSE_ATTENDANCE = 'detalle/:trainingID/asistencia/:sessionID';
+export const ORG_COURSE_ASSIGNMENT = 'asignacion/:trainingID';
 
 
 /*----- Vista Empleado LP -----*/
-export const EMP_LEARNING_PATH_INDEX = '/modulo1/empleado/rutadeaprendizaje';
-export const EMP_LEARNING_PATH_DETAIL = '/modulo1/empleado/rutadeaprendizaje/detalle/:learningPathId';
+export const EMP_LEARNING_PATH_INDEX = 'empleado/rutadeaprendizaje';
+export const EMP_LEARNING_PATH_DETAIL = 'detalle/:learningPathId';
 
 /*----- Vista Empleado CE -----*/
-export const EMP_ORG_COURSE_INDEX = '/modulo1/empleado/cursoempresa';
-export const EMP_ORG_COURSE_DETAIL = '/modulo1/empleado/cursoempresa/sessions/:trainingID';
+export const EMP_ORG_COURSE_INDEX = 'empleado/cursoempresa';
+export const EMP_ORG_COURSE_DETAIL = 'sessions/:trainingID';
 

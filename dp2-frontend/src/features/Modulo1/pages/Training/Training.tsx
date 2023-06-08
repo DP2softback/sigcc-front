@@ -413,7 +413,7 @@ const Training = () => {
 
     return (
         <>
-            <Layout title="Grupo 1 App" content="container">
+            {/* <Layout title="Grupo 1 App" content="container"> */}
                 {/* <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'> */}
                 {
                     loading ?
@@ -452,7 +452,7 @@ const Training = () => {
                                 <div className='col-5'>
                                     <input className='form-control' type='text' placeholder='Buscar curso' onChange={handleFilter} />
                                 </div>
-                                <div className='col-2'>
+                                <div className='col'>
                                     <select className="form-select" aria-label=".form-select-sm example" onChange={handleChangeType}>
                                         <option hidden>Tipo</option>
                                         {typeTra.map((t) => {
@@ -468,7 +468,7 @@ const Training = () => {
                                 <div className='col'>
                                     <input className='form-control' type='date' id='end_date' onChange={handleChangeEndDate} />
                                 </div>
-                                <div className='col-1 text-end'>
+                                <div className='col text-end'>
                                     <button className='btn btn-primary' type='button' onClick={search}>Buscar</button>
                                 </div>
                             </div>
@@ -817,7 +817,7 @@ const Training = () => {
                 }
 
                 {/* </Sidebar > */}
-            </Layout>
+            {/* </Layout> */}
         </>
     )
 }

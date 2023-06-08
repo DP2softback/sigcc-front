@@ -138,7 +138,7 @@ function LearningPathDetails (props: any)
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'>
+            {/* <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'> */}
                 {
                     loading ?
                         <>
@@ -287,9 +287,9 @@ function LearningPathDetails (props: any)
                             </div>
                         </>
                 }
-            </Sidebar>
+            {/* </Sidebar> */}
             <LearningPathAssignment assignFunction={handleAssignEmployees} />
-            <div className="toast show align-items-center text-bg-primary position-fixed top-0 end-0 m-3 border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div style={{marginTop: "5rem"}} className="toast show align-items-center text-bg-primary position-fixed top-0 end-0 border-0" role="alert" aria-live="assertive" aria-atomic="true">
                 <div className="d-flex">
                     <div className="toast-body">
                         Se está generando la evaluación para el curso en segundo plano.
