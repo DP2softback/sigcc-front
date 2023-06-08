@@ -4,11 +4,18 @@ import { Roles } from "./types/roles";
 import { Navigate } from "react-router-dom";
 import Authenticated from "@components/Authenticated";
 import { routes as routesGroup4 } from "@features/Modulo4/routes/router";
+import { SELECTION_PROCESS_AND_JOB_OFFERS_MODULE,
+	JOB_OFFERS,
+	CREATE_JOB_OFFER,
+	LIST_JOB_OFFERS,
+	SELECTION_PROCESS,
+	CREATE_SELECTION_PROCESS,
+	LIST_SELECTION_PROCESS } from "@features/Modulo4/routes/path";
 
 const defaultRoutes: RouteObject[] = [
 	{
 		path: "/",
-		element: <Navigate to="/selection-offers-and-positions/selection-process/test" replace />
+		element: <Navigate to={`${SELECTION_PROCESS_AND_JOB_OFFERS_MODULE}/${JOB_OFFERS}/${CREATE_JOB_OFFER}`} replace />
 	},
 	{
 		path: "login",
