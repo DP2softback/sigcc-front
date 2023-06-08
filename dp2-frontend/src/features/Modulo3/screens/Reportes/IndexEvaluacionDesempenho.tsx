@@ -11,6 +11,8 @@ import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path
 import { getAreas, getCategoriasContinua, getCategoriasDesempenio, postReportLineChart, getEmployeesEvaluationDashboard} from '@features/Modulo3/services/reports';
 import { formatDashboardJson } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
+import { toast, ToastContainer } from 'react-toastify';  // Import react-toastify
+import 'react-toastify/dist/ReactToastify.css'; 
 
 const dataAreas =     [
   {
@@ -223,21 +225,21 @@ const IndexEvaluacionDesempenho = () => {
 
   const handleSearchClick = () => {
     if(searchParams.fechaInicio === null || searchParams.fechaFin === null) {
-      alert("Debe seleccionar un rango de fechas");
+      toast.warn("Debe seleccionar un rango de fechas");
       return;
     }
     if(searchParams.fechaInicio > searchParams.fechaFin) {
-      alert("La fecha de inicio no puede ser mayor a la fecha de fin");
+      toast.warn("La fecha de inicio no puede ser mayor a la fecha de fin");
       return;
     }
-    if(searchParams.area.id === 0) {
-      alert("Debe seleccionar un área");
-      return;
-    }
-    if(searchParams.categoria.id === 0) {
-      alert("Debe seleccionar una categoría");
-      return;
-    }
+    // if(searchParams.area.id === 0) {
+    //   alert("Debe seleccionar un área");
+    //   return;
+    // }
+    // if(searchParams.categoria.id === 0) {
+    //   alert("Debe seleccionar una categoría");
+    //   return;
+    // }
 
     console.log("Params: ", searchParams);
 
@@ -361,6 +363,7 @@ const IndexEvaluacionDesempenho = () => {
   
   return (
     <>
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover /> 
       <Layout
         title={'Reportes'}
         body={body}

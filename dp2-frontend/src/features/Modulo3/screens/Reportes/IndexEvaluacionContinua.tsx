@@ -241,14 +241,14 @@ const IndexEvaluacionContinua = () => {
       alert("La fecha de inicio no puede ser mayor a la fecha de fin");
       return;
     }
-    if(searchParams.area.id === 0) {
-      alert("Debe seleccionar un área");
-      return;
-    }
-    if(searchParams.categoria.id === 0) {
-      alert("Debe seleccionar una categoría");
-      return;
-    }
+    // if(searchParams.area.id === 0) {
+    //   alert("Debe seleccionar un área");
+    //   return;
+    // }
+    // if(searchParams.categoria.id === 0) {
+    //   alert("Debe seleccionar una categoría");
+    //   return;
+    // }
 
     console.log("Params: ", searchParams);
 
