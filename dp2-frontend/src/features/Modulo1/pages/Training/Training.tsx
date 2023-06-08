@@ -261,7 +261,7 @@ const Training = () => {
 
     const today = new Date();
     const now = formatDate(new Date());
-    var now7 = formatDate(new Date(today.setDate(today.getDate() + 7)));
+    var now7 = formatDate(new Date(today.setDate(today.getDate() + 30)));
 
     const [trainingFilter, setTrainingFilter] = useState<TrainingObj[]>([])
     const [training, setTraining] = useState<TrainingObj[]>([])
