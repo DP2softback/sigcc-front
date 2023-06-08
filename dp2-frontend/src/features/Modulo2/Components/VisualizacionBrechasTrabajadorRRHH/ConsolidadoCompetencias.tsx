@@ -42,7 +42,7 @@ const PieChart = ({ title, labels, datasets }) => {
         const fetchTipoCompetencias = async () => {
           try {
     
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competenceTypes', {
+            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceTypes', {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ const PieChart = ({ title, labels, datasets }) => {
           };
       
           try {
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competenceConsolidateSearch', requestOptions);
+            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceConsolidateSearch', requestOptions);
       
             if (response.ok) {
               const data = await response.json();

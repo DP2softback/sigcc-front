@@ -6,6 +6,7 @@
 
 .title-job-opp{
     font-weight: 500;
+    font-size: 14px;
 }
 
 .availability-job-opp{
@@ -27,4 +28,12 @@
 
 .btn-acept{
     margin-right: 8px;
+}
+
+.desc-job-opp{
+    font-size: 13px;
+}
+
+.btn{
+    padding: 0px 7px;
 }

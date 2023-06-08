@@ -18,7 +18,7 @@ const GestionCompetencia = () => {
       const fetchTipoCompetencias = async () => {
         try {
   
-          const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competenceTypes', {
+          const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceTypes', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ const GestionCompetencia = () => {
           };
   
           const response = await fetch(
-            'https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/trainingNeedSearch',
+            'https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/trainingNeedSearch',
             {
               method: 'POST',
               headers: {
