@@ -42,14 +42,14 @@ class VideoUpload extends Component<Props, State>
         formData.append('file', file);
 
         if (this.url){
-            axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/delete_file/', {
+            axiosInt.post('capacitaciones/delete_file/', {
                 url: this.url,
             }).then(response => {
                 console.log(response.data);
             })
         }
 
-        axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/upload_file/', formData, {
+        axiosInt.post('capacitaciones/upload_file/', formData, {
             headers: {
                 'content-type': 'multipart/form-data',
             }

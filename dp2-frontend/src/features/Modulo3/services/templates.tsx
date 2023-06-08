@@ -48,7 +48,7 @@ export const getPlantilla = async(idPlantilla,type) =>{
         return await ajax(optionsRequest);
 }
 
-export const getCategoriesSubs = async() =>{
+export const getCategoriesSubs = async(type) =>{
   const optionsRequest = {
       method: 'POST',
       url: BACKEND_URL + 'VistaCategoriasSubCategorias',
@@ -56,7 +56,7 @@ export const getCategoriesSubs = async() =>{
         Authorization: `Token ${TOKEN}`
       },
       data: {      
-        evaluationType: PERFORMANCE_EVALUATION_TYPE,
+        evaluationType: type,
       }
   }
   return await ajax(optionsRequest);

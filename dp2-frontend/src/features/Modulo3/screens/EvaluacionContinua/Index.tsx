@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
 import { CONTINUOS_EVALUATION_INDEX, CONTINUOS_EVALUATION_HISTORY } from '@features/Modulo3/routes/path';
 import { navigateTo, formatDashboardJson, formatNumber } from '@features/Modulo3/utils/functions';

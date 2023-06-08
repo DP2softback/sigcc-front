@@ -4,4 +4,18 @@
 
 .lp-thumb {
     height: 4rem;
+    width: 4rem;
+}
+
+.lpd-footer {
+    background-color: var(--bs-card-bg);
+    border: 0;
+    padding-top: 0;
+}
+.hidden {
+    display: none;
+}
+
+.lp-card-img {
+    height: 12rem;
 }

@@ -1,6 +1,6 @@
 import {  Table } from 'react-bootstrap';
 import { formatDate, navigateTo } from '@features/Modulo3/utils/functions';
-import './TableHistoryContinua.css';
+import './TableHistory.css';
 import { ArrowRightCircleFill } from 'react-bootstrap-icons';
 import { CONTINUOS_EVALUATION_DETAIL } from '@features/Modulo3/routes/path';
 

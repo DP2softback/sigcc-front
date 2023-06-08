@@ -20,3 +20,8 @@
     border: 0;
     padding-top: 0;
 }
+
+.row-search{
+    padding-top: 0.75rem;
+    padding-bottom: 1.5rem;
+}

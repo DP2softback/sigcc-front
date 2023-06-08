@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionDeDesempenho.css';
 import { PERFORMANCE_EVALUATION_INDEX, PERFORMANCE_EVALUATION_HISTORY } from '@features/Modulo3/routes/path';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
@@ -59,7 +58,10 @@ const Index = () => {
               key={employee.id}
               className="mb-32px cursor-pointer"
               onClick={() => {
-                navigateTo(PERFORMANCE_EVALUATION_HISTORY, { id: employee.id });
+                navigateTo(PERFORMANCE_EVALUATION_HISTORY, { 
+									id: employee.id,
+									name: employee.name
+								});
               }}>
               <Employee
                 id={employee.id}
@@ -86,7 +88,10 @@ const Index = () => {
           key={employee.id}
           className="col-md-4 mb-32px cursor-pointer"
           onClick={() => {
-            navigateTo(PERFORMANCE_EVALUATION_HISTORY, { id: employee.id });
+            navigateTo(PERFORMANCE_EVALUATION_HISTORY, { 
+              id: employee.id,
+              name: employee.name
+            });
           }}>
           <Employee
             id={employee.id}
