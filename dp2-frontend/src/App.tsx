@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useRoutes } from 'react-router-dom';
-import { AuthProvider } from '@contexts/JWTAuthContext';
+import { AuthProvider } from '@contexts/TokenAuthContext';
 import routes from '@config/router';
 import Authenticated from '@components/Authenticated';
 

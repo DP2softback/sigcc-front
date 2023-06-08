@@ -75,7 +75,7 @@
         bottom: 0;
     }
     .main-container {
-        height: calc(100vh - 5rem);
+        height: calc(100vh - 4.3rem);
         overflow-y: auto;
     }
     .sidebar-container, .expanded .sidebar-container {

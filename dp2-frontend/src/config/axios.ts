@@ -11,8 +11,10 @@ const axiosInt = axios.create({
   baseURL: baseUrl,
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': 'Token b7f640fc5d833b0329e6b1045f088c0fcf5f191e',
-  }
+    'Authorization': localStorage.getItem('token')
+    ? 'Token ' + localStorage.getItem('token')
+    : null,
+}
 });
 
 // axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
