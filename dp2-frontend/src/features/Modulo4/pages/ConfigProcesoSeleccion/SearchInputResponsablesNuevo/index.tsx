@@ -1,2 +1,2 @@
-import SearchInput from "./SearchInput";
-export default SearchInput;
+import SearchInputResponsablesNuevo from "./SearchInputResponsablesNuevo";
+export default SearchInputResponsablesNuevo;

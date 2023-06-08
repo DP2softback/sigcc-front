@@ -1,12 +1,9 @@
 import React from "react";
-import { BsTrash } from "react-icons/bs";
 import Dropdown from "react-bootstrap/Dropdown";
 
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
 import {
 	ButtonGroup,
 	FormGroup,
@@ -17,28 +14,16 @@ import {
 } from "react-bootstrap";
 import { Table, Button, Modal } from "react-bootstrap";
 import "./ConfigProcesoSeleccion.css";
-import Overlay from "react-bootstrap/Overlay";
 
-import { Link, useNavigate } from "react-router-dom";
-import axiosInt from "@config/axios";
 import { Fragment, ChangeEvent, useEffect, useRef, useState } from "react";
-import Sidebar from "@components/Sidebar";
-import sidebarItems from "../../utils/sidebarItems";
-import PhotoCard from "@features/Modulo4/components/PhotoCard";
 import SearchInput from "./SearchInputProcesoSeleccion/SearchInput";
-import SearchInputResponsables from "./SearchInputProcesoSeleccion/SearchInput";
-import CustomInput from "@features/Modulo4/components/CustomInput";
-import { TextCenter } from "react-bootstrap-icons";
 import { ajax } from "@features/Modulo4/tools/ajax";
 import moment from "moment";
-
-import SearchInputResponsablesNuevo from "./SearchInputResponsablesNuevo/SearchInputResponsable";
+import SearchInputResponsablesNuevo from "./SearchInputResponsablesNuevo/SearchInputResponsablesNuevo";
 import {
 	BACKEND_URL_CREATE_PROCESO_SELECCION,
 	SAMPLE_TOKEN
 } from "@features/Modulo4/utils/constants";
-
-//idPuesto: idPuesto,
 
 function ConfigProcesoSeleccion(props: any) {
 	const createPS = async () => {

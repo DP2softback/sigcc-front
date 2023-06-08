@@ -9,9 +9,9 @@ import {
 	Table,
 	ListGroup
 } from "react-bootstrap";
-import "./SearchInputResponsable.css";
+import "./SearchInputResponsablesNuevo.css";
 
-const SearchInputResponsable = ({ onClose, onSelect }) => {
+const SearchInput = ({ onClose, onSelect }) => {
 	const [showModal, setShowModal] = useState(true);
 	const [searchResults, setSearchResults] = useState([]);
 
@@ -74,20 +74,15 @@ const SearchInputResponsable = ({ onClose, onSelect }) => {
 	};
 
 	// NUEVA TABLA
-	const ExpandedComponent = ({ data }) => (
-		<pre>{JSON.stringify(data, null, 2)}</pre>
-	);
 
 	const columns = [
 		{
 			name: "Title",
-			selector: (row) => row.title,
-			sortable: true
+			selector: (row) => row.title
 		},
 		{
 			name: "Year",
-			selector: (row) => row.year,
-			sortable: true
+			selector: (row) => row.year
 		}
 	];
 
@@ -141,12 +136,7 @@ const SearchInputResponsable = ({ onClose, onSelect }) => {
 					</Form>
 					<div>
 						{" "}
-						<DataTable
-							columns={columns}
-							data={data}
-							expandableRows
-							expandableRowsComponent={ExpandedComponent}
-						/>
+						<DataTable columns={columns} data={data} />
 					</div>
 				</Modal.Body>
 				<Modal.Footer>
@@ -162,4 +152,4 @@ const SearchInputResponsable = ({ onClose, onSelect }) => {
 	);
 };
 
-export default SearchInputResponsable;
+export default SearchInput;
