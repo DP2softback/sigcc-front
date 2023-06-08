@@ -11,6 +11,7 @@ import { getCategoriesSubs, guardarPlantilla } from '@features/Modulo3/services/
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 import { Toast } from 'react-bootstrap';
+import { PERFORMANCE_EVALUATION_TYPE,CONTINUOS_EVALUATION_TYPE } from '../../utils/constants'; 
 
 const dataIni ={
   categoriaNombre: "",
@@ -80,7 +81,7 @@ const Create = () => {
 
   const closeNotification = () => {
     setShowNotification(false);
-    window.location.reload();
+    navigateTo(EVALUATION_TEMPLATE_INDEX);
   };
 
   const handleInputChange = (categoriaId, value) => {
@@ -125,8 +126,8 @@ const Create = () => {
       </div>
       <select style={{borderRadius:5, height:'36px', paddingLeft: '10px', borderColor:'#ced4da', }} id="dropdown" value={selectedOption} onChange={(e) => handleOptionSelect(e.target.value)}>
         <option >Selecciona el tipo</option>
-        <option >Evaluación continua</option>
-        <option >Evaluación de desempeño</option>
+        <option >{CONTINUOS_EVALUATION_TYPE}</option>
+        <option >{PERFORMANCE_EVALUATION_TYPE}</option>
       </select>
     </div>
   );
@@ -147,8 +148,8 @@ const Create = () => {
         </div>
         <Form.Select value={selectedOption} onChange={(e) => handleOptionSelect(e.target.value)}>
           <option hidden>Seleccione el tipo de evaluación</option>
-          <option >Evaluación continua</option>
-          <option >Evaluación de desempeño</option>
+          <option >{CONTINUOS_EVALUATION_TYPE}</option>
+          <option >{PERFORMANCE_EVALUATION_TYPE}</option>
         </Form.Select>
       </Form.Group>
       <Form.Group className='sub-image flex1'>

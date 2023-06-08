@@ -255,7 +255,7 @@ const Edit = () => {
     <>
     {categorias && categorias.length >0 ? (
       <>
-       {accordion}
+        {accordion}
       </>
     ):(<NoDataFound/>)}
    
@@ -264,7 +264,7 @@ const Edit = () => {
          
           navigateBack();
         }}>
-        Dejar de editar
+        Volver
       </Button>
       <Button onClick={handleGuardarEditar}>
         Guardar

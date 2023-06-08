@@ -66,7 +66,7 @@ const Index = () => {
         </div>
     );
 	const templatesED = (
-		
+			
         <div className='pl-templates'>
                 {plantillasEC && plantillasED.map((plantilla, index) =>{
                     return (
@@ -75,7 +75,7 @@ const Index = () => {
                                 image={'https://media.istockphoto.com/id/1482790182/es/vector/contabilidad-financiera-y-concepto-de-trabajo-con-estad%C3%ADstica-proceso-de-negocio.jpg?s=612x612&w=0&k=20&c=_rYQgE1bdZpZVyGiyqyD7f1c1fFoMcdk-u7A3oBMR4w='} 
                                 imageStyle={'100px'} 
                                 name={plantilla["plantilla-nombre"]}
-								onClick={()=>{handleClick}} 
+								onClick={()=>{handleClick(plantilla["plantilla-id"])}} 
                             />
                         </div>
                     )              
