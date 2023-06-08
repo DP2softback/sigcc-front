@@ -26,7 +26,7 @@ const DeleteCompetencia = ({ competencia, borrarCompetencia }) => {
       </div>
       <div className="form-group">
         <label htmlFor="nombre">Apellidos:</label>
-        <label className="form-control" id="nombre">
+        <label className="form-control" id="apellido">
           {apellidos}
         </label>
       </div>
