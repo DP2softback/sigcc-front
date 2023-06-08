@@ -2,11 +2,13 @@ import { TSidebarItemGroup } from "@routes/types/sidebarItem";
 import { Roles } from "@routes/types/roles";
 import { People, Person, Table } from "react-bootstrap-icons";
 import {
-	CREATE_SELECTION_PROCESS,
-	LIST_SELECTION_PROCESSES,
+	SELECTION_PROCESS_AND_JOB_OFFERS_MODULE,
+	JOB_OFFERS,
 	CREATE_JOB_OFFER,
 	LIST_JOB_OFFERS,
-  JOB_OFFERS_CANDIDATE_PORTAL
+	SELECTION_PROCESS,
+	CREATE_SELECTION_PROCESS,
+	LIST_SELECTION_PROCESS
 } from "./path";
 
 export const sideBarItemsGroup4: TSidebarItemGroup[] = [
@@ -25,14 +27,14 @@ export const sideBarItemsGroup4: TSidebarItemGroup[] = [
 						icon: Table,
 						roles: [Roles.HR_ADMIN, Roles.HR_MANAGER],
 						hasChildren: false,
-						route: LIST_SELECTION_PROCESSES
+						route: `/${SELECTION_PROCESS_AND_JOB_OFFERS_MODULE}/${SELECTION_PROCESS}/${LIST_SELECTION_PROCESS}`
 					},
 					{
 						name: "Nuevo Proceso",
 						icon: Person,
 						roles: [Roles.HR_ADMIN],
 						hasChildren: false,
-						route: CREATE_SELECTION_PROCESS
+						route: `/${SELECTION_PROCESS_AND_JOB_OFFERS_MODULE}/${SELECTION_PROCESS}/${CREATE_SELECTION_PROCESS}`
 					}
 				]
 			},
@@ -47,24 +49,24 @@ export const sideBarItemsGroup4: TSidebarItemGroup[] = [
 						icon: Table,
 						roles: [Roles.HR_ADMIN],
 						hasChildren: false,
-						route: LIST_JOB_OFFERS
+						route: `/${SELECTION_PROCESS_AND_JOB_OFFERS_MODULE}/${JOB_OFFERS}/${LIST_JOB_OFFERS}`
 					},
 					{
 						name: "Nueva Oferta",
 						icon: Person,
 						roles: [Roles.HR_ADMIN, Roles.HR_WORKER],
 						hasChildren: false,
-						route: CREATE_JOB_OFFER
+						route: `/${SELECTION_PROCESS_AND_JOB_OFFERS_MODULE}/${JOB_OFFERS}/${CREATE_JOB_OFFER}`
 					}
 				]
 			},
-      {
-				name: "Portal de Ofertas Laborales",
-				icon: People,
-				roles: [Roles.CANDIDATE],
-				hasChildren: false,
-        route: JOB_OFFERS_CANDIDATE_PORTAL
-      }
+      // {
+			// 	name: "Portal de Ofertas Laborales",
+			// 	icon: People,
+			// 	roles: [Roles.CANDIDATE],
+			// 	hasChildren: false,
+      //   route: `${SELECTION_PROCESS_AND_JOB_OFFERS_MODULE}/${JOB_OFFERS}/${LIST_JOB_OFFERS}`
+      // }
 		]
 	}
 ];

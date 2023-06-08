@@ -13,7 +13,6 @@ import {
 	FormLabel,
 	FormSelect
 } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Table, Button, Modal } from "react-bootstrap";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -176,7 +175,6 @@ function ConfigOfertaLaboral(props: any) {
 	};
 
 	return (
-		<Sidebar items={sidebarItems} active="/modulo1/configurar-oferta-laboral">
 			<div
 				style={{
 					paddingLeft: "2rem",
@@ -453,7 +451,6 @@ function ConfigOfertaLaboral(props: any) {
 					</Form>
 				</div>
 			</div>
-		</Sidebar>
 	);
 }
 
