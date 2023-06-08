@@ -29,6 +29,10 @@ const M1AddCourse = Loader(
   lazy(() => import("@features/Modulo1/pages/Course/AddCourse"))
 );
 
+const M1Rubric = Loader(
+  lazy(() => import("@features/Modulo1/components/Rubric/RubricGrade"))
+);
+
 const M1ListTraining = Loader(
   lazy(() => import("@features/Modulo1/pages/Training"))
 );
@@ -51,6 +55,10 @@ const M1TrainingAssignment = Loader(
 
 const M1ListLearningPathE = Loader(
   lazy(() => import("@features/Modulo1/pages/EmployeeView/LearningPath"))
+);
+
+const M1ListLearningPathEDetails = Loader(
+  lazy(() => import("@features/Modulo1/pages/EmployeeView/LearningPath/Details"))
 );
 
 const M1ListTrainingE = Loader(
@@ -260,6 +268,10 @@ const routes: RouteObject[] = [
             path: "asignacion/:learningPathId",
             element: <M1LearningPathAssignment />,
           },
+          {
+            path: "rubrica",
+            element: <M1Rubric />,
+          },
         ],
       },
       {
@@ -310,8 +322,18 @@ const routes: RouteObject[] = [
           },
           {
             path: "rutadeaprendizaje",
-            element: <M1ListLearningPathE />,
+            children: [
+              {
+                path: "",
+                element: <M1ListLearningPathE />,
+              },
+              {
+                path: "detalle/:learningPathId",
+                element: <M1ListLearningPathEDetails />,
+              },
+            ],
           },
+
           {
             path: "cursoempresa",
             children: [

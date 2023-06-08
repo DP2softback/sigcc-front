@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
-import { CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
-import { formatDashboardJson, navigateBack, navigateTo } from '@features/Modulo3/utils/functions';
+import { CONTINUOS_EVALUATION_CREATE, CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
+import { formatDashboardJson, navigateTo } from '@features/Modulo3/utils/functions';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons'
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
@@ -21,11 +20,12 @@ const History = () => {
   const [employee, setEmployee] = useState({
     id: parseInt(urlParams.get('id')),
     name: urlParams.get('name')
-  })
+  });
   const [evaluations, setEvaluations] = useState([]);
   const [dashboard, setDashboard] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [show,setShow]=useState(false);
+  const [show,setShow] = useState(false);
+
   useEffect(() => {
     setIsLoading(true);
     (async () => {
@@ -71,7 +71,7 @@ const History = () => {
 
   const table =(
     <div className='col-md-6'>
-      <TableHistoryContinua rows ={evaluations} employee={employee}></TableHistoryContinua>
+      <TableHistoryContinua rows ={evaluations} employee={employee}/>
     </div>
   );
 
@@ -85,7 +85,7 @@ const History = () => {
       ) : (
         <NoDataFound />
       )}
-      <div className='text-end mb-4'>
+      <div className='text-end'>
         <Button
           variant='outline-primary me-2'
           onClick={() => {
@@ -96,7 +96,6 @@ const History = () => {
         </Button>
         <Button
           onClick={() => {
-            //navigateTo(CONTINUOS_EVALUATION_CREATE, { id: employeeId, name: employeeName });
             setShow(true);
           }}
         >
@@ -121,7 +120,8 @@ const History = () => {
 				setShow={setShow}
 				tipo={CONTINUOS_EVALUATION_TYPE}
 				employeeId={employee.id}
-				employeeName={employee.name}></ModalChooseTemplate>
+				employeeName={employee.name}
+        navigate={CONTINUOS_EVALUATION_CREATE}/>
 			<Layout
 				title={`Evaluación continua - ${employee.name}`}
 				body={body}

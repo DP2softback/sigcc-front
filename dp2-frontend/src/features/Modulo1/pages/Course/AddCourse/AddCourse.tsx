@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import './add-course.css';
 import axiosInt from '@config/axios';
 import Sidebar from '@components/Sidebar';
-import sidebarItems from '@utils/sidebarItems';
+import sidebarItems from '@features/Modulo1/utils/sidebarItems';
 
 function AddCourse (props: any)
 {
@@ -86,32 +86,36 @@ function AddCourse (props: any)
             });
     }
 
-    const addCourse = (course_id: number, index: number) =>
+    const addCourse = (e: any, course_id: number, index: number) =>
     {
         const data = {
             udemy_id: course_id,
             course_udemy_detail: courses[index],
             duracion: "PT5H30M",
-            descripcion: courses[index].title,
-            nombre: courses[index].headline,
+            descripcion: courses[index].headline,
+            nombre: courses[index].title,
         }
+
+        e.target.disabled = true;
+        e.target.getElementsByTagName("span")[0].classList.remove('hidden');
 
         axiosInt.post(`capacitaciones/learning_path/${learningPathId}/course/`, data)
             .then(function (response)
             {
                 console.log(response.data);
                 navigate(-1);
-
             })
             .catch(function (error)
             {
                 console.log(error);
+                e.target.disabled = false;
+                e.target.getElementsByTagName("span")[0].classList.add('hidden');
             });
     }
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'>
+            {/* <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'> */}
                 {
                     loadingInit ?
                         <>
@@ -152,10 +156,12 @@ function AddCourse (props: any)
                                                                 <div className="col">
                                                                     {
                                                                         course.is_used ? <>
-                                                                            <button style={{ width: '100%' }} className="btn btn-secondary">Quitar</button>
+                                                                            <button style={{ width: '100%' }} className="btn btn-danger">Quitar</button>
                                                                         </> :
                                                                             <>
-                                                                                <button style={{ width: '100%' }} className="btn btn-primary" onClick={() => addCourse(course.id, i)}>Añadir</button>
+                                                                                <button style={{ width: '100%' }} className="btn btn-primary" onClick={(e) => addCourse(e, course.id, i)}>
+                                                                                    <span className="spinner-border spinner-border-sm hidden me-3" role="status" aria-hidden="true"></span>
+                                                                                    Añadir</button>
                                                                             </>
                                                                     }
                                                                 </div>
@@ -185,7 +191,7 @@ function AddCourse (props: any)
                             </div>
                         </>
                 }
-            </Sidebar>
+            {/* </Sidebar> */}
 
             <div className="modal fade" id="detailsModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">

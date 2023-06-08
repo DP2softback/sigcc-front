@@ -209,6 +209,7 @@ const JobOfferDetails = () => {
                                                 puesto={employee.position}
                                                 codigo={employee.code}
                                                 boton1={botonEmployee}
+                                                boton1Texto={''}
                                                 boton1Color={"#B02A37"}
                                                 option={setPrueba}
                                             />

@@ -5,6 +5,15 @@ const Training = ({id, name, photoURL, description, creationDate, eventDate, emp
   const rows = [
     {
       icon: <Calendar2Event/>,
+      text: `Fecha de asignación: `,
+      aditional: {
+        text: `${creationDate}`,
+        backgroundColor: '#FFF',
+        color: '#000'
+      }
+    },
+    {
+      icon: <Calendar2Event/>,
       text: `Fecha de evento: `,
       aditional: {
         text: `${eventDate}`,
