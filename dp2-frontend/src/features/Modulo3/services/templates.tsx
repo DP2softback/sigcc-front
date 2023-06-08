@@ -102,7 +102,7 @@ export const guardarPlantilla = async(plantilla) =>{
       method: 'POST',
       url: BACKEND_URL + 'PlantillaCrear',
       headers:{
-          Authorization: `Token ${SAMPLE_TOKEN}`
+          Authorization: `Token ${TOKEN}`
         },
       data:{
         "evaluationType": plantilla["evaluationType"], 
