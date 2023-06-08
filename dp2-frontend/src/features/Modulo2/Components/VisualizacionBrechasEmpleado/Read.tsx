@@ -117,10 +117,10 @@ const Read = () => {
     }
 
     return (
-        <div className='container-fluid container-view'>
+        <>
             <div className='row'>
-                <h2>Consolidado de competencias</h2>
-                <p className="text-muted">Agrega, edita y desactiva competencias</p>
+                <h2>Mis brechas de competencias</h2>
+                <p className="text-muted">Visualización de estadísticas de los niveles requeridos por competencias</p>
                 <Form className="row align-items-center mb-4">
                     <Form.Group className="col-6">
                         <FormControl
@@ -220,7 +220,7 @@ const Read = () => {
             </div>
 
 
-        </div>               
+        </>               
     )
 }
 

@@ -12,6 +12,7 @@ import {
 	GAPS_EMPLOYEE_EMP,
 	GAPS_EMPLOYEE_EMP_DETAIL,
 	MY_JOB_OPPORTUNITIES,
+	EMPLOYEES_JOB_CANDIDATES,
 	INDEX
 } from "./path";
 
@@ -118,6 +119,37 @@ export const routes: RouteObject[] = [
 				]
 			},
 			{
+				path: EMPLOYEES_JOB_OPPORTUNITIES,
+				children: [
+					{
+						path: INDEX,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
+									Roles.HR_WORKER
+								]}>
+								<JobOpportunitiesHumanResources />
+							</AppLayout>
+						)
+					},
+					{
+						path: EMPLOYEES_JOB_CANDIDATES,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
+									Roles.HR_WORKER
+								]}>
+								<JobOpportunitiesHRCandidates />
+							</AppLayout>
+						)
+					}
+				]
+			},
+			{
 				path: GAPS_EMPLOYEE_EMP,
 				children: [
 					{
@@ -159,15 +191,19 @@ export const routes: RouteObject[] = [
 			},
 			{
 				path: MY_JOB_OPPORTUNITIES,
-				element: (
+				children: [
+					{
+						path: INDEX,
+						element: (
 					<AppLayout
 						allowedRoles={[
 							Roles.HR_WORKER,
 						]}>
 						<JobOpportunitiesRelatedToSkills />
-					</AppLayout>
-				)
-			},
+					</AppLayout>)
+					}
+				]
+			},	
 			{
 				path: "*",
 				element: <Navigate to={`/${GAPS_ANALYSIS_MODULE}/${COMPETENCES}`} 
