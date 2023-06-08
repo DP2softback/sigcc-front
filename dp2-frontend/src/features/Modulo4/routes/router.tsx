@@ -12,7 +12,8 @@ import {
 	CREATE_JOB_POSITION,
 	SELECTION_PROCESS,
 	CREATE_SELECTION_PROCESS,
-	LIST_SELECTION_PROCESS
+	LIST_SELECTION_PROCESS,
+	DETAIL_JOB_OFFER
 } from "./path";
 
 const Loader = (Component) => (props) =>
@@ -23,15 +24,31 @@ const Loader = (Component) => (props) =>
 	);
 
 const ConfigSelectionProcess = Loader(
-	lazy(() => import("@features/Modulo4/pages/ConfigProcesoSeleccion/ConfigProcesoSeleccion"))
+	lazy(
+		() =>
+			import(
+				"@features/Modulo4/pages/ConfigProcesoSeleccion/ConfigProcesoSeleccion"
+			)
+	)
 );
 
 const ConfigOfertaLaboral = Loader(
-	lazy(() => import("@features/Modulo4/pages/ConfigOfertaLaboral/ConfigOfertaLaboral"))
+	lazy(
+		() =>
+			import("@features/Modulo4/pages/ConfigOfertaLaboral/ConfigOfertaLaboral")
+	)
+);
+
+const JobOffersPortal = Loader(
+	lazy(() => import("@features/Modulo4/pages/JobOffer/JobOffer"))
 );
 
 const ConfigJobPosition = Loader(
 	lazy(() => import("@features/Modulo4/pages/JobPositions/ConfigPosition"))
+);
+
+const DetalleOfertaLaboral = Loader(
+	lazy(() => import("@features/Modulo4/pages/JobOffer/Details/JobOfferDetails"))
 );
 
 export const routes: RouteObject[] = [
@@ -56,7 +73,35 @@ export const routes: RouteObject[] = [
 						)
 					},
 					{
-						path: '*',
+						path: LIST_JOB_OFFERS,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
+									Roles.HR_WORKER,
+									Roles.CANDIDATE
+								]}>
+								<JobOffersPortal />
+							</AppLayout>
+						)
+					},
+					{
+						path: `${DETAIL_JOB_OFFER}/:jobOfferId`,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
+									Roles.HR_WORKER,
+									Roles.CANDIDATE
+								]}>
+								<DetalleOfertaLaboral />
+							</AppLayout>
+						)
+					},
+					{
+						path: "*",
 						element: <Navigate to={CREATE_JOB_OFFER} replace />
 					}
 				]
@@ -79,7 +124,7 @@ export const routes: RouteObject[] = [
 						)
 					},
 					{
-						path: '*',
+						path: "*",
 						element: <Navigate to={CREATE_SELECTION_PROCESS} replace />
 					}
 				]
@@ -102,14 +147,19 @@ export const routes: RouteObject[] = [
 						)
 					},
 					{
-						path: '*',
+						path: "*",
 						element: <Navigate to={CREATE_JOB_POSITION} replace />
 					}
 				]
 			},
 			{
 				path: "*",
-				element: <Navigate to={`${SELECTION_PROCESS_AND_JOB_OFFERS_MODULE}/${JOB_OFFERS}/${CREATE_JOB_OFFER}`} replace />
+				element: (
+					<Navigate
+						to={`${SELECTION_PROCESS_AND_JOB_OFFERS_MODULE}/${JOB_OFFERS}/${CREATE_JOB_OFFER}`}
+						replace
+					/>
+				)
 			}
 		]
 	}
