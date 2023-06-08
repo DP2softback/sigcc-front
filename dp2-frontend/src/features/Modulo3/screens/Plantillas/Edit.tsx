@@ -36,17 +36,21 @@ const Edit = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [plantillaName, setPlantillaName] = useState('');
   const [idPlantilla,setIdPlantilla]=useState(parseInt(urlParams.get('id')));
+  const [typePlantilla,setTypePlantilla]=useState(urlParams.get('type'));
+
 
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-      const response = await getPlantillasEditar(idPlantilla,CONTINUOS_EVALUATION_TYPE);
+      console.log("typePlantilla",typePlantilla);
+
+      const response = await getPlantillasEditar(idPlantilla,typePlantilla);
       console.log("Categories",response);
       if (response && response.Categories) {
         setCategorias(response.Categories);
         setEditar(response);
       }
-      const response2 = await getPlantilla(idPlantilla,CONTINUOS_EVALUATION_TYPE);
+      const response2 = await getPlantilla(idPlantilla,typePlantilla);
       console.log("Plantilla",response2);
 
       if(response2) setPlantilla(response2);

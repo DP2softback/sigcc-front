@@ -12,6 +12,7 @@ import { navigateTo, navigateBack } from '@features/Modulo3/utils/functions';
 import { getPlantillas } from '@features/Modulo3/services/templates';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
+import { CONTINUOS_EVALUATION_TYPE, PERFORMANCE_EVALUATION_TYPE } from '@features/Modulo3/utils/constants';
 
 const Index = () => {
 
@@ -45,8 +46,8 @@ const Index = () => {
 	// 	</Form>
 	// )
 	
-	const handleClick=(idPlantilla: number)=>{
-		navigateTo(EVALUATION_TEMPLATE_EDIT,{id:idPlantilla});
+	const handleClick=(idPlantilla: number,typePlantilla: any)=>{
+		navigateTo(EVALUATION_TEMPLATE_EDIT,{id:idPlantilla,type:typePlantilla});
 	}
 
 	const templatesEC = (
@@ -58,7 +59,7 @@ const Index = () => {
                                 image={'https://media.istockphoto.com/id/1482790182/es/vector/contabilidad-financiera-y-concepto-de-trabajo-con-estad%C3%ADstica-proceso-de-negocio.jpg?s=612x612&w=0&k=20&c=_rYQgE1bdZpZVyGiyqyD7f1c1fFoMcdk-u7A3oBMR4w='} 
                                 imageStyle={'100px'} 
                                 name={plantilla["plantilla-nombre"]}
-								onClick={()=>{handleClick(plantilla["plantilla-id"])}} 
+								onClick={()=>{handleClick(plantilla["plantilla-id"],CONTINUOS_EVALUATION_TYPE)}} 
                             />
                         </div>
                     )              
@@ -75,7 +76,7 @@ const Index = () => {
                                 image={'https://media.istockphoto.com/id/1482790182/es/vector/contabilidad-financiera-y-concepto-de-trabajo-con-estad%C3%ADstica-proceso-de-negocio.jpg?s=612x612&w=0&k=20&c=_rYQgE1bdZpZVyGiyqyD7f1c1fFoMcdk-u7A3oBMR4w='} 
                                 imageStyle={'100px'} 
                                 name={plantilla["plantilla-nombre"]}
-								onClick={()=>{handleClick(plantilla["plantilla-id"])}} 
+								onClick={()=>{handleClick(plantilla["plantilla-id"],PERFORMANCE_EVALUATION_TYPE)}} 
                             />
                         </div>
                     )              
