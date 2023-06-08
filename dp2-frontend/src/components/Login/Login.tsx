@@ -79,7 +79,7 @@ const Login: React.FC = () => {
 	return (
 		<div className="container-fluid">
 			<div className="row">
-				<div className="col justify-content-left d-flex justify-content-center">
+				<div className="col Ocultar">
 					<img
 						className="imgMedio"
 						src={ImgLogin}
@@ -88,7 +88,17 @@ const Login: React.FC = () => {
 				</div>
 				<div className="col justify-content-right d-flex justify-content-center">
 					<div className="col-sm-6">
-						<img src={ImgLogo} alt="Imagen LOGO" />
+
+            <div className="row Portal">
+                <div className="col-3">
+                  <img src={ImgLogo} alt="Imagen LOGO" />
+                </div>
+                <div className="col-9 PortalTexto">
+                  <h2 className="text-left Title">
+                    SIGCC
+                  </h2>
+                  </div>
+            </div>
 						<h2 className="text-center mb-4">
 							!Hola! Estamos felices de verte de nuevo. Ingrese su informacion
 							de incio de sesion para continuar
