@@ -12,7 +12,7 @@ import {
 export const sideBarItemsGroup4: TSidebarItemGroup[] = [
 	{
 		groupName: "Posiciones y Ofertas Laborales",
-		roles: [Roles.HR_ADMIN],
+		roles: [Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.HR_WORKER],
 		children: [
 			{
 				name: "Procesos de Selección",

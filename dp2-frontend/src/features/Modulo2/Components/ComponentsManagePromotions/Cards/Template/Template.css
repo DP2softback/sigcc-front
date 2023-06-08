@@ -1,0 +1,116 @@
+.template-container{
+    background-color: white;
+    border-radius: 4px;
+    overflow: hidden;
+    font-family: 'Roboto';
+    height: 100%;
+  }
+  
+  .template-header{
+    padding: 20px 20px 0px 20px;
+  }
+  
+  .template-headerLine{
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .template-imageContainer{
+    width: 70px;
+    height: 70px;
+    margin-right: 20px;
+    overflow: hidden;
+  }
+  
+  .template-image{
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    overflow: hidden;
+  }
+  
+  .template-headerInfo{
+    margin-top: auto;
+    margin-bottom: auto;
+    justify-content: center;
+    flex: 1;
+  }
+  
+  .template-title{
+    font-size: 20px;
+    font-weight: 500;
+  }
+  
+  .template-subtitle{
+    font-size: 16px;
+    opacity: 0.5;
+  }
+  
+  .template-body{
+    padding: 0px 20px 20px 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .template-row{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .template-icon{
+    font-size: 18px;
+    margin-right: 20px;
+  }
+  
+  .template-text{
+    font-size: 16px;
+    flex: 1;
+    margin-right: 20px;
+  }
+  
+  .template-aditional{
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .template-badge{
+    font-size: 12px;
+    font-weight: 400;
+    padding: 4.2px 7.8px;
+    margin-right: 10px;
+    border-radius: 4px;
+    color: white;
+  }
+  
+  .template-promotion{
+    display: flex;
+    flex-direction: row;
+    font-size: 16px;
+  }
+  
+  .template-promotionIcon{
+    margin-right: 4px;
+    justify-content: center;
+  }
+  
+  .template-promotionPositions{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .template-promtionText{
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .template-promtionIndicator{
+    width: 28px;
+  }

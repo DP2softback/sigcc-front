@@ -1,12 +1,15 @@
 import { useState } from "react";
 import classNames from "classnames";
-import { Dropdown } from "react-bootstrap";
 import LogoHCM from "@assets/images/LogoHCM.svg";
-import Menu from "./Menu";
 import ToggleSidebar from "../Toggle/Sidebar";
-import ToggleNavbar from "../Toggle/Navbar";
 import { useLayout, useLayoutUpdate } from "../LayoutProvider";
-import { Search, Bell } from "react-bootstrap-icons";
+import {
+	Search,
+	Bell,
+	BoxArrowRight
+} from "react-bootstrap-icons";
+import { cleanStorage } from "@config/localStorage";
+import { useNavigate } from "react-router-dom";
 
 function QuickNav({ className, ...props }) {
 	const compClass = classNames({
@@ -25,6 +28,7 @@ function QuickNavItem({ className, ...props }) {
 }
 
 const Header: React.FC = () => {
+	const navigate = useNavigate();
 	const [showOffcanvas, setShowOffcanvas] = useState(false);
 
 	const layout = useLayout();
@@ -45,8 +49,13 @@ const Header: React.FC = () => {
 	});
 
 	// offcanvas
-	//const handleOffcanvasClose = () => setShowOffcanvas(false);
+	const handleOffcanvasClose = () => setShowOffcanvas(false);
 	const handleOffcanvasShow = () => setShowOffcanvas(true);
+
+	const handleLogOut = () => {
+		cleanStorage();
+		navigate("/");
+	};
 
 	return (
 		<>
@@ -56,31 +65,28 @@ const Header: React.FC = () => {
 						<div className="nk-header-logo">
 							<ToggleSidebar variant="zoom" icon="menu" />
 							{/* <ToggleNavbar className="me-2" /> */}
-							<img src={LogoHCM} alt="de - hasta" width="120" height="50" style={{marginLeft: '2rem'}}/>
+							<img
+								src={LogoHCM}
+								alt="de - hasta"
+								width="120"
+								height="50"
+								style={{ marginLeft: "2rem" }}
+							/>
 						</div>
-						{/* {layout.headerActive && (
-							<div
-								className="navbar-overlay"
-								onClick={layoutUpdate.headerMobile}></div>
-						)} */}
 						<div className="nk-header-tools">
 							<QuickNav className={""}>
-								<Dropdown as={QuickNavItem}>
-									<Dropdown.Toggle
-										variant="zoom"
-										size="sm"
-										bsPrefix="true"
-										className="btn-icon d-sm-none">
-										<Search size={"24px"} />
-									</Dropdown.Toggle>
-									<Dropdown.Toggle
-										variant="zoom"
-										size="sm"
-										bsPrefix="true"
-										className="btn-icon d-none d-sm-inline-flex">
-										<Search size={"16px"} />
-									</Dropdown.Toggle>
-								</Dropdown>
+								<QuickNavItem className={""}>
+									<button
+										className="btn-icon btn btn-zoom btn-sm d-sm-none"
+										onClick={handleOffcanvasShow}>
+										<Search size="24px" />
+									</button>
+									<button
+										className="btn-icon btn btn-zoom btn-md d-none d-sm-inline-flex"
+										onClick={handleOffcanvasShow}>
+										<Search size="16px" />
+									</button>
+								</QuickNavItem>
 								<QuickNavItem className={""}>
 									<button
 										className="btn-icon btn btn-zoom btn-sm d-sm-none"
@@ -93,6 +99,18 @@ const Header: React.FC = () => {
 										<Bell size="16px" />
 									</button>
 								</QuickNavItem>
+								<QuickNavItem className={""}>
+									<button
+										className="btn-icon btn btn-zoom btn-sm d-sm-none"
+										onClick={handleOffcanvasShow}>
+										<BoxArrowRight onClick={handleLogOut} size="24px" />
+									</button>
+									<button
+										className="btn-icon btn btn-zoom btn-md d-none d-sm-inline-flex"
+										onClick={handleOffcanvasShow}>
+										<BoxArrowRight onClick={handleLogOut} size="16px" />
+									</button>
+								</QuickNavItem>
 							</QuickNav>
 						</div>
 					</div>
@@ -100,6 +118,6 @@ const Header: React.FC = () => {
 			</div>
 		</>
 	);
-}
+};
 
 export default Header;

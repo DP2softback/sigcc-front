@@ -3,15 +3,15 @@ import { setCredentials, logOut } from "@redux/slices/authSlice";
 import { State } from "@redux/store";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:8080",
-  credentials: "include",
+  baseUrl: "https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1",
+  credentials: "same-origin",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as State).auth.token;
     if (token) {
       headers.set("authorization", `Token ${token}`);
-      console.log("hay token !!!")
+      //console.log("hay token !!!")
     } else {
-      console.log("no hay token !!!")
+      //console.log("no hay token !!!")
     }
     return headers;
   },

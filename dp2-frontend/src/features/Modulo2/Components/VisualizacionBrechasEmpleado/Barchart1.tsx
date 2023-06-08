@@ -111,15 +111,7 @@ const hardcode = [
  */
 const BarChart1 = (props) => {
     const { dataBarProps } = props;
-    const [dataBarTot, setDataBarTot] = React.useState({labels: null, datasets: []});
-
-    const dataInfo = [
-    { descripcion: 'Programación en Java', values: [1, 3, 2, 2, 3, 5] },
-    { descripcion: 'Liderazgo', values: [4, 1, 3, 5, 3, 4] },
-    { descripcion: 'Programación modular', values: [2, 5, 1, 2, 3, 4] },
-    { descripcion: 'Innovación', values: [5, 3, 4, 3, 2, 5] },
-    { descripcion: 'Gestión del Tiempo', values: [3, 2, 2, 1, 5, 5] }
-    ]
+    const [dataBarTot, setDataBarTot] = React.useState({labels: null, datasets: []}); 
 
     React.useEffect(() => {
       if(dataBarProps !== null){
@@ -131,9 +123,6 @@ const BarChart1 = (props) => {
           dataBarReq.push(dataBarProps[i].levelRequired)
           dataBarAlc.push(dataBarProps[i].levelCurrent)
         }
-        console.log(labelsTab);
-        console.log(dataBarReq);
-        console.log(dataBarAlc);
         setDataBarTot({
           labels: labelsTab,
           datasets: [

@@ -17,7 +17,7 @@ const JobOpportunitiesRelatedToSkills = () => {
                 {data.map((jobOpt, index) => {
                     return (
                         <div className='col-4'>
-                            <JobOpportunityCard jobOpportunity={jobOpt}/>
+                            <JobOpportunityCard jobOpportunity={jobOpt} numBot={3}/>
                         </div>
                     )
                 })}

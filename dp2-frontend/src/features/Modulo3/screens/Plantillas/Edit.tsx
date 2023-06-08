@@ -4,13 +4,15 @@ import React,{useEffect, useState} from 'react';
 import { Form, Button, InputGroup, Accordion, OverlayTrigger, Tooltip, FormCheck, Dropdown  } from 'react-bootstrap';
 import cat from '@features/Modulo3/jsons/Categories';
 import "./Plantillas.css"
-import {EVALUATION_TEMPLATE_INDEX} from '@config/paths';
-import { navigateTo } from '@features/Modulo3/utils/functions.jsx';
+import {EVALUATION_TEMPLATE_INDEX} from '@features/Modulo3/routes/path';
+import { navigateBack, navigateTo } from '@features/Modulo3/utils/functions.jsx';
 import ModalAddCategorie from '@features/Modulo3/components/Modals/ModalAddCategorie';
 import ImageUploader from '@features/Modulo3/components/Images/ImageUploader';
 import { getCategories,getPlantilla,getPlantillasEditar,guardarEditar } from '@features/Modulo3/services/templates';
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 import { PERFORMANCE_EVALUATION_TYPE,CONTINUOS_EVALUATION_TYPE } from '../../utils/constants';
+import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
+import { Toast } from 'react-bootstrap';
 
 const dataIni ={
   categoriaNombre: "",
@@ -27,43 +29,68 @@ const Edit = () => {
   const [plantilla,setPlantilla]=useState([]);
   const [editar,setEditar]=useState({});
   const [selectedOption, setSelectedOption] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [plantillaName, setPlantillaName] = useState('');
 
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-      const response = await getPlantillasEditar(7,PERFORMANCE_EVALUATION_TYPE);
+      const response = await getPlantillasEditar(5,CONTINUOS_EVALUATION_TYPE);
       console.log("Categories",response);
       if (response && response.Categories) {
         setCategorias(response.Categories);
         setEditar(response);
       }
-      const response2 = await getPlantilla(7,PERFORMANCE_EVALUATION_TYPE);
+      const response2 = await getPlantilla(5,CONTINUOS_EVALUATION_TYPE);
       console.log("Plantilla",response2);
 
       if(response2) setPlantilla(response2);
       setSelectedOption(response2[0].evaluationType);
+      if(response2[0].evaluationType===CONTINUOS_EVALUATION_TYPE){
+        const firstActiveCategory = response.Categories.find(
+          (categoria) => categoria["Category-active"]
+        );
+        if (firstActiveCategory) {
+          setSelectedCategory(firstActiveCategory.name);
+        }
+      }
+      setPlantillaName(response2[0].name);
       setIsLoading(false);
     })();
   }, []);
-
+  const closeNotification = () => {
+    setShowNotification(false);
+    window.location.reload();
+  };
+  
   const handleInputChange = (categoriaId, value) => {
     setInputValues({ ...inputValues, [categoriaId]: value });
   };
 
   const handleGuardarEditar = () => {
-    const aux = editar;
-    console.log(aux);
+    const aux = {
+      ...editar,
+      "plantilla-nombre": plantillaName,
+    };
+    
+    console.log("aux",aux);
+    console.log("plantillaName",plantillaName)
     console.log(categorias);
     (async () => { 
       console.log("entro");
       const response = await guardarEditar(aux, categorias);
-      if (response) console.log("Funciono",response);
+      if (response){
+        setShowNotification(true); 
+      }
     })();
   };
   
 
   const handleRadioChange = (categoryName) => {
+   
     if (selectedOption === "Evaluación Continua") {
+      setSelectedCategory(categoryName);
       const updatedCategorias = categorias.map((categoria) => ({
         ...categoria,
         "Category-active": categoria.name === categoryName,
@@ -109,6 +136,9 @@ const Edit = () => {
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
   };
+  const handleChangePlantillaName = (event) => {
+    setPlantillaName(event.target.value);
+  };
 
   const filters = (
     <>
@@ -117,8 +147,9 @@ const Edit = () => {
       <Form className='ec-indexFilters'>
       <Form.Group className='flex1'>
         <label className='label-estilizado' htmlFor='nombrePlantilla'>Nombre de plantilla</label>
-        <Form.Control readOnly id="nombrePlantilla" value={plantilla[0].name}/>
+        <Form.Control id="nombrePlantilla" value={plantillaName} onChange={handleChangePlantillaName}/>
       </Form.Group>
+
       <Form.Group className='flex1'>
         <div >
           <label className='label-estilizado' htmlFor="dropdown">Evaluación</label>
@@ -165,7 +196,8 @@ const Edit = () => {
         if (sub.nombre === subcategoria.nombre) {
           return {
             ...sub,
-            "subcategory-isActive": e.target.checked,
+            "subcategory-isActive":
+            e.target.checked,
           };
         }
         return sub;
@@ -205,7 +237,8 @@ const Edit = () => {
                   checked={subcategoria["subcategory-isActive"]}
                   multiple={selectedOption === "Evaluación de Desempeño"}
                   onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria)}
-                  disabled={selectedOption === "Evaluación de Desempeño" && !categoria["Category-active"]}
+                  disabled={(selectedOption === "Evaluación de Desempeño" && !categoria["Category-active"])  || (selectedOption === "Evaluación Continua" && (!categoria["Category-active"] || selectedCategory !== categoria.name))}
+
                 />
               ))}
             </div>
@@ -223,9 +256,9 @@ const Edit = () => {
     ):(<NoDataFound/>)}
    
     <div className="text-end mt-32" >
-    <Button variant='secundary' className='boton-dejar mr-20' onClick={() => {
+    <Button variant='outline-primary me-2' className='boton-dejar mr-20' onClick={() => {
          
-          navigateTo(EVALUATION_TEMPLATE_INDEX);
+          navigateBack();
         }}>
         Dejar de editar
       </Button>
@@ -233,6 +266,12 @@ const Edit = () => {
         Guardar
       </Button>
     </div>
+    <Toast show={showNotification} onClose={closeNotification} className="notification">
+      <Toast.Header>
+        <strong className="me-auto">Notificación</strong>
+      </Toast.Header>
+      <Toast.Body>Se ha editado con éxito.</Toast.Body>
+    </Toast>
     </>
   )
 
@@ -249,7 +288,7 @@ const Edit = () => {
         body={body}
     />
         </>
-      ): (<NoDataFound/>)}
+      ): (<LoadingScreen/>)}
 
     </div>
   );
