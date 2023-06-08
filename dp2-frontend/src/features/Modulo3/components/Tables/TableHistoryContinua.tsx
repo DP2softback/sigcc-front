@@ -4,7 +4,7 @@ import './TableHistoryContinua.css';
 import { ArrowRightCircleFill } from 'react-bootstrap-icons';
 import { CONTINUOS_EVALUATION_DETAIL } from '@features/Modulo3/routes/path';
 
-export default function TableHistoryContinua({ rows, isReadOnly = false }) {
+export default function TableHistoryContinua({ rows, employee = null, isReadOnly = false }) {
   function getBackgroundColor(categoryIndex: number) {
     return isReadOnly
       ? categoryIndex % 2 == 0
@@ -38,7 +38,9 @@ export default function TableHistoryContinua({ rows, isReadOnly = false }) {
                   className='cursor-pointer'
                   onClick={() => {
                     navigateTo(CONTINUOS_EVALUATION_DETAIL, {
-                      id: row.EvaluationId,
+                      id: employee.id,
+                      name: employee.name,
+                      evaluationId: row.EvaluationId
                     });
                   }}
                 />
