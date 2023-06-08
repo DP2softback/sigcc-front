@@ -5,8 +5,11 @@ import AppLayout from "@components/AppLayout";
 import {
 	SELECTION_PROCESS_AND_JOB_OFFERS_MODULE,
 	JOB_OFFERS,
+	JOB_POSITIONS,
 	CREATE_JOB_OFFER,
 	LIST_JOB_OFFERS,
+	LIST_JOB_POSITION,
+	CREATE_JOB_POSITION,
 	SELECTION_PROCESS,
 	CREATE_SELECTION_PROCESS,
 	LIST_SELECTION_PROCESS
@@ -25,6 +28,10 @@ const ConfigSelectionProcess = Loader(
 
 const ConfigOfertaLaboral = Loader(
 	lazy(() => import("@features/Modulo4/pages/ConfigOfertaLaboral/ConfigOfertaLaboral"))
+);
+
+const ConfigJobPosition = Loader(
+	lazy(() => import("@features/Modulo4/pages/JobPositions/ConfigPosition"))
 );
 
 export const routes: RouteObject[] = [
@@ -74,6 +81,29 @@ export const routes: RouteObject[] = [
 					{
 						path: '*',
 						element: <Navigate to={CREATE_SELECTION_PROCESS} replace />
+					}
+				]
+			},
+			{
+				path: JOB_POSITIONS,
+				children: [
+					{
+						path: CREATE_JOB_POSITION,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
+									Roles.HR_WORKER,
+									Roles.CANDIDATE
+								]}>
+								<ConfigJobPosition />
+							</AppLayout>
+						)
+					},
+					{
+						path: '*',
+						element: <Navigate to={CREATE_JOB_POSITION} replace />
 					}
 				]
 			},

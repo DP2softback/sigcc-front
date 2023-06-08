@@ -11,3 +11,6 @@ export const EDIT_SELECTION_PROCESS = 'edit';
 export const LIST_SELECTION_PROCESS = 'list';
 
 export const JOB_POSITIONS = 'job-positions';
+export const CREATE_JOB_POSITION = 'create';
+export const EDIT_JOB_POSITION = 'edit';
+export const LIST_JOB_POSITION = 'list';
