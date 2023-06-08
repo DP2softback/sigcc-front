@@ -7,7 +7,7 @@ import BasicCard from '@features/Modulo3/components/Cards/BasicCard/BasicCard';
 import Templates from '@features/Modulo3/jsons/Templates';
 import Template from '@features/Modulo3/components/Cards/Template/Template';
 import './Plantillas.css';
-import { EVALUATION_TEMPLATE_INDEX,EVALUATION_TEMPLATE_CREATE, EVALUATION_TEMPLATE_EDIT } from '@config/paths';
+import { EVALUATION_TEMPLATE_INDEX,EVALUATION_TEMPLATE_CREATE, EVALUATION_TEMPLATE_EDIT } from '@features/Modulo3/routes/path';
 import { navigateTo, navigateBack } from '@features/Modulo3/utils/functions';
 import { getPlantillas } from '@features/Modulo3/services/templates';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';

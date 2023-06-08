@@ -1,0 +1,10 @@
+/*! Tinymce Editor */
+.tox-tinymce{
+    height: 240px
+}
+@import "../../variables";
+@import "../../vendors/tinymce/ui/content";
+@import "../../vendors/tinymce/ui/content.inline";
+@import "../../vendors/tinymce/ui/content.mobile";
+@import "../../vendors/tinymce/ui/skin";
+@import "../../vendors/tinymce/ui/skin.mobile";

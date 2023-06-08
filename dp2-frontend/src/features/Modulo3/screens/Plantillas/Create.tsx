@@ -3,7 +3,7 @@ import Section from '@features/Modulo3/components/Layout/Section/Section';
 import React,{useState,useEffect} from 'react';
 import { Form, Button, InputGroup, Accordion, OverlayTrigger, Tooltip, FormCheck, Dropdown  } from 'react-bootstrap';
 import cat from '@features/Modulo3/jsons/Categories';
-import {EVALUATION_TEMPLATE_INDEX} from '@config/paths';
+import {EVALUATION_TEMPLATE_INDEX} from '@features/Modulo3/routes/path';
 import { navigateTo } from '@features/Modulo3/utils/functions.jsx';
 import ImageUploader from '@features/Modulo3/components/Images/ImageUploader';
 import "./Plantillas.css"

@@ -1,0 +1,7 @@
+@function variable($varName,$varFalback:false) {
+    @if $varFalback {
+        @return var(--#{$var-prefix}#{$varName},$varFalback); 
+    } @else {
+        @return var(--#{$var-prefix}#{$varName}); 
+    }
+}

@@ -1,0 +1,158 @@
+.chart{
+    &-label{
+        &-group{
+            display: flex;
+        }
+        &-small{
+            .title{
+                font-size: $chart-label-font-size-sm;
+                color: $base-light;
+            }
+        }
+    }
+    &-legend{
+        padding-left: $chart-legend-gap-x;
+        position: relative;
+        &-group{
+            display: flex;
+        }
+        .title{
+            font-size: $chart-legend-font-size;
+            color: $base-color;
+        }
+        .dot{
+            position: absolute;
+            left: 0;
+            top: 7px;
+        }
+        &-small{
+            .title{
+                font-size: $chart-legend-font-size-sm;
+            }
+            .dot{
+                top: 6px;
+            }
+        }
+    }
+}
+
+
+// Chart Sizes
+[data-nk-chart="line"],[data-nk-chart="bar"]{
+    max-width: 100%;
+    max-height: 100%;
+}
+[data-nk-chart="doughnut"],[data-nk-chart="pie"]{
+    max-width: 100%;
+    max-height: 100%;
+}
+.nk-chart{
+    &-analytics{
+        &-session{
+            height: 150px;
+        }
+        &-avg-session{
+            height: 130px;
+        }
+        &-bounce-rate{
+            height: 162px;
+        }
+        &-goal-completions{
+            height: 100px;
+        }
+        &-audience-overview{
+            height: 280px;
+        }
+        &-session-device{
+            height: 270px;
+        }
+    }
+    &-ecommerce{
+        &-visitor{
+            height: 140px;
+        }
+        &-activity{
+            height: 140px;
+        }
+        &-total-revenue{
+            height: 86px;
+        }
+        &-sales-analytics{
+            height: 280px;
+        }
+        &-total-profit{
+            height: 322px;
+        }
+        &-knob{
+            height: 70px;
+        }
+    }
+    &-project{
+        &-active{
+            height: 110px;
+        }
+        &-done{
+            position: relative;
+            width: 136px;
+            height: 120px;
+            .knob-title{
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                text-align: center;
+            }
+        }
+        &-earnings{
+            height: 110px;
+            width: 130px;
+        }
+        &-total-clients{
+            height: 110px;
+            width: 130px;
+        }
+        &-overview{
+            height: 180px;
+        }
+        &-avg-earnings{
+            height: 190px;
+        }
+    }
+    &-marketing {
+       &-campaign{
+            height: 190px;
+        }
+        &-campaign-overview{
+            height: 254px;
+        }
+        &-campaign-visitor{
+            height: 152px;
+        }
+        &-effectiveness{
+            height: 320px;
+        }
+    }
+    &-nft{
+        &-total-revenue{
+            height: 104px;
+        }
+        &-estimated{
+            height: 104px;
+        }
+        &-marketplace{
+            height: 258px;
+        }
+        &-popularity{
+            height: 280px;
+        }
+    }
+}
+
+@include media-breakpoint-up(sm){
+    .nk-chart{
+        &-analytics{
+            &-session-region-map{
+                width: 330px;
+            }
+        }
+    }
+}
