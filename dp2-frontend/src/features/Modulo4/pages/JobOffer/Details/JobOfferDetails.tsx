@@ -114,7 +114,6 @@ const JobOfferDetails = () => {
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
                 <div className='container row mt-3'>
 
                     <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
@@ -251,7 +250,6 @@ const JobOfferDetails = () => {
                         </div>
                     </div>
                 </div>
-            </Sidebar>
         </>
     )
 }

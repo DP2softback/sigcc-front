@@ -256,7 +256,6 @@ const JobOffer = () => {
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
                 <div className='row mt-3'>
                     <div className='col'>
                         <h1 className='screenTitle'>Ofertas laborales</h1>
@@ -392,7 +391,6 @@ const JobOffer = () => {
                         </div>
                     </div>
                 </div>
-            </Sidebar>
         </>
     )
 }

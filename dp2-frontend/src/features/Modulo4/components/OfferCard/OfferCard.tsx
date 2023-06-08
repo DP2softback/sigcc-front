@@ -1,5 +1,6 @@
 import BasicCard3 from '../BasicCard3/BasicCard3'
 import { Calendar2, Calendar2Event, PeopleFill } from 'react-bootstrap-icons'
+import { SELECTION_PROCESS_AND_JOB_OFFERS_MODULE, JOB_OFFERS, DETAIL_JOB_OFFER } from '@features/Modulo4/routes/path'
 
 const Offer = ({id, name, photoURL, description, creationDate, eventDate}) => {
     const rows = [
@@ -23,7 +24,7 @@ const Offer = ({id, name, photoURL, description, creationDate, eventDate}) => {
         }
     ]
 
-    const ruta = `/modulo4/joboffer/detail/${id}`
+    const ruta = `/${SELECTION_PROCESS_AND_JOB_OFFERS_MODULE}/${JOB_OFFERS}/${DETAIL_JOB_OFFER}/${id}`
 
     return (
         <BasicCard3
