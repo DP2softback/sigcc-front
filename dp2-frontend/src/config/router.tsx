@@ -171,6 +171,20 @@ const VisualizacionBrechasEmpleado = Loader(
   )
 );
 
+const VisualizacionOfertasLaborales = Loader(
+    lazy(
+        () =>
+            import("@features/Modulo4/pages/JobOffer/JobOffer")
+    )
+);
+
+const DetalleOfertaLaboral = Loader(
+    lazy(
+        () =>
+            import("@features/Modulo4/pages/JobOffer/Details/JobOfferDetails")
+    )
+);
+
 const ConfigPosition = Loader(
   lazy(
     () =>
@@ -315,10 +329,17 @@ const routes: RouteObject[] = [
       },
     ],
   },
-
   {
     path: "modulo4",
     children: [
+      {
+        path: "joboffer",
+        element: <VisualizacionOfertasLaborales />,
+      },
+      {
+        path: "joboffer/detail/:jobOfferId",
+        element: <DetalleOfertaLaboral />,
+      },
       {
         path: "configurar-oferta-laboral",
         element: <ConfigOfertaLaboral />,
@@ -326,7 +347,7 @@ const routes: RouteObject[] = [
       {
         path: "configurar-proceso-seleccion",
         element: <ConfigProcesoSeleccion />,
-      },
+      }
     ],
   },
   {
@@ -482,8 +503,12 @@ const routes: RouteObject[] = [
             element: <GestionDeCompetencias />,
           },
         ],
-      },
-      
+      }
+    ],
+  },
+  {
+    path: "modulo4",
+    children: [
       {
         path: "showAreaStatistics",
         children: [
