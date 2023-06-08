@@ -5,7 +5,8 @@ import slideDown from "@utils/slideDown";
 import getParents from "@utils/getParents";
 import { NavLink, Link } from "react-router-dom";
 import { sidebarItems } from "@routes/sidebarItems";
-import { Icon, Table } from "react-bootstrap-icons";
+import { Icon } from "react-bootstrap-icons";
+import { Fragment } from "react";
 
 type MenuHeadingProps = {
 	className?: string;
@@ -220,16 +221,15 @@ const Menu: React.FC = () => {
 	useEffect(() => {
 		currentLink(`.${menu.classes.link}`);
 		// eslint-disable-next-line
-	}, []);
+	}, [null]);
 
 	return (
 		<MenuList>
 			{sidebarItems.map((itemGroup, index) => {
 				return (
-					<>
+					<Fragment key={index}>
 						<MenuHeading text={itemGroup.groupName} key={index} />
 						{itemGroup.children.map((item, idx) => {
-							console.log(item)
 							return (
 								<MenuItem sub={item.hasChildren} key={idx}>
 									<MenuItemLink
@@ -258,7 +258,7 @@ const Menu: React.FC = () => {
 								</MenuItem>
 							);
 						})}
-					</>
+					</Fragment>
 				);
 			})}
 		</MenuList>
