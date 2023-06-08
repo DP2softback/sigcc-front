@@ -44,10 +44,10 @@ const Create = () => {
   useEffect(() => {
       setIsLoading(true);
       (async () => {
-        console.log("selecteda",selectedOption)
+        // //console.log("selecteda",selectedOption)
           const response = await getCategoriesSubs(selectedOption);
           if(response) setCategorias(response);
-        console.log("cat",categorias)
+        // //console.log("cat",categorias)
         setIsLoading(false);
       })();
   }, [selectedOption]);
@@ -67,13 +67,13 @@ const Create = () => {
 
     //aux["subcategorias"][0]={...aux["subcategorias"][0],nombre: "subcategoria"}
     
-    console.log("aux",aux);
-    // console.log("plantillaName",plantillaName)
-    // console.log(categorias);
+    //console.log("aux",aux);
+    // //console.log("plantillaName",plantillaName)
+    // //console.log(categorias);
     (async () => { 
-      console.log("entro");
+      //console.log("entro");
       const response = await guardarPlantilla(aux);
-      console.log("response",response);
+      //console.log("response",response);
       if (response){
         setShowNotification(true); 
       }
@@ -96,9 +96,9 @@ const Create = () => {
   const handleImageChange = (image: File | null) => {
     // Hacer algo con la imagen seleccionada
     if (image) {
-      console.log('Imagen seleccionada:', image);
+      //console.log('Imagen seleccionada:', image);
     } else {
-      console.log('Imagen borrada');
+      //console.log('Imagen borrada');
     }
   };
 
@@ -192,12 +192,12 @@ const Create = () => {
   //     categorias: lista
   //   });
 
-  //   console.log("dataC",data)
+  //   //console.log("dataC",data)
   // };
 
   //Funcionamiento para EvaDesem
   // const handleRadioChange = (categoryName: string,index: number) => {
-  //   console.log("index",index)
+  //   //console.log("index",index)
   //   let nuevo={
   //     categoriaNombre: categoryName,
   //     subcategory:[]
@@ -215,12 +215,12 @@ const Create = () => {
   //     lista.push(nuevo);
   //   }
     
-  //   console.log("lista",lista)
+  //   //console.log("lista",lista)
   //   setData({
   //     ...data,
   //     categorias: lista,
   //   })
-  //   console.log("data",data)
+  //   //console.log("data",data)
   // }
 
   //EvaCont
@@ -255,7 +255,7 @@ const Create = () => {
         categorias: lista,
       })
     }
-    console.log("dataC",data)
+    //console.log("dataC",data)
   }
 
   //Idea2
@@ -295,7 +295,7 @@ const Create = () => {
   //     categorias: updatedCategories
   //   });
 
-  //   console.log("dataS",data)
+  //   //console.log("dataS",data)
   // };
 
 
@@ -303,7 +303,7 @@ const Create = () => {
   // const handleSubcategoryRadioChange = (e: any,subcategoria: string, catIndex: number, subId: string) => {
   //   // let lista=data.categorias[catIndex].subcategory;
   //   let lista = data?.categorias[catIndex]?.subcategory || [];
-  //   console.log("e",e)
+  //   //console.log("e",e)
   //   let nuevo={id:subId, name: subcategoria}
   //   if(data.categorias[catIndex].subcategory.find(sub => subcategoria==sub.name)) 
   //     lista=lista.filter(sub => sub.name!=subcategoria)
@@ -311,20 +311,20 @@ const Create = () => {
   //   // e.target.checked ? lista.push(subcategoria) : lista.filter(sub => sub!=subcategoria)
   //   let aux=data.categorias;
   //   aux[catIndex].subcategory=lista
-  //   console.log("nuevo",nuevo)
-  //   console.log("lista",lista)
-  //   console.log("aux",aux)
+  //   //console.log("nuevo",nuevo)
+  //   //console.log("lista",lista)
+  //   //console.log("aux",aux)
   //   setData({
   //     ...data,
   //     categorias: aux,
   //   })
-  //   console.log("data",data)
+  //   //console.log("data",data)
   // }
 
   //EvaCont
   // const handleSubcategoryRadioChange = (e: any,subcategoria: string) => {
   //   let lista=data.subcategory
-  //   console.log("e",e)
+  //   //console.log("e",e)
   //   if(data.subcategory.find(sub => subcategoria==sub)) 
   //     lista=lista.filter(sub => sub!=subcategoria)
   //   else lista.push(subcategoria)
@@ -333,16 +333,16 @@ const Create = () => {
   //     ...data,
   //     subcategory: lista,
   //   })
-  //   console.log("data",data)
+  //   //console.log("data",data)
   // }
 
   //Real
   const handleSubcategoryRadioChange = (e: any,subcategoria: string, categoryName: string, subId: string) => {
     if(selectedOption==CONTINUOS_EVALUATION_TYPE){
       //guardo las subcategorias actuales
-      console.log("dataBeforeLista",data,data?.categorias[0]?.subcategory.length)
+      //console.log("dataBeforeLista",data,data?.categorias[0]?.subcategory.length)
       let lista = data?.categorias[0]?.subcategory || [];
-      console.log("listaContSubcat",lista,lista.length)
+      //console.log("listaContSubcat",lista,lista.length)
       //creo la nueva entrada
       let nuevo={id:subId, name: subcategoria}
       //verifica si la subcat ya esta para quitarla o pushearla
@@ -384,14 +384,14 @@ const Create = () => {
         })
       }
     }
-    console.log("dataS",data)
+    //console.log("dataS",data)
   }
 
 
   const isSubcategorySelected = (categoryName: string, subcategoryName: string): boolean => {
     // const category = data?.categorias.find(cat => cat.categoriaNombre === categoryName);
     const catIndex = data?.categorias.findIndex(cat => cat.categoriaNombre === categoryName);
-    //console.log("subcatSelectes",category)
+    ////console.log("subcatSelectes",category)
     return data?.categorias[catIndex]?.subcategory.some(sub => sub.name === subcategoryName) || false;
     // return category?.subcategory.some(sub => sub.name === subcategoryName) || false;
   };
