@@ -187,13 +187,16 @@ export const getPostReportDesempenioLineChart = async (areaid, categoriaid, date
 // EL POST DEL REPORTE PARA EVALUACION CONTINUA Y DESEMPEÑO
 export const postReportLineChart = async (areaid, categoriaid, dateFechaInicio, dateFechaFin, evaluationType) => {
   const body ={
-    "category-id": areaid,
-    "area-id": categoriaid,
     "evaluationType": evaluationType,
-    // "fecha_inicio": dateFechaInicio,
-    // "fecha_fin": dateFechaFin
+    "fecha_inicio": dateFechaInicio,
+    "fecha_fin": dateFechaFin
   }
-  
+  if(areaid!==0){
+    body["area-id"]=areaid
+  }
+  if(categoriaid!==0){
+    body["category-id"]=categoriaid
+  }
   try {
     const response = await axios.post(`${BACKEND_URL}LineChartEvaluacionesReporte`,
       body,
@@ -204,7 +207,6 @@ export const postReportLineChart = async (areaid, categoriaid, dateFechaInicio, 
         }
       }
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log("Hubo un error con la solicitud:", error);
