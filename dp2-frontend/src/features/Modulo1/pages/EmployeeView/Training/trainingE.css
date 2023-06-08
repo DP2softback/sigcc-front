@@ -1,3 +1,8 @@
+.row-search{
+    padding-top: 0.75rem;
+    padding-bottom: 1.5rem;
+}
+
 .cards{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -42,7 +47,6 @@
 }
 
 .optionActive{
-    background-color: #F3F4F6;
     border: none;
     border-radius: 4px;
     font-size: 20px;

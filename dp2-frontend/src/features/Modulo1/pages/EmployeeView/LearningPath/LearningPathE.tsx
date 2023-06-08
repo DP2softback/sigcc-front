@@ -9,6 +9,8 @@ import PictureUpload from '@features/Modulo1/components/PictureUpload';
 import Rate from '@features/Modulo1/components/Rate';
 import { ThreeDotsVertical, People, Clock, CalendarDate } from 'react-bootstrap-icons'
 import moment, { invalid } from 'moment-timezone';
+import Layout from "@layout/default/index";
+import '../../../basic.css';
 
 function LearningPath(props: any) {
     const [lps, setLps] = useState([]);
@@ -89,7 +91,8 @@ function LearningPath(props: any) {
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/empleado/rutadeaprendizaje'>
+            <Layout title="Grupo 1 App" content="container">
+            {/* <Sidebar items={sidebarItems} active='/modulo1/empleado/rutadeaprendizaje'> */}
                 {
                     loading ?
                         <>
@@ -102,13 +105,13 @@ function LearningPath(props: any) {
                             </div>
                         </> :
                         <>
-                            <div className='row mt-3'>
+                            <div className='row'>
                                 <div className='col'>
                                     <h1 className='screenTitle'>Rutas de aprendizaje</h1>
                                     <p><small className='subtitle'>Lista de rutas de aprendizaje asignadas para adquirir habilidades y competencias específicas.</small></p>
                                 </div>
                             </div>
-                            <div className="row">
+                            <div className="row row-search">
                                 <div className="col">
                                     <input className="form-control" type="text" placeholder="Buscar" onChange={handleFilter} />
                                 </div>
@@ -197,7 +200,8 @@ function LearningPath(props: any) {
                             }
                         </>
                 }
-            </Sidebar>            
+            {/* </Sidebar>  */}
+            </Layout>           
         </>
     );
 }

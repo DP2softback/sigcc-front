@@ -12,6 +12,7 @@ import '../training.css';
 import VideoUpload from '@features/Modulo1/components/VideoUpload';
 import moment from 'moment-timezone';
 import 'moment-timezone';
+import Layout from "@layout/default/index";
 
 let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
 
@@ -582,11 +583,12 @@ const TrainingCreate = () => {
 
 
     return (
-        <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
+        // <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
+        <Layout title="Grupo 1 App" content="container">
             {
                 loading ?
                     (
-                        <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                        <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)', display: "flex", alignItems: "center", justifyContent: "center"  }}>
                             <div className='vertical-align-child'>
                                 <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
                                     <span className="visually-hidden">Loading...</span>
@@ -596,7 +598,7 @@ const TrainingCreate = () => {
                     )
                     :
                     (<>
-                        <div className='container row mt-3'>
+                        <div className='row'>
                             {/* TRAINING DATA */}
                             <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
                                 <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
@@ -1068,7 +1070,8 @@ const TrainingCreate = () => {
                         </div>
                     </>)
             }
-        </Sidebar >
+        {/* </Sidebar > */}
+        </Layout>
     )
 }
 

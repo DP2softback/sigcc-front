@@ -9,7 +9,7 @@ import '../../../../content/common.css';
 import { ArrowLeftCircleFill, People, BarChart } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router-dom';
 import Rate from '@features/Modulo1/components/Rate';
-
+import Layout from "@layout/default/index";
 
 function LearningPathDetails(props: any) {
     const { learningPathId } = useParams();
@@ -42,7 +42,7 @@ function LearningPathDetails(props: any) {
                 setLPName(response.data.nombre);
                 setLPDescription(response.data.descripcion);
                 setLPPhoto(response.data.url_foto);
-                setCourses(response.data.cursos);                
+                setCourses(response.data.cursos);
                 setLoading(false);
             })
             .catch(function (error) {
@@ -58,7 +58,8 @@ function LearningPathDetails(props: any) {
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/empleado/rutadeaprendizaje'>
+            <Layout title="Grupo 1 App" content="container">
+                {/* <Sidebar items={sidebarItems} active='/modulo1/empleado/rutadeaprendizaje'> */}
                 {
                     loading ?
                         <>
@@ -69,26 +70,28 @@ function LearningPathDetails(props: any) {
                                     </div>
                                 </div>
                             </div>
-                        </> 
+                        </>
                         :
                         <>
-                            <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
-                                <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
-                                    <Link to={`/modulo1/empleado/rutadeaprendizaje`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
-                                </div>
-
-                                <div style={{ display: "flex", alignItems: "center" }}>
-                                    <div style={{ paddingRight: "2rem" }}>
-                                        {
-                                            lpPhoto === null ?
-                                                (<img src={url_foto_default} style={{ borderRadius: "10rem", width: "6rem", height: "6rem" }}></img>)
-                                                :
-                                                (<img src={lpPhoto} style={{ borderRadius: "10rem", width: "6rem", height: "6rem" }}></img>)
-                                        }
+                            <div className='row'>
+                                <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
+                                    <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
+                                        <Link to={`/modulo1/empleado/rutadeaprendizaje`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
                                     </div>
-                                    <div>
-                                        <h1 className='screenTitle'>{lpName}</h1>
-                                        <p><small className='subtitle'>{lpDescription}</small></p>
+
+                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                        <div style={{ paddingRight: "2rem" }}>
+                                            {
+                                                lpPhoto === null ?
+                                                    (<img src={url_foto_default} style={{ borderRadius: "100%", width: "6rem", height: "6rem" }}></img>)
+                                                    :
+                                                    (<img src={lpPhoto} style={{ borderRadius: "100%", width: "6rem", height: "6rem" }}></img>)
+                                            }
+                                        </div>
+                                        <div>
+                                            <h1 className='screenTitle'>{lpName}</h1>
+                                            <p><small className='subtitle'>{lpDescription}</small></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -110,11 +113,11 @@ function LearningPathDetails(props: any) {
                                     </div>
 
 
-                                    <div className='pt-4 pb-2' style={{display: "flex", justifyContent: "center"}}>
+                                    <div className='pt-4 pb-2' style={{ display: "flex", justifyContent: "center" }}>
                                         <div className="card mb-3" style={{ maxWidth: "45rem" }}>
                                             <div className="row g-0">
                                                 <div className="col-md-4">
-                                                    <img src={url_foto_default} className="img-fluid rounded-start" style={{height: "100%"}}></img>
+                                                    <img src={url_foto_default} className="img-fluid rounded-start" style={{ height: "100%" }}></img>
                                                 </div>
                                                 <div className="col-md-8">
                                                     <div className="card-body">
@@ -137,7 +140,8 @@ function LearningPathDetails(props: any) {
 
                         </>
                 }
-            </Sidebar>
+                {/* </Sidebar> */}
+            </Layout>
         </>
     );
 }

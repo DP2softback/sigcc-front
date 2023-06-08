@@ -100,7 +100,7 @@ class BasicEmployeeCard extends Component<Props>
 
         return (
             <>
-                <div className='basicCard-container' style={{ width: widthC }}>
+                <div className='basicCard-container'>
                     <div className='basicCard-header'>
                         <div className="basicCard-headerLine">
                             <div className='basicCard-imageContainer'>{imageComp}</div>

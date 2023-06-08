@@ -9,6 +9,8 @@ import '../../../basic.css';
 import '../training.css';
 import SessionAccordion from '@features/Modulo1/components/SessionAccordion';
 import Pagination from '@features/Modulo1/components/Pagination';
+import Layout from "@layout/default/index";
+
 
 let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
 
@@ -230,11 +232,12 @@ const TrainingDetails = () => {
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
+            <Layout title="Grupo 1 App" content="container">
+                {/* <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'> */}
                 {
                     loading ?
                         (
-                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)', display: "flex", alignItems: "center", justifyContent: "center" }}>
                                 <div className='vertical-align-child'>
                                     <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
                                         <span className="visually-hidden">Loading...</span>
@@ -244,7 +247,7 @@ const TrainingDetails = () => {
                         )
                         :
                         (<>
-                            <div className='container row mt-3' style={{ backgroundColor: "#F3F4F6" }}>
+                            <div className='row'>
                                 {/* TRAINING DATA */}
                                 <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
                                     <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
@@ -276,6 +279,9 @@ const TrainingDetails = () => {
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div className='row'>
                                 <div className='col' style={{ marginLeft: "60px" }}>
                                     <div className="row mb-3 ">
                                         <h4 className='mt-3 mb-3 subarea'>Sesiones</h4>
@@ -299,29 +305,34 @@ const TrainingDetails = () => {
                                             )
                                         }
                                     </div>
+                                </div>
+                            </div>
 
-                                    {/* EMPLOYEES SECTION */}
-                                    <div className='row'>
-                                        <div className='mt-4 mb-3' style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                                            <h4 className='subarea'>Empleados asignados</h4>
-                                            <Link to={`/modulo1/cursoempresa/asignacion/${training.id}`}>
-                                                <button className='btn btn-primary' style={{ marginRight: "23px" }}>
-                                                    <div style={{ display: "flex", alignItems: "center" }}>
-                                                        <span className='me-3'>Asignar empleados</span>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
-                                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                                                        </svg>
-                                                    </div>
-                                                </button>
-                                            </Link>
-                                        </div>
 
-                                        {employees.length ?
-                                            <div style={{ display: "flex", alignItems: "center" }}>
-                                                <div>
-                                                    <div className="employees-list cards">
-                                                        {employeesToShow.map((employee, index) => (
+                            {/* EMPLOYEES SECTION */}
+                            <div className='row'>
+                                <div className='col' style={{ marginLeft: "60px" }}>
+                                    <div className='mt-4 mb-3' style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                        <h4 className='subarea'>Empleados asignados</h4>
+                                        <Link to={`/modulo1/cursoempresa/asignacion/${training.id}`}>
+                                            <button className='btn btn-primary' style={{ marginRight: "23px" }}>
+                                                <div style={{ display: "flex", alignItems: "center" }}>
+                                                    <span className='me-3'>Asignar empleados</span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
+                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                                    </svg>
+                                                </div>
+                                            </button>
+                                        </Link>
+                                    </div>
+
+                                    {employees.length ?
+                                        <div>
+                                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                                <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
+                                                    {employeesToShow.map((employee, index) => (
+                                                        <div className='col-md-4'>
                                                             <EmployeeCard key={index}
                                                                 id={index}
                                                                 name={employee.nombre}
@@ -334,50 +345,53 @@ const TrainingDetails = () => {
                                                                 boton1Color={''}
                                                                 option={setPrueba}
                                                             />
-                                                        ))}
-                                                    </div>
-
-                                                    {employees.length > mostrar &&
-                                                        <div>
-                                                            <div>
-                                                                <Pagination
-                                                                    page={page}
-                                                                    totalPages={totalPages}
-                                                                    handlePagination={setPage}
-                                                                    setPosition={setPosition}
-                                                                    position={position}
-                                                                    mostrar={mostrar}
-                                                                />
-                                                            </div>
                                                         </div>
-                                                    }
-
+                                                    ))}
                                                 </div>
+
+                                                {employees.length > mostrar &&
+                                                    <div>
+                                                        <div>
+                                                            <Pagination
+                                                                page={page}
+                                                                totalPages={totalPages}
+                                                                handlePagination={setPage}
+                                                                setPosition={setPosition}
+                                                                position={position}
+                                                                mostrar={mostrar}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                }
+
                                             </div>
-                                            :
-                                            (
-                                                <div className='row align-items-stretch g-3 py-3'>
-                                                    <div className='col'>
-                                                        <div className='card'>
-                                                            <div className='card-body'>
-                                                                <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                                    <div className='vertical-align-child'>
-                                                                        <h5 className='opacity-50 text-center'>Sin empleados asignados</h5>
-                                                                    </div>
+                                        </div>
+                                        :
+                                        (
+                                            <div className='row align-items-stretch g-3 py-3'>
+                                                <div className='col'>
+                                                    <div className='card'>
+                                                        <div className='card-body'>
+                                                            <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                                <div className='vertical-align-child'>
+                                                                    <h5 className='opacity-50 text-center'>Sin empleados asignados</h5>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            )
-                                        }
-                                    </div>
+                                            </div>
+                                        )
+                                    }
                                 </div>
+
                             </div>
+
                         </>
+
                         )
                 }
-            </Sidebar>
+            </Layout >
         </>
     )
 }
