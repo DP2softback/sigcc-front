@@ -12,6 +12,11 @@ export interface Question
     opciones: Option[];
 }
 
+export interface QuizGeneratorProps
+{
+    quizId: number;
+    title: string;
+}
 export interface QuizGeneratorState
 {
     questions: Question[];

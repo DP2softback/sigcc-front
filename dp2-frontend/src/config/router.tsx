@@ -29,6 +29,10 @@ const M1AddCourse = Loader(
   lazy(() => import("@features/Modulo1/pages/Course/AddCourse"))
 );
 
+const M1Rubric = Loader(
+  lazy(() => import("@features/Modulo1/components/Rubric/RubricGrade"))
+);
+
 const M1ListTraining = Loader(
   lazy(() => import("@features/Modulo1/pages/Training"))
 );
@@ -168,6 +172,10 @@ const routes: RouteObject[] = [
           {
             path: "asignacion/:learningPathId",
             element: <M1LearningPathAssignment />,
+          },
+          {
+            path: "rubrica",
+            element: <M1Rubric />,
           },
         ],
       },
