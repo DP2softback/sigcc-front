@@ -42,11 +42,11 @@ const PieChart = ({ title, labels, datasets }) => {
         const fetchTipoCompetencias = async () => {
           try {
     
-            const response = await fetch('https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competenceTypes', {
+            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competenceTypes', {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Token 2e768413e0d75dd79983cd115422fee5291c668d',
+                Authorization: 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
               },
             });
     
@@ -68,7 +68,7 @@ const PieChart = ({ title, labels, datasets }) => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Token 2e768413e0d75dd79983cd115422fee5291c668d',
+              'Authorization': 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
             },
             body: JSON.stringify({
               idArea: 0, // Poner 0 para toda la empresa, poner el <id> si es por área
@@ -77,7 +77,7 @@ const PieChart = ({ title, labels, datasets }) => {
           };
       
           try {
-            const response = await fetch('https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competenceConsolidateSearch', requestOptions);
+            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competenceConsolidateSearch', requestOptions);
       
             if (response.ok) {
               const data = await response.json();
