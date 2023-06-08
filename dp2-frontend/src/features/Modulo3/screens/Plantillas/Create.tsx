@@ -7,26 +7,27 @@ import {EVALUATION_TEMPLATE_INDEX} from '@config/paths';
 import { navigateTo } from '@features/Modulo3/utils/functions.jsx';
 import ImageUploader from '@features/Modulo3/components/Images/ImageUploader';
 import "./Plantillas.css"
-import { getCategoriesSubs } from '@features/Modulo3/services/templates';
+import { getCategoriesSubs, guardarPlantilla } from '@features/Modulo3/services/templates';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
+import { Toast } from 'react-bootstrap';
 
 const dataIni ={
   categoriaNombre: "",
   subcategory: [],
 }
 
-// const dataIni2 ={
-//   categorias: [
-//     {
-//       categoriaNombre: "",
-//       subcategory:[ {
-//         id: "",
-//         name: ""}
-//       ]
-//     }
-//   ]
-// }
+const dataIni2 ={
+  categorias: [
+    {
+      categoriaNombre: "",
+      subcategory:[ {
+        id: "",
+        name: ""}
+      ]
+    }
+  ]
+}
 
 const Create = () => {
   const [categorias,setCategorias]= useState([]);
@@ -36,6 +37,8 @@ const Create = () => {
   // const [data, setData] = useState(dataIni);
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [plantillaName, setPlantillaName] = useState('');
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -46,6 +49,39 @@ const Create = () => {
       setIsLoading(false);
     })();
   }, []);
+
+  const handleGuardar = () => {
+    const aux = {
+      "evaluationType": selectedOption,
+      "nombre": plantillaName,
+      "subCategories": []
+    };
+
+    data.categorias.forEach(categoria => {
+      categoria.subcategory.forEach(subcategoria => {
+        aux.subCategories.push({ id: subcategoria.id,nombre:subcategoria.name });
+      });
+    });
+
+    //aux["subcategorias"][0]={...aux["subcategorias"][0],nombre: "subcategoria"}
+    
+    console.log("aux",aux);
+    // console.log("plantillaName",plantillaName)
+    // console.log(categorias);
+    (async () => { 
+      console.log("entro");
+      const response = await guardarPlantilla(aux);
+      console.log("response",response);
+      if (response){
+        setShowNotification(true); 
+      }
+    })();
+  };
+
+  const closeNotification = () => {
+    setShowNotification(false);
+    window.location.reload();
+  };
 
   const handleInputChange = (categoriaId, value) => {
     setInputValues({ ...inputValues, [categoriaId]: value });
@@ -95,11 +131,15 @@ const Create = () => {
     </div>
   );
 
+  const handleChangePlantillaName = (event) => {
+    setPlantillaName(event.target.value);
+  };
+
   const filters = (
     <Form className='ec-indexFilters'>
       <Form.Group className='flex1'>
         <label className='label-estilizado' htmlFor='nombrePlantilla'>Nombre de plantilla</label>
-        <Form.Control placeholder='Ingrese el nombre' id="nombrePlantilla"/>
+        <Form.Control placeholder='Ingrese el nombre' id="nombrePlantilla" value={plantillaName} onChange={handleChangePlantillaName}/>
       </Form.Group>
       <Form.Group className='flex1'>
         <div >
@@ -117,7 +157,7 @@ const Create = () => {
     </Form>
 );
 
-//CHATGPT
+//Idea1
 // const handleRadioChange = (categoryName: string, index: number) => {
 //   let nuevo = {
 //     categoriaNombre: categoryName,
@@ -216,7 +256,7 @@ const handleRadioChange = (categoryName: string,index: number) => {
   console.log("dataC",data)
 }
 
-//ChatGPT
+//Idea2
 // const handleSubcategoryRadioChange = (e: any, subcategoria: string, catIndex: number, subId: string) => {
 //   const lista = data?.categorias[catIndex]?.subcategory || [];
 //   const nuevo = { id: subId, name: subcategoria };
@@ -365,7 +405,7 @@ const isSubcategorySelected = (categoryName: string, subcategoryName: string): b
 
 
 const accordion = (
-  <Accordion alwaysOpen={false}>
+  <Accordion alwaysOpen={false} style={{ marginTop: '15px' }}>
     {categorias && categorias.map((categoria, index) => (
       <Accordion.Item eventKey={categoria["category-id"]} key={categoria["category-id"]}>
         <Accordion.Header>
@@ -448,10 +488,16 @@ const accordion = (
     <>
       {accordion}
       <div className="text-end mt-32" >
-        <Button>
+        <Button onClick={handleGuardar}>
           Guardar
         </Button>
       </div>
+      <Toast show={showNotification} onClose={closeNotification} className="notification">
+        <Toast.Header>
+          <strong className="me-auto">Notificación</strong>
+        </Toast.Header>
+        <Toast.Body>Se ha creado la plantilla con éxito.</Toast.Body>
+    </Toast>
     </>
     ) : ( 
     <NoDataFound/>

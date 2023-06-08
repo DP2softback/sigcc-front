@@ -96,3 +96,20 @@ export const guardarEditar = async(plantilla,categorias) =>{
       }
       return await ajax(optionsRequest);
 }
+
+export const guardarPlantilla = async(plantilla) =>{
+  const optionsRequest = {
+      method: 'POST',
+      url: BACKEND_URL + 'PlantillaCrear',
+      headers:{
+          Authorization: `Token ${SAMPLE_TOKEN}`
+        },
+      data:{
+        "evaluationType": plantilla["evaluationType"], 
+        "nombre": plantilla["nombre"],
+        "subCategories":plantilla["subCategories"]     
+      }
+      // data: {...plantilla}  
+    }
+    return await ajax(optionsRequest);
+}
