@@ -11,6 +11,8 @@ import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path
 import { getAreas, getCategoriasContinua, getCategoriasDesempenio,postReportLineChart, getEmployeesEvaluationDashboard,} from '@features/Modulo3/services/reports';
 import { formatDashboardJson } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
+import { toast, ToastContainer } from 'react-toastify';  // Import react-toastify
+import 'react-toastify/dist/ReactToastify.css'; 
 
 const dataAreas =     [
   {
@@ -234,11 +236,11 @@ const IndexEvaluacionContinua = () => {
 
   const handleSearchClick = () => {
     if(searchParams.fechaInicio === null || searchParams.fechaFin === null) {
-      alert("Debe seleccionar un rango de fechas");
+      toast.warn("Debe seleccionar un rango de fechas");
       return;
     }
     if(searchParams.fechaInicio > searchParams.fechaFin) {
-      alert("La fecha de inicio no puede ser mayor a la fecha de fin");
+      toast.warn("La fecha de inicio no puede ser mayor a la fecha de fin");
       return;
     }
     // if(searchParams.area.id === 0) {
@@ -250,14 +252,10 @@ const IndexEvaluacionContinua = () => {
     //   return;
     // }
 
-    console.log("Params: ", searchParams);
-
     //Upate searchParams.fechaInicio and searchParams.fechaFin to ISOString
     const searchParamsCopy = {...searchParams};
     searchParamsCopy.fechaInicio = searchParams.fechaInicio.toISOString().split('T')[0];
     searchParamsCopy.fechaFin = searchParams.fechaFin.toISOString().split('T')[0];
-    
-    console.log("Params Updated: ", searchParamsCopy);
 
     if(activeRepContinua) {
       const fetchData = async () => {
@@ -283,12 +281,9 @@ const IndexEvaluacionContinua = () => {
         const data = await postReportLineChart(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(data){
           setDashboard(formatDashboardJson(data));
-          console.log("Data: ", data);
-          console.log("Dashboard: ", dashboard);
         }
         else{
           console.log("Error D: ", data);
-          console.log("Params: ", searchParamsCopy);
         }
         setIsLoading(false);
       };
@@ -373,6 +368,7 @@ const IndexEvaluacionContinua = () => {
   
   return (
     <>
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover /> 
       <Layout
         title={'Reportes'}
         body={body}

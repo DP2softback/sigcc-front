@@ -197,7 +197,6 @@ export const postReportLineChart = async (areaid, categoriaid, dateFechaInicio, 
   if(categoriaid!==0){
     body["category-id"]=categoriaid
   }
-  console.log("body: ", body);
   try {
     const response = await axios.post(`${BACKEND_URL}LineChartEvaluacionesReporte`,
       body,
@@ -208,7 +207,6 @@ export const postReportLineChart = async (areaid, categoriaid, dateFechaInicio, 
         }
       }
     );
-    console.log("Respuesta del Post: ",response.data);
     return response.data;
   } catch (error) {
     console.log("Hubo un error con la solicitud:", error);

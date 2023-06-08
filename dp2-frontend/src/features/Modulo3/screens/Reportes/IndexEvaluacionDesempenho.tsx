@@ -241,14 +241,10 @@ const IndexEvaluacionDesempenho = () => {
     //   return;
     // }
 
-    console.log("Params: ", searchParams);
-
     //Upate searchParams.fechaInicio and searchParams.fechaFin to ISOString
     const searchParamsCopy = {...searchParams};
     searchParamsCopy.fechaInicio = searchParams.fechaInicio.toISOString().split('T')[0];
     searchParamsCopy.fechaFin = searchParams.fechaFin.toISOString().split('T')[0];
-    
-    console.log("Params Updated: ", searchParamsCopy);
 
     if(activeRepContinua) {
       const fetchData = async () => {
@@ -256,12 +252,9 @@ const IndexEvaluacionDesempenho = () => {
         const data = await postReportLineChart(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(data){
           setDashboard(formatDashboardJson(data));
-          console.log("Data: ", data);
-          console.log("Dashboard: ", dashboard);
         }
         else{
           console.log("Error C: ", data);
-          console.log("Params: ", searchParamsCopy);
         }
         setIsLoading(false);
       };
@@ -273,12 +266,9 @@ const IndexEvaluacionDesempenho = () => {
         const data = await postReportLineChart(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(data){
           setDashboard(formatDashboardJson(data));
-          console.log("Data: ", data);
-          console.log("Dashboard: ", dashboard);
         }
         else{
           console.log("Error D: ", data);
-          console.log("Params: ", searchParamsCopy);
         }
         setIsLoading(false);
       };
