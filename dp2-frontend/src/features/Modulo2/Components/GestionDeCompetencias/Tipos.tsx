@@ -27,3 +27,12 @@ export type CompetenciaTrabajador = {
   description: string
 }
   
+export type EmpleadoDeArea = {
+  id: number,
+  user__first_name: string,
+  user__last_name: string,
+  position__name: string,
+  area__name: string,
+  user__email: string,
+  user__is_active: boolean
+}
