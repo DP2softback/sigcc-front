@@ -2,13 +2,13 @@
 
 import axios from "axios";
 
-const baseUrl = "https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/";
+const baseUrl = "https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1";
 
 const axiosEmployeeGaps = axios.create({
   baseURL: baseUrl,
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': 'Token 2e768413e0d75dd79983cd115422fee5291c668d',
+    'Authorization': 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
   }
 });
 

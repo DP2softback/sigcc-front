@@ -5,6 +5,7 @@ import { Navigate } from "react-router-dom";
 import Authenticated from "@components/Authenticated";
 import { routes as routesGroup4 } from "@features/Modulo4/routes/router";
 import { routes as routesGrupo3 } from "@features/Modulo3/routes/router";
+import { routes as routesGrupo2 } from "@features/Modulo2/routes/router";
 import { SELECTION_PROCESS_AND_JOB_OFFERS_MODULE,
 	JOB_OFFERS,
 	CREATE_JOB_OFFER,
@@ -38,7 +39,7 @@ const defaultRoutes: RouteObject[] = [
 ];
 
 // HERE MERGE ALL GROUPS ROUTER
-const routes: RouteObject[] = defaultRoutes.concat(routesGroup4).concat(routesGrupo3);
+const routes: RouteObject[] = defaultRoutes.concat(routesGroup4).concat(routesGrupo3).concat(routesGrupo2);
 
 const router: RouteObject[] = [
 	{
