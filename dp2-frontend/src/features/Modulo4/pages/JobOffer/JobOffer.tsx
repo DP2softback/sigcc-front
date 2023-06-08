@@ -21,16 +21,6 @@ const typeCreation = [
     {id: 4, type: "Virtual Asincrono"},
 ]
 
-// type TrainingObj = {
-//     id: number;
-//     name: string;
-//     description: string;
-//     startDate: string;
-//     endDate: string;
-//     numEmployees: number;
-//     type: string;
-// }
-
 type JobOfferObj = {
     id: number;
     name: string;
@@ -41,7 +31,9 @@ type JobOfferObj = {
     salaryRange: string;
 }
 
-const data: JobOfferObj[] = [
+
+
+/* const data: JobOfferObj[] = [
     {
                 "id": 1,
                 "name": "Desarrollador de software",
@@ -132,7 +124,7 @@ const data: JobOfferObj[] = [
         "location": "Av. Universitaria 1305 - San Miguel",
         "salaryRange": "Tarifa por proyecto"
     }
-]
+] */
 
 function padTo2Digits(num: number) {
     return num.toString().padStart(2, '0');
@@ -149,9 +141,7 @@ function formatDate(date: Date) {
 }
 
 const JobOffer = () => {
-
-    // const [training, setTraining] = useState<TrainingObj[]>(data)
-
+    const [data, setData] = useState([]);
     const [trainingFilter, setTrainingFilter] = useState<JobOfferObj[]>(data)
     const [finishedCourse, setFinishedCourse] = useState<JobOfferObj[]>(data)
 
@@ -217,41 +207,22 @@ const JobOffer = () => {
         }
     }
 
-    /* TRAINING FILTERS */
-
-    const createTraining = () => {
-        const data = {
-            name: refTrName.current?.value,
-            description: refTrDescription.current?.value,
-            type: refTrTypes.current?.value,
-        }
-
-        console.log(data)
-
-        /* RUTA HARDCODEADA*/
-        navigate(`/modulo1/cursoempresa/creacion/1`);
-
-        axiosInt.post('RUTA API', data)
-            .then(function (response) {
-                //navigate(`/modulo1/cursoempresa/creacion/${response.data.id}`);
+    const loadOffers = () =>
+    {
+        axiosInt.get(`v1/job-offers`)
+            .then(function (response)
+            {
+                setData(response.data)
+                console.log(response)
             })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
-
-    const loadTrainings = () => {
-        axiosInt.get('RUTA API')
-            .then(function (response) {
-                //setTrainingFilter(response.data);
-            })
-            .catch(function (error) {
+            .catch(function (error)
+            {
                 console.log(error);
             });
     }
 
     useEffect(() => {
-        //loadTrainings();    
+        loadOffers()
     }, []);
 
     return (
@@ -312,7 +283,7 @@ const JobOffer = () => {
                     <div style={{display: "flex", flexDirection: "column"}}>
                         <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
                             {
-                                finishedCourseShow.map((tr) => {
+                                data.map((tr) => {
                                     return (
                                         <OfferCard key={tr.id}
                                                       id={tr.id}
@@ -383,11 +354,6 @@ const JobOffer = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="modal-footer">
-                                <button className="btn btn-primary" data-bs-dismiss="modal"
-                                        onClick={createTraining}>Crear
-                                </button>
                             </div>
                         </div>
                     </div>
