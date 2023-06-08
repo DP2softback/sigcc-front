@@ -21,7 +21,7 @@ export const getAreas = () => {
 
 export const getCategoriasContinua = () => {
   return axios
-    .get(`${BACKEND_URL}categorias/Continua`, {
+    .get(`${BACKEND_URL}categorias/continuas`, {
       headers: { Authorization: `Token ${SAMPLE_TOKEN}` },
     })
     .then((response) => response.data)
@@ -177,6 +177,33 @@ export const getPostReportDesempenioLineChart = async (areaid, categoriaid, date
       fechaInicio: dateFechaInicio,
       fechaFin: dateFechaFin,
     });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log("Hubo un error con la solicitud:", error);
+  }
+};
+
+// EL POST DEL REPORTE PARA EVALUACION CONTINUA Y DESEMPEÑO
+export const postReportLineChart = async (areaid, categoriaid, dateFechaInicio, dateFechaFin, evaluationType) => {
+  const body ={
+    "category-id": areaid,
+    "area-id": categoriaid,
+    "evaluationType": evaluationType,
+    // "fecha_inicio": dateFechaInicio,
+    // "fecha_fin": dateFechaFin
+  }
+  
+  try {
+    const response = await axios.post(`${BACKEND_URL}LineChartEvaluacionesReporte`,
+      body,
+      {
+        headers:{
+          "Authorization": `Token ${SAMPLE_TOKEN}`,
+          "Content-Type": 'application/json'
+        }
+      }
+    );
     console.log(response.data);
     return response.data;
   } catch (error) {
