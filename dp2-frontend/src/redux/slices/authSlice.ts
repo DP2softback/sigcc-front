@@ -1,30 +1,39 @@
+import { getStorageItem, setStorage, cleanStorage } from "@config/localStorage";
 import { AuthUser } from "@redux/types/auth";
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { Roles } from "@routes/types/roles";
+import { State } from "@redux/store";
 
 const initialState: AuthUser = {
-  user: null, 
-  token: null
-}
+	user: null,
+	token: null
+};
 
 const authSlice = createSlice({
-  name: "auth",
-  initialState: initialState,
-  reducers: {
-    setCredentials: (state, action) => {
-      const { user, accessToken } = action.payload;
-      state.user = user;
-      state.token = accessToken;
+	name: "auth",
+	initialState: initialState,
+	reducers: {
+    getCredentials: (state) => {
+      state.user = getStorageItem("user", false);
+      state.token = getStorageItem("dp2-access-token", true);
     },
-    logOut: (state, action) => {
-      state.user = null;
-      state.token = null;
-    },
-  },
+		setCredentials: (state: AuthUser, action: PayloadAction<Partial<AuthUser>>) => {
+			const { user, token } = action.payload;
+			state.user = user;
+			state.token = token;
+      setStorage({ "user": JSON.stringify(user), "dp2-access-token": token })
+		},
+		logOut: (state: AuthUser) => {
+			state.user = null;
+			state.token = null;
+      cleanStorage();
+		}
+	}
 });
 
-export const { setCredentials, logOut } = authSlice.actions;
+export const { getCredentials, setCredentials, logOut } = authSlice.actions;
 
 export default authSlice.reducer;
 
-export const selectCurrentUser = (state) => state.auth.user;
-export const selectCurrentToken = (state) => state.auth.token;
+export const selectCurrentUser = (state: State) => getStorageItem("user", false);
+export const selectCurrentToken = (state: State) => getStorageItem("dp2-access-token", true);
