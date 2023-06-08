@@ -25,11 +25,11 @@ const DetalleCompetenciasArea = () => {
       useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await fetch('https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/employeeArea', {
+            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/employeeArea', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Token 395dfd8fb09fa51e8481b6ef1eb95c10f4254de3'
+                'Authorization': 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf'
               },
               body: JSON.stringify({
                 area__name: 1
