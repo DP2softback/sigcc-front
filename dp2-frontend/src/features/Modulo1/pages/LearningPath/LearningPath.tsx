@@ -151,7 +151,7 @@ function LearningPath (props: any)
                                         return <Fragment key={i}>
                                             <div className='col'>
                                                 <div className="card h-100">
-                                                    <img src={lp.url_foto} className="card-img-top" alt="Card" />
+                                                    <img src={lp.url_foto} className="card-img-top lp-card-img" alt="Card" />
                                                     <div className="card-body">
                                                         <div className="lp-header justify-content-between d-flex">
                                                             <div className="align-self-center">
@@ -163,7 +163,7 @@ function LearningPath (props: any)
                                                         </div>
                                                         <p className='mb-0'><small className="opacity-50">{lp.descripcion}</small></p>
                                                     </div>
-                                                    <div className="card-footer lp-footer">
+                                                    <div className="card-footer pb-3 lp-footer">
                                                         <div className='d-flex mb-3'>
                                                             <Clock className='align-self-center me-3' />
                                                             <div className='w-100 d-flex justify-content-between'>
@@ -275,7 +275,7 @@ function LearningPath (props: any)
                         </div>
                         <div className="modal-footer d-flex justify-content-between">
                             <span></span>
-                            <button className="btn btn-primary" data-bs-target="#createLPModal" data-bs-toggle="modal" onClick={createLP}>Crear</button>
+                            <button className="btn btn-primary" data-bs-target="#createLPModal" data-bs-toggle="modal" onClick={createLP}>Crear ruta de aprendizaje</button>
                         </div>
                     </div>
                 </div>
