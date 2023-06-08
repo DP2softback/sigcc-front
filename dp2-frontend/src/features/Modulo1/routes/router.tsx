@@ -8,6 +8,8 @@ import {
 	LEARNING_PATH_ADDCOURSE,
 	LEARNING_PATH_DETAIL,
 	LEARNING_PATH_ASSIGNMENT,
+	LEARNING_PATH_EVALUATION_DETAILS,
+	LEARNING_PATH_EVALUATION_REVIEW,
 	ORG_COURSE_INDEX,
 	ORG_COURSE_CREATE, 
 	ORG_COURSE_DETAIL,
@@ -40,6 +42,14 @@ const M1LearningPathAssignment = Loader(
 
 const M1AddCourse = Loader(
 	lazy(() => import("@features/Modulo1/pages/Course/AddCourse"))
+);
+
+const M1LearningPathIntegralEvaluation = Loader(
+	lazy(() => import("@features/Modulo1/pages/LearningPath/IntegralEvaluation/EvaluationDetails"))
+);
+
+const M1LearningPathIntegralEvaluationReview = Loader(
+	lazy(() => import("@features/Modulo1/pages/LearningPath/IntegralEvaluation/EvaluationReview"))
 );
 
 const M1ListTraining = Loader(
@@ -85,6 +95,32 @@ export const routes: RouteObject[] = [
 			{
 				path: LEARNING_PATH_INDEX,
 				children: [
+					{
+						path: LEARNING_PATH_EVALUATION_DETAILS,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN, 
+									Roles.HR_MANAGER, 
+									Roles.HEAD_OF_AREA
+								]}>
+								<M1LearningPathIntegralEvaluation />
+							</AppLayout>
+						)
+					},
+					{
+						path: LEARNING_PATH_EVALUATION_REVIEW,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN, 
+									Roles.HR_MANAGER, 
+									Roles.HEAD_OF_AREA
+								]}>
+								<M1LearningPathIntegralEvaluationReview />
+							</AppLayout>
+						)
+					},
 					{
 						path: LEARNING_PATH_DETAIL,
 						element: (

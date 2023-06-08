@@ -173,7 +173,7 @@ function LearningPathDetails (props: any)
                             <div className='d-flex border-bottom'>
                                 <h1><ArrowLeftCircleFill onClick={goBack} className='me-3' /></h1>
                                 <div className='row w-100'>
-                                    <div className='col-xs-12 col-md-6 col-xl-8'>
+                                    <div className='col-xs-12 col-md-4 col-xl-6'>
                                         <div>
                                             <h1><span className='align-middle'>{lpName}</span></h1>
                                         </div>
@@ -181,7 +181,7 @@ function LearningPathDetails (props: any)
                                             <p><small className='opacity-50'>{lpDescription}.</small></p>
                                         </div>
                                     </div>
-                                    <div className='col-xs-12 col-md-6 col-xl-4'>
+                                    <div className='col-xs-12 col-md-4 col-xl-4'>
                                         <div className='d-flex mb-3'>
                                             <img className="rounded-circle lp-thumb me-3" src={lpPhoto} alt="..." />
                                             <div className='w-100 align-self-center'>
@@ -200,6 +200,12 @@ function LearningPathDetails (props: any)
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div className='col-xs-12 col-md-4 col-xl-2'>
+                                        <div className='d-grid gap-2 mx-auto mb-3'>
+                                            <Link to={`evalintegral`} className='btn btn-sm btn-primary'>Ver evaluaciones</Link>
+                                            <Link to={``} className='btn btn-sm btn-primary'>Ver reportes</Link>
                                         </div>
                                     </div>
                                 </div>

@@ -122,7 +122,7 @@ const TableAttendance = (Props: Props) => {
                                     obj[`${headerItems.value}`] === null ?
                                     (<td key={indexH}>No registrado</td>)
                                     :
-                                    (<td key={indexH}>{obj[`${headerItems.value}`]}</td>)
+                                    (<td key={indexH}>{obj[`${headerItems.value}`] === true ? ("Asistió") : ("No asistió")}</td>)
                                 )
                             )
                         }

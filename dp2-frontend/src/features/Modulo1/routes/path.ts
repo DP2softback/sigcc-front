@@ -5,6 +5,8 @@ export const LEARNING_PATH_INDEX = 'rutadeaprendizaje';
 export const LEARNING_PATH_ADDCOURSE = 'curso/agregar/:learningPathId';
 export const LEARNING_PATH_DETAIL = 'detalle/:learningPathId';
 export const LEARNING_PATH_ASSIGNMENT = 'asignacion/:learningPathId';
+export const LEARNING_PATH_EVALUATION_DETAILS = 'detalle/:learningPathId/evalintegral';
+export const LEARNING_PATH_EVALUATION_REVIEW = 'detalle/:learningPathId/evalintegral/revision/:employeeID';
 
 /*----- Curso Empresa -----*/
 export const ORG_COURSE_INDEX = 'cursoempresa';
