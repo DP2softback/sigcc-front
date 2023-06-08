@@ -1,5 +1,5 @@
 import { ajax } from '../tools/ajax';
-import { CONTINUOS_EVALUATION_TYPE, BACKEND_URL, SAMPLE_TOKEN } from '../utils/constants';
+import { CONTINUOS_EVALUATION_TYPE, BACKEND_URL, TOKEN } from '../utils/constants';
 import { getEmployeeEvaluationDashboardShared, getEmployeesEvaluationDashboardShared, getEmployeesShared, getEvaluationsHistoryShared } from './shared';
 
 export const getEmployees = async (bossId: number, fechaInicio? : Date, fechaFin? : Date) => { 
@@ -25,7 +25,7 @@ export const saveEvaluation = async (evaluation) => {
     method: 'POST',
     url: BACKEND_URL + 'eval',
     headers:{
-      Authorization: `Token ${SAMPLE_TOKEN}`
+      Authorization: `Token ${TOKEN}`
     },
     data: evaluation
   }
@@ -37,7 +37,7 @@ export const getEvaluation = async (evalutionId: number) => {
     method: 'POST',
     url: BACKEND_URL + 'eval/' + evalutionId,
     headers:{
-      Authorization: `Token ${SAMPLE_TOKEN}`
+      Authorization: `Token ${TOKEN}`
     }
   }
   return await ajax(optionsRequest);
