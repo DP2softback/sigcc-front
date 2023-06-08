@@ -1,69 +1,21 @@
 import { ajax } from '../tools/ajax';
-import { CONTINUOS_EVALUATION_TYPE, BACKEND_URL, SAMPLE_TOKEN } from '../utils/constants';
+import { CONTINUOS_EVALUATION_TYPE, BACKEND_URL, TOKEN } from '../utils/constants';
+import { getEmployeeEvaluationDashboardShared, getEmployeesEvaluationDashboardShared, getEmployeesShared, getEvaluationsHistoryShared } from './shared';
 
-export const getEmployees = async (bossId, fechaInicio? : Date, fechaFin? : Date) => {  
-  const optionsRequest = {
-    method: 'POST',
-    url: BACKEND_URL + 'employees',
-    headers:{
-      Authorization: `Token ${SAMPLE_TOKEN}`
-    },
-    data: {
-      id: bossId,
-      evaluationType: CONTINUOS_EVALUATION_TYPE,
-      fecha_inicio: fechaInicio,
-      fecha_fin: fechaFin
-    }
-  }
-  return await ajax(optionsRequest);
+export const getEmployees = async (bossId: number, fechaInicio? : Date, fechaFin? : Date) => { 
+  return await getEmployeesShared(bossId, CONTINUOS_EVALUATION_TYPE, fechaInicio, fechaFin);
 }
 
-export const getEvaluationsHistory = async (employeeId, nivel? : number, fechaInicio? : Date, fechaFin? : Date) => {
-  const optionsRequest = {
-    method: 'POST',
-    url: BACKEND_URL + 'evaluations',
-    headers:{
-      Authorization: `Token ${SAMPLE_TOKEN}`
-    },
-    data: {
-      employee_id: employeeId,
-      evaluationType: CONTINUOS_EVALUATION_TYPE,
-      nivel: nivel,
-      fecha_inicio: fechaInicio,
-      fecha_fin: fechaFin
-    }
-  }
-  return await ajax(optionsRequest);
+export const getEvaluationsHistory = async (employeeId: number, nivel? : number, fechaInicio? : Date, fechaFin? : Date) => {
+  return await getEvaluationsHistoryShared(employeeId, CONTINUOS_EVALUATION_TYPE, nivel, fechaInicio, fechaFin);
 }
 
-export const getEmployeesEvaluationDashboard = async (bossId) => {
-  const optionsRequest = {
-    method: 'POST',
-    url: BACKEND_URL + 'LineChartEvaluaciones',
-    headers:{
-      Authorization: `Token ${SAMPLE_TOKEN}`
-    },
-    data: {
-      id: bossId,
-      evaluationType: CONTINUOS_EVALUATION_TYPE,
-    }
-  }
-  return await ajax(optionsRequest);
+export const getEmployeesEvaluationDashboard = async (bossId: number) => {
+  return await getEmployeesEvaluationDashboardShared(bossId, CONTINUOS_EVALUATION_TYPE);
 }
 
-export const getEmployeeEvaluationDashboard = async (employeeId) => {
-  const optionsRequest = {
-    method: 'POST',
-    url: BACKEND_URL + 'LineChartEvaluacionesPersona',
-    headers:{
-      Authorization: `Token ${SAMPLE_TOKEN}`
-    },
-    data: {
-      id: employeeId,
-      evaluationType: CONTINUOS_EVALUATION_TYPE,
-    }
-  }
-  return await ajax(optionsRequest);
+export const getEmployeeEvaluationDashboard = async (employeeId: number) => {
+  return await getEmployeeEvaluationDashboardShared(employeeId, CONTINUOS_EVALUATION_TYPE);
 }
 
 export const saveEvaluation = async (evaluation) => {
@@ -73,9 +25,20 @@ export const saveEvaluation = async (evaluation) => {
     method: 'POST',
     url: BACKEND_URL + 'eval',
     headers:{
-      Authorization: `Token ${SAMPLE_TOKEN}`
+      Authorization: `Token ${TOKEN}`
     },
     data: evaluation
+  }
+  return await ajax(optionsRequest);
+}
+
+export const getEvaluation = async (evalutionId: number) => {
+  const optionsRequest = {
+    method: 'POST',
+    url: BACKEND_URL + 'eval/' + evalutionId,
+    headers:{
+      Authorization: `Token ${TOKEN}`
+    }
   }
   return await ajax(optionsRequest);
 }
