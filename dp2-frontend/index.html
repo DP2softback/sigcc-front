@@ -37,7 +37,7 @@
 
     /* Track */
     ::-webkit-scrollbar-track {
-      background: #f1f1f1;
+      background: transparent;
     }
 
     /* Handle */
@@ -45,5 +45,9 @@
       background: var(--bs-primary);
       border-radius: 10px;
     }
-  }
+
+    :hover::-webkit-scrollbar-thumb {
+      background: #999;
+    }
+}
 </style>
