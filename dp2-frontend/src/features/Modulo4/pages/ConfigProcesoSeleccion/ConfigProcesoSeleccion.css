@@ -88,3 +88,11 @@ button.small-button {
 .custom {
     width: 200px !important;
 }
+
+
+.readonly-text {
+    background-color: #f5f5f5; /* Establece el color de fondo deseado para el texto deshabilitado */
+    color: #777777; /* Establece el color del texto deshabilitado */
+    pointer-events: none; /* Deshabilita eventos de puntero para que no se puedan interactuar con el texto */
+  }
+  

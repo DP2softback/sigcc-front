@@ -1,0 +1,41 @@
+// nk body
+.nk{
+    &-body{
+        outline: none;
+    }
+    &-app{
+        &-root{
+            outline: none;
+        }
+    }
+    &-main{
+        position: relative;
+    }
+    &-wrap{
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    &-content{
+        padding: $content-gap-y $content-gap-x;
+        &-stretch{
+            padding: 0 !important;
+            .nk-content-body{
+                overflow: hidden;
+                height: calc(100vh - #{$header-height} - #{$footer-height} - 2px);
+            }
+        }
+    }
+}
+@include media-breakpoint-up(sm){
+    .nk{
+        &-content{
+            padding: $content-gap-y-sm $content-gap-x-sm;
+            &-stretch{
+                .nk-content-body{
+                    height: calc(100vh - #{$header-height} - #{$footer-height-sm} - 2px);
+                }
+            }
+        }
+    }
+}

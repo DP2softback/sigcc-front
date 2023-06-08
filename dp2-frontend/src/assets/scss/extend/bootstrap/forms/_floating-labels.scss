@@ -1,0 +1,12 @@
+.form-floating{
+    .form-control-plaintext{
+        border-width: $input-border-width;
+        border-radius: $input-border-radius;
+        &:focus{
+            border-color: $field-focus-border-color;
+        }
+        &:focus-visible{
+            outline: none;
+        }
+    }
+}

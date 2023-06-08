@@ -1,0 +1,11 @@
+.modal-dialog {
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - var(--#{$prefix}modal-margin) * 2);
+    &-top{
+        align-items: flex-start;
+    }
+    &-bottom{
+        align-items: flex-end;
+    }
+  }

@@ -1,0 +1,79 @@
+$overline-title-color: $base-light;
+$lead-text-color: $base-color;
+$sub-text-color: $base-light;
+
+.overline-title{
+    font-size: 11px;
+    line-height: 1.2;
+    letter-spacing: .1em;
+    color: $overline-title-color;
+    text-transform: uppercase;
+    font-weight: 700;
+    &-sep{
+        padding-left: 0.35rem;
+        padding-right: 0.25rem;
+        position: relative;
+        display: inline-block;
+        font-weight: 700;
+        &::before,
+        &::after{
+            background: $base-light;
+            content: "";
+            height: 1px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            opacity: 0.4;
+        }
+        &::before{
+            right: 100%;
+        }
+        &::after{
+            left: 100%;
+        }
+    }
+}
+.smaller{
+    font-size: $smaller-font-size;
+}
+
+.lead-text{
+    font-size: .813rem;
+    line-height: 1.5rem;
+    font-weight: 500;
+    color: $lead-text-color;
+}
+.sub-text{
+    font-size: .75rem;
+    color: $sub-text-color;
+    line-height: 1.5;
+}
+.text{
+    &-base{
+        color: $base-color !important;
+    }
+    &-light{
+        color: $base-light !important;
+    }
+}
+$para-margin: 1rem;
+.entry {
+    img{
+        border-radius: $border-radius;
+        + p, + h2, + h3, + h4, + h5, + h6, + ul, + ol{
+            margin-top: ($para-margin * 2);
+        }
+    }
+    p {
+        color: $base-light;
+        + img{
+            margin-top: $para-margin ;
+        }
+    }
+    p {
+        + h2, + h3, + h4,+ h5, + h6{
+            padding-top: ($para-margin * .75);
+        }
+    }
+}

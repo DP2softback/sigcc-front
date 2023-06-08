@@ -1,0 +1,64 @@
+.nk-compact-toggle{
+    display: none;
+}
+@each $point in $points {
+    @include media-breakpoint-up($point){
+       [data-sidebar-collapse="#{$point}"]{
+            .nk-compact-toggle{
+                display: block;
+            }
+
+            .nk{
+                &-sidebar{
+                    &.is-compact{
+                        &:not(:hover){
+                            width: $sidebar-width-compact;
+                            .nk-sidebar-head{
+                                width: $sidebar-width-compact;
+                            }
+                            .#{$menu-class}{
+                                &-text{
+                                    opacity: 0;
+                                }
+                                &-toggle{
+                                    &::before{
+                                        opacity: 0;
+                                    }
+                                }
+                                &-sub{
+                                    display: none !important;
+                                }
+                                &-heading{
+                                    position: relative;
+                                    .overline-title{
+                                        opacity: 0;
+                                    }
+                                    &:not(:first-child){
+                                        &::before{
+                                            position: absolute;
+                                            content: "";
+                                            height: 1px;
+                                            width: 100%;
+                                            left: 0;
+                                            top: 50%;
+                                            background-color: $menu-border-color;
+                                        }
+                                    }
+                                }
+                            }
+                            .compact-toggle{
+                                opacity: 0;
+                            }
+                        }
+                        + .nk-wrap{
+                            padding-left: $sidebar-width-compact;
+                            > .nk-header-fixed {
+                                left: $sidebar-width-compact;
+                            }
+                        }
+                    }
+                }
+            }
+       }
+    }
+}
