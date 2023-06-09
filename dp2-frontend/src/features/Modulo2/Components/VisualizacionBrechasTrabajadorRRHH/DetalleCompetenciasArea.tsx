@@ -6,6 +6,7 @@ import {ArrowRightCircleFill,Pencil,Trash } from 'react-bootstrap-icons';
 import { useLocation,  useNavigate  } from 'react-router-dom';
 import './DetalleCompetenciasArea.css'
 import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos';
+
 const DetalleCompetenciasArea = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,7 +33,7 @@ const DetalleCompetenciasArea = () => {
                 'Authorization': 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf'
               },
               body: JSON.stringify({
-                area__name: 1
+                area__name: 2
               })
             });
     
@@ -50,9 +51,6 @@ const DetalleCompetenciasArea = () => {
         fetchData();
       }, []);  
 
-    const handleuser__is_activeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-      setposition__name(event.target.value);
-    };
     
     const agregarCompetencia = (nuevaCompetencia) => {
         setEmpleados([...empleados, nuevaCompetencia]);
