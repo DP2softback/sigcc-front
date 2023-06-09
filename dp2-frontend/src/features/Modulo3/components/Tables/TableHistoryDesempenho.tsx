@@ -1,10 +1,10 @@
+import './TableHistory.css';
 import {  Table } from 'react-bootstrap';
 import { formatDate, navigateTo } from '@features/Modulo3/utils/functions';
-import './TableHistory.css';
 import { ArrowRightCircleFill } from 'react-bootstrap-icons';
-import { CONTINUOS_EVALUATION_DETAIL } from '@features/Modulo3/routes/path';
+import { PERFORMANCE_EVALUATION_DETAIL } from '@features/Modulo3/routes/path';
 
-export default function TableHistoryContinua({ rows, employee = null, isReadOnly = false }) {
+export default function TableHistoryDesempenho({ rows, employee = null, isReadOnly = false }) {
   function getBackgroundColor(categoryIndex: number) {
     return isReadOnly
       ? categoryIndex % 2 == 0
@@ -19,9 +19,8 @@ export default function TableHistoryContinua({ rows, employee = null, isReadOnly
     <Table striped className='TableHistoryContinua'>
       <thead className={`bg-white${isReadOnly ? 'ReadOnly' : ''}`}>
         <tr>
-          <th>Categoría</th>
+          <th>Fecha de registro</th>
           <th className='text-center'>Calificación</th>
-          <th className='text-center'>Fecha de registro</th>
           <th className='text-center'>Detalle</th>
         </tr>
       </thead>
@@ -30,14 +29,13 @@ export default function TableHistoryContinua({ rows, employee = null, isReadOnly
           const rowStyle = `matrixRow ${getBackgroundColor(index)}`;
           return (
             <tr key={row.EvaluationId} className={rowStyle}>
-              <td>{row.CategoryName}</td>
-              <td className='text-center'>{row.score}</td>
-              <td className='text-center'>{formatDate(row.evaluationDate)}</td>
+              <td>{formatDate(row.evaluationDate)}</td>
+              <td className='text-center'>{row.finalScore}</td>
               <td className='text-center'>
                 <ArrowRightCircleFill
                   className='cursor-pointer'
                   onClick={() => {
-                    navigateTo(CONTINUOS_EVALUATION_DETAIL, {
+                    navigateTo(PERFORMANCE_EVALUATION_DETAIL, {
                       id: employee.id,
                       name: employee.name,
                       evaluationId: row.EvaluationId

@@ -1,5 +1,4 @@
 import react, {useState, useRef, useEffect} from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './IndexEvaluacionContinua.css';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
