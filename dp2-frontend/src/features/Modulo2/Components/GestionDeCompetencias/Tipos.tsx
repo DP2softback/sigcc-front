@@ -36,3 +36,8 @@ export type EmpleadoDeArea = {
   user__email: string,
   user__is_active: boolean
 }
+
+export type AreaActiva = {
+  id: number,
+  name: string
+}
