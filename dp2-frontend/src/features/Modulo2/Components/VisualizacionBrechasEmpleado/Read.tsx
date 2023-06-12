@@ -5,9 +5,12 @@ import { Bar } from "react-chartjs-2";
 import BarChart1 from './Barchart1';
 import './Read.css'
 import axiosEmployeeGaps from '@features/Modulo2/services/EmployeeGapsServices';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEE_EMP, GAPS_EMPLOYEE_EMP_DETAIL } from '@features/Modulo2/routes/path';
 
 const Read = () => {
 
+    const navigate = useNavigate();
     const [palabrasClave, setPalabrasClave] = useState('');
     const [tipoOrden, setTipoOrden] = useState('ascendente');
     const [busquedaRealizada, setBusquedaRealizada] = useState(false);
@@ -207,7 +210,7 @@ const Read = () => {
                     }
                     </div>
                     <div className="d-flex justify-content-end">
-                        <Button>
+                        <Button onClick={() => navigate(`/${GAPS_ANALYSIS_MODULE}/${GAPS_EMPLOYEE_EMP}/${GAPS_EMPLOYEE_EMP_DETAIL}`)}>
                             Ver necesidades de capaticación
                         </Button>
                     </div>
