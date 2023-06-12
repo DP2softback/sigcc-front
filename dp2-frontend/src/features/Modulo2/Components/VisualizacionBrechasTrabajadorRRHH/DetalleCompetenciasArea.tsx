@@ -25,7 +25,11 @@ const DetalleCompetenciasArea = () => {
 
 
       useEffect(() => {
-        axiosEmployeeGaps.post("gaps/employeeArea").then((response) => {
+        const obj = {
+          area: 2
+        }
+        axiosEmployeeGaps.post("gaps/employeeArea", obj)
+        .then((response) => {
           setEmpleados(response.data);
         });
       }, []);  
