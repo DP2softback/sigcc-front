@@ -202,15 +202,16 @@ const JobOfferDetails = () => {
                                     <div className="employees-list cards">
                                         {employeesToShow.map((employee) => (
                                             <EmployeeCard key={employee.id}
-                                                id={employee.id}
-                                                name={employee.name}
-                                                photoURL={employee.image}
-                                                area={employee.area}
-                                                puesto={employee.position}
-                                                codigo={employee.code}
-                                                boton1={botonEmployee}
-                                                boton1Color={"#B02A37"}
-                                                option={setPrueba}
+                                            id={employee.id}
+                                            name={employee.name}
+                                            photoURL={employee.image}
+                                            area={employee.area}
+                                            puesto={employee.position}
+                                            codigo={employee.code}
+                                            boton1={botonEmployee}
+                                            boton1Color={"#B02A37"}
+                                            option={setPrueba} 
+                                            boton1Texto={undefined}
                                             />
                                         ))}
                                         {(employeesToShow.length != 3) &&
