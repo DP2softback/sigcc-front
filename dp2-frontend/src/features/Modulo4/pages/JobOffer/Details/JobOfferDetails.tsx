@@ -144,7 +144,7 @@ const JobOfferDetails = () => {
     
     const handleSubmit = () => {
         setShowModal(false)
-        navigate("/selection-offers-and-positions/job-offers/list");
+        navigate("/selection-offers-and-positions/job-offers/register");
     }
 
 
@@ -193,7 +193,7 @@ const JobOfferDetails = () => {
 									<div>Área de desarrollo de software</div>
 								</div>
 								<div className="col-3 text-end">
-									<button type="button" className="btn btn-primary mt-2" onClick={()=>setShowModal(true)}>
+									<button type="button" className="btn btn-primary mt-2" onClick={()=>handleSubmit()}>
 										Postular
 									</button>
 								</div>

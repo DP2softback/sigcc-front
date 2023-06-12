@@ -65,14 +65,19 @@ export const routes: RouteObject[] = [
 		children: [
 			{
 				path: COMPETENCES,
-				element: (
-					<AppLayout
-						allowedRoles={[
-							Roles.HR_ADMIN
-						]}>
-						<GestionDeCompetencias />
-					</AppLayout>
-				)
+				children: [
+					{
+						path: INDEX,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN
+								]}>
+								<GestionDeCompetencias />
+							</AppLayout>
+						)
+					}
+				]
 			},
 			{
 				path: GAPS_EMPLOYEES_ORG,
@@ -206,7 +211,7 @@ export const routes: RouteObject[] = [
 			},	
 			{
 				path: "*",
-				element: <Navigate to={`/${GAPS_ANALYSIS_MODULE}/${COMPETENCES}`} 
+				element: <Navigate to={`/${GAPS_ANALYSIS_MODULE}/${COMPETENCES}/${INDEX}`} 
 				replace />
 			}
 		]
