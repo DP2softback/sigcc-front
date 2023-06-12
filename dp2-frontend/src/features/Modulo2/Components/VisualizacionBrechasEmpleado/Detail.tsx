@@ -2,6 +2,7 @@ import axiosEmployeeGaps from '@features/Modulo2/services/EmployeeGapsServices';
 import React from 'react'
 import { Button, Form, FormControl, Table } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import './Detail.css';
 
 const TrainingNeeds = () => {
@@ -13,8 +14,10 @@ const TrainingNeeds = () => {
   const [tipoOrden, setTipoOrden] = React.useState('ascendente');
   const [campoOrdenamiento, setCampoOrdenamiento] = React.useState('');
   const [trainingNeed, setTrainingNeed] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
+    setIsLoading(true);
     axiosEmployeeGaps
       .get("gaps/competenceTypes")
       .then(function (response) {
@@ -43,8 +46,17 @@ const TrainingNeeds = () => {
           .post("gaps/trainingNeedSearch", obj)
           .then(function (response) {
             setTrainingNeed(response.data);
+            setIsLoading(false);
           })
+          .catch(function(error){
+            console.log(error);
+            setIsLoading(false);
+        })
       })
+      .catch(function(error){
+        console.log(error);
+        setIsLoading(false);
+    })
   }, [])
 
   const handleTipoCompetencias = (string) => {
@@ -94,6 +106,7 @@ const TrainingNeeds = () => {
       <div className='row'>
         <h2>Necesidades de capacitación</h2>
         <p className="text-muted">Necesidades de capacitación del empleado</p>
+        {isLoading ? <></> : 
         <Form className="row align-items-center mb-4">
           <Form.Group className="col-6">
             <FormControl
@@ -124,7 +137,9 @@ const TrainingNeeds = () => {
             <Button variant="primary" onClick={handleSearch}>Buscar</Button>
           </div>
         </Form>
+        }
 
+        {isLoading ? <LoadingScreen/> :     
         <div className='row align-items-start'>
           <div className="table-container">
             {trainingNeed && trainingNeed.length === 0 ? <p>No se encontraron resultados.</p> :
@@ -194,7 +209,7 @@ const TrainingNeeds = () => {
             }
           </div>
         </div>
-
+        }
         <div className="d-flex justify-content-start">
           <button className='btn btn-outline-primary mb-2' onClick={() => navigate(-1)}>
             Regresar

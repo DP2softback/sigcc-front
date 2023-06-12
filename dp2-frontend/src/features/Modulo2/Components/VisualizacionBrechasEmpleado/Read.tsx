@@ -5,6 +5,7 @@ import { Bar } from "react-chartjs-2";
 import BarChart1 from './Barchart1';
 import './Read.css'
 import axiosEmployeeGaps from '@features/Modulo2/services/EmployeeGapsServices';
+import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEE_EMP, GAPS_EMPLOYEE_EMP_DETAIL } from '@features/Modulo2/routes/path';
 
@@ -19,8 +20,10 @@ const Read = () => {
     const [tiposCompetencia, setTiposCompetencia] = useState(null);
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [employeeCompetences, setEmployeeCompetences] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     React.useEffect(() => {
+        setIsLoading(true);
         axiosEmployeeGaps
         .get("gaps/competenceTypes")
         .then(function (response){
@@ -50,10 +53,16 @@ const Read = () => {
             .post("gaps/competenceSearch", obj)
             .then(function (response){
                 setEmployeeCompetences(response.data);
+                setIsLoading(false);
             })
             .catch(function(error){
                 console.log(error);
+                setIsLoading(false);
             })
+        })
+        .catch(function(error){
+            console.log(error);
+            setIsLoading(false);
         })
     }, []);
 
@@ -124,6 +133,7 @@ const Read = () => {
             <div className='row'>
                 <h2>Mis brechas de competencias</h2>
                 <p className="text-muted">Visualización de estadísticas de los niveles requeridos por competencias</p>
+                {isLoading ? <></> : 
                 <Form className="row align-items-center mb-4">
                     <Form.Group className="col-6">
                         <FormControl
@@ -154,8 +164,10 @@ const Read = () => {
                         <Button variant="primary" onClick={handleSearch}>Buscar</Button>
                     </div>
                 </Form>
+                }
             </div>
-
+                     
+        {isLoading ? <LoadingScreen/> :           
             <div className='row align-items-start'>
                 <div className='col-sm-12 col-md-6'>
                     <div className="table-container">
@@ -221,9 +233,8 @@ const Read = () => {
                     </div>
                 </div>
             </div>
-
-
-        </>               
+        }
+        </>
     )
 }
 
