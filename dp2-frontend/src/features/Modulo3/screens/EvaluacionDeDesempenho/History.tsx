@@ -40,19 +40,19 @@ const History = () => {
   }, []);
 
   const filters = (
-    <Form>
-      <Form.Group controlId='searchEmployees' className='ec-indexFilters'>
-        <InputGroup>
-          <InputGroup.Text id='ec-indexSearch'>
-            <Search/>
-          </InputGroup.Text>
-          <Form.Control placeholder='Buscar nivel' aria-describedby='ec-indexSearch'/>
-        </InputGroup>
-        <Form.Control type='date' placeholder='Fecha inicio' className='ec-indexFilterElement'/>
-        <Form.Control type='date' placeholder='Fecha fin' className='ec-indexFilterElement'/>
-        <Button variant='primary' className='ec-indexFilterElement'>Buscar</Button>
-      </Form.Group>
-    </Form>
+		<Form.Group controlId="searchEmployees" className="d-flex justify-content-end">
+			<Form.Control
+				type="date"
+				placeholder="Fecha inicio"
+				className="me-2 w-auto"
+			/>
+			<Form.Control
+				type="date"
+				placeholder="Fecha fin"
+				className="me-2 w-auto"
+			/>
+			<Button variant="primary">Buscar</Button>
+		</Form.Group>
   );
 
   const chart = (
@@ -87,19 +87,10 @@ const History = () => {
         <NoDataFound />
       )}
       <div className='text-end'>
-        <Button
-          variant='outline-primary me-2'
-          onClick={() => {
-            navigateTo(PERFORMANCE_EVALUATION_INDEX);
-          }}
-        >
+        <Button variant='outline-primary me-2' onClick={() => {navigateTo(PERFORMANCE_EVALUATION_INDEX);}}>
           Volver
         </Button>
-        <Button
-          onClick={() => {
-            setShow(true);
-          }}
-        >
+        <Button onClick={() => {setShow(true);}}>
           Agregar nueva evaluación
         </Button>
       </div>

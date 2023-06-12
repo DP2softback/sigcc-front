@@ -17,7 +17,8 @@ const Create = () => {
     evaluatedId: employee.id,
     evaluatorId: USER_ID,
     associatedProject: '',
-    additionalComments: ''
+    additionalComments: '',
+    evaluationType: CONTINUOS_EVALUATION_TYPE
   });
   const [isLoading, setIsLoading] = useState(true);
 
