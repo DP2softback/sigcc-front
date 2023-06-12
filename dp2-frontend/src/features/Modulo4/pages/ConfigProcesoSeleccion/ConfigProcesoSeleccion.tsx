@@ -21,8 +21,10 @@ import { ajax } from "@features/Modulo4/tools/ajax";
 import moment from "moment";
 import SearchInputResponsablesNuevo from "./SearchInputResponsablesNuevo/SearchInputResponsablesNuevo";
 import {
-	BACKEND_URL_CREATE_PROCESO_SELECCION,
-	SAMPLE_TOKEN
+	SAMPLE_TOKEN,
+	LOCAL_CONNECTION,
+	CREATE_PROCESO_SELECCION,
+	GET_TIPO_ETAPAS_PROCESO_SELECCION
 } from "@features/Modulo4/utils/constants";
 
 function ConfigProcesoSeleccion(props: any) {
@@ -37,7 +39,7 @@ function ConfigProcesoSeleccion(props: any) {
 				nombreEtapa,
 				descripcionEtapa
 			}) => ({
-				stage_type: 1,
+				stage_type: tipoEtapa,
 				order: id,
 				start_date: moment(fechaInicio).format("YYYY-MM-DD"),
 				end_date: moment(fechaFin).format("YYYY-MM-DD"),
@@ -46,23 +48,23 @@ function ConfigProcesoSeleccion(props: any) {
 			})
 		);
 
-		const listaResponsables = arrResponsables.map(
-			({ idResponsable }) => idResponsable
-		);
+		const listaResponsables = arrResponsables.map(({ idResponsable }) => {
+			{
+				employee: idResponsable;
+			}
+		});
 
 		const dataPost = {
 			position: selectedIdPuestoLaboral,
 			available_positions_quantity: cantVacantes,
 			process_stages: listaEtapas,
-			id: listaResponsables
+			id: listaResponsables,
+			employees: listaResponsables
 		};
 
 		const optionsRequest = {
 			method: "POST",
-			url:
-				"https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1" +
-				BACKEND_URL_CREATE_PROCESO_SELECCION +
-				"",
+			url: LOCAL_CONNECTION + CREATE_PROCESO_SELECCION,
 			headers: {
 				Authorization: `Token ${SAMPLE_TOKEN}`
 			},
@@ -72,23 +74,6 @@ function ConfigProcesoSeleccion(props: any) {
 		console.log(dataPost);
 		return await ajax(optionsRequest);
 	};
-
-	const loadLPs = () => {
-		/*
-        axiosInt
-            .get("capacitaciones/learning_path/")
-            .then(function (response) {
-                setLps(response.data);
-                setLpsFiltered(response.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });*/
-	};
-
-	useEffect(() => {
-		loadLPs();
-	}, []);
 
 	// VALIDA INFORMACION
 	const [validated, setValidated] = useState(false);
@@ -130,18 +115,41 @@ function ConfigProcesoSeleccion(props: any) {
 		setCantVacantes(optionValue);
 	};
 
-	// TABLA DE ETAPAS DEL PROCESO DE SELECCIÓN
+	// CREAR TIPO ETAPA SELECCION
 	const [selectedTipoEtapaSelec, setSelectedTipoEtapaSelec] = useState(null);
+	const [optionsTipoEtapaSelec, setOptionsTipoEtapaSelec] = useState<any[]>([]);
+	/*
 	const optionsTipoEtapaSelec = [
 		{ value: "opcion1Entrevista", label: "Entrevista personal" },
 		{ value: "opcion2Formulario", label: "Formulario general" },
 		{ value: "opcion3Formulario", label: "Formulario personalizado" }
 	];
+	*/
 
-	const handleOptionsTipoEtapaSelec = (label: any) => {
-		setSelectedTipoEtapaSelec(label);
-		newRow.tipoEtapa = label;
-		//selectedRow.tipoEtapa = label;
+	const getTiposEtapas = async () => {
+		const optionsRequest = {
+			method: "GET",
+			url: LOCAL_CONNECTION + GET_TIPO_ETAPAS_PROCESO_SELECCION,
+			headers: {
+				Authorization: `Token ${SAMPLE_TOKEN}`
+			}
+		};
+		return await ajax(optionsRequest);
+	};
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const tiposEtapas = await getTiposEtapas();
+			setOptionsTipoEtapaSelec(tiposEtapas);
+		};
+
+		fetchData();
+	}, []);
+
+	// TABLA DE ETAPAS DEL PROCESO DE SELECCIÓN
+	const handleOptionsTipoEtapaSelec = (name: any) => {
+		setSelectedTipoEtapaSelec(name);
+		newRow.tipoEtapa = name;
 	};
 
 	interface TableRow {
@@ -210,12 +218,6 @@ function ConfigProcesoSeleccion(props: any) {
 		setIdCounter((prevCounter) => prevCounter + 1); // Incrementar el contador en 1
 	};
 
-	/*
-	useEffect(() => {
-		console.log(rows);
-	}, [rows]);
-	*/
-
 	const handleDeleteRow = (id: number) => {
 		setRows((prevRows) => prevRows.filter((row) => row.id !== id));
 	};
@@ -237,10 +239,8 @@ function ConfigProcesoSeleccion(props: any) {
 	};
 	const handleOptionSelectBuscador = (selectedOptionPuesto) => {
 		setSelectedIdPuestoLaboral(selectedOptionPuesto.id);
-		setSelectedPuestoLaboral(
-			selectedOptionPuesto.nombre + "- Proceso de selección"
-		);
-		setSelectedPuestoLaboralFijo(selectedOptionPuesto.nombre);
+		setSelectedPuestoLaboralFijo(selectedOptionPuesto.name);
+		setSelectedPuestoLaboral("Proceso en " + selectedOptionPuesto.name);
 	};
 
 	// MODAL DE RESPONSABLE BUSCADOR, ABRE Y RETORNA LOS VALORES
@@ -293,7 +293,7 @@ function ConfigProcesoSeleccion(props: any) {
 					<Form.Group as={Row} className="mb-3">
 						<Form.Group as={Row}>
 							<Form.Label style={{ fontSize: "15px" }}>
-								Nombre del proceso de selección para un puesto:
+								Nombre del puesto:
 							</Form.Label>
 						</Form.Group>
 						<Form.Group xs={10} as={Col}>
@@ -311,7 +311,8 @@ function ConfigProcesoSeleccion(props: any) {
 							<Button
 								style={{
 									width: "10rem",
-									maxWidth: "10rem"
+									maxWidth: "10rem",
+									minHeight: "100%"
 								}}
 								onClick={handleShowBuscadorFromButtom}>
 								Buscar puesto de trabajo
@@ -328,12 +329,10 @@ function ConfigProcesoSeleccion(props: any) {
 							<Row>
 								<Form.Group xs={12} as={Col}>
 									<Form.Control
-										as="textarea"
 										type="text"
 										placeholder="Especificar el nombre del proceso de selección"
 										value={selectedPuestoLaboral}
 										onChange={handleNombrePuestoSeleccionado}
-										rows={2}
 										disabled={selectedPuestoLaboral == "" ? true : false}
 										required
 										className={!isSelectedNombreOfertaValid ? "is-invalid" : ""}
@@ -390,21 +389,21 @@ function ConfigProcesoSeleccion(props: any) {
 										required
 										disabled
 										readOnly={true}
-										style={{ width: "17.5rem", maxWidth: "17.5rem" }}
+										style={{ width: "18rem", maxWidth: "18rem" }}
 									/>
 									<Form.Control.Feedback></Form.Control.Feedback>
 								</Col>
 								<Col>
-									<div style={{ paddingLeft: "3rem" }}>
+									<div style={{ paddingLeft: "3.5rem" }}>
 										<Button
 											variant="primary"
 											style={{
-												width: "11rem",
-												maxWidth: "11rem"
+												width: "10rem",
+												maxWidth: "10rem"
 											}}
 											className="ml-auto custom"
 											onClick={handleShowBuscadorResponsableFromButtom}>
-											Gestión responsables
+											Ver responsables
 										</Button>
 									</div>
 								</Col>
@@ -579,11 +578,11 @@ function ConfigProcesoSeleccion(props: any) {
 													style={{ width: "100%", textAlign: "center" }}>
 													{optionsTipoEtapaSelec.map((optionRow) => (
 														<Dropdown.Item
-															key={optionRow.value}
+															key={optionRow.id}
 															onClick={() =>
-																handleOptionsTipoEtapaSelec(optionRow.label)
+																handleOptionsTipoEtapaSelec(optionRow.name)
 															}>
-															{optionRow.label}
+															{optionRow.name}
 														</Dropdown.Item>
 													))}
 												</Dropdown.Menu>

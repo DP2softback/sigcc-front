@@ -9,6 +9,13 @@ import {
 	ListGroup
 } from "react-bootstrap";
 import "./SearchInput.css";
+import {
+	SAMPLE_TOKEN,
+	LOCAL_CONNECTION,
+	GET_POSICIONES_TRABAJO
+} from "@features/Modulo4/utils/constants";
+import { ajax } from "@features/Modulo4/tools/ajax";
+import moment from "moment";
 
 const SearchInput = ({ onClose, onSelect }) => {
 	const [showModal, setShowModal] = useState(true);
@@ -43,9 +50,31 @@ const SearchInput = ({ onClose, onSelect }) => {
 		return () => clearTimeout(timer);
 	}, [searchQuery]);
 
+	// OBTIENE LAS POSICIONES DE TRABAJO
+	const getPosicionesTrabajo = async () => {
+		const optionsRequest = {
+			method: "GET",
+			url: LOCAL_CONNECTION + GET_POSICIONES_TRABAJO,
+			headers: {
+				Authorization: `Token ${SAMPLE_TOKEN}`
+			}
+		};
+		return await ajax(optionsRequest);
+	};
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const posiciones = await getPosicionesTrabajo();
+			console.log(posiciones);
+			setSearchResults(posiciones);
+		};
+
+		fetchData();
+	}, []);
+
 	const performSearch = (query) => {
 		// Lógica para realizar la búsqueda y actualizar los resultados
-
+		/*
 		const results = [
 			{ id: 1, nombre: "Ingeniero de Software Senior", fecha: "2023-03-04" },
 			{ id: 2, nombre: "Desarrollador Full Stack", fecha: "2023-03-05" },
@@ -65,17 +94,17 @@ const SearchInput = ({ onClose, onSelect }) => {
 			},
 			{ id: 9, nombre: "Técnico de Soporte IT", fecha: "2023-03-12" },
 			{ id: 10, nombre: "Ingeniero de Redes", fecha: "2023-03-13" }
-		];
-		setSearchResults(results);
+		];*/
+		//setSearchResults(results);
 		setFilteredResults(
 			searchResults.filter((item) =>
-				item.nombre.toLowerCase().includes(query.toLowerCase())
+				item.name.toLowerCase().includes(query.toLowerCase())
 			)
 		);
 	};
 
 	const selectOption = (option: any) => {
-		setSelectedResult(option.nombre);
+		setSelectedResult(option.id);
 		setResultToSend(option);
 	};
 
@@ -86,16 +115,22 @@ const SearchInput = ({ onClose, onSelect }) => {
 		}
 	};
 
+	//				className="custom-modal"
+
 	return (
-		<>
+		<div
+			style={{
+				minWidth: "20 rem",
+				maxWidth: "20 rem"
+			}}>
 			<Modal
 				show={showModal}
 				onHide={closeModal}
-				size="xl"
-				className="custom-modal"
+				size="lg"
 				style={{
 					borderCollapse: "collapse",
-					height: "100 rem"
+					minWidth: "40 rem",
+					maxWidth: "30 rem"
 				}}>
 				<Modal.Header closeButton>
 					<Modal.Title>Buscar información</Modal.Title>
@@ -127,6 +162,7 @@ const SearchInput = ({ onClose, onSelect }) => {
 							borderRadius: "4px",
 							maxHeight: "18rem",
 							overflowY: "auto",
+							overflowX: "auto",
 							borderCollapse: "collapse",
 							marginBottom: "1rem",
 							height: "20rem"
@@ -139,8 +175,10 @@ const SearchInput = ({ onClose, onSelect }) => {
 									backgroundColor: "white"
 								}}>
 								<tr>
-									<th style={{ width: "0.2rem" }}>Fecha de creación</th>
-									<th style={{ width: "12rem" }}>Nombre</th>
+									<th style={{ minWidth: "14rem" }}>Nombre</th>
+									<th style={{ minWidth: "14rem" }}>Tipo de jornada</th>
+									<th style={{ minWidth: "14rem" }}>Fecha de creación</th>
+									<th style={{ minWidth: "14rem" }}>Fecha de modificación</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -148,11 +186,15 @@ const SearchInput = ({ onClose, onSelect }) => {
 									<tr
 										key={result.id}
 										onClick={() => selectOption(result)}
-										className={
-											selectedResult === result.nombre ? "selected" : ""
-										}>
-										<td>{result.fecha}</td>
-										<td>{result.nombre}</td>
+										className={selectedResult === result.id ? "selected" : ""}>
+										<td>{result.name}</td>
+										<td>{result.tipoJornada}</td>
+										<td>
+											{moment(result.creationDate).format("YYYY-MM-DD hh:ss")}
+										</td>
+										<td>
+											{moment(result.modifiedDate).format("YYYY-MM-DD hh:ss")}
+										</td>
 									</tr>
 								))}
 							</tbody>
@@ -168,7 +210,7 @@ const SearchInput = ({ onClose, onSelect }) => {
 					</Button>
 				</Modal.Footer>
 			</Modal>
-		</>
+		</div>
 	);
 };
 
