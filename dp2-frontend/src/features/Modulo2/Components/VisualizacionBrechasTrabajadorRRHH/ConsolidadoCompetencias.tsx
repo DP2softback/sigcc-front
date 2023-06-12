@@ -207,22 +207,22 @@ const PieChart = ({ title, labels, datasets }) => {
             </div>
           </div>
 
-          {abbreviation!='' && data1 && data2 && (
-             <div className="row mt-4">
-             <div className="col-md-6">
-               <div className="card">
-                 <div className="card-body">
-                   <h3 className="card-title">Adecuación a competencias de la organización</h3>
-                   <PieChart title='' labels= ''datasets={data1} />
-                   <div className="chart-legend"> 
-                     {/* Agregar aquí la leyenda del gráfico 1 */}
-                   </div>
-                   <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
-                 </div>
-               </div>
-             </div>
-             
-             <div className="col-md-6">
+          {data1 && (
+          <div className="row mt-4">
+              <div className="col-md-6">
+                <div className="card">
+                  <div className="card-body">
+                    <h3 className="card-title">Adecuación a competencias de la organización</h3>
+                    <PieChart title='' labels= ''datasets={data1} />
+                    <div className="chart-legend"> 
+                      {/* Agregar aquí la leyenda del gráfico 1 */}
+                    </div>
+                    <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
+                  </div>
+                </div>
+              </div>
+              {abbreviation!='' && data2 && (
+              <div className="col-md-6">
                <div className="card">
                  <div className="card-body">
                    <h3 className="card-title">Adecuación a competencias de área de {abbreviation}</h3>
@@ -235,12 +235,13 @@ const PieChart = ({ title, labels, datasets }) => {
                    </div>
                </div>
              </div>
-           </div>
-
-
           )
-          
           }
+           </div>
+          )
+          }
+
+          
          
         </div>
       );

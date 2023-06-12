@@ -5,7 +5,9 @@ import DeleteCompetencia from './Delete';
 import {ArrowRightCircleFill,Pencil,Trash } from 'react-bootstrap-icons';
 import { useLocation,  useNavigate  } from 'react-router-dom';
 import './DetalleCompetenciasArea.css'
+import axiosEmployeeGaps from '@features/Modulo2/services/EmployeeGapsServices';
 import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos';
+
 const DetalleCompetenciasArea = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,36 +25,11 @@ const DetalleCompetenciasArea = () => {
 
 
       useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/employeeArea', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf'
-              },
-              body: JSON.stringify({
-                area__name: 1
-              })
-            });
-    
-            if (response.ok) {
-              const data = await response.json();
-              setEmpleados([data]);
-            } else {
-              console.error('Error al obtener los empleados de área');
-            }
-          } catch (error) {
-            console.error('Error de red:', error);
-          }
-        };
-
-        fetchData();
+        axiosEmployeeGaps.post("gaps/employeeArea").then((response) => {
+          setEmpleados(response.data);
+        });
       }, []);  
 
-    const handleuser__is_activeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-      setposition__name(event.target.value);
-    };
     
     const agregarCompetencia = (nuevaCompetencia) => {
         setEmpleados([...empleados, nuevaCompetencia]);
