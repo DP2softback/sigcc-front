@@ -293,14 +293,14 @@ function ConfigProcesoSeleccion(props: any) {
 					<Form.Group as={Row} className="mb-3">
 						<Form.Group as={Row}>
 							<Form.Label style={{ fontSize: "15px" }}>
-								Nombre del puesto:
+								Puesto de trabajo: (*)
 							</Form.Label>
 						</Form.Group>
 						<Form.Group xs={10} as={Col}>
 							<Form.Control
 								as="textarea"
 								type="text"
-								placeholder="Nombre del puesto"
+								placeholder="Seleccionar el nombre del puesto para el proceso de selección."
 								value={selectedPuestoLaboralFijo}
 								rows={2}
 								readOnly={true}
@@ -323,14 +323,14 @@ function ConfigProcesoSeleccion(props: any) {
 						<Col>
 							<Row>
 								<Form.Label sm="2" style={{ fontSize: "15px" }}>
-									Nombre del proceso de selección para un puesto:
+									Nombre del proceso de selección para un puesto: (*)
 								</Form.Label>
 							</Row>
 							<Row>
 								<Form.Group xs={12} as={Col}>
 									<Form.Control
 										type="text"
-										placeholder="Especificar el nombre del proceso de selección"
+										placeholder="Especificar el puesto laboral para el proceso de selección."
 										value={selectedPuestoLaboral}
 										onChange={handleNombrePuestoSeleccionado}
 										disabled={selectedPuestoLaboral == "" ? true : false}
@@ -353,7 +353,7 @@ function ConfigProcesoSeleccion(props: any) {
 										height: "2rem",
 										fontSize: "15px"
 									}}>
-									Cantidad de vacantes:
+									Cantidad de vacantes: (*)
 								</Form.Label>
 							</Form.Group>
 							<Form.Control
@@ -415,18 +415,24 @@ function ConfigProcesoSeleccion(props: any) {
 						<Row>
 							<Col
 								md={{
-									span: 3
+									span: 4
 								}}>
-								<h5>
-									<small className="opacity-90" style={{ marginTop: "100px" }}>
-										Etapas del proceso de selección.
+								<h1>
+									<small
+										className="opacity-90"
+										style={{
+											marginTop: "100px",
+											fontSize: "17px",
+											verticalAlign: "bottom"
+										}}>
+										Etapas del proceso de selección:
 									</small>
-								</h5>
+								</h1>
 							</Col>
 							<Col
 								md={{
 									span: 1,
-									offset: 7
+									offset: 6
 								}}>
 								<Button
 									variant="primary"

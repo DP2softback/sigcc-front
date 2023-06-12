@@ -102,15 +102,19 @@ const SearchInput = ({ onClose, onSelect }) => {
 	};
 
 	return (
-		<>
+		<div
+			style={{
+				minWidth: "20 rem",
+				maxWidth: "20 rem"
+			}}>
 			<Modal
 				show={showModal}
 				onHide={closeModal}
 				size="lg"
-				className="custom-modal"
 				style={{
 					borderCollapse: "collapse",
-					height: "100 rem"
+					minWidth: "40 rem",
+					maxWidth: "30 rem"
 				}}>
 				<Modal.Header closeButton>
 					<Modal.Title>Buscar información</Modal.Title>
@@ -142,6 +146,7 @@ const SearchInput = ({ onClose, onSelect }) => {
 							borderRadius: "4px",
 							maxHeight: "18rem",
 							overflowY: "auto",
+							overflowX: "auto",
 							borderCollapse: "collapse",
 							marginBottom: "1rem",
 							height: "20rem"
@@ -154,9 +159,10 @@ const SearchInput = ({ onClose, onSelect }) => {
 									backgroundColor: "white"
 								}}>
 								<tr>
-									<th style={{ width: "3rem" }}>Nombre</th>
-									<th style={{ minWidth: "14rem" }}>Fecha de creación</th>
-									<th style={{ minWidth: "14rem" }}>Fecha de modificación</th>
+									<th style={{ minWidth: "18rem" }}>Nombre del proceso</th>
+									<th style={{ minWidth: "5rem" }}>Postulantes</th>
+									<th style={{ minWidth: "10rem" }}>Fecha de creación</th>
+									<th style={{ minWidth: "12rem" }}>Fecha de modificación</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -166,6 +172,9 @@ const SearchInput = ({ onClose, onSelect }) => {
 										onClick={() => selectOption(result)}
 										className={selectedResult === result.id ? "selected" : ""}>
 										<td>{result.name}</td>
+										<td style={{ textAlign: "center" }}>
+											{result.available_positions_quantity}
+										</td>
 										<td>
 											{moment(result.creationDate).format("YYYY-MM-DD hh:ss")}
 										</td>
@@ -187,7 +196,7 @@ const SearchInput = ({ onClose, onSelect }) => {
 					</Button>
 				</Modal.Footer>
 			</Modal>
-		</>
+		</div>
 	);
 };
 

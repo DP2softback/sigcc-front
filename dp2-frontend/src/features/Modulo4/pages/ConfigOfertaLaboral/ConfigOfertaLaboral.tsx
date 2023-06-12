@@ -12,8 +12,17 @@ import {
 } from "react-bootstrap";
 import { Table, Button, Modal } from "react-bootstrap";
 
-import { Fragment, ChangeEvent, useEffect, useRef, useState } from "react";
+import React, {
+	Fragment,
+	ChangeEvent,
+	useEffect,
+	useRef,
+	useState
+} from "react";
 import PhotoCard from "@features/Modulo4/components/PhotoCard";
+
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import SearchInput from "./SearchInputOfertaLaboral/SearchInput";
 import { ajax } from "@features/Modulo4/tools/ajax";
 
@@ -27,7 +36,7 @@ function ConfigOfertaLaboral(props: any) {
 	const createPS = async () => {
 		const dataPost = {
 			hiring_process: 1,
-			introduction: descripcionPuesto,
+			introduction: introduccionOferta,
 			offer_introduction: descripcionPuesto,
 			responsabilities_introduction: descripcionResponsa
 		};
@@ -79,11 +88,25 @@ function ConfigOfertaLaboral(props: any) {
 		setSelectedNombreOferta(optionValue);
 	};
 
-	// DESCRIPCIONES 3 CUSTOM INPUTS
+	// DESCRIPCION 3 CON QUILL
 	const [introduccionOferta, setIntroduccionOferta] = useState("");
 	const [descripcionPuesto, setDescripcionPuesto] = useState("");
 	const [descripcionResponsa, setDescripcionResponsa] = useState("");
 
+	const handleChangeIntroOferta = (html) => {
+		setIntroduccionOferta(html);
+	};
+
+	const handleChangeDescripPuesto = (html) => {
+		setDescripcionPuesto(html);
+	};
+
+	const handleChangeDescripResponsa = (html) => {
+		setDescripcionResponsa(html);
+	};
+
+	/*
+	// DESCRIPCIONES 3 CUSTOM INPUTS
 	const handleInputChangeIntroduccionOferta = (event: any) => {
 		const optionValue = event.target.value;
 		setIntroduccionOferta(optionValue);
@@ -96,6 +119,7 @@ function ConfigOfertaLaboral(props: any) {
 		const optionValue = event.target.value;
 		setDescripcionResponsa(optionValue);
 	};
+	*/
 
 	// IMAGEN DE REFERENCIA
 	const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -233,17 +257,18 @@ function ConfigOfertaLaboral(props: any) {
 					<Form.Group as={Row}>
 						<Form.Group as={Col} className="mb-3">
 							<Form.Label style={{ fontSize: "15px" }}>
-								Nombre del proceso de seleccion: (*)
+								Proceso de seleccion: (*)
 							</Form.Label>
 							<Row>
 								<Col xs={10}>
 									<Form.Control
 										as="textarea"
 										type="text"
-										placeholder="Nombre proceso selección"
+										placeholder="Seleccionar el proceso de seleccion para la oferta laboral"
 										value={selectedNombreOfertaFijo}
 										rows={2}
 										readOnly={true}
+										disabled={true}
 									/>
 								</Col>
 								<Col xs={2}>
@@ -264,11 +289,11 @@ function ConfigOfertaLaboral(props: any) {
 					<Row>
 						<Form.Group as={Col} className="mb-3">
 							<Form.Label style={{ fontSize: "15px" }}>
-								Nombre de la oferta laboral para el proceso de seleccion: (*)
+								Nombre de la oferta laboral del proceso de seleccion: (*)
 							</Form.Label>
 							<Form.Control
 								type="text"
-								placeholder="Especificar el nombre de la oferta laboral"
+								placeholder="Especificar el proceso de selección para la oferta laboral."
 								value={selectedNombreOferta}
 								required
 								onChange={handleNombreOferta}
@@ -285,6 +310,16 @@ function ConfigOfertaLaboral(props: any) {
 							<Form.Label style={{ fontSize: "15px" }}>
 								Introducción a la oferta laboral:
 							</Form.Label>
+							<ReactQuill
+								theme="snow"
+								value={introduccionOferta}
+								onChange={handleChangeIntroOferta}
+								style={{
+									height: "8rem",
+									marginBottom: "3rem"
+								}}
+							/>
+							{/*
 							<Form.Control
 								as="textarea"
 								type="text"
@@ -295,10 +330,13 @@ function ConfigOfertaLaboral(props: any) {
 								required
 							/>
 							<Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+							*/}
 						</Form.Group>
 						<Form.Group as={Col} className="mb-3">
 							<Form.Label>Imagen referencial:</Form.Label>
-							<PhotoCard imageSrc={previewUrl} width={7} height={5} />
+							<div style={{ paddingLeft: "3%" }}>
+								<PhotoCard imageSrc={previewUrl} width={7} height={5} />
+							</div>
 							<input
 								style={{
 									width: "100%",
@@ -333,7 +371,17 @@ function ConfigOfertaLaboral(props: any) {
 								<Form.Label style={{ fontSize: "15px" }}>
 									Descripción del puesto:
 								</Form.Label>
-								<Form.Control
+
+								<ReactQuill
+									theme="snow"
+									value={descripcionPuesto}
+									onChange={handleChangeDescripPuesto}
+									style={{
+										height: "8rem",
+										marginBottom: "3rem"
+									}}
+								/>
+								{/*<Form.Control
 									as="textarea"
 									placeholder="Descripción del puesto."
 									value={descripcionPuesto}
@@ -341,7 +389,7 @@ function ConfigOfertaLaboral(props: any) {
 									rows={4}
 									onChange={handleInputChangeDescripcion}
 								/>
-								<Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+								<Form.Control.Feedback type="invalid"></Form.Control.Feedback> */}
 							</Form.Group>
 						</Col>
 						<Col>
@@ -351,7 +399,16 @@ function ConfigOfertaLaboral(props: any) {
 								<Form.Label style={{ fontSize: "15px" }}>
 									Descripción de las responsabilidades:
 								</Form.Label>
-								<Form.Control
+								<ReactQuill
+									theme="snow"
+									value={descripcionResponsa}
+									onChange={handleChangeDescripResponsa}
+									style={{
+										height: "8rem",
+										marginBottom: "3rem"
+									}}
+								/>
+								{/* <Form.Control
 									as="textarea"
 									placeholder="Descripción de las responsabilidades."
 									value={descripcionResponsa}
@@ -359,7 +416,7 @@ function ConfigOfertaLaboral(props: any) {
 									rows={4}
 									onChange={handleInputChangeResponsa}
 								/>
-								<Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+								<Form.Control.Feedback type="invalid"></Form.Control.Feedback>*/}
 							</Form.Group>
 						</Col>
 					</Row>

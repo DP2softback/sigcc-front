@@ -120,17 +120,15 @@ const SearchInput = ({ onClose, onSelect }) => {
 	return (
 		<div
 			style={{
-				minWidth: "20 rem",
-				maxWidth: "20 rem"
+				minWidth: "30rem",
+				maxWidth: "30rem"
 			}}>
 			<Modal
 				show={showModal}
 				onHide={closeModal}
 				size="lg"
 				style={{
-					borderCollapse: "collapse",
-					minWidth: "40 rem",
-					maxWidth: "30 rem"
+					borderCollapse: "collapse"
 				}}>
 				<Modal.Header closeButton>
 					<Modal.Title>Buscar información</Modal.Title>
@@ -175,10 +173,10 @@ const SearchInput = ({ onClose, onSelect }) => {
 									backgroundColor: "white"
 								}}>
 								<tr>
-									<th style={{ minWidth: "14rem" }}>Nombre</th>
+									<th style={{ minWidth: "20rem" }}>Nombre del puesto</th>
 									<th style={{ minWidth: "14rem" }}>Tipo de jornada</th>
-									<th style={{ minWidth: "14rem" }}>Fecha de creación</th>
-									<th style={{ minWidth: "14rem" }}>Fecha de modificación</th>
+									<th style={{ minWidth: "10rem" }}>Fecha de creación</th>
+									<th style={{ minWidth: "12rem" }}>Fecha de modificación</th>
 								</tr>
 							</thead>
 							<tbody>
