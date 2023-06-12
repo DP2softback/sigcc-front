@@ -29,6 +29,10 @@ const M1AddCourse = Loader(
   lazy(() => import("@features/Modulo1/pages/Course/AddCourse"))
 );
 
+const M1Rubric = Loader(
+  lazy(() => import("@features/Modulo1/components/Rubric/RubricGrade"))
+);
+
 const M1ListTraining = Loader(
   lazy(() => import("@features/Modulo1/pages/Training"))
 );
@@ -51,6 +55,10 @@ const M1TrainingAssignment = Loader(
 
 const M1ListLearningPathE = Loader(
   lazy(() => import("@features/Modulo1/pages/EmployeeView/LearningPath"))
+);
+
+const M1ListLearningPathEDetails = Loader(
+  lazy(() => import("@features/Modulo1/pages/EmployeeView/LearningPath/Details"))
 );
 
 const M1ListTrainingE = Loader(
@@ -171,6 +179,20 @@ const VisualizacionBrechasEmpleado = Loader(
   )
 );
 
+const VisualizacionOfertasLaborales = Loader(
+    lazy(
+        () =>
+            import("@features/Modulo4/pages/JobOffer/JobOffer")
+    )
+);
+
+const DetalleOfertaLaboral = Loader(
+    lazy(
+        () =>
+            import("@features/Modulo4/pages/JobOffer/Details/JobOfferDetails")
+    )
+);
+
 const ConfigPosition = Loader(
   lazy(
     () =>
@@ -192,17 +214,30 @@ const JobOpportunitiesSelected = Loader(
 const EstadisticasCompetencias = Loader(
   lazy(
     () =>
-      import("@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/ConsolidadoCompetencias")
+      import("@features/Modulo2/Components/VisualizacionBrechasTrabajadorRRHH/ConsolidadoCompetencias")
   )
 );
 
 const DetalleCompetenciasArea = Loader(
   lazy(
     () =>
-      import("@features/Modulo2/Components/VisualizaciónBrechasTrabajadorRRHH/DetalleCompetenciasArea")
+      import("@features/Modulo2/Components/VisualizacionBrechasTrabajadorRRHH/DetalleCompetenciasArea")
   )
 );
 
+const CompetenciasRead = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo2/Components/GestionDeCompetencias/Read")
+  )
+);
+
+const GestionCompetencia = Loader(
+  lazy(
+    () =>
+      import("@features/Modulo2/Components/VisualizacionBrechasTrabajadorRRHH/GestionCompetencias")
+  )
+);
 
 /** HERE YOU DEFINE ALL THE ROUTES OF THE APP */
 
@@ -232,6 +267,10 @@ const routes: RouteObject[] = [
           {
             path: "asignacion/:learningPathId",
             element: <M1LearningPathAssignment />,
+          },
+          {
+            path: "rubrica",
+            element: <M1Rubric />,
           },
         ],
       },
@@ -283,8 +322,18 @@ const routes: RouteObject[] = [
           },
           {
             path: "rutadeaprendizaje",
-            element: <M1ListLearningPathE />,
+            children: [
+              {
+                path: "",
+                element: <M1ListLearningPathE />,
+              },
+              {
+                path: "detalle/:learningPathId",
+                element: <M1ListLearningPathEDetails />,
+              },
+            ],
           },
+
           {
             path: "cursoempresa",
             children: [
@@ -302,10 +351,17 @@ const routes: RouteObject[] = [
       },
     ],
   },
-
   {
     path: "modulo4",
     children: [
+      {
+        path: "joboffer",
+        element: <VisualizacionOfertasLaborales />,
+      },
+      {
+        path: "joboffer/detail/:jobOfferId",
+        element: <DetalleOfertaLaboral />,
+      },
       {
         path: "configurar-oferta-laboral",
         element: <ConfigOfertaLaboral />,
@@ -313,7 +369,7 @@ const routes: RouteObject[] = [
       {
         path: "configurar-proceso-seleccion",
         element: <ConfigProcesoSeleccion />,
-      },
+      }
     ],
   },
   {
@@ -469,8 +525,12 @@ const routes: RouteObject[] = [
             element: <GestionDeCompetencias />,
           },
         ],
-      },
-      
+      }
+    ],
+  },
+  {
+    path: "modulo4",
+    children: [
       {
         path: "showAreaStatistics",
         children: [
@@ -486,12 +546,12 @@ const routes: RouteObject[] = [
 
           {
             path: "showEmployeeCompetencies",
-            element: <span>poner la pantalla de competencias de un empleado</span>,
+            element: <CompetenciasRead></CompetenciasRead>,
           },
 
           {
             path: "showEmployeeNecessities",
-            element: <span> poner la pantalla de necesidades de empleado por area</span>,
+            element: <GestionCompetencia></GestionCompetencia>,
           },
         ],
       },

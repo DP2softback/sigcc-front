@@ -19,8 +19,6 @@ export const getEmployeeEvaluationDashboard = async (employeeId: number) => {
 }
 
 export const saveEvaluation = async (evaluation) => {
-  evaluation.evaluationType = PERFORMANCE_EVALUATION_TYPE;
-  evaluation.isFinished = 1;
   const optionsRequest = {
     method: 'POST',
     url: BACKEND_URL + 'eval',

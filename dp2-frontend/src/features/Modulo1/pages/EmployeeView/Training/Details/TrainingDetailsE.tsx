@@ -7,7 +7,8 @@ import { People, ArrowLeftCircle, ArrowLeftCircleFill, ArrowRightCircle } from '
 import EmployeeCard from '@features/Modulo1/components/EmployeeCard/EmployeeCard';
 import '../../../../basic.css';
 import '../trainingE.css';
-import SessionAccordion from '@features/Modulo1/components/SessionAccordion';
+import SessionAccordionEmployee from '@features/Modulo1/components/SessionAccordion/SessionAccordionEmployee';
+import Layout from "@layout/default/index";
 
 let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
 
@@ -143,16 +144,22 @@ type TopicObj = {
     nombre: string;
 }
 
+type SupplierObj = {
+    id: number
+    nombres?: string;
+    apellidos?: string;
+}
+
 type SessionObj = {
-    curso_empresa_id: number;
+    id: number;
     nombre: string;
     descripcion: string;
     fecha_inicio: string;
-    //fecha_limite?: string;
     ubicacion?: string;
     aforo_maximo?: number;
     url_video?: string;
     temas: TopicObj[];
+    responsables: SupplierObj[];
 }
 
 type TrainingObj = {
@@ -171,7 +178,7 @@ let sessionsData: SessionObj[] = []
 
 const TrainingDetails = () => {
     const { trainingID } = useParams();
-    const [training, setTraining] = useState<any>(datos);
+    const [training, setTraining] = useState<any>([]);
     const [loading, setLoading] = useState(false);
     const [classSessions, setClassSessions] = useState<SessionObj[]>([])
 
@@ -194,14 +201,15 @@ const TrainingDetails = () => {
 
     const loadTrainingDetails = () => {
         setLoading(true);
-        axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/course_company_course/${trainingID}`)
-            .then(function (response)
-            {
-                //setTraining(response.data);
+        console.log(trainingID)
+        axiosInt.get(`capacitaciones/course_company_course/${trainingID}`)
+            .then(function (response) {
+                console.log(response.data)
+                setTraining(response.data);
+                setClassSessions(response.data.sesiones)
                 setLoading(false);
             })
-            .catch(function (error)
-            {
+            .catch(function (error) {
                 console.log(error);
                 setLoading(false);
             });
@@ -213,81 +221,85 @@ const TrainingDetails = () => {
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/empleado/cursoempresa'>
+            {/* <Layout title="Grupo 1 App" content="container"> */}
+                {/* <Sidebar items={sidebarItems} active='/modulo1/empleado/cursoempresa'> */}
                 {
                     loading ?
-                    (
-                        <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
-                            <div className='vertical-align-child'>
-                                <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
-                                    <span className="visually-hidden">Loading...</span>
-                                </div>
-                            </div>
-                        </div>
-                    )
-                    :
-                    (<>
-                        <div className='container row mt-3'>
-                            {/* TRAINING DATA */}
-                            <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
-                                <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
-                                    <Link to={`/modulo1/cursoempresa`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
-                                </div>
-    
-                                <div style={{ display: "flex", alignItems: "center" }}>
-                                    <div style={{ paddingRight: "2rem" }}>
-                                        {
-                                            training.url_foto === null ?
-                                            (<img src={url_foto_default} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>)
-                                            :
-                                            (<img src={training.url_foto} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>)
-                                        }
-                                    </div>
-                                    <div>
-                                        <h1 className='screenTitle'>{training.nombre}</h1>
-                                        <p><small className='subtitle'>{training.descripcion}.</small></p>
-                                        {
-                                            training.tipo === "A" ?
-                                            (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Virtual Asincrono</small><People style={{ opacity: "50%" }} /></p>)
-                                            :
-                                            (training.tipo === "P" ? 
-                                                (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Presencial</small><People style={{ opacity: "50%" }} /></p>)
-                                                :
-                                                (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Virtual Sincrono</small><People style={{ opacity: "50%" }} /></p>)
-                                            )
-                                        }
+                        (
+                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)', display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <div className='vertical-align-child'>
+                                    <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                        <span className="visually-hidden">Loading...</span>
                                     </div>
                                 </div>
                             </div>
-                            <div className='col' style={{ marginLeft: "60px" }}>
-                                <div className="row mb-3 ">
-                                    <h4 className='mt-3 mb-3 subarea'>Sesiones</h4>
-                                    {training.sesiones.length > 0 ?
-                                        (<SessionAccordion trainingType={training.tipo} sessions={training.sesiones}/>)
-                                        :
-                                        (
-                                            <div className='row align-items-stretch g-3 py-3'>
-                                                <div className='col'>
-                                                    <div className='card'>
-                                                        <div className='card-body'>
-                                                            <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                                <div className='vertical-align-child'>
-                                                                    <h5 className='opacity-50 text-center'>No cuenta con sesiones creadas</h5>
+                        )
+                        :
+                        (<>
+                            <div className='row'>
+                                {/* TRAINING DATA */}
+                                <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
+                                    <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
+                                        <Link to={`/modulo1/empleado/cursoempresa`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
+                                    </div>
+
+                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                        <div style={{ paddingRight: "2rem" }}>
+                                            {
+                                                training.url_foto === null ?
+                                                    (<img src={url_foto_default} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>)
+                                                    :
+                                                    (<img src={training.url_foto} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>)
+                                            }
+                                        </div>
+                                        <div>
+                                            <h1 className='screenTitle'>{training.nombre}</h1>
+                                            <p><small className='subtitle'>{training.descripcion}.</small></p>
+                                            {
+                                                training.tipo === "A" ?
+                                                    (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Virtual Asincrono</small><People style={{ opacity: "50%" }} /></p>)
+                                                    :
+                                                    (training.tipo === "P" ?
+                                                        (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Presencial</small><People style={{ opacity: "50%" }} /></p>)
+                                                        :
+                                                        (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Virtual Sincrono</small><People style={{ opacity: "50%" }} /></p>)
+                                                    )
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='row'>
+                                <div className='col' style={{ marginLeft: "60px" }}>
+                                    <div className="row mb-3 ">
+                                        <h4 className='mt-4 mb-3 subarea'>Sesiones</h4>
+                                        {classSessions.length > 0 ?
+                                            (<SessionAccordionEmployee trainingType={training.tipo} sessions={training.sesiones} mode={"detailEmp"} />)
+                                            :
+                                            (
+                                                <div className='row align-items-stretch g-3 py-3'>
+                                                    <div className='col'>
+                                                        <div className='card'>
+                                                            <div className='card-body'>
+                                                                <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                                    <div className='vertical-align-child'>
+                                                                        <h5 className='opacity-50 text-center'>No cuenta con sesiones creadas</h5>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        )
-                                    }
+                                            )
+                                        }
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </>
-                    )
+                        </>
+                        )
                 }
-            </Sidebar>
+                {/* </Sidebar> */}
+            {/* </Layout> */}
         </>
     )
 }

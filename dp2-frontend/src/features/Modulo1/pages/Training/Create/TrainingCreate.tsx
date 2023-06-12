@@ -10,24 +10,48 @@ import Pagination from '@features/Modulo1/components/Pagination';
 import '../../../basic.css';
 import '../training.css';
 import VideoUpload from '@features/Modulo1/components/VideoUpload';
+import moment from 'moment-timezone';
+import 'moment-timezone';
+import Layout from "@layout/default/index";
+
+let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
+
+const locationOptions = [
+    { id: 1, type: "Auditorio primer piso" },
+    { id: 2, type: "Auditorio segundo piso" },
+    { id: 3, type: "Auditorio tecer piso" },
+    { id: 4, type: "Auditorio cuarto piso" },
+    { id: 5, type: "Auditorio quinto piso" },
+]
 
 const data = {
     id: 1,
     nombre: "Ejemplo de Creación",
-    url_foto: 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg',
+    url_foto: null,
     descripcion: "Esto es un ejemplo de creación de un curso empresa",
     tipo: "A"
 }
 
-let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
-
-type Supplier = {
-    id: string;
-    name: string;
-    image: string;
-    capacities: any[];
-    category: string;
-}
+const suppliers2: typeSupp[] = [
+    {
+        id: 1,
+        nombres: "John",
+        apellidos: " Doe Johnson",
+        habilidad_x_proveedor_usuario: [{ text: "Front" }, { text: "React" }],
+    },
+    {
+        id: 2,
+        nombres: "Jane",
+        apellidos: "Smith Jackson",
+        habilidad_x_proveedor_usuario: [{ text: "Back" }, { text: "Python" }],
+    },
+    {
+        id: 3,
+        nombres: "Bob",
+        apellidos: "Johnson Doe",
+        habilidad_x_proveedor_usuario: [{ text: "ML" }, { text: "Udemy" }],
+    }
+];
 
 type TopicObj = {
     id?: number;
@@ -39,44 +63,12 @@ type SessionObj = {
     nombre: string;
     descripcion: string;
     fecha_inicio?: string;
-    //fecha_limite?: string;
     ubicacion?: string;
     aforo_maximo?: number;
     url_video?: string;
     temas: TopicObj[];
+    responsables: typeSuppId[];
 }
-
-const locationOptions = [
-    { id: 1, type: "Auditorio primer piso" },
-    { id: 2, type: "Auditorio segundo piso" },
-    { id: 3, type: "Auditorio tecer piso" },
-    { id: 4, type: "Auditorio cuarto piso" },
-    { id: 5, type: "Auditorio quinto piso" },
-]
-
-const suppliers2: Supplier[] = [
-    {
-        id: "1",
-        name: "John Doe Johnson",
-        image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-        capacities: [{ text: "Front" }, { text: "React" }],
-        category: "Software"
-    },
-    {
-        id: "2",
-        name: "Jane Smith Jackson",
-        image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-        capacities: [{ text: "Back" }, { text: "Python" }],
-        category: "Salud"
-    },
-    {
-        id: "3",
-        name: "Bob Johnson Doe",
-        image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-        capacities: [{ text: "ML" }, { text: "Udemy" }],
-        category: "Seguridad"
-    }
-];
 
 type typeTraI = {
     id: number,
@@ -99,9 +91,12 @@ type typeSupp = {
     nombres: string,
     apellidos: string,
     email?: string,
-    habilidad_x_proveedor_usuario: number[]
+    habilidad_x_proveedor_usuario: any[]
 }
 
+type typeSuppId = {
+    id: number
+}
 
 const typeTra: typeTraI[] = [
     { id: 1, categoria: "Software" },
@@ -125,24 +120,13 @@ const typeCom: typeComI[] = [
 ]
 
 const typeHa: typeHabI[] = [
-    { id: 1, habilidad: "Habilidad 1" },
+    { id: 1, habilidad: "Habilidad 1 asdsadsa" },
     { id: 2, habilidad: "Habilidad 2" },
     { id: 3, habilidad: "Habilidad 3" },
     { id: 4, habilidad: "Habilidad 4" },
     { id: 5, habilidad: "Habilidad 5" },
     { id: 6, habilidad: "Habilidad 6" },
 ]
-
-const typeSup: typeSupp[] = [
-    { id: 1, nombres: "Proveedor 1", apellidos: "A", habilidad_x_proveedor_usuario: [1, 2] },
-    { id: 2, nombres: "Proveedor 2", apellidos: "B", habilidad_x_proveedor_usuario: [1, 2] },
-    { id: 3, nombres: "Proveedor 3", apellidos: "C", habilidad_x_proveedor_usuario: [1, 2] },
-    { id: 4, nombres: "Proveedor 4", apellidos: "D", habilidad_x_proveedor_usuario: [1, 2] },
-    { id: 5, nombres: "Proveedor 5", apellidos: "E", habilidad_x_proveedor_usuario: [1, 2] },
-    { id: 6, nombres: "Proveedor 6", apellidos: "F", habilidad_x_proveedor_usuario: [1, 2] },
-]
-
-let sessionsData: SessionObj[] = []
 
 const TrainingCreate = () => {
     const { trainingID } = useParams();
@@ -169,11 +153,11 @@ const TrainingCreate = () => {
 
     const [addedSupplier, setAddedSupplier] = useState<typeSupp>()
     const [addedSuppliers, setAddedSuppliers] = useState<typeSupp[]>([])
+    const [addedSuppliersId, setAddedSuppliersId] = useState<typeSuppId[]>([])
+
 
     var filtered;
-    var mostrar = 6;
     var mostrarC = 6;
-    var filtered2;
     const [categories, setCategories] = useState([]);
     const [pageC, setPageC] = useState(1)
     const totalPagesC = Math.ceil(categories.length / mostrarC);
@@ -200,6 +184,7 @@ const TrainingCreate = () => {
     const [habilitiesS, setHabilitiesS] = useState([]);
 
     const handleCheck = (item: typeHabI, event) => {
+
         async function updateArray() {
             var updatedList = [...checked];
             var updatedList2 = [...habilitiesS];
@@ -217,39 +202,27 @@ const TrainingCreate = () => {
     };
 
 
-    // const handleFilter = (e: any) => {
-    //     const searchTerm = e.target.value;
-    //     if (searchTerm === '') {
-    //         setSupplierFilter(typeSup)
-    //     } else {
-    //         filtered = typeSup.filter((item: any) =>
-    //             item.nombres.toLowerCase().includes(searchTerm.toLowerCase()) || item.apellidos.toLowerCase().includes(searchTerm.toLowerCase())
-    //         );
-    //         setSupplierFilter(filtered);
-    //     }
-    // };
-
     const handleFilter = (e: any) => {
         const searchTerm = e.target.value;
         if (searchTerm === '') {
             if (addedSuppliers.length) {
-                filtered = typeSup.filter((item: any) => {
+                filtered = suppliers.filter((item: any) => {
                     return addedSuppliers.every((added) => {
                         return added[0].id != item.id
                     })
                 });
                 setSupplierFilter(filtered);
             }
-            else setSupplierFilter(typeSup);
+            else setSupplierFilter(suppliers);
         } else {
             if (addedSuppliers.length) {
-                filtered = supplierFilter.filter((item: any) => {
+                filtered = suppliers.filter((item: any) => {
                     return addedSuppliers.every((added) => {
                         return added[0].id != item.id
                     }) && item.name.toLowerCase().includes(searchTerm.toLowerCase())
                 });
             } else {
-                filtered = supplierFilter.filter((item: any) =>
+                filtered = suppliers.filter((item: any) =>
                     item.name.toLowerCase().includes(searchTerm.toLowerCase())
                 );
             }
@@ -257,21 +230,8 @@ const TrainingCreate = () => {
         }
     }
 
-
-
     const handleChangeType = (e: any) => {
         setTypeArea(e.target.value)
-    }
-
-    const search = (e: any) => {
-        if (typeArea == null)
-            setSupplierFilter(typeSup);
-        else {
-            filtered = typeSup.filter((item: any) =>
-                item.category === typeArea
-            );
-            setSupplierFilter(filtered);
-        }
     }
 
     const handleRemove = (idAEliminar: number) => {
@@ -279,6 +239,16 @@ const TrainingCreate = () => {
         setAddedSuppliers(newArray)
     }
 
+    const search = (e: any) => {
+        if (typeArea == null)
+            setSupplierFilter(suppliers);
+        else {
+            filtered = suppliers.filter((item: any) =>
+                item.category === typeArea
+            );
+            setSupplierFilter(filtered);
+        }
+    }
 
     /* TRAINING SESSION DETAIL INPUTS */
     const refTrName = useRef<HTMLInputElement>(null);
@@ -304,20 +274,14 @@ const TrainingCreate = () => {
                 nombre: refTrTopics.current?.value
             }
             setAddedTopics([...addedTopics, topicSession])
-            console.log(addedTopics)
             refTrTopics.current.value = ""
         }
     }
 
     const deleteTopic = (index: number) => {
-        console.log(index)
-
         let newDataTopics = [...addedTopics]
 
         newDataTopics.splice(index, 1)
-
-        console.log(newDataTopics)
-        console.log(newDataTopics.length)
 
         if (newDataTopics.length === 0) {
             newDataTopics = []
@@ -345,28 +309,30 @@ const TrainingCreate = () => {
 
     /* CREATE NEW SESSION */
     const createSession = () => {
+        setSessionCreated(false)
+        setLoading(true)
         let dataSession: SessionObj = {
             nombre: '',
             descripcion: '',
-            temas: []
+            temas: [],
+            responsables: []
         }
 
-        let fecha_ini = new Date(refTrDateStart.current?.value).toISOString()
-
         if (training.tipo === "A") {
-            //let fecha_lim = new Date(refTrDateEnd.current?.value).toISOString()
-
             dataSession = {
                 curso_empresa_id: parseInt(trainingID),
                 nombre: refTrName.current?.value,
                 descripcion: refTrDescription.current?.value,
-                //fecha_inicio: fecha_ini,
-                //url_video: refTrVideo.current.getUrl(),
-                //fecha_limite: fecha_lim,
-                temas: addedTopics
+                url_video: refTrVideo.current.getUrl(),
+                temas: addedTopics,
+                responsables: addedSuppliersId
             }
         }
         else {
+            let fecha_ini = moment.tz(refTrDateStart.current?.value, 'America/Lima').format('YYYY-MM-DDTHH:mm:ssZ');
+
+            console.log(fecha_ini);
+
             if (training.tipo === "P") {
                 dataSession = {
                     curso_empresa_id: parseInt(trainingID),
@@ -375,7 +341,8 @@ const TrainingCreate = () => {
                     fecha_inicio: fecha_ini,
                     ubicacion: refTrLocation.current?.value,
                     aforo_maximo: parseInt(refTrCapacity.current?.value),
-                    temas: addedTopics
+                    temas: addedTopics,
+                    responsables: addedSuppliersId
                 }
             }
             else {
@@ -386,25 +353,33 @@ const TrainingCreate = () => {
                     fecha_inicio: fecha_ini,
                     ubicacion: refTrLocationLink.current?.value,
                     aforo_maximo: parseInt(refTrCapacity.current?.value),
-                    temas: addedTopics
+                    temas: addedTopics,
+                    responsables: addedSuppliersId
                 }
             }
         }
 
-        /* VER SI NO MUERE SIN ESTO */
         //setClassSessions([...classSessions, dataSession])
 
         console.log(dataSession)
 
-        /* Clear inputs */
+        axiosInt.post('capacitaciones/sesion_course_company/', dataSession)
+            .then(function (response) {
+                console.log(response.data)
+                setSessionCreated(true)
+                setLoading(false);
+            })
+            .catch(function (error) {
+                console.log(error);
+                setLoading(false);
+            });
 
+        /* Clear inputs */
         refTrName.current.value = "";
         refTrDescription.current.value = "";
-        setAddedTopics([]);
 
         if (training.tipo === "A") {
-            //refTrDateEnd.current.value = "";
-            refTrVideo.current = null;
+            refTrVideo.current.value = null;
         }
         else {
             refTrDateStart.current.value = "";
@@ -418,14 +393,8 @@ const TrainingCreate = () => {
             }
         }
 
-        axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/sesion_course_company/', dataSession)
-            .then(function (response) {
-                console.log(response.data)
-                setSessionCreated(true)
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        setAddedTopics([]);
+        /* Clear inputs */
     }
     /* CREATE NEW SESSION */
 
@@ -460,11 +429,9 @@ const TrainingCreate = () => {
     /* LOAD TRAINING DETAILS */
     const loadTrainingDetails = () => {
         setLoading(true);
-        axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/course_company_course/${trainingID}`)
+        axiosInt.get(`capacitaciones/course_company_course/${trainingID}`)
             .then(function (response) {
                 console.log(response.data)
-                console.log(response.data.sesiones.length)
-
                 setTraining(response.data);
                 setNombreT(response.data.nombre)
                 setDescripcionT(response.data.descripcion)
@@ -473,11 +440,7 @@ const TrainingCreate = () => {
                 setLoading(false);
             })
             .catch(function (error) {
-                console.log(error);
                 setLoading(false);
-
-                /* BORRAR LUEGO */
-                setTraining(data)
             });
     }
     /* LOAD TRAINING DETAILS */
@@ -488,7 +451,7 @@ const TrainingCreate = () => {
 
     const loadCompanies = (id: number) => {
         setLoading2(true);
-        axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/get_proveedores_empresa/${id}/`)
+        axiosInt.get(`capacitaciones/get_proveedores_empresa/${id}/`)
             .then(function (response) {
                 setCompanies(response.data);
                 setLoading2(false);
@@ -507,8 +470,9 @@ const TrainingCreate = () => {
 
     const loadHabilities = (id: number) => {
         setLoading3(true);
-        axiosInt.get(`dev-modulo-capacitaciones/api/capacitaciones/get_habilidades_empresa/${id}/`)
+        axiosInt.get(`capacitaciones/get_habilidades_empresa/${id}/`)
             .then(function (response) {
+                console.log(response.data)
                 setHabilities(response.data);
                 setLoading3(false);
             })
@@ -526,7 +490,7 @@ const TrainingCreate = () => {
 
     const loadCategories = () => {
         setLoading1(true);
-        axiosInt.get('dev-modulo-capacitaciones/api/capacitaciones/get_categoria/')
+        axiosInt.get('capacitaciones/get_categoria/')
             .then(function (response) {
                 setCategories(response.data);
                 setLoading1(false);
@@ -545,13 +509,14 @@ const TrainingCreate = () => {
         setPositionC(0)
         setPositionCo(0)
         setAddedSuppliers([])
+        setAddedSuppliersId([])
 
         loadCategories();
     }
 
     const handleSuppliers = () => {
         setLoading4(true);
-        axiosInt.post('dev-modulo-capacitaciones/api/capacitaciones/get_personas_empresa_habilidades/', {
+        axiosInt.post('capacitaciones/get_personas_empresa_habilidades/', {
             id_proveedor: typeCompany.id,
             habilidades: checked
         })
@@ -561,8 +526,6 @@ const TrainingCreate = () => {
                 setLoading4(false);
             })
             .catch(function (error) {
-                setSuppliers(typeSup)
-                setSupplierFilter(typeSup)
                 setLoading4(false);
             });
     }
@@ -574,9 +537,10 @@ const TrainingCreate = () => {
         : "";
 
 
+
     useEffect(() => {
         async function UpdateFilter() {
-            var filtered2 = typeSup.filter((item: any) => {
+            var filtered2 = suppliers.filter((item: any) => {
                 return addedSuppliers.every((added) => {
                     return added[0].id != item.id
                 })
@@ -592,6 +556,14 @@ const TrainingCreate = () => {
             var aux = addedSuppliers;
             aux.push(addedSupplier)
             setAddedSuppliers(aux)
+
+            let idSupplier: typeSuppId = {
+                id: 0,
+            }
+            idSupplier = {
+                id: addedSupplier[0].id
+            }
+            setAddedSuppliersId([...addedSuppliersId, idSupplier])
         }
         async function UpdateFilter() {
             var filtered2 = supplierFilter.filter((item: any) => {
@@ -607,16 +579,17 @@ const TrainingCreate = () => {
             AddSupplier()
             UpdateFilter()
         }
-    }, [addedSupplier]);
-
+    }, [addedSupplier])
 
 
     return (
-        <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'>
+        <>
+            {/* // <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'> */}
+            {/* // <Layout title="Grupo 1 App" content="container"> */}
             {
                 loading ?
                     (
-                        <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                        <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)', display: "flex", alignItems: "center", justifyContent: "center" }}>
                             <div className='vertical-align-child'>
                                 <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
                                     <span className="visually-hidden">Loading...</span>
@@ -626,7 +599,7 @@ const TrainingCreate = () => {
                     )
                     :
                     (<>
-                        <div className='container row mt-3'>
+                        <div className='row'>
                             {/* TRAINING DATA */}
                             <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
                                 <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
@@ -663,13 +636,12 @@ const TrainingCreate = () => {
                                 </div>
                             </div>
 
-                            {/* SESSION */}
-                            <div className='row mt-3' style={{ marginLeft: "54px" }}>
-                                <div className='col'>
-                                    <h4 className='mt-3 subarea'>Sesiones</h4>
-                                </div>
-                                <div style={{ flex: '0 0 15rem' }} className='col text-end'>
-                                    {/* Button trigger modal */}
+                        </div>
+
+                        <div className='row'>
+                            <div className='col' style={{ marginLeft: "60px" }}>
+                                <div className='mt-4 mb-3' style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                    <h4 className='subarea'>Sesiones</h4>
                                     <button type='button' className='btn btn-primary' data-bs-target='#createSessionModal' data-bs-toggle='modal'>
                                         <div style={{ display: "flex", alignItems: "center" }}>
                                             <span className='me-3'>Nueva sesión</span>
@@ -678,29 +650,30 @@ const TrainingCreate = () => {
                                     </button>
                                 </div>
 
-                                <div>
-                                    {classSessions.length > 0 ?
-                                        (<SessionAccordion trainingType={training.tipo} sessions={classSessions} />)
-                                        :
-                                        (
-                                            <div className='row align-items-stretch g-3 py-3'>
-                                                <div className='col'>
-                                                    <div className='card'>
-                                                        <div className='card-body'>
-                                                            <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                                <div className='vertical-align-child'>
-                                                                    <h5 className='opacity-50 text-center'>Crea una sesión para comenzar</h5>
-                                                                </div>
+                                {classSessions.length ?
+                                    (<SessionAccordion trainingType={training.tipo} sessions={classSessions} mode={"create"} />)
+                                    :
+                                    (
+                                        <div className='row align-items-stretch g-3 py-3'>
+                                            <div className='col'>
+                                                <div className='card'>
+                                                    <div className='card-body'>
+                                                        <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                            <div className='vertical-align-child'>
+                                                                <h5 className='opacity-50 text-center'>Crea una sesión para comenzar</h5>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        )
-                                    }
-                                </div>
+                                        </div>
+                                    )
+                                }
                             </div>
+
                         </div>
+
+
 
                         {/* CREATE SESSION MODAL */}
                         <div className="modal fade" id="createSessionModal" aria-hidden="true" aria-labelledby="createSessionModal" tabIndex={-1}>
@@ -722,16 +695,6 @@ const TrainingCreate = () => {
                                         {
                                             training.tipo === "A" ?
                                                 (<>
-                                                    {/*
-                                                <div className='mb-3'>
-                                                    <label className="form-label">Fecha de la sesión</label>
-                                                    <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
-                                                </div>
-                                                <div className='col'>
-                                                    <label className="form-label">Fecha limite</label>
-                                                    <input className='form-control' type='date' id='end_date_creation' ref={refTrDateEnd} />
-                                                </div>
-                                                */}
                                                     <div className='mb-3'>
                                                         <label className="form-label">Video de la sesión</label>
                                                         <VideoUpload ref={refTrVideo} />
@@ -779,7 +742,6 @@ const TrainingCreate = () => {
                                                 <button type='submit' className='btn btn-primary' onClick={addTopic}><Check /></button>
                                             </div>
                                         </div>
-
                                         {
                                             addedTopics.length > 0 ?
                                                 (addedTopics.map((element, i) => {
@@ -809,7 +771,6 @@ const TrainingCreate = () => {
                                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div className="modal-body">
-
                                         {loading1 ?
                                             <>
                                                 <div className='vertical-align-parent'>
@@ -853,7 +814,6 @@ const TrainingCreate = () => {
                                                 </div>
                                             </div>
                                         }
-
 
                                         {typeArea.categoria != "" &&
                                             <>
@@ -905,13 +865,12 @@ const TrainingCreate = () => {
                                             </>
                                         }
                                     </div>
-                                    {(typeArea.categoria != "" && typeCompany.razon_social != "") &&
-                                        <div className="modal-footer">
+                                    <div className="modal-footer">
+                                        <button className="btn btn-outline-primary" data-bs-target="#createSessionModal" data-bs-toggle="modal">Regresar</button>
+                                        {(typeArea.categoria != "" && typeCompany.razon_social != "") &&
                                             <button className="btn btn-primary" data-bs-target="#searchSkillResponsible" data-bs-toggle="modal">Ver Habilidades</button>
-                                        </div>
-                                    }
-
-
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -960,11 +919,12 @@ const TrainingCreate = () => {
                                         }
 
                                     </div>
-                                    {(typeArea.categoria != "" && typeCompany.razon_social != "") &&
-                                        <div className="modal-footer">
+                                    <div className="modal-footer">
+                                        <button className="btn btn-outline-primary" data-bs-target="#searchResponsible" data-bs-toggle="modal">Regresar</button>
+                                        {(typeArea.categoria != "" && typeCompany.razon_social != "") &&
                                             <button className="btn btn-primary" data-bs-target="#assignResponsible" data-bs-toggle="modal" onClick={handleSuppliers}>Buscar</button>
-                                        </div>
-                                    }
+                                        }
+                                    </div>
 
 
                                 </div>
@@ -1007,7 +967,7 @@ const TrainingCreate = () => {
                                                             <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gridGap: "10px" }}>
                                                                 {
                                                                     supplierFilter.map((tr) => {
-                                                                        filtered2 = habilities.filter((item: any) => {
+                                                                        var filtered2 = habilities.filter((item: any) => {
                                                                             return tr.habilidad_x_proveedor_usuario.every((ha) => {
                                                                                 return ha == item.id
                                                                             })
@@ -1019,7 +979,7 @@ const TrainingCreate = () => {
                                                                                 nombres={tr.nombres}
                                                                                 apellidos={tr.apellidos}
                                                                                 image='https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
-                                                                                capacities={tr.habilidad_x_proveedor_usuario}
+                                                                                capacities={filtered2}
                                                                                 button='Asignar'
                                                                                 buttonColor={"rgb(8, 66, 152)"}
                                                                                 option={setAddedSupplier}
@@ -1052,7 +1012,7 @@ const TrainingCreate = () => {
                                                                     <div>
                                                                         {addedSuppliers.map((supplier) => (
                                                                             <div key={supplier[0].id} style={{ display: "flex", alignItems: "center", paddingLeft: "0.5rem", paddingRight: " 0.5rem", paddingBottom: "0.5rem", justifyContent: "space-between" }}>
-                                                                                <h4 style={{ fontSize: "13px", paddingTop: "0.35rem" }}>{supplier[0].nombres + supplier[0].apellidos}</h4>
+                                                                                <h4 style={{ fontSize: "13px", paddingTop: "0.35rem" }}>{supplier[0].nombres + ' ' + supplier[0].apellidos}</h4>
                                                                                 <button style={{ backgroundColor: '#B02A37', color: 'white', border: "none", fontSize: "12px" }} onClick={() => handleRemove(supplier[0].id)}>Quitar</button>
                                                                             </div>
                                                                         ))
@@ -1071,6 +1031,7 @@ const TrainingCreate = () => {
                                         </div>
                                     </div>
                                     <div className="modal-footer">
+                                        <button className="btn btn-outline-primary" data-bs-target="#searchSkillResponsible" data-bs-toggle="modal">Regresar</button>
                                         <button className="btn btn-primary" data-bs-dismiss="modal" onClick={createSession}>Crear</button>
                                     </div>
                                 </div>
@@ -1110,8 +1071,11 @@ const TrainingCreate = () => {
                         </div>
                     </>)
             }
-        </Sidebar >
+            {/* </Sidebar > */}
+            {/* </Layout> */}
+        </>
     )
+
 }
 
 export default TrainingCreate

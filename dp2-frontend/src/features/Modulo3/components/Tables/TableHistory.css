@@ -1,3 +1,9 @@
+.TableHistory{
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: calc(0.5rem - 1px);
+	overflow: hidden;
+}
+
 .table-striped>tbody>tr:nth-child(odd)>td,
 .table-striped>tbody>tr:nth-child(odd)>th {
 	background-color: #E7F1FF;

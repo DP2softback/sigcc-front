@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import './learning-path-details.css';
 import learningPathDetails from './learningPathDetails.json';
 import { Link, useParams } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { ArrowLeftCircleFill, People, BarChart } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router-dom';
 import Rate from '@features/Modulo1/components/Rate';
 import LearningPathAssignment from '../Assignment';
+import QuizGenerator from '../QuizGenerator/QuizGenerator';
 
 
 function LearningPathDetails (props: any)
@@ -22,6 +23,7 @@ function LearningPathDetails (props: any)
     const [lpParticipants, setLPParticipants] = useState<any>("");
     const [lpRate, setLPRate] = useState<any>("");
     const [courses, setCourses] = useState<any>([]);
+    const [coursesQuizStatuses, setCoursesQuizStatuses] = useState<any>([]);
     const [employees, setEmployees] = useState<any>([]);
 
     const navigate = useNavigate();
@@ -71,16 +73,71 @@ function LearningPathDetails (props: any)
         loadEmployees();
     }, []);
 
-    const handleRemoveCard = (id: number) =>
+    useEffect(() =>
     {
+        if (coursesQuizStatuses.length)
+            return;
+        const coursesQuizStat = courses.map(object => parseInt(object.estado));
+        courses.map((item: any, index: any) =>
+        {
+            if (parseInt(item.estado) === 0)
+            {
+                let quizStatusinterval;
+                const handleGetStatus = (event) =>
+                {
+                    axiosInt.get(`capacitaciones/udemy_course/check_status/${item.id}/`)
+                        .then((response) =>
+                        {
+                            if (parseInt(response.data.estado) === 1)
+                            {
+                                setCoursesQuizStatuses(prevState =>
+                                {
+                                    return prevState.map((element, i) =>
+                                    {
+                                        if (i === index)
+                                        {
+                                            return parseInt(response.data.estado);
+                                        }
+                                        return element;
+                                    });
+                                });
+                                clearInterval(quizStatusinterval);
+                            }
+                        })
+                };
+
+                window.addEventListener('get-status', handleGetStatus);
+                quizStatusinterval = setInterval(() =>
+                {
+                    window.dispatchEvent(new Event('get-status'));
+                }, 5000);
+
+                return () =>
+                {
+                    window.removeEventListener('get-status', handleGetStatus);
+                    clearInterval(quizStatusinterval);
+                };
+            }
+        })
+        setCoursesQuizStatuses(coursesQuizStat);
+    }, [courses]);
+
+    const handleRemoveCard = (e: any, id: number) =>
+    {
+        e.target.disabled = true;
+        e.target.getElementsByTagName("span")[0].classList.remove('hidden');
         axiosInt.delete(`capacitaciones/learning_path/${learningPathId}/course/detail/${id}`)
             .then(function (response)
             {
+                e.target.disabled = false;
+                e.target.getElementsByTagName("span")[0].classList.add('hidden');
                 const updatedCourses = courses.filter((course: any) => course.id !== id);
                 setCourses(updatedCourses);
             })
             .catch(function (error)
             {
+                e.target.disabled = false;
+                e.target.getElementsByTagName("span")[0].classList.add('hidden');
                 console.log(error);
             });
     };
@@ -100,7 +157,7 @@ function LearningPathDetails (props: any)
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'>
+            {/* <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'> */}
                 {
                     loading ?
                         <>
@@ -115,60 +172,91 @@ function LearningPathDetails (props: any)
                         <>
                             <div className='d-flex border-bottom'>
                                 <h1><ArrowLeftCircleFill onClick={goBack} className='me-3' /></h1>
-                                <div className='w-100'>
-                                    <div>
-                                        <h1><span className='align-middle'>{lpName}</span></h1>
-                                    </div>
-                                    <div>
-                                        <p><small className='opacity-50'>{lpDescription}.</small></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='d-flex mx-auto py-3' style={{ width: '20rem' }}>
-                                <img className="rounded-circle border lp-thumb me-3" src={lpPhoto} alt="..." />
-                                <div className='w-100 align-self-center'>
-                                    <div className='d-flex'>
-                                        <People className='align-self-center me-3' />
-                                        <div className='w-100 d-flex justify-content-between'>
-                                            <span>Inscritos: </span>
-                                            <small className='fw-bold'>{lpParticipants}</small>
+                                <div className='row w-100'>
+                                    <div className='col-xs-12 col-md-4 col-xl-6'>
+                                        <div>
+                                            <h1><span className='align-middle'>{lpName}</span></h1>
+                                        </div>
+                                        <div>
+                                            <p><small className='opacity-50'>{lpDescription}.</small></p>
                                         </div>
                                     </div>
-                                    <div className='d-flex'>
-                                        <BarChart className='align-self-center me-3' />
-                                        <div className='w-100 d-flex justify-content-between'>
-                                            <span className='align-self-center'>Valoración: </span>
-                                            <Rate className='lp-detail-rate' disabled={true} rate={lpRate} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='border-top pt-3 d-flex gap-2 w-100 justify-content-between'>
-                                <h4>Cursos seleccionados</h4>
-                                <Link to={`/modulo1/curso/agregar/${learningPathId}`} className='btn btn-primary'>Agregar cursos</Link>
-                            </div>
-                            <div className="row mt-3 flex-nowrap overflow-x-auto">
-                                {courses.map((course: any) => (
-                                    <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3" key={course.course_udemy_detail.id}>
-                                        <div className="card h-100">
-                                            <img
-                                                src={course.course_udemy_detail.image_480x270}
-                                                className="card-img-top"
-                                                alt="Card"
-                                            />
-                                            <div className="card-body">
-                                                <h6 className="card-title">{course.course_udemy_detail.title}</h6>
-                                                <p><small className="opacity-50">{course.course_udemy_detail.headline}</small></p>
-                                                <button
-                                                    className="btn btn-danger"
-                                                    onClick={() => handleRemoveCard(course.id)}
-                                                >
-                                                    Quitar
-                                                </button>
+                                    <div className='col-xs-12 col-md-4 col-xl-4'>
+                                        <div className='d-flex mb-3'>
+                                            <img className="rounded-circle lp-thumb me-3" src={lpPhoto} alt="..." />
+                                            <div className='w-100 align-self-center'>
+                                                <div className='d-flex'>
+                                                    <People className='align-self-center me-3' />
+                                                    <div className='w-100 d-flex justify-content-between'>
+                                                        <span>Inscritos: </span>
+                                                        <small className='fw-bold'>{lpParticipants}</small>
+                                                    </div>
+                                                </div>
+                                                <div className='d-flex'>
+                                                    <BarChart className='align-self-center me-3' />
+                                                    <div className='w-100 d-flex justify-content-between'>
+                                                        <span className='align-self-center'>Valoración: </span>
+                                                        <Rate className='lp-detail-rate' disabled={true} rate={lpRate} />
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                ))}
+                                    <div className='col-xs-12 col-md-4 col-xl-2'>
+                                        <div className='d-grid gap-2 mx-auto mb-3'>
+                                            <Link to={`evalintegral`} className='btn btn-sm btn-primary'>Ver evaluaciones</Link>
+                                            <Link to={``} className='btn btn-sm btn-primary'>Ver reportes</Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='pt-3 d-flex gap-2 w-100 justify-content-between'>
+                                <h4>Cursos seleccionados</h4>
+                                <Link to={`/modulo1/curso/agregar/${learningPathId}`} className='btn btn-primary'>Agregar cursos</Link>
+                            </div>
+                            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 align-items-stretch g-3 py-3">
+                                {
+                                    courses.map((course: any, index: number) => (
+                                        <div className='col' key={course.course_udemy_detail.id}>
+                                            <div className="card h-100">
+                                                <img
+                                                    src={course.course_udemy_detail.image_480x270}
+                                                    className="card-img-top lp-card-img"
+                                                    alt="Card"
+                                                />
+                                                <div className="card-body">
+                                                    <h6 className="card-title">{course.course_udemy_detail.title}</h6>
+                                                    <p className='mb-0'><small className="opacity-50">{course.course_udemy_detail.headline}</small></p>
+                                                </div>
+                                                <div className="card-footer pb-3 lpd-footer">
+                                                    {
+                                                        coursesQuizStatuses[index] == 0 ?
+                                                            <>
+                                                                <div className="d-flex justify-content-center">
+                                                                    <div className="spinner-border spinner-border-sm me-1" role="status">
+                                                                        <span className="visually-hidden">Cargando...</span>
+                                                                    </div>
+                                                                    <div>
+                                                                        <p style={{ marginTop: '-0.25rem' }}>
+                                                                            <small>Generando evaluación</small>
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </> :
+                                                            <>
+                                                                <button type="button" className="btn btn-primary w-100 mb-3" data-bs-toggle="modal" data-bs-target={`#quizGeneratorModal${course.id}`}>Validar cuestionario</button>
+                                                                <QuizGenerator title={course.title} quizId={course.id} />
+                                                            </>
+                                                    }
+                                                    <button className="btn btn-danger w-100" onClick={(e) => handleRemoveCard(e, course.id)}>
+                                                        <span className="spinner-border spinner-border-sm hidden me-3" role="status" aria-hidden="true"></span>
+                                                        Eliminar curso
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    ))}
                                 {
                                     courses.length === 0 && <>
                                         <div className='col'>
@@ -189,13 +277,13 @@ function LearningPathDetails (props: any)
                                 <h4>Empleados asignados</h4>
                                 <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#assignmentModal">Asignar empleados</button>
                             </div>
-                            <div className="row mt-3 flex-nowrap overflow-x-auto">
+                            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 align-items-stretch g-3 pt-3">
                                 {employees.map((employee: any) => (
-                                    <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3" key={employee.id}>
+                                    <div className="col" key={employee.id}>
                                         <div className="card h-100">
                                             <div className="card-body">
                                                 <h6 className="card-title">{employee.first_name} {employee.last_name}</h6>
-                                                <p><small className="opacity-50">{employee.email}</small></p>
+                                                <p className='mb-0'><small className="opacity-50">{employee.email}</small></p>
                                                 {/* <button
                                                     className="btn btn-danger"
                                                     onClick={() => handleRemoveCard(employee.id)}
@@ -224,8 +312,22 @@ function LearningPathDetails (props: any)
                             </div>
                         </>
                 }
-            </Sidebar>
+            {/* </Sidebar> */}
             <LearningPathAssignment assignFunction={handleAssignEmployees} />
+            {
+                coursesQuizStatuses.includes(0) ?
+                    <>
+                        <div className="toast show align-items-center text-bg-primary position-fixed top-0 end-0 m-3 border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div className="d-flex">
+                                <div className="toast-body">
+                                    Se está generando la evaluación para el curso en segundo plano.
+                                </div>
+                                <button type="button" className="btn-close btn-close-white me-3 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </> :
+                    <></>
+            }
         </>
     );
 }
