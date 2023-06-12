@@ -27,19 +27,102 @@ import {
 	GET_TIPO_ETAPAS_PROCESO_SELECCION
 } from "@features/Modulo4/utils/constants";
 
+/*
+{
+    "position": 1,
+    "available_positions_quantity": "1",
+    "name": "Proceso en Nombre de prueba",
+    "process_stages": [
+        {
+            "stage_type": 1,
+            "order": 1,
+            "start_date": "2023-06-12",
+            "end_date": "2023-06-12",
+            "name": "asdf",
+            "description": "asdf"
+        },
+        {
+            "stage_type": 1,
+            "order": 2,
+            "start_date": "2023-06-12",
+            "end_date": "2023-06-12",
+            "name": "df",
+            "description": "dsfds"
+        }
+    ],
+    "employees": [
+        {
+            "employee": 3
+        },
+        {
+            "employee": 1
+        }
+    ]
+}
+
+*/
+
 function ConfigProcesoSeleccion(props: any) {
+	/*
+	useEffect(() => {
+		setSelectedIdPuestoLaboral(1);
+		setCantVacantes(1);
+		setSelectedPuestoLaboral("Proceso en Nombre de prueb!!!a");
+		setRows([
+			{
+				id: 1,
+				idTipoEtapa: 1,
+				nombreTipoEtapa: "dsf",
+				nombreEtapa: "df",
+				descripcionEtapa: "",
+				fechaInicio: new Date(),
+				fechaFin: new Date(),
+				estado: ""
+			}
+		]);
+		setArrResponsables([
+			{
+				id: 1,
+				user: {
+					id: 2,
+					password:
+						"pbkdf2_sha256$216000$smhYwuNQNpRV$2loGVwY2W3TSeowjsPSdk08goKrYn70j0s5I/aVkX0Q=",
+					last_login: null,
+					is_superuser: false,
+					username: "Joseson",
+					first_name: "Jose",
+					last_name: "Joseson",
+					is_staff: false,
+					is_active: true,
+					date_joined: "2023-05-25T13:35:51-05:00",
+					created: "2023-05-25T13:35:51.109000-05:00",
+					modified: "2023-06-01T10:31:41.234000-05:00",
+					deleted: null,
+					email: "Jose@joseson.com",
+					second_name: "",
+					maiden_name: "",
+					recovery_code: null,
+					groups: [],
+					user_permissions: [],
+					roles: [2]
+				}
+			}
+		]);
+	}, []);
+	*/
+
 	const createPS = async () => {
 		//console.log(rows);
 		const listaEtapas = rows.map(
 			({
-				tipoEtapa,
+				idTipoEtapa,
 				id,
 				fechaInicio,
 				fechaFin,
 				nombreEtapa,
 				descripcionEtapa
 			}) => ({
-				stage_type: tipoEtapa,
+				stage_type: idTipoEtapa,
 				order: id,
 				start_date: moment(fechaInicio).format("YYYY-MM-DD"),
 				end_date: moment(fechaFin).format("YYYY-MM-DD"),
@@ -48,18 +131,16 @@ function ConfigProcesoSeleccion(props: any) {
 			})
 		);
 
-		const listaResponsables = arrResponsables.map(({ idResponsable }) => {
-			{
-				employee: idResponsable;
-			}
-		});
+		const listaIdResponsables = arrResponsables.map(({ id }) => ({
+			employee: id
+		}));
 
 		const dataPost = {
 			position: selectedIdPuestoLaboral,
 			available_positions_quantity: cantVacantes,
+			name: selectedPuestoLaboral,
 			process_stages: listaEtapas,
-			id: listaResponsables,
-			employees: listaResponsables
+			employees: listaIdResponsables
 		};
 
 		const optionsRequest = {
@@ -99,7 +180,7 @@ function ConfigProcesoSeleccion(props: any) {
 	const [selectedPuestoLaboralFijo, setSelectedPuestoLaboralFijo] =
 		useState("");
 	const [selectedPuestoLaboral, setSelectedPuestoLaboral] = useState("");
-	const [cantVacantes, setCantVacantes] = useState("");
+	const [cantVacantes, setCantVacantes] = useState(0);
 	const [isSelectedNombreOfertaValid, setIsSelectedNombreOfertaValid] =
 		useState(true);
 
@@ -118,13 +199,6 @@ function ConfigProcesoSeleccion(props: any) {
 	// CREAR TIPO ETAPA SELECCION
 	const [selectedTipoEtapaSelec, setSelectedTipoEtapaSelec] = useState(null);
 	const [optionsTipoEtapaSelec, setOptionsTipoEtapaSelec] = useState<any[]>([]);
-	/*
-	const optionsTipoEtapaSelec = [
-		{ value: "opcion1Entrevista", label: "Entrevista personal" },
-		{ value: "opcion2Formulario", label: "Formulario general" },
-		{ value: "opcion3Formulario", label: "Formulario personalizado" }
-	];
-	*/
 
 	const getTiposEtapas = async () => {
 		const optionsRequest = {
@@ -147,14 +221,20 @@ function ConfigProcesoSeleccion(props: any) {
 	}, []);
 
 	// TABLA DE ETAPAS DEL PROCESO DE SELECCIÓN
-	const handleOptionsTipoEtapaSelec = (name: any) => {
-		setSelectedTipoEtapaSelec(name);
-		newRow.tipoEtapa = name;
+	const handleOptionsTipoEtapaSelec = (option: any) => {
+		setSelectedTipoEtapaSelec(option.name);
+		newRow.idTipoEtapa = option.id;
+		newRow.nombreTipoEtapa = option.name;
 	};
+
+	useEffect(() => {
+		console.log(rows), [rows];
+	});
 
 	interface TableRow {
 		id: number;
-		tipoEtapa: string;
+		idTipoEtapa: number;
+		nombreTipoEtapa: string;
 		nombreEtapa: string;
 		descripcionEtapa: string;
 		fechaInicio: Date | string;
@@ -164,7 +244,8 @@ function ConfigProcesoSeleccion(props: any) {
 	const [rows, setRows] = useState<TableRow[]>([]);
 	const [newRow, setNewRow] = useState<TableRow>({
 		id: 0,
-		tipoEtapa: "",
+		idTipoEtapa: 0,
+		nombreTipoEtapa: "",
 		nombreEtapa: "",
 		descripcionEtapa: "",
 		fechaInicio: new Date(),
@@ -184,7 +265,7 @@ function ConfigProcesoSeleccion(props: any) {
 	};
 
 	const [idCounter, setIdCounter] = useState(0); // Contador para el ID
-	const handleAddRow = () => {
+	const handleAddRowEtapa = () => {
 		if (selectedRow === null) {
 			// Agregar nueva fila
 			// Usar el valor actual del contador más 1 como nuevo ID
@@ -206,7 +287,8 @@ function ConfigProcesoSeleccion(props: any) {
 
 		setNewRow({
 			id: 0,
-			tipoEtapa: "",
+			idTipoEtapa: 0,
+			nombreTipoEtapa: "",
 			nombreEtapa: "",
 			descripcionEtapa: "",
 			fechaInicio: new Date(),
@@ -246,6 +328,11 @@ function ConfigProcesoSeleccion(props: any) {
 	// MODAL DE RESPONSABLE BUSCADOR, ABRE Y RETORNA LOS VALORES
 	const [arrResponsables, setArrResponsables] = useState([]);
 	const [cantResponsables, setCantResponsables] = useState(0);
+
+	useEffect(() => {
+		setCantResponsables(arrResponsables.length);
+	}, [arrResponsables]);
+
 	const [showModalBuscadorResponsable, setShowModalBuscadorResponsable] =
 		useState(false);
 	const handleShowBuscadorResponsableFromButtom = () => {
@@ -259,7 +346,7 @@ function ConfigProcesoSeleccion(props: any) {
 		setCantResponsables(responsables.length);
 	};
 
-	// ESTOS MODAL SE USARAN EN LOS BOTONES DE ELIMINAR Y GUARDAR TODO EL PROCECSO
+	// ESTOS MODAL BOTONES DE ELIMINAR Y GUARDAR TODO EL PROCECSO
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [showSaveModal, setShowSaveModal] = useState(false);
 	const handleDelete = () => {
@@ -444,6 +531,8 @@ function ConfigProcesoSeleccion(props: any) {
 							</Col>
 						</Row>
 					</Form.Group>
+					{/*---------------------------------------------------------------------------- */}
+					{/* AQUI EMPIEZA LA TABLA*/}
 					<div style={{ paddingLeft: "1%", maxWidth: "99%" }}>
 						<Form.Group
 							className="mb-1"
@@ -458,9 +547,6 @@ function ConfigProcesoSeleccion(props: any) {
 								marginBottom: "18rem",
 								height: "500px"
 							}}>
-							{/*---------------------------------------------------------------------------- */}
-							{/* AQUI EMPIEZA TODA LA TABLA*/}
-
 							<Table striped={true} bordered>
 								<thead
 									style={{
@@ -483,7 +569,7 @@ function ConfigProcesoSeleccion(props: any) {
 									{rows.map((row) => (
 										<tr key={row.id}>
 											<td>{row.id}</td>
-											<td>{row.tipoEtapa}</td>
+											<td>{row.nombreTipoEtapa}</td>
 											<td>{row.nombreEtapa}</td>
 											<td>
 												{row.fechaInicio instanceof Date
@@ -554,6 +640,10 @@ function ConfigProcesoSeleccion(props: any) {
 									))}
 								</tbody>
 							</Table>
+							{/*---------------------------------------------------------------------------- */}
+
+							{/*----------------------------------------------------------------------------
+							MODAL PARA CREAR ETAPA*/}
 
 							<Modal show={showModal} onHide={closeModal}>
 								<Modal.Header closeButton>
@@ -586,7 +676,7 @@ function ConfigProcesoSeleccion(props: any) {
 														<Dropdown.Item
 															key={optionRow.id}
 															onClick={() =>
-																handleOptionsTipoEtapaSelec(optionRow.name)
+																handleOptionsTipoEtapaSelec(optionRow)
 															}>
 															{optionRow.name}
 														</Dropdown.Item>
@@ -595,12 +685,10 @@ function ConfigProcesoSeleccion(props: any) {
 											</Dropdown>
 											<Form.Control
 												type="text"
-												name="tipoEtapa"
-												value={
-													selectedRow ? selectedRow.tipoEtapa : newRow.tipoEtapa
-												}
+												name="nombreTipoEtapa"
+												value={newRow.nombreTipoEtapa}
 												placeholder="Tipo de etapa"
-												onChange={handleInputChange}
+												//onChange={handleInputChange}
 												style={{
 													maxHeight: "8rem",
 													textAlign: "center"
@@ -626,7 +714,7 @@ function ConfigProcesoSeleccion(props: any) {
 														? selectedRow.nombreEtapa
 														: newRow.nombreEtapa
 												}
-												placeholder="Aquí va el nombre de la etapa"
+												placeholder="Escribir el nombre de la etapa."
 												onChange={handleInputChange}
 												style={stylesSelect}
 											/>
@@ -643,7 +731,7 @@ function ConfigProcesoSeleccion(props: any) {
 														? selectedRow.descripcionEtapa
 														: newRow.descripcionEtapa
 												}
-												placeholder="Aquí va la descripción de la etapa del proceso de selección"
+												placeholder="Escribir la descripción de la etapa del proceso de selección."
 												onChange={handleInputChange}
 												style={stylesSelect}
 											/>
@@ -696,7 +784,7 @@ function ConfigProcesoSeleccion(props: any) {
 									<Button
 										style={{ width: "8rem", maxWidth: "8rem" }}
 										variant="primary"
-										onClick={handleAddRow}>
+										onClick={handleAddRowEtapa}>
 										{selectedRow ? "Guardar Cambios" : "Agregar etapa"}
 									</Button>
 								</Modal.Footer>
