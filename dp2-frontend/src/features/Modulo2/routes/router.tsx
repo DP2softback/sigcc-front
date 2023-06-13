@@ -47,6 +47,10 @@ const VisualizacionBrechasEmpleado = Loader(
 	lazy(() => import("@features/Modulo2/Components/VisualizacionBrechasEmpleado/Read"))
 );
 
+const VisualizacionBrechasEmpleadoDetalle = Loader(
+	lazy(() => import("@features/Modulo2/Components/VisualizacionBrechasEmpleado/Detail"))
+);
+
 const JobOpportunitiesSelected = Loader(
 	lazy(() => import("@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/JobOpportunitySelected"))
 );
@@ -65,14 +69,19 @@ export const routes: RouteObject[] = [
 		children: [
 			{
 				path: COMPETENCES,
-				element: (
-					<AppLayout
-						allowedRoles={[
-							Roles.HR_ADMIN
-						]}>
-						<GestionDeCompetencias />
-					</AppLayout>
-				)
+				children: [
+					{
+						path: INDEX,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN
+								]}>
+								<GestionDeCompetencias />
+							</AppLayout>
+						)
+					}
+				]
 			},
 			{
 				path: GAPS_EMPLOYEES_ORG,
@@ -163,17 +172,17 @@ export const routes: RouteObject[] = [
 							</AppLayout>
 						)
 					},
-					// {
-					// 	path: GAPS_EMPLOYEE_EMP_DETAIL,
-					// 	element: (
-					// 		<AppLayout
-					// 			allowedRoles={[
-					// 				Roles.HR_WORKER,
-					// 			]}>
-					// 			<VisualizacionBrechasEmpleado />
-					// 		</AppLayout>
-					// 	)
-					// },
+					{
+						path: GAPS_EMPLOYEE_EMP_DETAIL,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_WORKER,
+								]}>
+								<VisualizacionBrechasEmpleadoDetalle />
+							</AppLayout>
+						)
+					},
 				]
 			},
 			{
@@ -206,7 +215,7 @@ export const routes: RouteObject[] = [
 			},	
 			{
 				path: "*",
-				element: <Navigate to={`/${GAPS_ANALYSIS_MODULE}/${COMPETENCES}`} 
+				element: <Navigate to={`/${GAPS_ANALYSIS_MODULE}/${COMPETENCES}/${INDEX}`} 
 				replace />
 			}
 		]
