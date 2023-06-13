@@ -24,3 +24,27 @@
 .bg-blueReadOnly {
 	background-color: white !important;
 }
+
+.acciones{
+	display: flex;
+	align-items: center;
+	justify-content: end;
+	padding-right: 30px;
+}
+
+.accion{
+	margin-left: 8px;
+}
+
+.categorie_name{
+padding-left: 30px !important;
+
+}
+
+.label{
+	padding-right: 250px !important;
+}
+
+.competencia{
+	padding-right: 60px !important;
+}
