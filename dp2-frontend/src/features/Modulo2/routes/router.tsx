@@ -47,6 +47,10 @@ const VisualizacionBrechasEmpleado = Loader(
 	lazy(() => import("@features/Modulo2/Components/VisualizacionBrechasEmpleado/Read"))
 );
 
+const VisualizacionBrechasEmpleadoDetalle = Loader(
+	lazy(() => import("@features/Modulo2/Components/VisualizacionBrechasEmpleado/Detail"))
+);
+
 const JobOpportunitiesSelected = Loader(
 	lazy(() => import("@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/JobOpportunitySelected"))
 );
@@ -168,17 +172,17 @@ export const routes: RouteObject[] = [
 							</AppLayout>
 						)
 					},
-					// {
-					// 	path: GAPS_EMPLOYEE_EMP_DETAIL,
-					// 	element: (
-					// 		<AppLayout
-					// 			allowedRoles={[
-					// 				Roles.HR_WORKER,
-					// 			]}>
-					// 			<VisualizacionBrechasEmpleado />
-					// 		</AppLayout>
-					// 	)
-					// },
+					{
+						path: GAPS_EMPLOYEE_EMP_DETAIL,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_WORKER,
+								]}>
+								<VisualizacionBrechasEmpleadoDetalle />
+							</AppLayout>
+						)
+					},
 				]
 			},
 			{
