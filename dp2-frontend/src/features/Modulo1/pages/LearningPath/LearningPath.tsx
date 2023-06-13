@@ -4,10 +4,11 @@ import '../../content/common.css';
 import axiosInt from '@config/axios';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import Sidebar from '@components/Sidebar';
-import sidebarItems from '@utils/sidebarItems'
+import sidebarItems from '../../utils/sidebarItems';
 import PictureUpload from '@features/Modulo1/components/PictureUpload';
 import Rate from '@features/Modulo1/components/Rate';
 import { ThreeDotsVertical, People, Clock } from 'react-bootstrap-icons'
+import Layout from "@layout/default/index";
 
 
 function LearningPath (props: any)
@@ -99,7 +100,8 @@ function LearningPath (props: any)
 
     return (
         <>
-            <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'>
+            {/* <Layout title="Grupo 1 App" content="container"> */}
+            {/* <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'> */}
                 {
                     loading ?
                         <>
@@ -134,7 +136,7 @@ function LearningPath (props: any)
                                     <input className="form-control" type="text" placeholder="Buscar" onChange={handleFilter} />
                                 </div>
                             </div>
-                            <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 align-items-stretch g-3 py-3'>
+                            <div className='row row-cols-1 row-cols-sm-2 row-cols-lg-3 align-items-stretch g-3 py-3'>
                                 {
                                     lpsFiltered.map((lp: {
                                         id: number,
@@ -149,19 +151,19 @@ function LearningPath (props: any)
                                         return <Fragment key={i}>
                                             <div className='col'>
                                                 <div className="card h-100">
-                                                    <div className="card-header lp-header justify-content-between d-flex px-2">
-                                                        <img className="rounded-circle border lp-thumb me-3" src={lp.url_foto} alt="..." />
-                                                        <div className="align-self-center">
-                                                            <h6 className="card-title">{lp.nombre}</h6>
-                                                        </div>
-                                                        <button className='btn btn-link'>
-                                                            <ThreeDotsVertical />
-                                                        </button>
-                                                    </div>
+                                                    <img src={lp.url_foto} className="card-img-top lp-card-img" alt="Card" />
                                                     <div className="card-body">
-                                                        <p className="card-text lp-description-wrap opacity-50"><small>{lp.descripcion}</small></p>
+                                                        <div className="lp-header justify-content-between d-flex">
+                                                            <div className="align-self-center">
+                                                                <h6 className="card-title">{lp.nombre}</h6>
+                                                            </div>
+                                                            <button className='btn btn-link'>
+                                                                <ThreeDotsVertical />
+                                                            </button>
+                                                        </div>
+                                                        <p className='mb-0'><small className="opacity-50">{lp.descripcion}</small></p>
                                                     </div>
-                                                    <div className="card-footer lp-footer">
+                                                    <div className="card-footer pb-3 lp-footer">
                                                         <div className='d-flex mb-3'>
                                                             <Clock className='align-self-center me-3' />
                                                             <div className='w-100 d-flex justify-content-between'>
@@ -208,7 +210,9 @@ function LearningPath (props: any)
                             }
                         </>
                 }
-            </Sidebar>
+            {/* </Sidebar> */}
+            {/* </Layout> */}
+            
             <div className="modal fade" id="createLPModalChoose" aria-hidden="true" aria-labelledby="createLPModalChoose" tabIndex={-1}>
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
@@ -271,7 +275,7 @@ function LearningPath (props: any)
                         </div>
                         <div className="modal-footer d-flex justify-content-between">
                             <span></span>
-                            <button className="btn btn-primary" data-bs-target="#createLPModal" data-bs-toggle="modal" onClick={createLP}>Crear</button>
+                            <button className="btn btn-primary" data-bs-target="#createLPModal" data-bs-toggle="modal" onClick={createLP}>Crear ruta de aprendizaje</button>
                         </div>
                     </div>
                 </div>

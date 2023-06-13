@@ -1,17 +1,23 @@
+import { Spinner } from "react-bootstrap";
 
 const LoadingScreen = () => {
   return (
-    <div className="vertical-align-parent"
-      style={{ height: "calc(100vh - 4rem)" }}>
-      <div className="vertical-align-child">
-        <div className="spinner-border"
-          role="status"
-          style={{ display: "block", marginLeft: "auto", marginRight: "auto" }}>
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>
-    </div>
-  );
+		<div style={{ height: "50vh", position: "relative" }}>
+			<div
+				style={{
+					margin: 0,
+					position: "absolute",
+					top: "50%",
+					left: "50%",
+					msTransform: 'translate(-50%, 50%)',
+					transform: 'translate(-50%, -50%)'
+				}}>
+				<div>
+					<Spinner color="dark" />
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default LoadingScreen;

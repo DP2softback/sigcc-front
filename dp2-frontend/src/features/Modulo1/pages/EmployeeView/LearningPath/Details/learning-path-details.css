@@ -1,3 +1,38 @@
 .lp-detail-rate {
-    height: 1.5rem!important;
+    height: 1.5rem !important;
+}
+
+.circulo {
+    /* border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid #0D6EFD;
+    color: #0D6EFD;
+    display: flex;
+    justify-content: center;
+    align-items: center; */
+
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0D6EFD;
+    border: 1px solid #0D6EFD;
+}
+
+.circulo:hover {
+    cursor: pointer;
+}
+
+.activo {
+    background-color: #0D6EFD;
+    color: white;
+}
+
+.linea {
+    height: 1px;
+    background-color: #0D6EFD;
+    margin: 0 3rem;
 }

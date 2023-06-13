@@ -1,32 +1,38 @@
 import { useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionDeDesempenho.css';
 import { PERFORMANCE_EVALUATION_INDEX, PERFORMANCE_EVALUATION_CREATE } from '@features/Modulo3/routes/path';
-import { navigateTo, formatDashboardJson, navigateBack } from '@features/Modulo3/utils/functions';
+import { navigateTo, formatDashboardJson } from '@features/Modulo3/utils/functions';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons'
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
-import TableHistoryContinua from '@features/Modulo3/components/Tables/TableHistoryContinua';
 import { getEvaluationsHistory, getEmployeeEvaluationDashboard } from '@features/Modulo3/services/performanceEvaluation';
 import Linechart from '@features/Modulo3/components/Charts/Linechart/Linechart';
+import ModalChooseTemplate from '@features/Modulo3/components/Modals/ModalChooseTemplate';
+import TableHistoryDesempenho from '@features/Modulo3/components/Tables/TableHistoryDesempenho';
+import { PERFORMANCE_EVALUATION_TYPE } from '@features/Modulo3/utils/constants';
 
 const History = () => {
   const urlParams = new URLSearchParams(window.location.search);
-  const employeeId = parseInt(urlParams.get('id'));
+
+  const [employee, setEmployee] = useState({
+    id: parseInt(urlParams.get('id')),
+    name: urlParams.get('name')
+  });
   const [evaluations, setEvaluations] = useState([]);
   const [dashboard, setDashboard] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [show,setShow] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-      const responseEvaluation = await getEvaluationsHistory(employeeId);
+      const responseEvaluation = await getEvaluationsHistory(employee.id);
       if(responseEvaluation) setEvaluations(responseEvaluation);
 
-      const responseDashboard = await getEmployeeEvaluationDashboard(employeeId);
+      const responseDashboard = await getEmployeeEvaluationDashboard(employee.id);
       if(responseDashboard) setDashboard(formatDashboardJson(responseDashboard));
       
       setIsLoading(false);
@@ -65,32 +71,33 @@ const History = () => {
 
   const table =(
     <div className='col-md-6'>
-      <TableHistoryContinua rows ={evaluations}></TableHistoryContinua>
+      <TableHistoryDesempenho rows ={evaluations} employee={employee}/>
     </div>
   );
+
 
   const content = (
     <>
       {evaluations && evaluations.length > 0 ? (
-        <>
+        <div className='row mt-32'>
           {table}
           {chart}
-        </>
+        </div>
       ) : (
         <NoDataFound />
       )}
-      <div className='text-end mb-4'>
+      <div className='text-end'>
         <Button
           variant='outline-primary me-2'
           onClick={() => {
-            navigateBack();
+            navigateTo(PERFORMANCE_EVALUATION_INDEX);
           }}
         >
           Volver
         </Button>
         <Button
           onClick={() => {
-            navigateTo(PERFORMANCE_EVALUATION_CREATE, { id: employeeId });
+            setShow(true);
           }}
         >
           Agregar nueva evaluación
@@ -100,19 +107,31 @@ const History = () => {
   );
 
   const body = (
-    <Section title={'Evaluaciones'} content={isLoading ? <LoadingScreen/> : content} filters={filters}/>
+    <Section
+      title={"Evaluaciones"}
+      content={isLoading ? <LoadingScreen/> : content}
+      filters={filters}
+    />
   );
 
   return (
-    <div>
-      <Layout
-        title={'Evaluación de desempeño - Angela Quispe Ramírez'}
-        body={body}
-        route={PERFORMANCE_EVALUATION_INDEX}
-        subtitle='Evaluaciones continuas de Angela Quispe Ramírez.'
-      />
-    </div>
-  );
+		<div>
+			<ModalChooseTemplate
+				show={show}
+				setShow={setShow}
+				tipo={PERFORMANCE_EVALUATION_TYPE}
+				employeeId={employee.id}
+				employeeName={employee.name}
+				navigate={PERFORMANCE_EVALUATION_CREATE}
+			/>
+			<Layout
+				title={`Evaluación de desempeño - ${employee.name}`}
+				body={body}
+				route={PERFORMANCE_EVALUATION_INDEX}
+				subtitle={`Evaluaciones de desempeño ${employee.name}.`}
+			/>
+		</div>
+	);
 };
 
 export default History;

@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
 import { CONTINUOS_EVALUATION_CREATE, CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
-import { navigateTo, formatDashboardJson, navigateBack } from '@features/Modulo3/utils/functions';
+import { formatDashboardJson, navigateTo } from '@features/Modulo3/utils/functions';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons'
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
@@ -17,21 +16,23 @@ import { CONTINUOS_EVALUATION_TYPE } from '@features/Modulo3/utils/constants';
 
 const History = () => {
   const urlParams = new URLSearchParams(window.location.search);
-  
-  const employeeId = parseInt(urlParams.get('id'));
-  const employeeName = urlParams.get('name');
 
+  const [employee, setEmployee] = useState({
+    id: parseInt(urlParams.get('id')),
+    name: urlParams.get('name')
+  });
   const [evaluations, setEvaluations] = useState([]);
   const [dashboard, setDashboard] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [show,setShow]=useState(false);
+  const [show,setShow] = useState(false);
+
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-      const responseEvaluation = await getEvaluationsHistory(employeeId);
+      const responseEvaluation = await getEvaluationsHistory(employee.id);
       if(responseEvaluation) setEvaluations(responseEvaluation);
 
-      const responseDashboard = await getEmployeeEvaluationDashboard(employeeId);
+      const responseDashboard = await getEmployeeEvaluationDashboard(employee.id);
       if(responseDashboard) setDashboard(formatDashboardJson(responseDashboard));
       
       setIsLoading(false);
@@ -70,7 +71,7 @@ const History = () => {
 
   const table =(
     <div className='col-md-6'>
-      <TableHistoryContinua rows ={evaluations}></TableHistoryContinua>
+      <TableHistoryContinua rows ={evaluations} employee={employee}/>
     </div>
   );
 
@@ -84,18 +85,17 @@ const History = () => {
       ) : (
         <NoDataFound />
       )}
-      <div className='text-end mb-4'>
+      <div className='text-end'>
         <Button
           variant='outline-primary me-2'
           onClick={() => {
-            navigateBack();
+            navigateTo(CONTINUOS_EVALUATION_INDEX);
           }}
         >
           Volver
         </Button>
         <Button
           onClick={() => {
-            //navigateTo(CONTINUOS_EVALUATION_CREATE, { id: employeeId, name: employeeName });
             setShow(true);
           }}
         >
@@ -114,16 +114,22 @@ const History = () => {
   );
 
   return (
-    <div>
-      <ModalChooseTemplate show={show} setShow={setShow} tipo={CONTINUOS_EVALUATION_TYPE} employeeId={employeeId} employeeName={employeeName}></ModalChooseTemplate>
-      <Layout
-        title={`Evaluación continua - ${employeeName}`}
-        body={body}
-        route={CONTINUOS_EVALUATION_INDEX}
-        subtitle={`Evaluaciones continuas de ${employeeName}.`}
-      />
-    </div>
-  );
+		<div>
+			<ModalChooseTemplate
+				show={show}
+				setShow={setShow}
+				tipo={CONTINUOS_EVALUATION_TYPE}
+				employeeId={employee.id}
+				employeeName={employee.name}
+        navigate={CONTINUOS_EVALUATION_CREATE}/>
+			<Layout
+				title={`Evaluación continua - ${employee.name}`}
+				body={body}
+				route={CONTINUOS_EVALUATION_INDEX}
+				subtitle={`Evaluaciones continuas de ${employee.name}.`}
+			/>
+		</div>
+	);
 };
 
 export default History;

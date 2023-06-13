@@ -161,7 +161,7 @@ class LearningPathAssignment extends Component<
         return (
             <>
                 <div id="assignmentModal" className="modal">
-                    <div className="modal-dialog modal-xl">
+                    <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">Asignar empleados</h5>
@@ -197,7 +197,7 @@ class LearningPathAssignment extends Component<
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button ref={this.refCloseModal} type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+                                <button ref={this.refCloseModal} type="button" className="btn btn-light" data-bs-dismiss="modal">
                                     Cancelar
                                 </button>
                                 <button type="button" className="btn btn-primary" onClick={this.handleAssignmentClick.bind(this)}>
