@@ -37,7 +37,6 @@ export default function TableCategories({ rows, isReadOnly = false }) {
                 <Button variant="outline-primary" className='accion'>
                   Editar
                 </Button>
-
                 <Button variant="outline-secondary" className='accion' onClick={() => {
                     navigateTo(CATEGORIES_DETAIL, {
                       id: row.id,
