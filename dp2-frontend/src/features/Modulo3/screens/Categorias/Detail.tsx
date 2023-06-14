@@ -7,7 +7,7 @@ import TableCategories from '@features/Modulo3/components/Tables/TableCategories
 import Linechart from '@features/Modulo3/components/Charts/Linechart/Linechart';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
-import cat from '@features/Modulo3/jsons/categories';
+import cat from '@features/Modulo3/jsons/Categories';
 import { CATEGORIES_DETAIL, CATEGORIES_INDEX } from '@features/Modulo3/routes/path';
 import TableCompetencia from '@features/Modulo3/components/Tables/TableCompetencia';
 

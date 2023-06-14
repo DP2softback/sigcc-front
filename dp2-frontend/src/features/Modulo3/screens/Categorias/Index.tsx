@@ -6,7 +6,7 @@ import Section from '@features/Modulo3/components/Layout/Section/Section';
 import TableCategories from '@features/Modulo3/components/Tables/TableCategories';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
-import cat from '@features/Modulo3/jsons/categories';
+import cat from '@features/Modulo3/jsons/Categories';
 import { CATEGORIES_INDEX } from '@features/Modulo3/routes/path';
 import '../EvaluacionContinua/EvaluacionContinua.css';
 const Index = () => {
