@@ -62,6 +62,13 @@ const ReporteEvaluacionContinua = Loader(
 const ReporteEvaluacionDesempenho = Loader(
 	lazy(() => import("@features/Modulo3/screens/Reportes/IndexEvaluacionDesempenho"))
 );
+const CategoriesIndex = Loader(
+	lazy(()=> import("@features/Modulo3/screens/Categorias/Index"))
+  ); 
+  
+  const CategoriesDetail = Loader(
+	lazy(()=> import("@features/Modulo3/screens/Categorias/Detail"))
+  );
 
 export const routes: RouteObject[] = [
 	{
@@ -248,6 +255,39 @@ export const routes: RouteObject[] = [
 					}
 				]
 			},
+			{
+				path: "categorias",
+				children:[
+				  {
+					path: "index",
+					element:(
+						<AppLayout
+							allowedRoles={[
+								Roles.HR_ADMIN,
+								Roles.HR_MANAGER,
+								Roles.HR_WORKER,
+								Roles.CANDIDATE
+							]}>
+							<CategoriesIndex />
+						</AppLayout>
+					)
+				  },
+				  {
+					path: "detail",
+					element:(
+						<AppLayout
+							allowedRoles={[
+								Roles.HR_ADMIN,
+								Roles.HR_MANAGER,
+								Roles.HR_WORKER,
+								Roles.CANDIDATE
+							]}>
+							<CategoriesDetail />
+						</AppLayout>
+					)
+				  },
+				],
+			  },
 			{
 				path: "report",
 				children: [
