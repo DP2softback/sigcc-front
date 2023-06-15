@@ -18,7 +18,7 @@ const JobOpportunityCard = (props) => {
                 </div>
                 <div className='col-6'>
                     <div className='row title-job-opp'>
-                        {jobOpportunity.title}
+                        {jobOpportunity.introduction}
                     </div>
                     <div className='row availability-job-opp'>
                         {jobOpportunity.availability}

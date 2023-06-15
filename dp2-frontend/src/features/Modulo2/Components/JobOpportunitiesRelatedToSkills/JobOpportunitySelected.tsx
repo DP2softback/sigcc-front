@@ -1,7 +1,9 @@
 import React from 'react'
 
 
-const JobOpportunitySelected = () => {
+const JobOpportunitySelected = (props) => {
+
+    const { jobOpp } = props;
 
     return (
         <div className='container'>
