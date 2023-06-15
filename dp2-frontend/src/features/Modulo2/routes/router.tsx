@@ -13,6 +13,9 @@ import {
 	GAPS_EMPLOYEE_EMP_DETAIL,
 	MY_JOB_OPPORTUNITIES,
 	EMPLOYEES_JOB_CANDIDATES,
+	GAPS_EMPLOYEES_AREA,
+	GAPS_EMPLOYEES_AREA_DETAIL,
+	GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE,
 	INDEX
 } from "./path";
 
@@ -121,7 +124,54 @@ export const routes: RouteObject[] = [
 									Roles.GENERAL_MANAGER,
 									Roles.HR_WORKER,
 								]}>
-								<ConsolidadoCompetencias />
+								<span>Meter aqui el detalle del empleado empleados</span>
+							</AppLayout>
+						)
+					},
+				]
+			},
+			{
+				path: GAPS_EMPLOYEES_AREA,
+				children: [
+					{
+						path: INDEX,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.GENERAL_MANAGER,
+									Roles.HR_WORKER,
+									Roles.HEAD_OF_AREA,
+								]}>
+								<span>Meter aqui el index de area</span>
+							</AppLayout>
+						)
+					},
+					{
+						path: GAPS_EMPLOYEES_AREA_DETAIL,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.GENERAL_MANAGER,
+									Roles.HR_WORKER,
+									Roles.HEAD_OF_AREA,
+								]}>
+								<span>Meter aqui el detalle por puesto de empleados</span>
+							</AppLayout>
+						)
+					},
+					{
+						path: GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.GENERAL_MANAGER,
+									Roles.HR_WORKER,
+									Roles.HEAD_OF_AREA,
+								]}>
+								<span>Meter aqui el detalle del empleado empleados</span>
 							</AppLayout>
 						)
 					},
