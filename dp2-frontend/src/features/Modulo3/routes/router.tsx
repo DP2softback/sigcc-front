@@ -66,9 +66,14 @@ const CategoriesIndex = Loader(
 	lazy(()=> import("@features/Modulo3/screens/Categorias/Index"))
   ); 
   
-  const CategoriesDetail = Loader(
-	lazy(()=> import("@features/Modulo3/screens/Categorias/Detail"))
-  );
+const CategoriesDetail = Loader(
+lazy(()=> import("@features/Modulo3/screens/Categorias/Detail"))
+);
+
+const CategoriesCreate = Loader(
+lazy(()=> import("@features/Modulo3/screens/Categorias/Create"))
+);
+
 
 export const routes: RouteObject[] = [
 	{
@@ -283,6 +288,20 @@ export const routes: RouteObject[] = [
 								Roles.CANDIDATE
 							]}>
 							<CategoriesDetail />
+						</AppLayout>
+					)
+				  },
+				  {
+					path: "create",
+					element:(
+						<AppLayout
+							allowedRoles={[
+								Roles.HR_ADMIN,
+								Roles.HR_MANAGER,
+								Roles.HR_WORKER,
+								Roles.CANDIDATE
+							]}>
+							<CategoriesCreate />
 						</AppLayout>
 					)
 				  },
