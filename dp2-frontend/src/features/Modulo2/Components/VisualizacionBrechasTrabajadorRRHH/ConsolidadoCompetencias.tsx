@@ -48,7 +48,7 @@ const PieChart = ({ title, labels, datasets }) => {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
+                Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
               },
             });
     
