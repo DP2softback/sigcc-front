@@ -304,6 +304,15 @@ const IndexEvaluacionContinua = () => {
   };
 
   const handleButtonExportClick = async () => {
+    if(searchParams.fechaInicio === null || searchParams.fechaFin === null) {
+      toast.warn("Debe seleccionar un rango de fechas");
+      return;
+    }
+    if(searchParams.fechaInicio > searchParams.fechaFin) {
+      toast.warn("La fecha de inicio no puede ser mayor a la fecha de fin");
+      return;
+    }
+
     const chartElement = document.getElementById('chart-container');
 
     // Captura el contenido del componente como una imagen utilizando dom-to-image
@@ -312,15 +321,23 @@ const IndexEvaluacionContinua = () => {
     // Crea un nuevo objeto PDF
     const doc = new jsPDF();
 
+    // Agrega un título 
+    doc.setFontSize(22);
+    doc.text('Reporte de Evaluación Continua', 10, 10);
+
+    // Agrega un subtítulo
+    doc.setFontSize(16);
+    doc.text(`Periodo: ${searchParams.fechaInicio.toISOString().split('T')[0]} a ${searchParams.fechaFin.toISOString().split('T')[0]}`, 10, 20);
+
     // Calcula las dimensiones de la imagen en el documento PDF
     const pdfWidth = doc.internal.pageSize.getWidth();
     const pdfHeight = (chartElement.offsetHeight / chartElement.offsetWidth) * pdfWidth;
 
     // Agrega la imagen al documento PDF
-    doc.addImage(imageDataUrl, 'PNG', 10, 10, pdfWidth - 20, pdfHeight - 20);
+    doc.addImage(imageDataUrl, 'PNG', 10, 30, pdfWidth - 20, pdfHeight - 20);
 
     // Descarga el archivo PDF
-    doc.save('Reporte.pdf');
+    doc.save('Reporte Evaluacion Continua.pdf');
   };
   
   const sortMonths = (data: DataLineChart) => {
