@@ -6,7 +6,8 @@ import { useLocation } from 'react-router-dom';
 
 const GestionCompetencia = () => {
   const location = useLocation();
-  const { usuario } = location.state;
+  //const { usuario } = location.state;
+  console.log(location.state)
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [nombreEmpleado, setNombreEmpleado] = useState('Ángela Quispe Ramírez');
     const [cargoEmpleado, setCargoEmpleado] = useState('Supervisor - Ärea de TI');
