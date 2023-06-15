@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./EvaluacionContinua.css";
 import BaseForm from "./BaseForm";
 import { useEffect, useState } from "react";

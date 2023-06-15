@@ -87,7 +87,11 @@ const Read = () => {
     };
 
     const limpiarFiltros = () => {
-        setPalabrasClave('')
+        setPalabrasClave('');
+        setTipoCompetenciaSelected({
+            id: -1,
+            name: "Tipos de competencia"
+        });
         setTipoCompetenciaString('');
     };
 
