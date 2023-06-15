@@ -66,6 +66,25 @@ const DetalleCompetenciasArea = Loader(
 	lazy(() => import("@features/Modulo2/Components/VisualizacionBrechasTrabajadorRRHH/DetalleCompetenciasArea"))
 );
 
+const ConsolidadoCompetenciasAM = Loader(
+	lazy(() => import("@features/Modulo2/Components/JobStatisticsAreaManager/ConsolidadoCompetencias"))
+);
+
+const DetalleCompetenciaPuesto= Loader(
+	lazy(() => import("@features/Modulo2/Components/JobStatisticsAreaManager/DetalleCompetenciasArea"))
+);
+
+const GestionCompetenciaEmpleadoAM = Loader(
+	lazy(() => import("@features/Modulo2/Components/JobStatisticsAreaManager/GestionCompetencias"))
+);
+
+const GestionCompetenciaEmpleado = Loader(
+	lazy(() => import("@features/Modulo2/Components/VisualizacionBrechasTrabajadorRRHH/GestionCompetencias"))
+);
+
+//ConsolidadoCompetenciasAM
+//GestionCompetencia
+
 export const routes: RouteObject[] = [
 	{
 		path: GAPS_ANALYSIS_MODULE,
@@ -124,7 +143,7 @@ export const routes: RouteObject[] = [
 									Roles.GENERAL_MANAGER,
 									Roles.HR_WORKER,
 								]}>
-								<span>Meter aqui el detalle del empleado empleados</span>
+								<GestionCompetenciaEmpleado/>
 							</AppLayout>
 						)
 					},
@@ -143,7 +162,7 @@ export const routes: RouteObject[] = [
 									Roles.HR_WORKER,
 									Roles.HEAD_OF_AREA,
 								]}>
-								<span>Meter aqui el index de area</span>
+								<ConsolidadoCompetenciasAM/>
 							</AppLayout>
 						)
 					},
@@ -157,7 +176,7 @@ export const routes: RouteObject[] = [
 									Roles.HR_WORKER,
 									Roles.HEAD_OF_AREA,
 								]}>
-								<span>Meter aqui el detalle por puesto de empleados</span>
+								<DetalleCompetenciaPuesto/>
 							</AppLayout>
 						)
 					},
@@ -171,7 +190,7 @@ export const routes: RouteObject[] = [
 									Roles.HR_WORKER,
 									Roles.HEAD_OF_AREA,
 								]}>
-								<span>Meter aqui el detalle del empleado empleados</span>
+								<GestionCompetenciaEmpleadoAM/>
 							</AppLayout>
 						)
 					},
