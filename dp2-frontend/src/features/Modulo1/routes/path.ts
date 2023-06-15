@@ -3,6 +3,7 @@ export const TRAINING_MANAGMENT_MODULE = 'modulo1';
 /*---- Ruta de Aprendizaje -----*/
 export const LEARNING_PATH_INDEX = 'rutadeaprendizaje';
 export const LEARNING_PATH_ADDCOURSE = 'curso/agregar/:learningPathId';
+export const LEARNING_PATH_ADDCOURSECE = 'curso/agregar/ce/:learningPathId';
 export const LEARNING_PATH_DETAIL = 'detalle/:learningPathId';
 export const LEARNING_PATH_ASSIGNMENT = 'asignacion/:learningPathId';
 export const LEARNING_PATH_EVALUATION_DETAILS = 'detalle/:learningPathId/evalintegral';
