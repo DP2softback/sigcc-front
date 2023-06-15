@@ -1,6 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
 import './learning-path-details.css';
-import learningPathDetails from './learningPathDetails.json';
 import { Link, useParams } from 'react-router-dom';
 import axiosInt from '@config/axios';
 import Sidebar from '@components/Sidebar';
@@ -158,154 +157,162 @@ function LearningPathDetails (props: any)
     return (
         <>
             {/* <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'> */}
-                {
-                    loading ?
-                        <>
-                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
-                                <div className='vertical-align-child'>
-                                    <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
-                                        <span className="visually-hidden">Loading...</span>
+            {
+                loading ?
+                    <>
+                        <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                            <div className='vertical-align-child'>
+                                <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                    <span className="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </> :
+                    <>
+                        <div className='d-flex border-bottom'>
+                            <h1><ArrowLeftCircleFill onClick={goBack} className='me-3' /></h1>
+                            <div className='row w-100'>
+                                <div className='col-xs-12 col-md-6 col-xl-8'>
+                                    <div>
+                                        <h1><span className='align-middle'>{lpName}</span></h1>
+                                    </div>
+                                    <div>
+                                        <p><small className='opacity-50'>{lpDescription}.</small></p>
+                                    </div>
+                                </div>
+                                <div className='col-xs-12 col-md-6 col-xl-4'>
+                                    <div className='d-flex mb-3'>
+                                        <img className="rounded-circle lp-thumb me-3" src={lpPhoto} alt="..." />
+                                        <div className='w-100 align-self-center'>
+                                            <div className='d-flex'>
+                                                <People className='align-self-center me-3' />
+                                                <div className='w-100 d-flex justify-content-between'>
+                                                    <span>Inscritos: </span>
+                                                    <small className='fw-bold'>{lpParticipants}</small>
+                                                </div>
+                                            </div>
+                                            <div className='d-flex'>
+                                                <BarChart className='align-self-center me-3' />
+                                                <div className='w-100 d-flex justify-content-between'>
+                                                    <span className='align-self-center'>Valoración: </span>
+                                                    <Rate className='lp-detail-rate' disabled={true} rate={lpRate} />
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </> :
-                        <>
-                            <div className='d-flex border-bottom'>
-                                <h1><ArrowLeftCircleFill onClick={goBack} className='me-3' /></h1>
-                                <div className='row w-100'>
-                                    <div className='col-xs-12 col-md-6 col-xl-8'>
-                                        <div>
-                                            <h1><span className='align-middle'>{lpName}</span></h1>
-                                        </div>
-                                        <div>
-                                            <p><small className='opacity-50'>{lpDescription}.</small></p>
-                                        </div>
-                                    </div>
-                                    <div className='col-xs-12 col-md-6 col-xl-4'>
-                                        <div className='d-flex mb-3'>
-                                            <img className="rounded-circle lp-thumb me-3" src={lpPhoto} alt="..." />
-                                            <div className='w-100 align-self-center'>
-                                                <div className='d-flex'>
-                                                    <People className='align-self-center me-3' />
-                                                    <div className='w-100 d-flex justify-content-between'>
-                                                        <span>Inscritos: </span>
-                                                        <small className='fw-bold'>{lpParticipants}</small>
-                                                    </div>
-                                                </div>
-                                                <div className='d-flex'>
-                                                    <BarChart className='align-self-center me-3' />
-                                                    <div className='w-100 d-flex justify-content-between'>
-                                                        <span className='align-self-center'>Valoración: </span>
-                                                        <Rate className='lp-detail-rate' disabled={true} rate={lpRate} />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        </div>
+                        <div className='pt-3 d-flex gap-2 w-100 justify-content-between'>
+                            <h4>Cursos seleccionados</h4>
+                            <div className="dropdown">
+                                <button className="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Agregar cursos
+                                </button>
+                                <ul className="dropdown-menu">
+                                    <li><Link to={`/modulo1/curso/agregar/${learningPathId}`} className="dropdown-item">Curso de Udemy</Link></li>
+                                    <li><Link to={`/modulo1/curso/agregar/ce/${learningPathId}`} className="dropdown-item">Curso específico</Link></li>
+                                </ul>
                             </div>
-                            <div className='pt-3 d-flex gap-2 w-100 justify-content-between'>
-                                <h4>Cursos seleccionados</h4>
-                                <Link to={`/modulo1/curso/agregar/${learningPathId}`} className='btn btn-primary'>Agregar cursos</Link>
-                            </div>
-                            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 align-items-stretch g-3 py-3">
-                                {
-                                    courses.map((course: any, index: number) => (
-                                        <div className='col' key={course.course_udemy_detail.id}>
-                                            <div className="card h-100">
-                                                <img
-                                                    src={course.course_udemy_detail.image_480x270}
-                                                    className="card-img-top lp-card-img"
-                                                    alt="Card"
-                                                />
-                                                <div className="card-body">
-                                                    <h6 className="card-title">{course.course_udemy_detail.title}</h6>
-                                                    <p className='mb-0'><small className="opacity-50">{course.course_udemy_detail.headline}</small></p>
-                                                </div>
-                                                <div className="card-footer pb-3 lpd-footer">
-                                                    {
-                                                        coursesQuizStatuses[index] == 0 ?
-                                                            <>
-                                                                <div className="d-flex justify-content-center">
-                                                                    <div className="spinner-border spinner-border-sm me-1" role="status">
-                                                                        <span className="visually-hidden">Cargando...</span>
-                                                                    </div>
-                                                                    <div>
-                                                                        <p style={{ marginTop: '-0.25rem' }}>
-                                                                            <small>Generando evaluación</small>
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            </> :
-                                                            <>
-                                                                <button type="button" className="btn btn-primary w-100 mb-3" data-bs-toggle="modal" data-bs-target={`#quizGeneratorModal${course.id}`}>Validar cuestionario</button>
-                                                                <QuizGenerator title={course.title} quizId={course.id} />
-                                                            </>
-                                                    }
-                                                    <button className="btn btn-danger w-100" onClick={(e) => handleRemoveCard(e, course.id)}>
-                                                        <span className="spinner-border spinner-border-sm hidden me-3" role="status" aria-hidden="true"></span>
-                                                        Eliminar curso
-                                                    </button>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    ))}
-                                {
-                                    courses.length === 0 && <>
-                                        <div className='col'>
-                                            <div className='card'>
-                                                <div className='card-body'>
-                                                    <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                        <div className='vertical-align-child'>
-                                                            <h5 className='opacity-50 text-center'>Agrega un curso para empezar</h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </>
-                                }
-                            </div>
-                            <div className='border-top pt-3 d-flex gap-2 w-100 justify-content-between'>
-                                <h4>Empleados asignados</h4>
-                                <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#assignmentModal">Asignar empleados</button>
-                            </div>
-                            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 align-items-stretch g-3 pt-3">
-                                {employees.map((employee: any) => (
-                                    <div className="col" key={employee.id}>
+                        </div>
+                        <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 align-items-stretch g-3 py-3">
+                            {
+                                courses.map((course: any, index: number) => (
+                                    <div className='col' key={course.course_udemy_detail.id}>
                                         <div className="card h-100">
+                                            <img
+                                                src={course.course_udemy_detail.image_480x270}
+                                                className="card-img-top lp-card-img"
+                                                alt="Card"
+                                            />
                                             <div className="card-body">
-                                                <h6 className="card-title">{employee.first_name} {employee.last_name}</h6>
-                                                <p className='mb-0'><small className="opacity-50">{employee.email}</small></p>
-                                                {/* <button
+                                                <h6 className="card-title">{course.course_udemy_detail.title}</h6>
+                                                <p className='mb-0'><small className="opacity-50">{course.course_udemy_detail.headline}</small></p>
+                                            </div>
+                                            <div className="card-footer pb-3 lpd-footer">
+                                                {
+                                                    coursesQuizStatuses[index] == 0 ?
+                                                        <>
+                                                            <div className="d-flex justify-content-center">
+                                                                <div className="spinner-border spinner-border-sm me-1" role="status">
+                                                                    <span className="visually-hidden">Cargando...</span>
+                                                                </div>
+                                                                <div>
+                                                                    <p style={{ marginTop: '-0.25rem' }}>
+                                                                        <small>Generando evaluación</small>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </> :
+                                                        <>
+                                                            <button type="button" className="btn btn-primary w-100 mb-3" data-bs-toggle="modal" data-bs-target={`#quizGeneratorModal${course.id}`}>Validar cuestionario</button>
+                                                            <QuizGenerator title={course.title} quizId={course.id} />
+                                                        </>
+                                                }
+                                                <button className="btn btn-danger w-100" onClick={(e) => handleRemoveCard(e, course.id)}>
+                                                    <span className="spinner-border spinner-border-sm hidden me-3" role="status" aria-hidden="true"></span>
+                                                    Eliminar curso
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                ))}
+                            {
+                                courses.length === 0 && <>
+                                    <div className='col'>
+                                        <div className='card'>
+                                            <div className='card-body'>
+                                                <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                    <div className='vertical-align-child'>
+                                                        <h5 className='opacity-50 text-center'>Agrega un curso para empezar</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            }
+                        </div>
+                        <div className='border-top pt-3 d-flex gap-2 w-100 justify-content-between'>
+                            <h4>Empleados asignados</h4>
+                            <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#assignmentModal">Asignar empleados</button>
+                        </div>
+                        <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 align-items-stretch g-3 pt-3">
+                            {employees.map((employee: any) => (
+                                <div className="col" key={employee.id}>
+                                    <div className="card h-100">
+                                        <div className="card-body">
+                                            <h6 className="card-title">{employee.first_name} {employee.last_name}</h6>
+                                            <p className='mb-0'><small className="opacity-50">{employee.email}</small></p>
+                                            {/* <button
                                                     className="btn btn-danger"
                                                     onClick={() => handleRemoveCard(employee.id)}
                                                 >
                                                     Quitar
                                                 </button> */}
-                                            </div>
                                         </div>
                                     </div>
-                                ))}
-                                {
-                                    employees.length === 0 && <>
-                                        <div className='col'>
-                                            <div className='card'>
-                                                <div className='card-body'>
-                                                    <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                        <div className='vertical-align-child'>
-                                                            <h5 className='opacity-50 text-center'>Agrega empleados para empezar</h5>
-                                                        </div>
+                                </div>
+                            ))}
+                            {
+                                employees.length === 0 && <>
+                                    <div className='col'>
+                                        <div className='card'>
+                                            <div className='card-body'>
+                                                <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                    <div className='vertical-align-child'>
+                                                        <h5 className='opacity-50 text-center'>Agrega empleados para empezar</h5>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </>
-                                }
-                            </div>
-                        </>
-                }
+                                    </div>
+                                </>
+                            }
+                        </div>
+                    </>
+            }
             {/* </Sidebar> */}
             <LearningPathAssignment assignFunction={handleAssignEmployees} />
             {
