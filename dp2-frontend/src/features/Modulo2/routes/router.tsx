@@ -124,7 +124,7 @@ export const routes: RouteObject[] = [
 									Roles.GENERAL_MANAGER,
 									Roles.HR_WORKER,
 								]}>
-								<ConsolidadoCompetencias />
+								<span>Meter aqui el detalle del empleado empleados</span>
 							</AppLayout>
 						)
 					},
