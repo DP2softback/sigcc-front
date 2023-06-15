@@ -1,7 +1,7 @@
 import './Section.css'
 
 type SectionProps = {
-  title: string,
+  title?: string,
   content: any,
   filters?: any,
   sectionStyle?: any,
@@ -13,8 +13,8 @@ type SectionProps = {
 const Section = ({ title, content, filters, sectionStyle, titleStyle, contentStyle, filtersStyle }: SectionProps) => {
   const titleComponent = (
     <div className='row' style={titleStyle}>
-      {title && <div className="col title">{title}</div>}
-      {filters && <div className='col filters' style={filtersStyle}>{filters}</div>}
+      {title && <div className="col-auto title">{title}</div>}
+      {filters && <div className='col text-end' style={filtersStyle}>{filters}</div>}
     </div>
   );
 
@@ -28,7 +28,7 @@ const Section = ({ title, content, filters, sectionStyle, titleStyle, contentSty
 
   return (
     <div className='section row' style={sectionStyle}>
-      {titleComponent}
+      {title && titleComponent}
       {contentComponet}
     </div>
   );

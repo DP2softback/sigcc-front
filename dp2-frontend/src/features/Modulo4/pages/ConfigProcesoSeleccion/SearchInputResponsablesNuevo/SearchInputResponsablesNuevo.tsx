@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
+import FixedHeaderStory from "react-data-table-component";
 
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import {
 	Modal,
 	Form,
@@ -10,145 +13,319 @@ import {
 	ListGroup
 } from "react-bootstrap";
 import "./SearchInputResponsablesNuevo.css";
+import { forEach } from "lodash";
+import {
+	SAMPLE_TOKEN,
+	LOCAL_CONNECTION,
+	GET_ALL_EMPLOYEES
+} from "@features/Modulo4/utils/constants";
+import { ajax } from "@features/Modulo4/tools/ajax";
+import moment from "moment";
 
-const SearchInput = ({ onClose, onSelect }) => {
+const customStylesTablesPersonal = {
+	header: {
+		style: {
+			fontSize: "1rem" // override the row height
+		}
+	}
+};
+
+const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 	const [showModal, setShowModal] = useState(true);
 	const [searchResults, setSearchResults] = useState([]);
 
-	const openModal = () => {
-		// Lógica para abrir el modal y realizar la búsqueda inicial
-		setShowModal(true);
-		//performSearch("ejemplo");
-	};
-
 	const closeModal = () => {
-		// Lógica para cerrar el modal
 		setShowModal(false);
 		onClose();
 	};
 
+	const closeOnSelectModal = () => {
+		onSelect(arrSelectedResponsables);
+		closeModal();
+	};
+
+	// get all trabajadores de RR.HH.
+	const getEmployeesRRHH = async () => {
+		const optionsRequest = {
+			method: "GET",
+			url: LOCAL_CONNECTION + GET_ALL_EMPLOYEES,
+			headers: {
+				Authorization: `Token ${SAMPLE_TOKEN}`
+			}
+		};
+		return await ajax(optionsRequest);
+	};
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const arrEmpCompleto = await getEmployeesRRHH();
+			const arrEmpleados = arrEmpCompleto.map(({ id, user }) => ({
+				id: id,
+				user: user
+			}));
+			console.log("arrEmpleados:", arrEmpleados);
+			setSearchResults(arrEmpleados);
+		};
+
+		fetchData();
+	}, []);
+
 	// proceso de busqueda
 	const [searchQuery, setSearchQuery] = useState("");
 	const [filteredResults, setFilteredResults] = useState([]);
-	const [selectedResult, setSelectedResult] = useState(null);
-	const [resultToSend, setResultToSend] = useState(null);
 
 	useEffect(() => {
-		console.log(searchQuery);
-		// Establecer un temporizador para retrasar la ejecución de la búsqueda después de que el usuario deje de escribir
 		const timer = setTimeout(() => {
 			performSearch(searchQuery);
-		}, 300); // Intervalo de tiempo (en milisegundos) antes de realizar la búsqueda
-
-		// Limpiar el temporizador anterior cada vez que se escriba una nueva entrada
+		}, 300);
 		return () => clearTimeout(timer);
 	}, [searchQuery]);
 
 	const performSearch = (query) => {
-		// Lógica para realizar la búsqueda y actualizar los resultados
-
-		const results = [
-			{ id: 1, nombre: "Puesto 1 - Proceso seleccion", fecha: "A" },
-			{ id: 2, nombre: "Puesto 2 - Proceso seleccion", fecha: "A" },
-			{ id: 3, nombre: "Puesto 3 - Proceso seleccion", fecha: "A" },
-			{ id: 4, nombre: "Puesto 4 - Proceso seleccion", fecha: "A" }
-		];
-		setSearchResults(results);
 		setFilteredResults(
-			searchResults.filter((item) =>
-				item.nombre.toLowerCase().includes(query.toLowerCase())
+			searchResults.filter((persona) =>
+				persona.user.last_name.toLowerCase().includes(query.toLowerCase())
 			)
 		);
 	};
 
-	const selectOption = (option: any) => {
-		setSelectedResult(option.nombre);
-		setResultToSend(option);
-	};
-
-	const closeOnSelectModal = () => {
-		if (selectedResult != null) {
-			onSelect(resultToSend);
-			closeModal();
-		}
-	};
-
-	// NUEVA TABLA
-
+	// TODOS LAS TABLAS ESTRUCTURA
 	const columns = [
 		{
-			name: "Title",
-			selector: (row) => row.title
+			name: "Nombre completo",
+			selector: (row) => row.user.last_name + " " + row.user.first_name
 		},
 		{
-			name: "Year",
-			selector: (row) => row.year
+			name: "Correo eletrónico",
+			selector: (row) => row.user.email
 		}
 	];
 
+	/*
 	const data = [
 		{
 			id: 1,
-			title: "Beetlejuice",
-			year: "1988"
+			registro: "R123213",
+			user.last_name: "Jaime Lannister"
 		},
 		{
 			id: 2,
-			title: "Ghostbusters",
-			year: "1984"
+			registro: "R333413",
+			user.last_name: "Eddard Stark"
+		},
+		{
+			id: 3,
+			registro: "R723513",
+			user.last_name: "Jon Snow"
+		},
+		{
+			id: 4,
+			registro: "R623513",
+			user.last_name: "Daenerys Targaryen"
+		},
+		{
+			id: 5,
+			registro: "R343513",
+			user.last_name: "Tyrion Lannister"
+		},
+		{
+			id: 6,
+			registro: "R323513",
+			user.last_name: "Sansa Stark"
+		},
+		{
+			id: 7,
+			registro: "R555513",
+			user.last_name: "Arya Stark"
 		}
-	];
+	];*/
+
+	interface TableRow {
+		id: number;
+		last_name: string;
+	}
+
+	// primera tabla
+	const [selectedTrabajador, setSelectedReponsable] = useState<TableRow | null>(
+		null
+	);
+	const [arrSelectedResponsables, setArrSelectedResponsables] = useState([]);
+	const [toggleClearedTrabajador, setToggleClearedTrabajador] =
+		React.useState(false);
+
+	useEffect(() => {
+		setArrSelectedResponsables(arrResponsables);
+	}, [arrResponsables]);
+
+	const handleChangeSelectTable = ({ selectedRows }) => {
+		setSelectedReponsable(selectedRows);
+	};
+
+	const handleAddResponsableToTable = () => {
+		//console.log("selectedTrabajador:", selectedTrabajador); // Verificar si selectedTrabajador está definido y es un array
+		//console.log("arrSelectedResponsables:", arrSelectedResponsables); // Verificar si selectedTrabajador está definido y es un array
+
+		setToggleClearedTrabajador(!toggleClearedTrabajador);
+		if (Array.isArray(selectedTrabajador) && selectedTrabajador.length > 0) {
+			forEach(selectedTrabajador, (trabajador) => {
+				setArrSelectedResponsables((arrSelectedResponsables) => {
+					if (!arrSelectedResponsables.some((item) => item === trabajador)) {
+						return [...arrSelectedResponsables, trabajador];
+					}
+					return arrSelectedResponsables;
+				});
+			});
+		}
+	};
+
+	const contextActionsTrabajador = React.useMemo(() => {
+		return (
+			<Button
+				key="delete"
+				onClick={handleAddResponsableToTable}
+				style={{
+					backgroundColor: "blue",
+					width: "10rem",
+					maxWidth: "10rem",
+					height: "2.4rem",
+					maxHeight: "2.4rem"
+				}}>
+				Agregar
+			</Button>
+		);
+	}, [searchResults, selectedTrabajador, toggleClearedTrabajador]);
+
+	// segunda tabla
+	const [selectedResponsable, setSelectedResponsable] = useState<
+		TableRow | any
+	>(null);
+	const [toggleClearedResponsable, setToggleClearedResponsable] =
+		React.useState(false);
+
+	const handleRowSelected = React.useCallback((state) => {
+		setSelectedResponsable(state.selectedRows);
+	}, []);
+
+	const contextActions = React.useMemo(() => {
+		const handleDelete = () => {
+			setToggleClearedResponsable(!toggleClearedResponsable);
+
+			setArrSelectedResponsables(
+				arrSelectedResponsables.filter(
+					(responsable) =>
+						!(selectedResponsable as any[]).some(
+							(selected) => selected.id === responsable.id
+						)
+				)
+			);
+		};
+
+		return (
+			<Button
+				key="delete"
+				onClick={handleDelete}
+				style={{
+					backgroundColor: "red",
+					width: "10rem",
+					maxWidth: "10rem",
+					height: "2.4rem",
+					maxHeight: "2.4rem"
+				}}>
+				Eliminar
+			</Button>
+		);
+	}, [arrSelectedResponsables, selectedResponsable, toggleClearedResponsable]);
 
 	return (
-		<>
+		<div
+			style={{
+				minWidth: "40rem",
+				maxWidth: "40rem"
+			}}>
 			<Modal
 				show={showModal}
 				onHide={closeModal}
 				size="xl"
-				className="custom-modal"
 				style={{
 					borderCollapse: "collapse",
 					height: "100 rem"
 				}}>
 				<Modal.Header closeButton>
-					<Modal.Title>Buscar informaciónD</Modal.Title>
+					<Modal.Title>
+						Búsqueda de personal responsable del proceso de selección
+					</Modal.Title>
 				</Modal.Header>
-				<Modal.Body>
-					<Form>
-						<Form.Group controlId="searchInput">
-							<Form.Label style={{ marginBottom: "3s.78em" }}>
-								Buscar:
-							</Form.Label>
-							<FormControl
-								type="text"
-								placeholder="Escribe aquí"
-								value={searchQuery}
-								onChange={(e) => setSearchQuery(e.target.value)}
-								style={{ marginBottom: "3s.78em" }}
-							/>
-							<div>
-								<br />
+				<Modal.Body style={{ paddingLeft: "3%", maxWidth: "98%" }}>
+					<Row style={{ paddingLeft: "1.6%" }}>
+						<Form>
+							<Form.Group controlId="searchInput">
+								<Form.Label
+									style={{ marginBottom: "3s.78em", fontSize: "1rem" }}>
+									Búsqueda de personal RR.HH. responsable:
+								</Form.Label>
+								<FormControl
+									type="text"
+									placeholder="Escribe el nombre del personal."
+									value={searchQuery}
+									onChange={(e) => setSearchQuery(e.target.value)}
+									style={{ marginBottom: "3s.78em", maxWidth: "98%" }}
+								/>
+							</Form.Group>
+						</Form>
+					</Row>
+					<Row>
+						<Col>
+							<div style={{ height: "20rem" }}>
+								<FixedHeaderStory
+									title="Resultados de búsqueda"
+									columns={columns}
+									data={filteredResults}
+									selectableRows
+									contextActions={contextActionsTrabajador}
+									onSelectedRowsChange={handleChangeSelectTable}
+									clearSelectedRows={toggleClearedTrabajador}
+									pagination
+									fixedHeader
+									fixedHeaderScrollHeight="14rem"
+									customStyles={customStylesTablesPersonal}
+								/>
 							</div>
-						</Form.Group>
-						<Form.Label style={{ marginBottom: "3s.78em" }}>
-							Resultados:
-						</Form.Label>
-					</Form>
-					<div>
-						{" "}
-						<DataTable columns={columns} data={data} />
-					</div>
+						</Col>
+						<Col>
+							<div style={{ height: "20rem" }}>
+								<FixedHeaderStory
+									title="Responsables seleccionados"
+									columns={columns}
+									data={arrSelectedResponsables}
+									selectableRows
+									contextActions={contextActions}
+									onSelectedRowsChange={handleRowSelected}
+									clearSelectedRows={toggleClearedResponsable}
+									pagination
+									fixedHeader
+									fixedHeaderScrollHeight="14rem"
+									customStyles={customStylesTablesPersonal}
+								/>
+							</div>
+						</Col>
+					</Row>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant="secondary" onClick={closeModal}>
 						Cerrar
 					</Button>
-					<Button variant="secondary" onClick={closeOnSelectModal}>
-						Seleccionar
+					<Button
+						style={{
+							width: "10rem",
+							maxWidth: "10rem"
+						}}
+						variant="secondary"
+						onClick={closeOnSelectModal}>
+						Guardar cambios
 					</Button>
 				</Modal.Footer>
 			</Modal>
-		</>
+		</div>
 	);
 };
 

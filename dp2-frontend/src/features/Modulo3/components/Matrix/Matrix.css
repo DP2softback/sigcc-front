@@ -1,3 +1,9 @@
+.matrix{
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: calc(0.5rem - 1px);
+  overflow: hidden;
+}
+
 .matrixHeader{
   padding-left: 240px;
   padding-right: 40px;

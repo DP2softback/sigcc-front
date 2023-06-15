@@ -5,14 +5,18 @@ export const navigateTo = (url: string, params?: any) => {
       .join('&');
 
     const targetURL = `${url}?${queryString}`;
-    window.location.assign(targetURL);
+    window.location.href = targetURL;
   } else {
-    window.location.assign(url);
+    window.location.href = url;
   }
 };
 
 export const navigateBack = () => {
   history.back();
+}
+
+export const formatNumberWithTwoDecimals = (num: number): string => {
+  return num.toFixed(2);
 }
 
 export const formatDate = (dateString: string) => {

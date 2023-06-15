@@ -21,117 +21,55 @@ const typeCreation = [
     {id: 4, type: "Virtual Asincrono"},
 ]
 
-// type TrainingObj = {
-//     id: number;
-//     name: string;
-//     description: string;
-//     startDate: string;
-//     endDate: string;
-//     numEmployees: number;
-//     type: string;
-// }
-
 type JobOfferObj = {
     id: number;
-    name: string;
+    position_name: string;
     photoURL: string,
-    description: string;
-    startDate: string;
+    offer_introduction: string;
+    modified_date: string;
     location: string;
-    salaryRange: string;
+    salary_range: string;
 }
+
+
 
 const data: JobOfferObj[] = [
     {
                 "id": 1,
-                "name": "Desarrollador de software",
+                "position_name": "Desarrollador de software",
                 "photoURL": "https://www.becas-santander.com/content/dam/becasmicrosites/blog/metodolog%C3%ADas-de-desarrollo-de-software.jpg",
-                "description": "Estamos buscando un desarrollador de software altamente motivado y creativo para unirse a nuestro equipo. Debes tener experiencia en lenguajes de programación como Java y Python, así como conocimientos en bases de data y desarrollo web.",
-                "startDate": "2023-07-01",
+                "offer_introduction": "Estamos buscando un desarrollador de software altamente motivado y creativo para unirse a nuestro equipo. Debes tener experiencia en lenguajes de programación como Java y Python, así como conocimientos en bases de data y desarrollo web.",
+                "modified_date": "2023-07-01",
                 "location": "Av. Universitaria 1305 - San Miguel",
-                "salaryRange": "$3000 - $4000"
+                "salary_range": "$3000 - $4000"
             },
             {
                 "id": 2,
-                "name": "Diseñador gráfico",
+                "position_name": "Diseñador gráfico",
                 "photoURL": "https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg",
-                "description": "Estamos buscando un diseñador gráfico talentoso y apasionado para unirse a nuestro equipo. Debes tener experiencia en el uso de herramientas de diseño como Adobe Photoshop e Illustrator, así como una sólida comprensión de los principios del diseño.",
-                "startDate": "2023-07-15",
+                "offer_introduction": "Estamos buscando un diseñador gráfico talentoso y apasionado para unirse a nuestro equipo. Debes tener experiencia en el uso de herramientas de diseño como Adobe Photoshop e Illustrator, así como una sólida comprensión de los principios del diseño.",
+                "modified_date": "2023-07-15",
                 "location": "Av. Universitaria 1305 - San Miguel",
-                "salaryRange": "$2500 - $3500"
+                "salary_range": "$2500 - $3500"
             },
             {
                 "id": 3,
-                "name": "Analista de datos",
+                "position_name": "Analista de datos",
                 "photoURL": "https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg",
-                "description": "Estamos buscando un analista de data con experiencia en el manejo de grandes conjuntos de data. Debes tener habilidades en el uso de herramientas de análisis y visualización de data como SQL, Python y Tableau.",
-                "startDate": "2023-08-01",
+                "offer_introduction": "Estamos buscando un analista de data con experiencia en el manejo de grandes conjuntos de data. Debes tener habilidades en el uso de herramientas de análisis y visualización de data como SQL, Python y Tableau.",
+                "modified_date": "2023-08-01",
                 "location": "Av. Universitaria 1305 - San Miguel",
-                "salaryRange": "$3500 - $4500"
+                "salary_range": "$3500 - $4500"
             },
             {
                 "id": 4,
-                "name": "Asistente administrativo",
+                "position_name": "Asistente administrativo",
                 "photoURL": "https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg",
-                "description": "Estamos buscando un asistente administrativo para brindar apoyo en tareas diarias. Debes tener habilidades organizativas, ser proactivo y tener conocimientos en el uso de herramientas de productividad como Microsoft Office.",
-                "startDate": "2023-07-10",
+                "offer_introduction": "Estamos buscando un asistente administrativo para brindar apoyo en tareas diarias. Debes tener habilidades organizativas, ser proactivo y tener conocimientos en el uso de herramientas de productividad como Microsoft Office.",
+                "modified_date": "2023-07-10",
                 "location": "Av. Universitaria 1305 - San Miguel",
-                "salaryRange": "$2000 - $2500"
-            },
-            {
-                "id": 5,
-                "name": "Ingeniero de sistemas",
-                "photoURL": "https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg",
-                "description": "Estamos buscando un ingeniero de sistemas con experiencia en el diseño y mantenimiento de redes. Debes tener conocimientos en sistemas operativos, servidores y protocolos de red.",
-                "startDate": "2023-08-15",
-                "location": "Av. Universitaria 1305 - San Miguel",
-                "salaryRange": "$4000 - $5000"
-            },
-            {
-                "id": 6,
-                "name": "Especialista en marketing digital",
-                "photoURL": "https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg",
-                "description": "Estamos buscando un especialista en marketing digital para desarrollar y ejecutar estrategias de marketing en línea. Debes tener experiencia en SEO, publicidad en redes sociales y análisis de data.",
-                "startDate": "2023-07-20",
-                "location": "Av. Universitaria 1305 - San Miguel",
-                "salaryRange": "$3000 - $4000"
-            },
-            {
-                "id": 7,
-                "name": "Contador público",
-                "photoURL": "https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg",
-                "description": "Estamos buscando un contador público para manejar tareas contables y financieras. Debes tener conocimientos en contabilidad, impuestos y auditoría.",
-                "startDate": "2023-08-10",
-                "location": "Av. Universitaria 1305 - San Miguel",
-                "salaryRange": "$3500 - $4500"
-            },
-            {
-                "id": 8,
-                "name": "Asistente de recursos humanos",
-                "photoURL": "https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg",
-                "description": "Estamos buscando un asistente de recursos humanos para brindar apoyo en tareas de reclutamiento, selección y administración del personal. Debes tener habilidades de comunicación y conocimientos en leyes laborales.",
-                "startDate": "2023-07-05",
-                "location": "Av. Universitaria 1305 - San Miguel",
-                "salaryRange": "$2000 - $2500"
-            },
-            {
-                "id": 9,
-                "name": "Ingeniero civil",
-                "photoURL": "https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg",
-                "description": "Estamos buscando un ingeniero civil con experiencia en el diseño y supervisión de proyectos de construcción. Debes tener conocimientos en estructuras, materiales y normativas de construcción.",
-                "startDate": "2023-08-05",
-                "location": "Av. Universitaria 1305 - San Miguel",
-                "salaryRange": "$4000 - $5000"
-            },
-    {
-        "id": 10,
-        "name": "Traductor freelance",
-        "photoURL": "https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg",
-        "description": "Estamos buscando un traductor freelance para realizar traducciones en diferentes idiomas. Debes tener habilidades lingüísticas y experiencia en traducción escrita y oral.",
-        "startDate": "2023-07-25",
-        "location": "Av. Universitaria 1305 - San Miguel",
-        "salaryRange": "Tarifa por proyecto"
-    }
+                "salary_range": "$2000 - $2500"
+            }
 ]
 
 function padTo2Digits(num: number) {
@@ -149,9 +87,6 @@ function formatDate(date: Date) {
 }
 
 const JobOffer = () => {
-
-    // const [training, setTraining] = useState<TrainingObj[]>(data)
-
     const [trainingFilter, setTrainingFilter] = useState<JobOfferObj[]>(data)
     const [finishedCourse, setFinishedCourse] = useState<JobOfferObj[]>(data)
 
@@ -217,41 +152,22 @@ const JobOffer = () => {
         }
     }
 
-    /* TRAINING FILTERS */
-
-    const createTraining = () => {
-        const data = {
-            name: refTrName.current?.value,
-            description: refTrDescription.current?.value,
-            type: refTrTypes.current?.value,
-        }
-
-        console.log(data)
-
-        /* RUTA HARDCODEADA*/
-        navigate(`/modulo1/cursoempresa/creacion/1`);
-
-        axiosInt.post('RUTA API', data)
-            .then(function (response) {
-                //navigate(`/modulo1/cursoempresa/creacion/${response.data.id}`);
+    const loadOffers = () =>
+    {
+        axiosInt.get(`v1/job-offers`)
+            .then(function (response)
+            {
+                //setData(response.data)
+                console.log(response)
             })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
-
-    const loadTrainings = () => {
-        axiosInt.get('RUTA API')
-            .then(function (response) {
-                //setTrainingFilter(response.data);
-            })
-            .catch(function (error) {
+            .catch(function (error)
+            {
                 console.log(error);
             });
     }
 
     useEffect(() => {
-        //loadTrainings();    
+        loadOffers()
     }, []);
 
     return (
@@ -263,43 +179,10 @@ const JobOffer = () => {
                             empresa y permite postular a alguna de ellas</small></p>
                     </div>
                 </div>
-                <div className='row' style={{paddingBottom: "32px"}}>
-                    <div className='col-5'>
+                <div className='row mt-3' style={{paddingBottom: "32px"}}>
+                    <div className='col-11'>
                         <input className='form-control' type='text' placeholder='Ingrese palabras clave'
                                onChange={handleFilter}/>
-                    </div>
-                    <div className='col-2'>
-                        <select className="form-select" aria-label=".form-select-sm example"
-                                onChange={handleChangeType}>
-                            <option hidden>Área de interés</option>
-                            {typeTra.map((t) => {
-                                return (
-                                    <option key={t.id} value={t.type}>{t.type}</option>
-                                )
-                            })}
-                        </select>
-                    </div>
-                    <div className='col'>
-                        <select className="form-select" aria-label=".form-select-sm example"
-                                onChange={handleChangeType}>
-                            <option hidden>Jornada laboral</option>
-                            {typeTra.map((t) => {
-                                return (
-                                    <option key={t.id} value={t.type}>{t.type}</option>
-                                )
-                            })}
-                        </select>
-                    </div>
-                    <div className='col'>
-                        <select className="form-select" aria-label=".form-select-sm example"
-                                onChange={handleChangeType}>
-                            <option hidden>Experiencia</option>
-                            {typeTra.map((t) => {
-                                return (
-                                    <option key={t.id} value={t.type}>{t.type}</option>
-                                )
-                            })}
-                        </select>
                     </div>
                     <div className='col-1 text-end'>
                         <button className='btn btn-primary' type='button' onClick={search}>Buscar</button>
@@ -311,15 +194,15 @@ const JobOffer = () => {
                     <div style={{display: "flex", flexDirection: "column"}}>
                         <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
                             {
-                                finishedCourseShow.map((tr) => {
+                                data.map((tr) => {
                                     return (
                                         <OfferCard key={tr.id}
                                                       id={tr.id}
-                                                      name={tr.name}
+                                                      name={tr.position_name}
                                                       photoURL={tr.photoURL}
-                                                      description={tr.description}
-                                                      creationDate={tr.startDate}
-                                                      eventDate={tr.salaryRange}
+                                                      description={tr.offer_introduction}
+                                                      creationDate={tr.modified_date}
+                                                      eventDate={tr.salary_range}
                                         />
                                     )
                                 })
@@ -328,67 +211,7 @@ const JobOffer = () => {
 
                         </div>
 
-                        {finishedCourse.length > mostrar &&
-                            <div>
-                                <div>
-                                    <Pagination
-                                        page={pageF}
-                                        totalPages={totalPagesF}
-                                        handlePagination={setPageF}
-                                        setPosition={setPositionF}
-                                        position={positionF}
-                                        mostrar={mostrar}
-                                    />
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-
-                {/* CREATE TRAINING MODAL */}
-                <div className="modal fade" id="createTrainingModal" aria-hidden="true"
-                     aria-labelledby="createTrainingModal" tabIndex={-1}>
-                    <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h1 className="modal-title fs-5" id="createTrainingModal">Crear nuevo curso</h1>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                            </div>
-                            <div className="modal-body">
-                                <div className="mb-3">
-                                    <label className="form-label">Nombre</label>
-                                    <input ref={refTrName} type="text" className="form-control"/>
-                                </div>
-                                <div className='row mb-3'>
-                                    <div className='col' style={{flex: '0 0 8rem'}}>
-                                        <PictureUpload/>
-                                    </div>
-                                    <div className='col'>
-                                        <div className="mb-3">
-                                            <label className="form-label">Descripción</label>
-                                            <textarea ref={refTrDescription} className="form-control"/>
-                                        </div>
-                                        <div>
-                                            <label className="form-label">Tipo</label>
-                                            <select className="form-select" ref={refTrTypes}>
-                                                <option hidden>Seleccionar</option>
-                                                {typeCreation.map((t) => {
-                                                    return (
-                                                        <option key={t.id} value={t.type}>{t.type}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="modal-footer">
-                                <button className="btn btn-primary" data-bs-dismiss="modal"
-                                        onClick={createTraining}>Crear
-                                </button>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
         </>
