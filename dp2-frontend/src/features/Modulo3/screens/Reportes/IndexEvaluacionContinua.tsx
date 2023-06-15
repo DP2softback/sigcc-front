@@ -98,6 +98,17 @@ const dataCategoriasDesempenio =  [
   }
 ]
 
+type DataLineChart = {
+  year: string;
+  month: {
+    month: string;
+    category_scores: {
+      CategoryName: string;
+      ScoreAverage: number;
+    }[];
+  }[];
+}[];
+
 const IndexEvaluacionContinua = () => {
   const [activeRepContinua, setActiveRepContinua] = useState(true);
 
@@ -261,9 +272,9 @@ const IndexEvaluacionContinua = () => {
         setIsLoading(true);
         const data = await postReportLineChart(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(data){
-          setDashboard(formatDashboardJson(data));
-          console.log("Data: ", data);
-          console.log("Dashboard: ", dashboard);
+          let dataSorted:DataLineChart = data;
+          dataSorted = sortMonths(dataSorted);
+          setDashboard(formatDashboardJson(dataSorted));
         }
         else{
           console.log("Error C: ", data);
@@ -279,7 +290,9 @@ const IndexEvaluacionContinua = () => {
         setIsLoading(true);
         const data = await postReportLineChart(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(data){
-          setDashboard(formatDashboardJson(data));
+          let dataSorted:DataLineChart = data;
+          dataSorted = sortMonths(dataSorted);
+          setDashboard(formatDashboardJson(dataSorted));
         }
         else{
           console.log("Error D: ", data);
@@ -310,6 +323,16 @@ const IndexEvaluacionContinua = () => {
     doc.save('Reporte.pdf');
   };
   
+  const sortMonths = (data: DataLineChart) => {
+    const sortedData = JSON.parse(JSON.stringify(data)); // Deep copy
+
+    sortedData.forEach((item) => {
+      item.month.sort((a, b) => a.month.localeCompare(b.month));
+    });
+
+    return sortedData;
+  };  
+
   const filters = (
     <Form>
       <Form.Group controlId='reportes' className='ec-indexFilters'>        
