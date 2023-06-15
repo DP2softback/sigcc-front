@@ -13,6 +13,9 @@ import {
 	GAPS_EMPLOYEE_EMP_DETAIL,
 	MY_JOB_OPPORTUNITIES,
 	EMPLOYEES_JOB_CANDIDATES,
+	GAPS_EMPLOYEES_AREA,
+	GAPS_EMPLOYEES_AREA_DETAIL,
+	GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE,
 	INDEX
 } from "./path";
 
@@ -62,6 +65,25 @@ const EstadisticasCompetencias = Loader(
 const DetalleCompetenciasArea = Loader(
 	lazy(() => import("@features/Modulo2/Components/VisualizacionBrechasTrabajadorRRHH/DetalleCompetenciasArea"))
 );
+
+const ConsolidadoCompetenciasAM = Loader(
+	lazy(() => import("@features/Modulo2/Components/JobStatisticsAreaManager/ConsolidadoCompetencias"))
+);
+
+const DetalleCompetenciaPuesto= Loader(
+	lazy(() => import("@features/Modulo2/Components/JobStatisticsAreaManager/DetalleCompetenciasArea"))
+);
+
+const GestionCompetenciaEmpleadoAM = Loader(
+	lazy(() => import("@features/Modulo2/Components/JobStatisticsAreaManager/GestionCompetencias"))
+);
+
+const GestionCompetenciaEmpleado = Loader(
+	lazy(() => import("@features/Modulo2/Components/VisualizacionBrechasTrabajadorRRHH/GestionCompetencias"))
+);
+
+//ConsolidadoCompetenciasAM
+//GestionCompetencia
 
 export const routes: RouteObject[] = [
 	{
@@ -121,7 +143,54 @@ export const routes: RouteObject[] = [
 									Roles.GENERAL_MANAGER,
 									Roles.HR_WORKER,
 								]}>
-								<ConsolidadoCompetencias />
+								<GestionCompetenciaEmpleado/>
+							</AppLayout>
+						)
+					},
+				]
+			},
+			{
+				path: GAPS_EMPLOYEES_AREA,
+				children: [
+					{
+						path: INDEX,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.GENERAL_MANAGER,
+									Roles.HR_WORKER,
+									Roles.HEAD_OF_AREA,
+								]}>
+								<ConsolidadoCompetenciasAM/>
+							</AppLayout>
+						)
+					},
+					{
+						path: GAPS_EMPLOYEES_AREA_DETAIL,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.GENERAL_MANAGER,
+									Roles.HR_WORKER,
+									Roles.HEAD_OF_AREA,
+								]}>
+								<DetalleCompetenciaPuesto/>
+							</AppLayout>
+						)
+					},
+					{
+						path: GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.GENERAL_MANAGER,
+									Roles.HR_WORKER,
+									Roles.HEAD_OF_AREA,
+								]}>
+								<GestionCompetenciaEmpleadoAM/>
 							</AppLayout>
 						)
 					},
