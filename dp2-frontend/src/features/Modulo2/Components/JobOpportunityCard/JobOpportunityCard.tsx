@@ -17,6 +17,14 @@ const JobOpportunityCard = (props) => {
         })
     }
 
+    const navigateToCandidates = () => {
+        navigate(`/${GAPS_ANALYSIS_MODULE}/${EMPLOYEES_JOB_OPPORTUNITIES}/${EMPLOYEES_JOB_CANDIDATES}`, {
+            state: {
+                jobOpp: jobOpportunity
+            }
+        })
+    }
+
     return (
         <div className='container card-job-opp'>
             <div className='row'>
@@ -55,7 +63,7 @@ const JobOpportunityCard = (props) => {
                 </div>
                 <div className='col'>
                     {numBot === 3 && <Button className='btn btn-sm btn-job-opp btn-acept'>Aceptar postulación</Button>}
-                    <Button className='btn btn-sm btn-job-opp' onClick={() => {hhrr !== undefined ? navigate(`/${GAPS_ANALYSIS_MODULE}/${EMPLOYEES_JOB_OPPORTUNITIES}/${EMPLOYEES_JOB_CANDIDATES}`) : console.log("A")}}>{hhrr ? 'Ver posibles candidatos' : 'Declinar postulación'}</Button>
+                    <Button className='btn btn-sm btn-job-opp' onClick={() => {hhrr !== undefined ? navigateToCandidates() : console.log("A")}}>{hhrr ? 'Ver posibles candidatos' : 'Declinar postulación'}</Button>
                 </div>
             </div>
                         
