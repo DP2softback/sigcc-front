@@ -12,6 +12,7 @@ import { formatDashboardJson } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import { toast, ToastContainer } from 'react-toastify';  // Import react-toastify
 import 'react-toastify/dist/ReactToastify.css'; 
+import logoUrl from '../../assets/images/LogoHCM.png';
 
 const dataAreas =     [
   {
@@ -321,20 +322,34 @@ const IndexEvaluacionContinua = () => {
     // Crea un nuevo objeto PDF
     const doc = new jsPDF();
 
+    // Añade el logotipo
+    await doc.addImage(logoUrl, 'PNG', 160, 5, 30, 10);
+
+    // Añade el nombre de la empresa
+    doc.setFontSize(12);
+
     // Agrega un título 
-    doc.setFontSize(22);
-    doc.text('Reporte de Evaluación Continua', 10, 10);
+    const title = 'Reporte de Evaluación Continua';
+    const titleFontSize = 22;
+    doc.setFontSize(titleFontSize);
+    const titleWidth = doc.getStringUnitWidth(title) * titleFontSize / doc.internal.scaleFactor;
+    const titlePosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
+    doc.text(title, titlePosition, 30); // 30 es la posición en y
 
     // Agrega un subtítulo
-    doc.setFontSize(16);
-    doc.text(`Periodo: ${searchParams.fechaInicio.toISOString().split('T')[0]} a ${searchParams.fechaFin.toISOString().split('T')[0]}`, 10, 20);
+    const subtitle = `Periodo: ${searchParams.fechaInicio.toISOString().split('T')[0]} a ${searchParams.fechaFin.toISOString().split('T')[0]}`;
+    const subtitleFontSize = 16;
+    doc.setFontSize(subtitleFontSize);
+    const subtitleWidth = doc.getStringUnitWidth(subtitle) * subtitleFontSize / doc.internal.scaleFactor;
+    const subtitlePosition = (doc.internal.pageSize.getWidth() - subtitleWidth) / 2;
+    doc.text(subtitle, subtitlePosition, 45); 
 
     // Calcula las dimensiones de la imagen en el documento PDF
     const pdfWidth = doc.internal.pageSize.getWidth();
     const pdfHeight = (chartElement.offsetHeight / chartElement.offsetWidth) * pdfWidth;
 
     // Agrega la imagen al documento PDF
-    doc.addImage(imageDataUrl, 'PNG', 10, 30, pdfWidth - 20, pdfHeight - 20);
+    doc.addImage(imageDataUrl, 'PNG', 10, 50, pdfWidth - 20, pdfHeight - 20);
 
     // Descarga el archivo PDF
     doc.save('Reporte Evaluacion Continua.pdf');
