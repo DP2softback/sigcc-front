@@ -7,6 +7,10 @@ export const GAPS_EMPLOYEES_ORG = 'employees-gaps';
 export const GAPS_EMPLOYEES_ORG_DETAIL = 'detail';
 export const GAPS_EMPLOYEES_ORG_DETAIL_EMPLOYEE = 'more';
 
+export const GAPS_EMPLOYEES_AREA = 'employees-gaps-area';
+export const GAPS_EMPLOYEES_AREA_DETAIL = 'detail';
+export const GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE = 'more';
+
 export const EMPLOYEES_JOB_OPPORTUNITIES = 'employees-job-opportunities';
 export const EMPLOYEES_JOB_CANDIDATES = 'detail';
 // export const A
