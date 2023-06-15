@@ -1,6 +1,7 @@
 .basicCard-container{
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   background-color: white;
-  border-radius: 4px;
+  border-radius: calc(0.5rem - 1px);
   overflow: hidden;
   font-family: 'Roboto';
   height: 100%;

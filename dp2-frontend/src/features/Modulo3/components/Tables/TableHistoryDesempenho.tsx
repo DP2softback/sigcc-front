@@ -1,6 +1,6 @@
 import './TableHistory.css';
 import {  Table } from 'react-bootstrap';
-import { formatDate, navigateTo } from '@features/Modulo3/utils/functions';
+import { formatDate, formatNumberWithTwoDecimals, navigateTo } from '@features/Modulo3/utils/functions';
 import { ArrowRightCircleFill } from 'react-bootstrap-icons';
 import { PERFORMANCE_EVALUATION_DETAIL } from '@features/Modulo3/routes/path';
 
@@ -16,12 +16,12 @@ export default function TableHistoryDesempenho({ rows, employee = null, isReadOn
   }
 
   return (
-    <Table striped className='TableHistoryContinua'>
+    <Table striped className='TableHistory'>
       <thead className={`bg-white${isReadOnly ? 'ReadOnly' : ''}`}>
         <tr>
-          <th>Fecha de registro</th>
-          <th className='text-center'>Calificación</th>
-          <th className='text-center'>Detalle</th>
+          <th className='align-middle'>Fecha de registro</th>
+          <th className='text-center align-middle'>Calificación</th>
+          <th className='text-center align-middle'>Detalle</th>
         </tr>
       </thead>
       <tbody>
@@ -30,7 +30,7 @@ export default function TableHistoryDesempenho({ rows, employee = null, isReadOn
           return (
             <tr key={row.EvaluationId} className={rowStyle}>
               <td>{formatDate(row.evaluationDate)}</td>
-              <td className='text-center'>{row.finalScore}</td>
+              <td className='text-center'>{formatNumberWithTwoDecimals(row.finalScore)}</td>
               <td className='text-center'>
                 <ArrowRightCircleFill
                   className='cursor-pointer'
