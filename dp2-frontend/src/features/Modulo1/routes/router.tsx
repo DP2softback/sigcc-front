@@ -6,6 +6,7 @@ import {
 	TRAINING_MANAGMENT_MODULE,
 	LEARNING_PATH_INDEX,	
 	LEARNING_PATH_ADDCOURSE,
+	LEARNING_PATH_ADDCOURSECE,
 	LEARNING_PATH_DETAIL,
 	LEARNING_PATH_ASSIGNMENT,
 	LEARNING_PATH_EVALUATION_DETAILS,
@@ -43,6 +44,10 @@ const M1LearningPathAssignment = Loader(
 
 const M1AddCourse = Loader(
 	lazy(() => import("@features/Modulo1/pages/Course/AddCourse"))
+);
+
+const M1AddCourseCE = Loader(
+	lazy(() => import("@features/Modulo1/pages/Course/AddCourseCE"))
 );
 
 const M1LearningPathIntegralEvaluation = Loader(
@@ -190,6 +195,19 @@ export const routes: RouteObject[] = [
 							Roles.HEAD_OF_AREA
 						]}>
 						<M1AddCourse />
+					</AppLayout>
+				)
+			},
+			{
+				path: LEARNING_PATH_ADDCOURSECE,
+				element: (
+					<AppLayout
+						allowedRoles={[
+							Roles.HR_ADMIN, 
+							Roles.HR_MANAGER, 
+							Roles.HEAD_OF_AREA
+						]}>
+						<M1AddCourseCE />
 					</AppLayout>
 				)
 			},

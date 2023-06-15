@@ -419,7 +419,7 @@ const Training = () => {
                 setUpcomingCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, now7, 1)))
                 setCurrentCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_ultima_sesion).format("DD-MM-YYYY")), 2)))
                 setLoading(false);
-                setFinishedCourse(response.data.filter((item: any) => compararFechas(item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, '', 3)))
+                setFinishedCourse(response.data.filter((item: any) => compararFechas(item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_ultima_sesion).format("DD-MM-YYYY")), now, '', 3)))
             })
             .catch(function (error) {
                 setLoading(false);
@@ -450,7 +450,7 @@ const Training = () => {
                             <div className='row'>
                                 <div className='col'>
                                     <h1 className='screenTitle'>Curso Empresa</h1>
-                                    <p><small className='subtitle'>Lista de cursos empresa creados que los empleados pueden asistir para adquirir habilidades y competencias específicas.</small></p>
+                                    <p><small className='subtitle'>Lista de cursos empresa creados para que los empleados pueden asistir para adquirir habilidades y competencias específicas.</small></p>
                                 </div>
                                 <div style={{ flex: '0 0 15rem' }} className='col text-end'>
                                     {/* Button trigger modal */}

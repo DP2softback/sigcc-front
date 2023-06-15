@@ -105,7 +105,7 @@ const SessionAccordion = (Props: Props) => {
                                                             <p><JournalBookmarkFill /><b style={{ paddingLeft: "0.5rem" }}>Temas de la sesión</b></p>
                                                         </div>
                                                         {
-                                                            Props.mode === ("create" || "detailEmp") ? 
+                                                            (Props.mode === "create" || Props.mode == "detailEmp") ? 
                                                             (<></>) 
                                                             : 
                                                             (

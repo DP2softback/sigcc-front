@@ -124,19 +124,20 @@ function LearningPathDetails(props: any) {
                                 <div className='row'>
                                     <div className='pt-5 pb-2' style={{ display: "flex", justifyContent: "space-evenly" }}>
                                         <div style={{ display: "flex" }}>
-                                            {courses.map((course: any) => (
+                                            {courses.map((course: any, index: number) => (
                                                 <div key={course.id}>
-                                                    <div style={{ display: "flex", alignItems: "center" }} onClick={() => handleChange(course.nro_orden)}>
-                                                        <div className={`circulo ${course.nro_orden == activo ? 'activo' : ''}`}>{course.nro_orden}</div>
-                                                        {(course.nro_orden) !== courses.length && <div className="linea" style={{ paddingLeft: "2rem" }}></div>}
+                                                    <div style={{ display: "flex", alignItems: "center" }} onClick={() => handleChange(index+1)}>
+                                                        <div className={`circulo ${index+1 == activo ? 'activo' : ''}`}>{index+1}</div>
+                                                        {(index+1) !== courses.length && <div className="linea" style={{ paddingLeft: "2rem" }}></div>}
                                                     </div>
-                                                    <div>Curso {course.nro_orden}</div>
+                                                    <div>Curso {index+1}</div>
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
-
-
+                                </div>    
+                                                
+                                <div className='row'>
                                     <div className='pt-4 pb-2' style={{ display: "flex", justifyContent: "center" }}>
                                         <div className="card mb-3" style={{ width: "45rem" }}>
                                             <div className="row g-0" style={{ height: "100%" }}>
@@ -150,7 +151,11 @@ function LearningPathDetails(props: any) {
                                                         <p className="card-text"><small className="text-body-secondary">Duración: {courses[activo - 1].duracion}</small></p>
                                                     </div>
                                                     <div className="card-body" style={{ display: "flex", justifyContent: "space-between" }}>
-                                                        <button className='btn btn-primary'>Iniciar el curso</button>
+                                                        {
+
+<button className='btn btn-primary'>Iniciar el curso</button>
+                                                        }
+                                                        
                                                         <button className='btn btn-primary' data-bs-target='#quizModal' data-bs-toggle='modal' onClick={() => handleQuiz(courses[activo - 1].curso.id)}>Rendir Evaluación</button>
                                                     </div>
                                                 </div>
