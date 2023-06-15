@@ -85,8 +85,9 @@ const PieChart = ({ title, labels, datasets }) => {
               'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
             },
             body: JSON.stringify({
-              idArea: 0, // Poner 0 para toda la empresa, poner el <id> si es por área
-              activo: 2, // Poner 2 si es cualquiera, poner 0 o 1 si es inactivo o activo
+              idArea: 0,
+              idPosicion:  0,
+              activo: 2
             }),
           };
       
