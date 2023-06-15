@@ -208,16 +208,17 @@ function EvaluationDetails() {
     
                                 <div style={{ display: "flex", alignItems: "center" }}>
                                     <div>
-                                        <h1 className='screenTitle'>{lpName} - Evaluación Integral</h1>
+                                        <h1 className='screenTitle'>{lpName}</h1>
+                                        <h2>Evaluación Integral</h2>
                                         <p><small className='subtitle'>{lpDescription}</small></p>
                                     </div>
                                 </div>
                             </div>
 
                             {/* FILTER AND SEARCH BAR */}
-                            <div className='row row-search'>
-                                <div className='col-3' style={{ marginLeft: "52px" }}>
-                                    <h3>Empleados asignados</h3>
+                            <div className='row row-search' style={{ paddingLeft: "4rem", paddingRight: "4rem" }}>
+                                <div className='col-3'>
+                                    <h4>Empleados asignados</h4>
                                 </div>
                                 <div className='col-5'>
                                     <input className='form-control' type='text' placeholder='Buscar empleado' onChange={handleFilter} />
@@ -237,8 +238,8 @@ function EvaluationDetails() {
                                 </div>
                             </div>
 
-                            <div className='row mt-3'>
-                                <div className='col' style={{ marginLeft: "52px" }}>
+                            <div className='row mt-3' style={{ paddingLeft: "4rem", paddingRight: "4rem" }}>
+                                <div className='col'>
                                     {
                                         employees.length > 0 ?
                                         (<TableDataEmployees

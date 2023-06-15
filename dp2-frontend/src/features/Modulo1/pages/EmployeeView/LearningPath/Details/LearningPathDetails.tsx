@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './learning-path-details.css';
 import learningPathDetails from './learningPathDetails.json';
 import { Link, useParams } from 'react-router-dom';
@@ -13,6 +13,7 @@ import Rate from '@features/Modulo1/components/Rate';
 import Layout from "@layout/default/index";
 import { flatten } from 'lodash';
 import QuizFill from '@features/Modulo1/pages/LearningPath/QuizFill/QuizFill';
+import RateValue from '@features/Modulo1/components/Rate/RateValue';
 
 function LearningPathDetails(props: any) {
     const { learningPathId } = useParams();
@@ -78,6 +79,34 @@ function LearningPathDetails(props: any) {
         loadsCourses();
     }, []);
 
+    const goToIntegralEval = () => {
+        navigate('evaluacionintegral')
+    }
+
+    const refCourseComment = useRef<HTMLTextAreaElement>(null);
+    const refCourseRate = useRef(null);
+    
+    const saveRate = () => {
+        console.log(refCourseRate.current.state.rateValue)
+        //setLoading(true)
+
+        const data = {
+            valoracion: refCourseRate.current?.state.rateValue,
+            comentarios: refCourseComment.current?.value
+        }
+
+        /*
+        axiosInt.post(`algo`, data)
+            .then(function (response) {
+                console.log(response.data)
+                setLoading(false)
+            })
+            .catch(function (error) {
+                console.log(error);
+                setLoading(false)
+            })
+        */
+    }
 
     return (
         <>
@@ -238,7 +267,7 @@ function LearningPathDetails(props: any) {
                                                 </div>
                                             </div>
                                             <div className="modal-footer confirm-footer">
-                                                <button className="btn btn-primary" data-bs-dismiss="modal">Si</button>
+                                                <button className="btn btn-primary" data-bs-dismiss="modal" onClick={() => goToIntegralEval()}>Si</button>
                                                 <button className="btn btn-danger" data-bs-dismiss="modal">No</button>
                                             </div>
                                         </div>
@@ -270,7 +299,32 @@ function LearningPathDetails(props: any) {
                                         </div>
                                     </div>
                                 </div>
-
+                                
+                                {/* MODAL RATE LP */}
+                                <div className="modal fade" id="rateCourse" aria-hidden="true" aria-labelledby="rateCourse" tabIndex={-1}>
+                                    <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h1 className="modal-title fs-5" id="rateCourse">Calificación del curso</h1>
+                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div className="modal-body">
+                                            <div>
+                                                <label className="form-label">Valoración</label>
+                                                <RateValue ref={refCourseRate} />
+                                            </div>
+                                            <div>
+                                                <label className="form-label">Comentarios</label>
+                                                <textarea ref={refCourseComment} className="form-control" />
+                                            </div>
+                                        </div>
+                                        <div className="modal-footer">
+                                            <button className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => navigate('/modulo1/empleado/rutadeaprendizaje')}>Omitir</button>
+                                            <button className="btn btn-primary" data-bs-dismiss="modal" onClick={() => saveRate()}>Enviar</button>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
 
                             </>
                             :

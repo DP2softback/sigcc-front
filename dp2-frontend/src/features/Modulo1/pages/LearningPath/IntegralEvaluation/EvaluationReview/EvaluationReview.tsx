@@ -64,42 +64,48 @@ function EvaluationReview() {
     
                                 <div style={{ display: "flex", alignItems: "center" }}>
                                     <div>
-                                        <h1 className='screenTitle'>{lpName} - Evaluación Integral</h1>
+                                        <h1 className='screenTitle'>{lpName}</h1>
+                                        <h2>Evaluación Integral</h2>
                                         <p><small className='subtitle'>{lpDescription}</small></p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className='row mt-4'>
-                                <div className='col'>
-                                    <h3>Empleado a calificar: {employeeName}</h3>
+                            <div style={{ paddingLeft: "4rem", paddingRight: "4rem" }}>
+                                <div className='row mt-4'>
+                                    <div className='col'>
+                                        <h3>Empleado a calificar: {employeeName}</h3>
+                                    </div>
+                                </div>
+
+                                <div className='row mt-4'>
+                                    <h5>Descripción de la evaluación integral</h5>
+                                    <div className='col'>
+                                        <p>{evaluationData.descripcion}</p>
+                                    </div>
+                                </div>
+
+                                <div className='row mt-3'>
+                                    <div className='col'>
+                                        <button className='btn btn-outline-primary'><Download/><span style={{marginLeft: "1rem"}}>Especificaciones de la evaluación</span></button>
+                                    </div>
+                                </div>
+
+                                <div className='row mt-3'>
+                                    <h5>Documento adjunto:</h5>
+                                    <div className='col'>
+                                        <button className='btn btn-outline-primary'><Download/><span style={{marginLeft: "1rem"}}>EvaluacionIntegral.zip</span></button>
+                                    </div>
+                                </div>
+
+                                <div className='row mt-3'>
+                                    <h5>Rúbrica de evaluación:</h5>
+                                    <div className='col'>
+                                        <RubricQualification/>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div className='row mt-4'>
-                                <h4>Descripción de la evaluación integral</h4>
-                                <div className='col'>
-                                    <p>{evaluationData.descripcion}</p>
-                                </div>
-                            </div>
-
-                            <div className='row mt-3'>
-                                <div className='col'>
-                                    <button className='btn btn-outline-primary'><Download/><span style={{marginLeft: "1rem"}}>Especificaciones de la evaluación</span></button>
-                                </div>
-                            </div>
-
-                            <div className='row mt-3'>
-                                <h4>Documento(s) subido(s):</h4>
-                                <div className='col'>
-                                    <button className='btn btn-outline-primary'><Download/><span style={{marginLeft: "1rem"}}>EvaluacionIntegral.zip</span></button>
-                                </div>
-                            </div>
-
-                            <div className='row mt-3'>
-                                <h4>Rúbrica de evaluación:</h4>
-                                <RubricQualification/>
-                            </div>
+                            
 
                         </div>
                     </>
