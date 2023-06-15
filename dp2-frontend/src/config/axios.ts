@@ -4,7 +4,7 @@
 import axios from 'axios';
 
 //const baseUrl = import.meta.env.VITE_BASE_URL;
- const baseUrl = 'http://localhost:8000/api/';
+ const baseUrl = 'http://44.195.104.181/api/';
 // const baseUrl = 'https://9dsao8d5fc.execute-api.us-east-1.amazonaws.com/dev-modulo-capacitaciones/api/';
 
 // const axiosInt = axios.create({

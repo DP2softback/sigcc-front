@@ -317,7 +317,7 @@ function LearningPathDetails (props: any)
             {
                 coursesQuizStatuses.includes(0) ?
                     <>
-                        <div className="toast show align-items-center text-bg-primary position-fixed top-0 end-0 m-3 border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div style={{marginTop: "4rem"}} className="toast show align-items-center text-bg-primary position-fixed top-0 end-0 border-0" role="alert" aria-live="assertive" aria-atomic="true">
                             <div className="d-flex">
                                 <div className="toast-body">
                                     Se está generando la evaluación para el curso en segundo plano.

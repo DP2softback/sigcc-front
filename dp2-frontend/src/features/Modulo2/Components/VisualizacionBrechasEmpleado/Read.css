@@ -8,7 +8,8 @@
  }
 
  .table-container {
-  max-height: 500px; /* Ajusta la altura máxima deseada */
+  max-height: 400px; /* Ajusta la altura máxima deseada */
+  margin-bottom: 20px;
   overflow-y: auto;
 }
 

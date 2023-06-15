@@ -1,8 +1,9 @@
-import React, { Component, ChangeEvent, Fragment } from 'react';
+import React, { Component, ChangeEvent, Fragment, createRef } from 'react';
 import { QuizGeneratorProps, QuizGeneratorState, Question, Option } from './QuizGenerator.types';
 import axiosInt from '@config/axios';
 
 class QuizGenerator extends Component<QuizGeneratorProps, QuizGeneratorState> {
+    refCancelBtn: any;
     constructor(props: QuizGeneratorProps)
     {
         super(props);
@@ -10,6 +11,7 @@ class QuizGenerator extends Component<QuizGeneratorProps, QuizGeneratorState> {
             questions: [],
             currentQuestionId: 1,
         };
+        this.refCancelBtn = createRef();
     }
 
     handleQuestionTitleChange = (event: ChangeEvent<HTMLInputElement>, questionId: number) =>
@@ -113,6 +115,7 @@ class QuizGenerator extends Component<QuizGeneratorProps, QuizGeneratorState> {
             evaluacion: questions
         })
         .then((response) => {
+            this.refCancelBtn.current.click();
         })
     };
 
@@ -216,7 +219,7 @@ class QuizGenerator extends Component<QuizGeneratorProps, QuizGeneratorState> {
                                         </button>
                                 </div>
                                 <div>
-                                    <button type="button" className="btn btn-light me-3" data-bs-dismiss="modal">
+                                    <button ref={this.refCancelBtn} type="button" className="btn btn-light me-3" data-bs-dismiss="modal">
                                         Cancelar
                                     </button>
                                     <button className='btn btn-primary' onClick={this.handleGenerateJSON}>Confirmar y enviar</button>
