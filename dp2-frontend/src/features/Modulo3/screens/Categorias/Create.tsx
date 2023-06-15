@@ -20,51 +20,6 @@ const CreateCategory = () => {
   const [subcategoriaName, setSubcategoriaName] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
 
-
-  // Estado para almacenar los valores del formulario
-  const [formValues, setFormValues] = useState([]);
-
-  // Función para manejar los cambios en los campos del formulario
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      [name]: value
-    }));
-  };
-
-  // Función para manejar el envío del formulario
-  // const handleFormSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   // Validación de campos
-  //   if (!formValues.subcategoryName || !formValues.selectedCompetition) {
-  //     alert("Por favor, complete todos los campos.");
-  //     return;
-  //   }
-
-  //   // Crear nueva subcategoría y asociar competencia
-  //   const newSubcategory = {
-  //     name: formValues.subcategoryName,
-  //     competition: formValues.selectedCompetition
-  //   };
-
-  //   // Agregar la nueva subcategoría al estado de subcategorías
-  //   setSubcategories((prevSubcategories) => [
-  //     ...prevSubcategories,
-  //     newSubcategory
-  //   ]);
-
-  //   // Limpiar los valores del formulario
-  //   setFormValues({
-  //     subcategoryName: "",
-  //     selectedCompetition: ""
-  //   });
-
-  //   // Mostrar confirmación de éxito
-  //   alert("La subcategoría ha sido creada exitosamente.");
-  // };
-
   const handleAgregar = () => {
     const newSubcategory = {
       nombre: subcategoriaName,
