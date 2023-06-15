@@ -3,10 +3,10 @@ import { Button, Table} from 'react-bootstrap';
 import {tipoCompetencia,CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
 import { useLocation,  useNavigate  } from 'react-router-dom';
 
-const GestionCompetencia = () => {
+const GestionCompetenciaAM = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  //const { usuario } = location.state;
+  const { usuario } = location.state;
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [nombreEmpleado, setNombreEmpleado] = useState('Ángela Quispe Ramírez');
     const [cargoEmpleado, setCargoEmpleado] = useState('Supervisor - Ärea de TI');
@@ -208,4 +208,4 @@ const GestionCompetencia = () => {
   );
 };
 
-export default GestionCompetencia;
+export default GestionCompetenciaAM;

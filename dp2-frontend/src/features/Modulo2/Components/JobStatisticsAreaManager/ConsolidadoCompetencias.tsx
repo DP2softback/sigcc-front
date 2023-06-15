@@ -31,7 +31,7 @@ const PieChart = ({ title, labels, datasets }) => {
     );
   };
 
-  const ConsolidadoCompetencias = () => {
+  const ConsolidadoCompetenciasAM = () => {
     const navigate = useNavigate();
     const location = useLocation();
       const [data1, setData1] = useState(null);
@@ -248,5 +248,5 @@ const PieChart = ({ title, labels, datasets }) => {
         </div>
       );
     };
-  export default ConsolidadoCompetencias
+  export default ConsolidadoCompetenciasAM
   
