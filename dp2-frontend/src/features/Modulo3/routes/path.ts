@@ -18,7 +18,7 @@ export const EVALUATION_TEMPLATE_EDIT = '/skill-management/evaluation-template/e
 /*------Categorias -----*/
 export const CATEGORIES_INDEX = '/skill-management/categorias/index';
 export const CATEGORIES_DETAIL = '/skill-management/categorias/detail';
-
+export const CATEGORIES_CREATE = '/skill-management/categorias/create';
 
 /*----- Reportes -----*/
 export const REPORT_CONTINUOS_EVALUATION_INDEX = '/skill-management/report/continuous-evaluation';
