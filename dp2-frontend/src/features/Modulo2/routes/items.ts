@@ -8,7 +8,8 @@ import {
 	GAPS_EMPLOYEE_EMP,
 	EMPLOYEES_JOB_OPPORTUNITIES,
 	MY_JOB_OPPORTUNITIES,
-	INDEX
+	INDEX,
+	GAPS_EMPLOYEES_AREA
 } from "./path";
 
 export const sideBarItemsGroup2: TSidebarItemGroup[] = [
@@ -24,7 +25,14 @@ export const sideBarItemsGroup2: TSidebarItemGroup[] = [
 				route: `/${GAPS_ANALYSIS_MODULE}/${COMPETENCES}/${INDEX}`
 			},
 			{
-				name: "Competencias por área",
+				name: "Competencias por puesto",
+				icon: People,
+				roles: [Roles.HR_ADMIN, Roles.HR_WORKER, Roles.GENERAL_MANAGER],
+				hasChildren: false,
+				route: `/${GAPS_ANALYSIS_MODULE}/${GAPS_EMPLOYEES_AREA}/${INDEX}`
+			},
+			{
+				name: "Competencias por area",
 				icon: People,
 				roles: [Roles.HR_ADMIN, Roles.HR_WORKER, Roles.GENERAL_MANAGER],
 				hasChildren: false,
