@@ -1,13 +1,20 @@
-// TOKEN
-export const SAMPLE_TOKEN = "9af549d853112bea2e447a0c442cf52c8af3c056";
+/* TOKEN
+LOCALHOST: 9af549d853112bea2e447a0c442cf52c8af3c056
+DEPLOY: 5ad77c64f19039ef87cca20c2308ddbbaf3014bf
+*/
+//export const SAMPLE_TOKEN = "9af549d853112bea2e447a0c442cf52c8af3c056";
+export const SAMPLE_TOKEN = "5ad77c64f19039ef87cca20c2308ddbbaf3014bf";
 
-// CONNECTIONS
-export const aws_api_connection =
+/* CONNECTION
+LOCALHOST: http://localhost:8000/api/v1
+DEPLOY: https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1
+*/
+//export const LOCAL_CONNECTION = "http://localhost:8000/api/v1";
+export const LOCAL_CONNECTION =
 	"https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1";
-export const LOCAL_CONNECTION = "http://localhost:8000/api/v1";
 
 // PROCESO SELECCION
-export const GET_POSICIONES_TRABAJO = "/positions";
+export const GET_POSICIONES_TRABAJO = "/areaxposition";
 export const CREATE_PROCESO_SELECCION = "/hiring-processes";
 export const GET_TIPO_ETAPAS_PROCESO_SELECCION = "/stage-types";
 export const GET_ALL_EMPLOYEES = "/employee";

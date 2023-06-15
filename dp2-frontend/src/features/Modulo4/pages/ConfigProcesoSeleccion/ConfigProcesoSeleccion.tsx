@@ -665,9 +665,7 @@ function ConfigProcesoSeleccion(props: any) {
 													variant="secondary"
 													id="dropdown-basic"
 													style={{ width: "100%", textAlign: "center" }}>
-													{
-														"Seleccionar el tipo de etapa del proceso de selección:"
-													}
+													{"Seleccionar el tipo de etapa:   \u00A0"}
 												</Dropdown.Toggle>
 
 												<Dropdown.Menu

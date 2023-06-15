@@ -161,7 +161,6 @@ const SearchInput = ({ onClose, onSelect }) => {
 								<tr>
 									<th style={{ minWidth: "18rem" }}>Nombre del proceso</th>
 									<th style={{ minWidth: "5rem" }}>Postulantes</th>
-									<th style={{ minWidth: "10rem" }}>Fecha de creación</th>
 									<th style={{ minWidth: "12rem" }}>Fecha de modificación</th>
 								</tr>
 							</thead>
@@ -174,9 +173,6 @@ const SearchInput = ({ onClose, onSelect }) => {
 										<td>{result.name}</td>
 										<td style={{ textAlign: "center" }}>
 											{result.available_positions_quantity}
-										</td>
-										<td>
-											{moment(result.creationDate).format("YYYY-MM-DD hh:ss")}
 										</td>
 										<td>
 											{moment(result.modifiedDate).format("YYYY-MM-DD hh:ss")}
