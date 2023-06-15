@@ -72,7 +72,7 @@ const Detail = () => {
 					Volver
 				</Button>
 				<Button>
-					Agregar nueva competencia
+					Agregar nueva subcategoría
 				</Button>
 			</div>
 		</>
@@ -80,7 +80,7 @@ const Detail = () => {
 
   const body = (
     <Section
-      title={"Competencias"}
+      title={"Subcategorias"}
       content={isLoading ? <LoadingScreen/> : content}
 
     />
