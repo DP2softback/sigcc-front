@@ -34,6 +34,7 @@ type TrainingObj = {
     fecha_primera_sesion: string;
     cantidad_empleados: number;
     tipo: string;
+    porcentaje_asistencia_aprobacion: number;
 }
 
 let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
@@ -48,6 +49,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "06/05/2023",
         "cantidad_empleados": 10,
         "tipo": "Presencial",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 2,
@@ -58,6 +60,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "10/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Sincrono",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 3,
@@ -68,6 +71,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "11/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Asincrono",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 4,
@@ -78,6 +82,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "12/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Presencial",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 5,
@@ -88,6 +93,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "06/05/2023",
         "cantidad_empleados": 10,
         "tipo": "Presencial",
+        "porcentaje_asistencia_aprobacion": 80
 
     },
     {
@@ -99,6 +105,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "10/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Sincrono",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 7,
@@ -109,6 +116,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "11/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Asincrono",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 8,
@@ -119,6 +127,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "12/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Presencial",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 9,
@@ -129,6 +138,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "06/05/2023",
         "cantidad_empleados": 10,
         "tipo": "Presencial",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 10,
@@ -139,6 +149,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "10/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Sincrono",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 11,
@@ -149,6 +160,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "11/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Asincrono",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 12,
@@ -159,6 +171,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "12/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Presencial",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 13,
@@ -169,6 +182,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "06/05/2023",
         "cantidad_empleados": 10,
         "tipo": "Presencial",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 14,
@@ -179,6 +193,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "10/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Sincrono",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 15,
@@ -189,6 +204,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "11/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Asincrono",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 16,
@@ -199,6 +215,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "12/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Presencial",
+        "porcentaje_asistencia_aprobacion": 80
     },
 ]
 
@@ -304,6 +321,7 @@ const Training = () => {
     const refTrTypes = useRef<HTMLSelectElement>(null);
     const refTrFree = useRef<any>(null);
     const refTrPhoto = useRef(null);
+    const refTrAttendance = useRef<HTMLInputElement>(null);
     /* TRAINING DETAIL INPUTS */
 
     /* TRAINING FILTERS */
@@ -373,6 +391,7 @@ const Training = () => {
             tipo: tipo,
             es_libre: !refTrFree.current,
             url_foto: refTrPhoto.current.getUrl(),
+            porcentaje_asistencia_aprobacion: parseInt(refTrAttendance.current?.value),
         }
 
         console.log(data)
@@ -780,7 +799,7 @@ const Training = () => {
                                                         <label className="form-label">Nombre</label>
                                                         <input ref={refTrName} type="text" className="form-control" />
                                                     </div>
-                                                    <div >
+                                                    <div>
                                                         <label className="form-label">Descripción</label>
                                                         <textarea ref={refTrDescription} className="form-control" />
                                                     </div>
@@ -798,6 +817,15 @@ const Training = () => {
                                                                 )
                                                             })}
                                                         </select>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div className='row'>
+                                                <div className='col'>
+                                                    <div className='mb-3'> 
+                                                        <label className="form-label">Porcentaje de asistencia obligatoria</label>
+                                                        <input type="number" className="form-control" ref={refTrAttendance} min={0} max={100}/>
                                                     </div>
                                                     <div className="form-check form-switch">
                                                         <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={switchRefTr} ref={refTrFree} />

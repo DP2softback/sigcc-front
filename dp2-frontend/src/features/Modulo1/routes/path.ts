@@ -5,8 +5,8 @@ export const LEARNING_PATH_INDEX = 'rutadeaprendizaje';
 export const LEARNING_PATH_ADDCOURSE = 'curso/agregar/:learningPathId';
 export const LEARNING_PATH_DETAIL = 'detalle/:learningPathId';
 export const LEARNING_PATH_ASSIGNMENT = 'asignacion/:learningPathId';
-export const LEARNING_PATH_EVALUATION_DETAILS = 'detalle/:learningPathId/evalintegral';
-export const LEARNING_PATH_EVALUATION_REVIEW = 'detalle/:learningPathId/evalintegral/revision/:employeeID';
+export const LEARNING_PATH_EVALUATION_DETAILS = 'detalle/:learningPathId/evaluacionintegral';
+export const LEARNING_PATH_EVALUATION_REVIEW = 'detalle/:learningPathId/evaluacionintegral/revision/:employeeID';
 
 /*----- Curso Empresa -----*/
 export const ORG_COURSE_INDEX = 'cursoempresa';
@@ -19,6 +19,7 @@ export const ORG_COURSE_ASSIGNMENT = 'asignacion/:trainingID';
 /*----- Vista Empleado LP -----*/
 export const EMP_LEARNING_PATH_INDEX = 'empleado/rutadeaprendizaje';
 export const EMP_LEARNING_PATH_DETAIL = 'detalle/:learningPathId';
+export const EMP_LEARNING_PATH_INTEGRAL_EVALUATION = 'detalle/:learningPathId/evaluacionintegral';
 
 /*----- Vista Empleado CE -----*/
 export const EMP_ORG_COURSE_INDEX = 'empleado/cursoempresa';

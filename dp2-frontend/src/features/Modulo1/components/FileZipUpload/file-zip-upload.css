@@ -1,0 +1,17 @@
+.file-input-label {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    background-color: #eee;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 0.5rem;
+    border: dotted 2px #ced4da;
+    padding: .5rem;
+}
+
+.file-input-label-icon {
+    height: 1.5rem;
+    width: 1.5rem;
+}
