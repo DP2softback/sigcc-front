@@ -7,6 +7,7 @@ import TableCategories from '@features/Modulo3/components/Tables/TableCategories
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 import cat from '@features/Modulo3/jsons/Categories';
+import { listAllCategorias } from '@features/Modulo3/services/categories';
 import { CATEGORIES_CREATE, CATEGORIES_INDEX } from '@features/Modulo3/routes/path';
 import '../EvaluacionContinua/EvaluacionContinua.css';
 const Index = () => {
@@ -17,8 +18,12 @@ const Index = () => {
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-        setCategories(cat);
-      
+      const response = await listAllCategorias();
+      if(response){
+        console.log("response",response);
+        setCategories(response)
+      }
+        
       setIsLoading(false);
     })();
   }, []);

@@ -22,7 +22,8 @@ const DetalleCompetenciasArea = () => {
     const [empleados, setEmpleados] = useState<EmpleadoDeArea[]>([]);
       useEffect(() => {
         const obj = {
-          area: 2
+          area: 2,
+          posicion:  0
         }
         axiosEmployeeGaps.post("gaps/employeeArea", obj)
         .then((response) => {
