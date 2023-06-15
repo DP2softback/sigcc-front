@@ -670,15 +670,17 @@ function ConfigProcesoSeleccion(props: any) {
 
 												<Dropdown.Menu
 													style={{ width: "100%", textAlign: "center" }}>
-													{optionsTipoEtapaSelec.map((optionRow) => (
-														<Dropdown.Item
-															key={optionRow.id}
-															onClick={() =>
-																handleOptionsTipoEtapaSelec(optionRow)
-															}>
-															{optionRow.name}
-														</Dropdown.Item>
-													))}
+													{optionsTipoEtapaSelec
+														? optionsTipoEtapaSelec.map((optionRow) => (
+																<Dropdown.Item
+																	key={optionRow.id}
+																	onClick={() =>
+																		handleOptionsTipoEtapaSelec(optionRow)
+																	}>
+																	{optionRow.name}
+																</Dropdown.Item>
+														  ))
+														: []}
 												</Dropdown.Menu>
 											</Dropdown>
 											<Form.Control
