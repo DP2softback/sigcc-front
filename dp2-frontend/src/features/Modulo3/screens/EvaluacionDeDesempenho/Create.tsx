@@ -17,6 +17,8 @@ const Create = () => {
     evaluatedId: employee.id,
     evaluatorId: USER_ID,
     evaluationType: PERFORMANCE_EVALUATION_TYPE,
+    hasComment: false,
+    associatedProject: '',
     isFinished: 0
   });
   const [isLoading, setIsLoading] = useState(true);

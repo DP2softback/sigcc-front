@@ -347,5 +347,3 @@ export const routes: RouteObject[] = [
 		]
 	}
 ];
-
-export default routes;

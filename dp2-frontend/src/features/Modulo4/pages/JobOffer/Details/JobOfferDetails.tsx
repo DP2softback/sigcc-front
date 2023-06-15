@@ -1,258 +1,262 @@
-import axiosInt from '@config/axios';
-import Sidebar from '@components/Sidebar'
-import sidebarItems from '@features/Modulo1/utils/sidebarItems'
-import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom';
-import { GeoFill, JournalBookmarkFill, InfoCircleFill, PeopleFill, DoorClosedFill, Calendar2EventFill, Calendar, Calendar2Event, People, ArrowLeftCircle, ArrowLeftCircleFill, ArrowRightCircle } from 'react-bootstrap-icons'
-import EmployeeCard from '@features/Modulo1/components/EmployeeCard/EmployeeCard';
-import '../basic.css';
-import '../job-offer.css';
+import axiosInt from "@config/axios";
+import Sidebar from "@components/Sidebar";
+import sidebarItems from "@features/Modulo1/utils/sidebarItems";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {
+	GeoFill,
+	JournalBookmarkFill,
+	InfoCircleFill,
+	PeopleFill,
+	DoorClosedFill,
+	Calendar2EventFill,
+	Calendar,
+	Calendar2Event,
+	People,
+	ArrowLeftCircle,
+	ArrowLeftCircleFill,
+	ArrowRightCircle
+} from "react-bootstrap-icons";
+import EmployeeCard from "@features/Modulo1/components/EmployeeCard/EmployeeCard";
+import "../basic.css";
+import "../job-offer.css";
+import PostulationModal from "./PostulationModal";
 
-type Employee = {
-    id: string;
-    name: string;
-    code: string;
-    area: string;
-    position: string;
-    image: string;
-}
+type JobDetail = {
+	id: number;
+	position_name: string;
+	photoURL: string;
+	offer_introduction: string;
+	modified_date: string;
+	location: string;
+	salary_range: string;
+	job_description: string;
+	benefits: string;
+	responsibilities: string;
+	requirements: string;
+	summary: string;
+};
 
-const datos = {
-    id: 1,
-    name: "Seguridad de Información",
-    photoURL: 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
-    description: "Lorem ipsum",
-    startDate: "06/05/2023",
-    endDate: "06/05/2023",
-    numEmployees: 10,
-    type: "Presencial",
-    capacity: 20,
-    location: "Av. Universitaria 1305 - San Miguel"
-}
-
-const employees: Employee[] = [
-    {
-        id: "1",
-        name: "John Doe",
-        code: "123456789",
-        area: "Área de Base de datos",
-        position: "Manager",
-        image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-    },
-    {
-        id: "2",
-        name: "Jane Smith",
-        code: "123456789",
-        area: "Área de Base de datos",
-        position: "Developer",
-        image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-    },
-    {
-        id: "3",
-        name: "Bob Johnson",
-        code: "123456789",
-        area: "Área de Base de datos",
-        position: "Designer",
-        image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-    },
-    {
-        id: "4",
-        name: "Sarah Lee",
-        code: "123456789",
-        area: "Área de Base de datos",
-        position: "Tester",
-        image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-    },
-    {
-        id: "5",
-        name: "Tom Jackson",
-        code: "123456789",
-        area: "Área de Base de datos",
-        position: "Analyst",
-        image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-    }
+const datos: JobDetail[] = [
+	{
+		id: 1,
+		position_name: "Desarrollador de software",
+		photoURL:
+			"https://www.becas-santander.com/content/dam/becasmicrosites/blog/metodolog%C3%ADas-de-desarrollo-de-software.jpg",
+		offer_introduction:
+			"Estamos buscando un desarrollador de software altamente motivado y creativo para unirse a nuestro equipo. Debes tener experiencia en lenguajes de programación como Java y Python, así como conocimientos en bases de datos y desarrollo web.",
+		modified_date: "2023-07-01",
+		location: "Av. Universitaria 1305 - San Miguel",
+		salary_range: "$3000 - $4000",
+		job_description:
+			"Como desarrollador de software, serás responsable de escribir, modificar, probar y mantener el código de software para aplicaciones y sistemas. Colaborarás con otros miembros del equipo para diseñar soluciones técnicas y resolver problemas. Además, participarás en el desarrollo de nuevas funcionalidades y mejorarás la eficiencia de los sistemas existentes.",
+		benefits:
+			"Ofrecemos un ambiente de trabajo colaborativo y desafiante, oportunidades de aprendizaje y crecimiento profesional, horario flexible y un paquete de beneficios competitivo que incluye seguro de salud, bonos por desempeño y vacaciones pagadas.",
+		responsibilities:
+			"1. Escribir y mantener el código de software utilizando lenguajes de programación como Java y Python.\n2. Participar en el diseño y desarrollo de nuevas funcionalidades.\n3. Colaborar con el equipo para resolver problemas técnicos y mejorar la eficiencia de los sistemas existentes.\n4. Realizar pruebas de software y depuración para garantizar la calidad y la funcionalidad adecuada.\n5. Documentar el código y los procesos técnicos.",
+		requirements:
+			"1. Experiencia demostrable en el desarrollo de software utilizando lenguajes como Java y Python.\n2. Conocimientos sólidos en bases de datos y desarrollo web.\n3. Capacidad para trabajar en equipo y comunicarse de manera efectiva.\n4. Habilidades analíticas y capacidad para resolver problemas técnicos.\n5. Creatividad y capacidad para proponer soluciones innovadoras.\n6. Titulación universitaria en ciencias de la computación, ingeniería de software o campo relacionado.",
+		summary:
+			"Buscamos un desarrollador de software altamente motivado y creativo con experiencia en Java, Python, bases de datos y desarrollo web. Ofrecemos un ambiente de trabajo desafiante, oportunidades de crecimiento profesional y un paquete de beneficios competitivo."
+	},
+	{
+		id: 2,
+		position_name: "Diseñador gráfico",
+		photoURL:
+			"https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg",
+		offer_introduction:
+			"Estamos buscando un diseñador gráfico talentoso y apasionado para unirse a nuestro equipo. Debes tener experiencia en el uso de herramientas de diseño como Adobe Photoshop e Illustrator, así como una sólida comprensión de los principios del diseño.",
+		modified_date: "2023-07-15",
+		location: "Av. Universitaria 1305 - San Miguel",
+		salary_range: "$2500 - $3500",
+		job_description:
+			"Como diseñador gráfico, serás responsable de crear y diseñar elementos visuales atractivos y efectivos para diversos proyectos. Trabajarás en estrecha colaboración con el equipo de marketing y otros departamentos para desarrollar diseños que transmitan mensajes claros y cumplan con los objetivos establecidos.",
+		benefits:
+			"Ofrecemos un entorno de trabajo estimulante y creativo, oportunidades para expresar tu talento artístico, flexibilidad horaria y un paquete de beneficios competitivo que incluye seguro de salud y vacaciones pagadas.",
+		responsibilities:
+			"1. Crear diseños gráficos, ilustraciones y otros elementos visuales utilizando herramientas como Adobe Photoshop e Illustrator.\n2. Colaborar con el equipo de marketing y otros departamentos para desarrollar diseños que cumplan con los objetivos del proyecto.\n3. Mantenerte actualizado(a) sobre las últimas tendencias y mejores prácticas en diseño gráfico.\n4. Asegurarte de que los diseños cumplan con los estándares de calidad y las pautas de la marca.\n5. Participar en reuniones de revisión y proporcionar retroalimentación constructiva.",
+		requirements:
+			"1. Experiencia demostrable en diseño gráfico y el uso de herramientas como Adobe Photoshop e Illustrator.\n2. Conocimiento sólido de los principios del diseño, como la composición, el color y la tipografía.\n3. Habilidad para trabajar en equipo y comunicarse de manera efectiva.\n4. Creatividad y capacidad para proponer ideas innovadoras.\n5. Titulación universitaria en diseño gráfico, artes visuales o campo relacionado.",
+		summary:
+			"Buscamos un diseñador gráfico talentoso y apasionado con experiencia en el uso de herramientas como Adobe Photoshop e Illustrator. Ofrecemos un entorno de trabajo creativo, flexibilidad horaria y un paquete de beneficios competitivo."
+	},
+	{
+		id: 3,
+		position_name: "Analista de datos",
+		photoURL:
+			"https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg",
+		offer_introduction:
+			"Estamos buscando un analista de datos con experiencia en el manejo de grandes conjuntos de datos. Debes tener habilidades en el uso de herramientas de análisis y visualización de datos como SQL, Python y Tableau.",
+		modified_date: "2023-08-01",
+		location: "Av. Universitaria 1305 - San Miguel",
+		salary_range: "$3500 - $4500",
+		job_description:
+			"Como analista de datos, serás responsable de recopilar, analizar y visualizar grandes conjuntos de datos para proporcionar información valiosa a la empresa. Utilizarás herramientas de análisis y visualización de datos como SQL, Python y Tableau para extraer conocimientos y ayudar en la toma de decisiones.",
+		benefits:
+			"Ofrecemos un ambiente de trabajo dinámico y desafiante, oportunidades para desarrollar tus habilidades analíticas, flexibilidad horaria y un paquete de beneficios competitivo que incluye seguro de salud y bonos por desempeño.",
+		responsibilities:
+			"1. Recopilar y analizar grandes conjuntos de datos utilizando herramientas como SQL, Python y Tableau.\n2. Identificar patrones y tendencias en los datos para proporcionar información valiosa.\n3. Crear informes y visualizaciones claras y concisas para comunicar los resultados del análisis.\n4. Colaborar con otros equipos para comprender y abordar los desafíos analíticos.\n5. Mantenerte actualizado(a) sobre las mejores prácticas en análisis de datos y herramientas relacionadas.",
+		requirements:
+			"1. Experiencia demostrable en análisis de datos y el uso de herramientas como SQL, Python y Tableau.\n2. Conocimiento sólido de estadísticas y métodos de análisis de datos.\n3. Habilidad para comunicar de manera efectiva los resultados del análisis.\n4. Capacidad para trabajar en equipo y colaborar con otros departamentos.\n5. Titulación universitaria en estadística, ciencias de la computación o campo relacionado.",
+		summary:
+			"Buscamos un analista de datos con experiencia en el manejo de grandes conjuntos de datos y habilidades en herramientas como SQL, Python y Tableau. Ofrecemos un ambiente desafiante, oportunidades de desarrollo y un paquete de beneficios competitivo."
+	},
+	{
+		id: 4,
+		position_name: "Asistente administrativo",
+		photoURL:
+			"https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg",
+		offer_introduction:
+			"Estamos buscando un asistente administrativo para brindar apoyo en tareas diarias. Debes tener habilidades organizativas, ser proactivo y tener conocimientos en el uso de herramientas de productividad como Microsoft Office.",
+		modified_date: "2023-07-10",
+		location: "Av. Universitaria 1305 - San Miguel",
+		salary_range: "$2000 - $2500",
+		job_description:
+			"Como asistente administrativo, serás responsable de brindar apoyo en diversas tareas administrativas y de oficina. Te encargarás de la organización de documentos, la gestión de agenda, la coordinación de reuniones y otras actividades administrativas.",
+		benefits:
+			"Ofrecemos un ambiente de trabajo dinámico y colaborativo, oportunidades para desarrollar tus habilidades administrativas, horario flexible y un paquete de beneficios competitivo que incluye seguro de salud y bonos por desempeño.",
+		responsibilities:
+			"1. Organizar y gestionar documentos y archivos administrativos.\n2. Asistir en la coordinación de reuniones y eventos.\n3. Gestionar la agenda y los horarios del equipo.\n4. Realizar tareas administrativas como procesamiento de correos, preparación de informes y mantenimiento de registros.\n5. Colaborar con otros departamentos para garantizar la eficiencia y el flujo de trabajo adecuado.",
+		requirements:
+			"1. Habilidades organizativas y capacidad para priorizar tareas.\n2. Conocimiento en el uso de herramientas de productividad como Microsoft Office.\n3. Habilidad para trabajar en equipo y comunicarse de manera efectiva.\n4. Atención al detalle y capacidad para realizar tareas con precisión.\n5. Experiencia previa en roles administrativos es valorada.",
+		summary:
+			"Buscamos un asistente administrativo proactivo y organizado con conocimientos en herramientas de productividad como Microsoft Office. Ofrecemos un ambiente de trabajo dinámico, oportunidades de desarrollo y un paquete de beneficios competitivo."
+	}
 ];
 
-
 const JobOfferDetails = () => {
-    const { trainingID } = useParams();
-    const [training, setTraining] = useState<any>(datos);
-    const [position, setPosition] = useState(0);
-    const [prueba, setPrueba] = useState(0);
-    const employeesToShow = employees.slice(position, position + 3);
-    const botonEmployee = "Quitar";
+	const { trainingID } = useParams();
+	const [training, setTraining] = useState<any>(datos);
+	const [position, setPosition] = useState(0);
+	const [prueba, setPrueba] = useState(0);
+    const id = parseInt(localStorage.getItem("idOffer")) - 1;
+    const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
 
-    const handlePrevious = () => {
-        if (position > 0) {
-            setPosition(position - 3);
-        }
-    };
+	const handlePrevious = () => {
+		if (position > 0) {
+			setPosition(position - 3);
+		}
+	};
 
-    const handleNext = () => {
-        if (position < employees.length - 3) {
-            setPosition(position + 3);
-        }
-    };
-
-    const loadTrainingDetails = () => {
-        /*
-        axiosInt.get(`curso/training/${trainingID}`)
-            .then(function (response)
-            {
-                setTraining(response.data)
-            })
-            .catch(function (error)
-            {
-                console.log(error);
-            });
-        */
+	const loadTrainingDetails = () => {};
+    
+    const handleSubmit = () => {
+        setShowModal(false)
+        navigate("/selection-offers-and-positions/job-offers/register");
     }
 
-    useEffect(() => {
-        loadTrainingDetails();
-    }, []);
-
-    return (
-        <>
-                <div className='container row mt-3'>
-
-                    <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
-                        <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
-                            <Link to={`/modulo1/cursoempresa`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
-                        </div>
-
-                        <div className='col'>
-                            <h1 className='screenTitle'>{"Detalle de la oferta laboral"}</h1>
-                            <p><small className='subtitle'>{training.description}.</small></p>
-                        </div>
-                    </div>
 
 
-                    <div className='col' style={{ marginLeft: "60px" }}>
-                        <div className='row row-center'>
-                            <div className='col text-end'>
-                                <img src={training.photoURL} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>
-                            </div>
-                            <div className='col'>
-                                <p><Calendar /><b style={{ paddingLeft: "0.5rem" }}>Fecha de creación:</b> {training.startDate}</p>
-                                <p><Calendar2Event /><b style={{ paddingLeft: "0.5rem" }}>Fecha del evento:</b> {training.startDate}</p>
-                                <p><People /><b style={{ paddingLeft: "0.5rem" }}>Cant. Empleados:</b> {training.numEmployees}</p>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <h4 className='mt-3 mb-3 subarea'>Detalles importantes</h4>
-                            <div className='row'>
-                                <div className='col'>
-                                    <div className="card">
-                                        <div className="card-header">
-                                            <JournalBookmarkFill /><b style={{ paddingLeft: "0.5rem" }}>Temas del curso</b>
-                                        </div>
-                                        <div className="card-body">
-                                            {/*DEFINIR COMO SERA ACA*/}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className='col'>
-                                    <div className="card">
-                                        <div className="card-header">
-                                            <InfoCircleFill /><b style={{ paddingLeft: "0.5rem" }}>Información del curso</b>
-                                        </div>
-                                        <div className="card-body">
-                                            <p className="card-text"><Calendar2EventFill /><b style={{ paddingLeft: "0.5rem" }}>Fecha del evento:</b> {training.startDate}</p>
-                                            <p className="card-text"><DoorClosedFill /><b style={{ paddingLeft: "0.5rem" }}>Tipo:</b> {training.type}</p>
-                                            <p className="card-text"><GeoFill /><b style={{ paddingLeft: "0.5rem" }}>Ubicación:</b> {training.location}</p>
-                                            <p className="card-text"><PeopleFill /><b style={{ paddingLeft: "0.5rem" }}>Aforo máximo:</b> {training.capacity}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            {/*TRES ESCENARIOS:
-                           1. DETALLE CUANDO SE CREA ASINCRONO 
-                            1.1. OPCION PARA SUBIR EL VIDEO O VIDEOS
-                            1.2. EMPLEADOS ASIGNADOS
-                           2. DETALLE CUANDO SE CREA SINCRONO O PRESENCIAL
-                            2.1. DETALLE CON EMPLEADOS                            
-                        */}
-                            <div className='mt-5 mb-3' style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                                <h4 className='subarea'>Empleados asignados</h4>
-                                <Link to={`/modulo1/cursoempresa/asignacion/${training.id}`}>
-                                    <button className='btn btn-primary' style={{ marginRight: "23px" }}>
-                                        <div style={{display: "flex", alignItems: "center"}}>
-                                            <span className='me-3'>Asignar empleados</span>                                        
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
-                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                                            </svg>
-                                        </div>
-                                    </button>
+	useEffect(() => {
+		loadTrainingDetails();
+	}, []);
 
-                                </Link>
+	return (
+		<>
+			<div
+				style={{
+					display: "flex",
+					alignItems: "center",
+					paddingLeft: "10px"
+				}}>
+				<div
+					className="text-end"
+					style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
+					<Link
+						to={`/selection-offers-and-positions/job-offers/list`}
+						className="float-right">
+						<ArrowLeftCircleFill
+							style={{ height: "32px", width: "32px", color: "black" }}
+						/>
+					</Link>
+				</div>
 
-                            </div>
+				<div className="col">
+					<h1 className="screenTitle">{"Detalle de la oferta laboral"}</h1>
+					<p>
+						<small className="subtitle">
+							Descripción de la oferta, requisitos para el puesto y beneficios
+							otorgados para el contratado.
+						</small>
+					</p>
+				</div>
+			</div>
+			<div>
+				<div className="row mt-3">
+					<div className="col-12">
+						<div className="card px-2">
+							<div className="row">
+								<div className="col-9">
+									<h1>{datos[id].position_name}</h1>
+									<div>Área de desarrollo de software</div>
+								</div>
+								<div className="col-3 text-end">
+									<button type="button" className="btn btn-primary mt-2" onClick={()=>handleSubmit()}>
+										Postular
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 
+				<div className="row mt-3">
+					<div className="col-6">
+						<div className="row-7 mt-2">
+							<div className="card">
+								<h3 className="px-1">Descripcion del puesto</h3>
+								<div className="px-3">{datos[id].job_description}</div>
+							</div>
+						</div>
+						<div className="row-7 mt-2">
+							<div className="card">
+								<h3 className="px-1">Responsabilidades</h3>
+								<div className="px-3">
+									{datos[id].responsibilities
+										.split("\n")
+										.map((element, index) => (
+											<div key={index}>{element}</div>
+										))}
+								</div>
+							</div>
+						</div>
+						<div className="row-7 mt-2">
+							<div className="card">
+								<h3 className="px-1">Requisitos</h3>
+								<div className="px-3">
+									{datos[0].requirements.split("\n").map((element, index) => (
+										<div key={index}>{element}</div>
+									))}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div className="col-6">
+						<div className="row-5 mt-2">
+							<div className="card">
+								<h3 className="px-1">Beneficios</h3>
+								<div className="px-3">{datos[id].benefits}</div>
+							</div>
+						</div>
+						<div className="row-5 mt-2">
+							<div className="card">
+								<h3 className="px-1">Resumen</h3>
+								<div className="px-3">{datos[id].summary}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+            <PostulationModal
+       
+        funcionPrincipal={() => handleSubmit()}
+        show={showModal}
+        onHide={() => setShowModal(false)}
+      />
+		</>
+	);
+};
 
-                            {employees.length ?
-                                <div style={{ display: "flex", alignItems: "center" }}>
-                                    <div>
-                                        <ArrowLeftCircle onClick={handlePrevious} className={`${position === 0 ? 'controlsD' : 'controls'}`} />
-                                    </div>
-
-                                    <div className="employees-list cards">
-                                        {employeesToShow.map((employee) => (
-                                            <EmployeeCard key={employee.id}
-                                            id={employee.id}
-                                            name={employee.name}
-                                            photoURL={employee.image}
-                                            area={employee.area}
-                                            puesto={employee.position}
-                                            codigo={employee.code}
-                                            boton1={botonEmployee}
-                                            boton1Color={"#B02A37"}
-                                            option={setPrueba} 
-                                            boton1Texto={undefined}
-                                            />
-                                        ))}
-                                        {(employeesToShow.length != 3) &&
-                                            <>
-                                                {employeesToShow.length === 2 ?
-                                                    <div key={1} style={{ width: "380px", height: "297.07px" }}>
-                                                    </div>
-                                                    :
-                                                    <>
-                                                        <div key={1} style={{ width: "380px", height: "297.07px" }}>
-                                                        </div>
-                                                        <div key={2} style={{ width: "380px", height: "297.07px" }}>
-                                                        </div>
-                                                    </>
-                                                }
-                                            </>
-                                        }
-                                    </div>
-
-                                    <div>
-                                        <div>
-                                            <ArrowRightCircle onClick={handleNext} className={`${position >= employees.length - 3 ? 'controlsD' : 'controls'}`} />
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                :
-                                <div>
-                                    <h5 style={{ display: "flex", justifyContent: "center" }}>Sin empleados asignados</h5>
-                                </div>
-                            }
-
-
-
-
-                        </div>
-                    </div>
-                </div>
-        </>
-    )
-}
-
-export default JobOfferDetails
+export default JobOfferDetails;

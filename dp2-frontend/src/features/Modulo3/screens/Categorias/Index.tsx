@@ -7,7 +7,7 @@ import TableCategories from '@features/Modulo3/components/Tables/TableCategories
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 import cat from '@features/Modulo3/jsons/Categories';
-import { CATEGORIES_INDEX } from '@features/Modulo3/routes/path';
+import { CATEGORIES_CREATE, CATEGORIES_INDEX } from '@features/Modulo3/routes/path';
 import '../EvaluacionContinua/EvaluacionContinua.css';
 const Index = () => {
 
@@ -50,7 +50,10 @@ const Index = () => {
 				<NoDataFound />
 			)}
 			<div className="text-end">
-				<Button>
+				<Button
+					onClick={() => {
+						navigateTo(CATEGORIES_CREATE);
+					}}>
 					Agregar nueva categoría
 				</Button>
 			</div>

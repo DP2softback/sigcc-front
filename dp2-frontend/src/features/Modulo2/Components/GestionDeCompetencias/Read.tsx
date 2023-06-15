@@ -34,11 +34,11 @@ const CompetenciasRead: React.FC = () => {
           idEmpleado: 0,
         };
 
-        const response = await fetch('https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competenceSearch', {
+        const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceSearch', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Token 2e768413e0d75dd79983cd115422fee5291c668d',
+            Authorization: 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
           },
           body: JSON.stringify(body),
         });
@@ -56,11 +56,11 @@ const CompetenciasRead: React.FC = () => {
     const fetchTipoCompetencias = async () => {
       try {
 
-        const response = await fetch('https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competenceTypes', {
+        const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceTypes', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Token 2e768413e0d75dd79983cd115422fee5291c668d',
+            Authorization: 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
           },
         });
 
@@ -130,7 +130,7 @@ const CompetenciasRead: React.FC = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Token 2e768413e0d75dd79983cd115422fee5291c668d'
+        'Authorization': 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf'
       },
       body: JSON.stringify({
         name: nuevaCompetencia.name,
@@ -140,7 +140,7 @@ const CompetenciasRead: React.FC = () => {
       })
     };
   
-    fetch('https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competences', requestOptions)
+    fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competences', requestOptions)
       .then(response => response.json())
       .then(data => {
         console.log('Competencia agregada:', data);
@@ -184,7 +184,7 @@ const actualizarCompetencia = async (competenciaActualizada) => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Token 2e768413e0d75dd79983cd115422fee5291c668d',
+          Authorization: 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
         },
         body: JSON.stringify(competenciaActualizada),
       }
@@ -233,10 +233,10 @@ const actualizarCompetencia = async (competenciaActualizada) => {
 
 const borrarCompetencia = async (id) => {
   try {
-    const response = await fetch(`https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competences?id=${id}`, {
+    const response = await fetch(`https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competences?id=${id}`, {
       method: 'DELETE',
       headers: {
-        'Authorization': 'Token 2e768413e0d75dd79983cd115422fee5291c668d'
+        'Authorization': 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf'
       }
     });
 

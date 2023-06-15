@@ -21,7 +21,7 @@ export const getEmployeeEvaluationDashboard = async (employeeId: number) => {
 export const saveEvaluation = async (evaluation) => {
   const optionsRequest = {
     method: 'POST',
-    url: BACKEND_URL + 'eval',
+    url: BACKEND_URL + 'CrearEvaluacionDese',
     headers:{
       Authorization: `Token ${TOKEN}`
     },

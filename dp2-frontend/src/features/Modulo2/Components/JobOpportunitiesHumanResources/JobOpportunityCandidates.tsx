@@ -1,9 +1,11 @@
 import React from 'react'
-import { Button, Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const JobOpportunityCandidates = (props) => {
 
   const { jobOpp } = props;
+  const navigate = useNavigate();
   const [candidates, setCandidates] = React.useState([]);
   const [tipoOrden, setTipoOrden] = React.useState('ascendente');
   const [campoOrdenamiento, setCampoOrdenamiento] = React.useState('');
@@ -86,7 +88,7 @@ const returnLevel = (number) => {
               </tbody>
           </Table>
         }
-        <button className='btn btn-outline-primary col-1 ms-3 btn-sm'>Regresar</button>
+        <button className='btn btn-outline-primary col-1 ms-3 btn-sm' onClick={() => navigate(-1)}>Regresar</button>
       </div>
     </div>
   )
