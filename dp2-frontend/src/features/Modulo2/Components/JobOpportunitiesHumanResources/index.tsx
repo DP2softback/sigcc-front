@@ -4,11 +4,15 @@ import axiosEmployeeGaps from '@features/Modulo2/services/EmployeeGapsServices';
 
 const JobOpportunitiesHumanResources = () => {
 
-    const [jobOpportunities, setJobOpportunities] = React.useState([]);
+    const [jobOpportunities, setJobOpportunities] = React.useState(null);
 
     React.useEffect(() => {
+        const obj = {
+            "hiring_process": 0,
+            "activo": 2
+        };
         axiosEmployeeGaps
-        .post("/")
+        .post("jobOfferSearch",obj)
         .then(function(response){
             setJobOpportunities(response);
         })
@@ -24,7 +28,7 @@ const JobOpportunitiesHumanResources = () => {
                 <p className="text-muted">Puestos vacantes que son afines a tus competencias</p>
                 <br/>
                 <h3>Puestos vacantes</h3>
-                {jobOpportunities.map((jobOpt, index) => {
+                {jobOpportunities && jobOpportunities.map((jobOpt, index) => {
                     return (
                         <div className='col-4'>
                             <JobOpportunityCard jobOpportunity={jobOpt} numBot={1} hhrr/>

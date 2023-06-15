@@ -2,12 +2,20 @@ import React from 'react'
 import { Button } from 'react-bootstrap';
 import './JobOpportunityCard.css'
 import { useNavigate } from 'react-router-dom';
-import { EMPLOYEES_JOB_CANDIDATES, EMPLOYEES_JOB_OPPORTUNITIES, GAPS_ANALYSIS_MODULE } from '@features/Modulo2/routes/path';
+import { EMPLOYEES_JOB_CANDIDATES, EMPLOYEES_JOB_OPPORTUNITIES, GAPS_ANALYSIS_MODULE, MY_JOB_OPPORTUNITIES, MY_JOB_OPPORTUNITIES_DETAIL } from '@features/Modulo2/routes/path';
 import JobOppImage from '../../../../assets/images/image-job-opp.png';
 
 const JobOpportunityCard = (props) => {
     const {jobOpportunity, numBot, hhrr} = props;
     const navigate = useNavigate();
+
+    const navigateToMyJobOppDetail = () => {
+        navigate(`/${GAPS_ANALYSIS_MODULE}/${MY_JOB_OPPORTUNITIES}/${MY_JOB_OPPORTUNITIES_DETAIL}`, {
+            state: {
+                jobOpp: jobOpportunity
+            }
+        })
+    }
 
     return (
         <div className='container card-job-opp'>
@@ -27,7 +35,7 @@ const JobOpportunityCard = (props) => {
             </div>
             <hr/>
             <div className='row mx-0 mb-4 desc-job-opp'>
-                {jobOpportunity.description}
+                {jobOpportunity.responsabilities_introduction}
             </div>
             <div className='row row-cols-auto mb-4'>
                 {jobOpportunity.labels.map((lbl) => {
@@ -43,7 +51,7 @@ const JobOpportunityCard = (props) => {
             
             <div className='row row-cols-auto d-flex justify-content-between'>
                 <div className='col'>
-                    {numBot === 3 && <Button className='btn btn-sm btn-job-opp' onClick={() => {hhrr === undefined ? console.log("A") : navigate(`/${GAPS_ANALYSIS_MODULE}/${EMPLOYEES_JOB_OPPORTUNITIES}/${EMPLOYEES_JOB_CANDIDATES}`);}}>Detalle del puesto</Button>}
+                    {numBot === 3 && <Button className='btn btn-sm btn-job-opp' onClick={() => {hhrr === undefined ? navigateToMyJobOppDetail() :  console.log("A");}}>Detalle del puesto</Button>}
                 </div>
                 <div className='col'>
                     {numBot === 3 && <Button className='btn btn-sm btn-job-opp btn-acept'>Aceptar postulación</Button>}

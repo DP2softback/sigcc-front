@@ -16,7 +16,8 @@ import {
 	GAPS_EMPLOYEES_AREA,
 	GAPS_EMPLOYEES_AREA_DETAIL,
 	GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE,
-	INDEX
+	INDEX,
+	MY_JOB_OPPORTUNITIES_DETAIL
 } from "./path";
 
 const Loader = (Component) => (props) =>
@@ -38,6 +39,10 @@ const JobOpportunitiesRelatedToSkills = Loader(
 	lazy(() => import("@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/index"))
 );
 
+const JobOpportunitiesSelected = Loader(
+	lazy(() => import("@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/JobOpportunitySelected"))
+);
+
 const JobOpportunitiesHumanResources = Loader(
 	lazy(() => import("@features/Modulo2/Components/JobOpportunitiesHumanResources/index"))
 );
@@ -52,10 +57,6 @@ const VisualizacionBrechasEmpleado = Loader(
 
 const VisualizacionBrechasEmpleadoDetalle = Loader(
 	lazy(() => import("@features/Modulo2/Components/VisualizacionBrechasEmpleado/Detail"))
-);
-
-const JobOpportunitiesSelected = Loader(
-	lazy(() => import("@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/JobOpportunitySelected"))
 );
   
 const EstadisticasCompetencias = Loader(
@@ -260,6 +261,18 @@ export const routes: RouteObject[] = [
 						]}>
 						<JobOpportunitiesRelatedToSkills />
 					</AppLayout>)
+					},
+					{
+						path: MY_JOB_OPPORTUNITIES_DETAIL,
+						element: (
+							<AppLayout
+						allowedRoles={[
+							Roles.HR_WORKER,
+						]}>
+						<JobOpportunitiesSelected />
+					</AppLayout>
+							
+						)
 					}
 				]
 			},	

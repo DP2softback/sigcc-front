@@ -19,4 +19,4 @@ export const GAPS_EMPLOYEE_EMP = 'my-gaps';
 export const GAPS_EMPLOYEE_EMP_DETAIL = 'detail';
 
 export const MY_JOB_OPPORTUNITIES = 'my-job-opportunities';
-
+export const MY_JOB_OPPORTUNITIES_DETAIL = 'detail';
