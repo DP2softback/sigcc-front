@@ -12,6 +12,7 @@ import { formatDashboardJson } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import { toast, ToastContainer } from 'react-toastify';  // Import react-toastify
 import 'react-toastify/dist/ReactToastify.css'; 
+import logoUrl from '../../assets/images/LogoHCM.png';
 
 const dataAreas =     [
   {
@@ -97,6 +98,17 @@ const dataCategoriasDesempenio =  [
     name: "Desarrollo profesional y personal"
   }
 ]
+
+type DataLineChart = {
+  year: string;
+  month: {
+    month: string;
+    category_scores: {
+      CategoryName: string;
+      ScoreAverage: number;
+    }[];
+  }[];
+}[];
 
 const IndexEvaluacionContinua = () => {
   const [activeRepContinua, setActiveRepContinua] = useState(true);
@@ -261,9 +273,9 @@ const IndexEvaluacionContinua = () => {
         setIsLoading(true);
         const data = await postReportLineChart(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(data){
-          setDashboard(formatDashboardJson(data));
-          console.log("Data: ", data);
-          console.log("Dashboard: ", dashboard);
+          let dataSorted:DataLineChart = data;
+          dataSorted = sortMonths(dataSorted);
+          setDashboard(formatDashboardJson(dataSorted));
         }
         else{
           console.log("Error C: ", data);
@@ -279,7 +291,9 @@ const IndexEvaluacionContinua = () => {
         setIsLoading(true);
         const data = await postReportLineChart(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(data){
-          setDashboard(formatDashboardJson(data));
+          let dataSorted:DataLineChart = data;
+          dataSorted = sortMonths(dataSorted);
+          setDashboard(formatDashboardJson(dataSorted));
         }
         else{
           console.log("Error D: ", data);
@@ -291,6 +305,15 @@ const IndexEvaluacionContinua = () => {
   };
 
   const handleButtonExportClick = async () => {
+    if(searchParams.fechaInicio === null || searchParams.fechaFin === null) {
+      toast.warn("Debe seleccionar un rango de fechas");
+      return;
+    }
+    if(searchParams.fechaInicio > searchParams.fechaFin) {
+      toast.warn("La fecha de inicio no puede ser mayor a la fecha de fin");
+      return;
+    }
+
     const chartElement = document.getElementById('chart-container');
 
     // Captura el contenido del componente como una imagen utilizando dom-to-image
@@ -299,17 +322,49 @@ const IndexEvaluacionContinua = () => {
     // Crea un nuevo objeto PDF
     const doc = new jsPDF();
 
+    // Añade el logotipo
+    await doc.addImage(logoUrl, 'PNG', 160, 5, 30, 10);
+
+    // Añade el nombre de la empresa
+    doc.setFontSize(12);
+
+    // Agrega un título 
+    const title = 'Reporte de Evaluación Continua';
+    const titleFontSize = 22;
+    doc.setFontSize(titleFontSize);
+    const titleWidth = doc.getStringUnitWidth(title) * titleFontSize / doc.internal.scaleFactor;
+    const titlePosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
+    doc.text(title, titlePosition, 30); // 30 es la posición en y
+
+    // Agrega un subtítulo
+    const subtitle = `Periodo: ${searchParams.fechaInicio.toISOString().split('T')[0]} a ${searchParams.fechaFin.toISOString().split('T')[0]}`;
+    const subtitleFontSize = 16;
+    doc.setFontSize(subtitleFontSize);
+    const subtitleWidth = doc.getStringUnitWidth(subtitle) * subtitleFontSize / doc.internal.scaleFactor;
+    const subtitlePosition = (doc.internal.pageSize.getWidth() - subtitleWidth) / 2;
+    doc.text(subtitle, subtitlePosition, 45); 
+
     // Calcula las dimensiones de la imagen en el documento PDF
     const pdfWidth = doc.internal.pageSize.getWidth();
     const pdfHeight = (chartElement.offsetHeight / chartElement.offsetWidth) * pdfWidth;
 
     // Agrega la imagen al documento PDF
-    doc.addImage(imageDataUrl, 'PNG', 10, 10, pdfWidth - 20, pdfHeight - 20);
+    doc.addImage(imageDataUrl, 'PNG', 10, 50, pdfWidth - 20, pdfHeight - 20);
 
     // Descarga el archivo PDF
-    doc.save('Reporte.pdf');
+    doc.save('Reporte Evaluacion Continua.pdf');
   };
   
+  const sortMonths = (data: DataLineChart) => {
+    const sortedData = JSON.parse(JSON.stringify(data)); // Deep copy
+
+    sortedData.forEach((item) => {
+      item.month.sort((a, b) => a.month.localeCompare(b.month));
+    });
+
+    return sortedData;
+  };  
+
   const filters = (
     <Form>
       <Form.Group controlId='reportes' className='ec-indexFilters'>        
