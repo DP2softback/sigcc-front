@@ -665,22 +665,22 @@ function ConfigProcesoSeleccion(props: any) {
 													variant="secondary"
 													id="dropdown-basic"
 													style={{ width: "100%", textAlign: "center" }}>
-													{
-														"Seleccionar el tipo de etapa del proceso de selección:"
-													}
+													{"Seleccionar el tipo de etapa:   \u00A0"}
 												</Dropdown.Toggle>
 
 												<Dropdown.Menu
 													style={{ width: "100%", textAlign: "center" }}>
-													{optionsTipoEtapaSelec.map((optionRow) => (
-														<Dropdown.Item
-															key={optionRow.id}
-															onClick={() =>
-																handleOptionsTipoEtapaSelec(optionRow)
-															}>
-															{optionRow.name}
-														</Dropdown.Item>
-													))}
+													{optionsTipoEtapaSelec
+														? optionsTipoEtapaSelec.map((optionRow) => (
+																<Dropdown.Item
+																	key={optionRow.id}
+																	onClick={() =>
+																		handleOptionsTipoEtapaSelec(optionRow)
+																	}>
+																	{optionRow.name}
+																</Dropdown.Item>
+														  ))
+														: []}
 												</Dropdown.Menu>
 											</Dropdown>
 											<Form.Control
