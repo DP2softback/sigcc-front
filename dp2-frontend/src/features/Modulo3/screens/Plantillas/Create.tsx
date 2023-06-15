@@ -324,12 +324,12 @@ const Create = () => {
     <>
       {accordion}
       <div className="text-end mt-32" >
-      <Button variant='outline-primary me-2' className='boton-dejar mr-20' onClick={() => {
-         
-         navigateBack();
-       }}>
-       Volver
-     </Button>
+        <Button variant='outline-primary me-2' className='boton-dejar mr-20' onClick={() => {
+          
+          navigateBack();
+        }}>
+        Volver
+        </Button>
         <Button onClick={handleGuardar}>
           Guardar
         </Button>
@@ -344,11 +344,16 @@ const Create = () => {
   );
 
   const body = (
-    <Section 
-      title={null} 
-      content={isLoading ? <LoadingScreen/> : content} 
-      filters={filters} 
-      filtersStyle={{width:'100%'}}/>
+    <>
+      <Section
+        title={''} 
+        content={filters} 
+      />
+      <Section 
+        title={''} 
+        content={isLoading ? <LoadingScreen/> : content} 
+      />
+    </>
   );
 
   return (

@@ -287,7 +287,10 @@ const Edit = () => {
   )
 
   const body = (
-    <Section title={null} content={content} filters={filters} filtersStyle={{width:'100%'}}/>
+    <>
+    <Section title={null} content={filters}/>
+    <Section title={null} content={content}/>
+    </> 
   );
   return (
     <div>
