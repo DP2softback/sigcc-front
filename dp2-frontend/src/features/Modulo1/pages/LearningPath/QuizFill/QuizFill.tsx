@@ -2,16 +2,14 @@ import React, { Component, ChangeEvent } from 'react';
 import { QuizComponentProps, QuizComponentState, Question, Option } from './QuizFill.types';
 
 class QuizFill extends Component<QuizComponentProps, QuizComponentState> {
-    constructor(props: QuizComponentProps)
-    {
+    constructor(props: QuizComponentProps) {
         super(props);
         this.state = {
             answers: {},
         };
     }
 
-    handleOptionChange = (questionId: number, optionId: number) =>
-    {
+    handleOptionChange = (questionId: number, optionId: number) => {
         this.setState((prevState) => ({
             answers: {
                 ...prevState.answers,
@@ -20,8 +18,7 @@ class QuizFill extends Component<QuizComponentProps, QuizComponentState> {
         }));
     };
 
-    handleSubmit = () =>
-    {
+    handleSubmit = () => {
         const { answers } = this.state;
         const answers_formated = Object.entries(answers).map(([question_id, option_id]) => ({
             id_pregunta: parseInt(question_id),
@@ -42,37 +39,40 @@ class QuizFill extends Component<QuizComponentProps, QuizComponentState> {
         });
     };
 
-    render ()
-    {
+    render() {
         const { questions } = this.props;
 
         return (
-            <div>
-                {questions.map((question) => (
-                    <div key={question.id_pregunta}>
-                        <h4>{question.pregunta}</h4>
-                        {question.opciones.map((option) => (
-                            <div key={option.id_opcion}>
-                                <div className="form-check">
-                                    <input
-                                        id={`question${question.id_pregunta}-option${option.id_opcion}}`}
-                                        type="radio"
-                                        className="form-check-input"
-                                        name={question.id_pregunta.toString()}
-                                        value={option.id_opcion.toString()}
-                                        checked={this.state.answers[question.id_pregunta] === option.id_opcion}
-                                        onChange={() => this.handleOptionChange(question.id_pregunta, option.id_opcion)}
-                                    />
-                                    <label className="form-check-label" htmlFor={`question${question.id_pregunta}-option${option.id_opcion}}`}>
-                                        {option.opcion}
-                                    </label>
+            <>
+                <div className="modal-body">
+                    {questions.map((question) => (
+                        <div key={question.id_pregunta} style={{marginTop: "1rem"}}>
+                            <h4>{question.pregunta}</h4>
+                            {question.opciones.map((option) => (
+                                <div key={option.id_opcion}>
+                                    <div className="form-check">
+                                        <input
+                                            id={`question${question.id_pregunta}-option${option.id_opcion}}`}
+                                            type="radio"
+                                            className="form-check-input"
+                                            name={question.id_pregunta.toString()}
+                                            value={option.id_opcion.toString()}
+                                            checked={this.state.answers[question.id_pregunta] === option.id_opcion}
+                                            onChange={() => this.handleOptionChange(question.id_pregunta, option.id_opcion)}
+                                        />
+                                        <label className="form-check-label" htmlFor={`question${question.id_pregunta}-option${option.id_opcion}}`}>
+                                            {option.opcion}
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                ))}
-                <button onClick={this.handleSubmit}>Guardar respuestas</button>
-            </div>
+                            ))}
+                        </div>
+                    ))}
+                </div>
+                <div className='modal-footer justify-content-between'>
+                    <button className='btn btn-primary' onClick={this.handleSubmit}>Guardar respuestas</button>
+                </div>
+            </>
         );
     }
 }
