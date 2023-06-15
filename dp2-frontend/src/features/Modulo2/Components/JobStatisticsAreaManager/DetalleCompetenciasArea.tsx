@@ -6,6 +6,7 @@ import {ArrowRightCircleFill,Pencil,Trash } from 'react-bootstrap-icons';
 import { useLocation,  useNavigate  } from 'react-router-dom';
 import axiosEmployeeGaps from '@features/Modulo2/services/EmployeeGapsServices';
 import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos';
+import './DetalleCompetenciasArea.css';
 
 const DetalleCompetenciasArea = () => {
   const navigate = useNavigate();
@@ -188,8 +189,8 @@ const DetalleCompetenciasArea = () => {
   return (
     <div className="pantalla">
       <div className='titles'>
-      <h2>Empleados del puesto de asistente</h2>
-      <p className="text-muted">Consultar competencias de los empleados.</p>
+      <h2 className='Head'>Empleados del puesto de asistente</h2>
+      <p className="text-muted subtitle">Consultar competencias de los empleados.</p>
       </div>
 
       <Form className="FormComp">

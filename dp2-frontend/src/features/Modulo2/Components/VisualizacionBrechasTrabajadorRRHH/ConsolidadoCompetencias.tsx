@@ -5,6 +5,7 @@ import { Link, useNavigate  } from 'react-router-dom';
 import { Competencia, tipoCompetencia,AreaActiva } from "../GestionDeCompetencias/Tipos";
 import DetalleCompetenciasArea from "./DetalleCompetenciasArea";
 import { set } from "lodash";
+import './ConsolidadoCompetencias.css';
 
 const PieChart = ({ title, labels, datasets }) => {
     ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -186,11 +187,11 @@ const PieChart = ({ title, labels, datasets }) => {
       
       return (
         <div className="container">
-          <h2>Consolidado de competencias</h2>
+          <h2 className="Head">Consolidado de competencias</h2>
           
           <div className="row">
             <div className="col-md-6">
-              <label htmlFor="competencia-select">Competencias por area:</label>
+              <label className="subtitle" htmlFor="competencia-select">Competencias por area:</label>
               <select
                 id="competencia-select"
                 className="form-control"
