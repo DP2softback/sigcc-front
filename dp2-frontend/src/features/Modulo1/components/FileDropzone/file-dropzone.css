@@ -1,0 +1,47 @@
+.dropzone {
+    text-align: center;
+    padding: 1rem;
+    border: 0.3rem dotted #ced4da;
+    border-radius: 0.8rem;
+    background-color: #fafafa;
+    color: #bdbdbd;
+    user-select: none;
+}
+
+.dropzone-small-border {
+    padding-bottom: 1rem;
+}
+
+.dropzone-disabled {
+    background-color: #e9ecef;
+}
+
+.selected-file-wrapper {
+    text-align: center;
+}
+
+.selected-file {
+    color: #000;
+    font-weight: bold;
+    display: inline-flex;
+    flex-wrap: wrap;
+}
+
+.dropzone .dropzone-file-card {
+    width: 8rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+}
+
+.dropzone .dropzone-file-remove {
+    text-align: right;
+}
+
+.dropzone .dropzone-file-icon {
+    font-size: 2.5rem;
+}
+
+.dropzone .dropzone-file-name {
+    font-size: 0.8rem;
+    word-wrap: break-word;
+}
