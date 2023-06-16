@@ -12,12 +12,14 @@ const Create = () => {
     id: parseInt(urlParams.get('id')),
     name: urlParams.get('name')
   })
-  const [idPlantilla,setIdPlantilla]=useState(parseInt(urlParams.get('idPlantilla')));
+  const [idPlantilla, setIdPlantilla]=useState(parseInt(urlParams.get('idPlantilla')));
   const [evaluation, setEvaluation] = useState({
     evaluatedId: employee.id,
     evaluatorId: USER_ID,
+    evaluationType: PERFORMANCE_EVALUATION_TYPE,
+    hasComment: false,
     associatedProject: '',
-    additionalComments: ''
+    isFinished: 0
   });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -27,6 +29,10 @@ const Create = () => {
       const response = await getPlantilla(idPlantilla, PERFORMANCE_EVALUATION_TYPE);
       if (response && response[0] && response[0].Categories) {
         setCategories(response[0].Categories);
+        setEvaluation((prevEvaluation) => ({
+          ...prevEvaluation,
+          categories: response[0].Categories
+        }))
       }
       setIsLoading(false);
     })();

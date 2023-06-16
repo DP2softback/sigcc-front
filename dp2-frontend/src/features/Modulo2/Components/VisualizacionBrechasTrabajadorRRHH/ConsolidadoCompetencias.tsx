@@ -49,7 +49,7 @@ const PieChart = ({ title, labels, datasets }) => {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
+                Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
               },
             });
     
@@ -68,7 +68,7 @@ const PieChart = ({ title, labels, datasets }) => {
           try {
             const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/employeeArea', {
               headers: {
-                Authorization: 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf'
+                Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d'
               }
             });
             const data = await response.json();
@@ -83,11 +83,12 @@ const PieChart = ({ title, labels, datasets }) => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
+              'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
             },
             body: JSON.stringify({
-              idArea: 0, // Poner 0 para toda la empresa, poner el <id> si es por área
-              activo: 2, // Poner 2 si es cualquiera, poner 0 o 1 si es inactivo o activo
+              idArea: 0,
+              idPosicion:  0,
+              activo: 2
             }),
           };
       

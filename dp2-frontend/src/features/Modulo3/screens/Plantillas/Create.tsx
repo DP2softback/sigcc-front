@@ -4,7 +4,7 @@ import React,{useState,useEffect} from 'react';
 import { Form, Button, InputGroup, Accordion, OverlayTrigger, Tooltip, FormCheck, Dropdown  } from 'react-bootstrap';
 import cat from '@features/Modulo3/jsons/Categories';
 import {EVALUATION_TEMPLATE_INDEX} from '@features/Modulo3/routes/path';
-import { navigateTo } from '@features/Modulo3/utils/functions.jsx';
+import { navigateBack, navigateTo } from '@features/Modulo3/utils/functions.jsx';
 import ImageUploader from '@features/Modulo3/components/Images/ImageUploader';
 import "./Plantillas.css"
 import { getCategoriesSubs, guardarPlantilla } from '@features/Modulo3/services/templates';
@@ -12,7 +12,9 @@ import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/Loa
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 import { Toast } from 'react-bootstrap';
 import { PERFORMANCE_EVALUATION_TYPE,CONTINUOS_EVALUATION_TYPE } from '../../utils/constants'; 
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
+import { delay } from 'lodash';
 const dataIni ={
   categoriaNombre: "",
   subcategory: [],
@@ -65,12 +67,19 @@ const Create = () => {
       const response = await guardarPlantilla(aux);
       if (response){
         setShowNotification(true); 
+        toast.success("Se ha creado correctamente la plantilla");
+        closeNotification();
       }
     })();
   };
-
-  const closeNotification = () => {
+  function delay(ms: number): Promise<void> {
+    return new Promise<void>((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }
+  const closeNotification = async () => {
     setShowNotification(false);
+    await delay(4000);
     navigateTo(EVALUATION_TEMPLATE_INDEX);
   };
 
@@ -315,16 +324,16 @@ const Create = () => {
     <>
       {accordion}
       <div className="text-end mt-32" >
+        <Button variant='outline-primary me-2' className='boton-dejar mr-20' onClick={() => {
+          
+          navigateBack();
+        }}>
+        Volver
+        </Button>
         <Button onClick={handleGuardar}>
           Guardar
         </Button>
       </div>
-      <Toast show={showNotification} onClose={closeNotification} className="notification">
-        <Toast.Header>
-          <strong className="me-auto">Notificación</strong>
-        </Toast.Header>
-        <Toast.Body>Se ha creado la plantilla con éxito.</Toast.Body>
-    </Toast>
     </>
     ) : (selectedOption==CONTINUOS_EVALUATION_TYPE || selectedOption==PERFORMANCE_EVALUATION_TYPE ?
       <NoDataFound/> :
@@ -335,15 +344,21 @@ const Create = () => {
   );
 
   const body = (
-    <Section 
-      title={null} 
-      content={isLoading ? <LoadingScreen/> : content} 
-      filters={filters} 
-      filtersStyle={{width:'100%'}}/>
+    <>
+      <Section
+        title={''} 
+        content={filters} 
+      />
+      <Section 
+        title={''} 
+        content={isLoading ? <LoadingScreen/> : content} 
+      />
+    </>
   );
 
   return (
     <div>
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
       <Layout
         title={'Nueva Plantilla'}
         subtitle={'Si desea crear la plantilla para una evaluación de desempeño puede seleccionar las categorías que desee, sin embargo, si se trata de una evaluación continua, recuerde que solo puede seleccionar una categoría a evaluar.'}
