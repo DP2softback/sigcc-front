@@ -82,11 +82,15 @@ const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 	}, [searchQuery]);
 
 	const performSearch = (query) => {
-		setFilteredResults(
-			searchResults.filter((persona) =>
-				persona.user.last_name.toLowerCase().includes(query.toLowerCase())
-			)
-		);
+		if (query == "") {
+			setFilteredResults([]);
+		} else {
+			setFilteredResults(
+				searchResults.filter((persona) =>
+					persona.user.last_name.toLowerCase().includes(query.toLowerCase())
+				)
+			);
+		}
 	};
 
 	// TODOS LAS TABLAS ESTRUCTURA
@@ -278,6 +282,7 @@ const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 							<div style={{ height: "20rem" }}>
 								<FixedHeaderStory
 									title="Resultados de búsqueda"
+									noDataComponent="No hay resultados de búsqueda"
 									columns={columns}
 									data={filteredResults}
 									selectableRows
@@ -295,6 +300,7 @@ const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 							<div style={{ height: "20rem" }}>
 								<FixedHeaderStory
 									title="Responsables seleccionados"
+									noDataComponent="No hay responsables seleccionados"
 									columns={columns}
 									data={arrSelectedResponsables}
 									selectableRows

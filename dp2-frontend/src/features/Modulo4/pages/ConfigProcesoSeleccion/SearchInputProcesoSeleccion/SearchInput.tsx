@@ -96,11 +96,16 @@ const SearchInput = ({ onClose, onSelect }) => {
 			{ id: 10, nombre: "Ingeniero de Redes", fecha: "2023-03-13" }
 		];*/
 		//setSearchResults(results);
-		setFilteredResults(
-			searchResults.filter((item) =>
-				item.name.toLowerCase().includes(query.toLowerCase())
-			)
-		);
+
+		if (query === "") {
+			setFilteredResults([]);
+		} else {
+			setFilteredResults(
+				searchResults.filter((item) =>
+					item.name.toLowerCase().includes(query.toLowerCase())
+				)
+			);
+		}
 	};
 
 	const selectOption = (option: any) => {
@@ -141,7 +146,7 @@ const SearchInput = ({ onClose, onSelect }) => {
 							</Form.Label>
 							<FormControl
 								type="text"
-								placeholder="Escribe aquí"
+								placeholder="Escribe aquí el nombre del puesto de trabajo buscado."
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
 								style={{ marginBottom: "3s.78em" }}
@@ -175,7 +180,6 @@ const SearchInput = ({ onClose, onSelect }) => {
 								<tr>
 									<th style={{ minWidth: "20rem" }}>Nombre del puesto</th>
 									<th style={{ minWidth: "14rem" }}>Tipo de jornada</th>
-									<th style={{ minWidth: "10rem" }}>Fecha de creación</th>
 									<th style={{ minWidth: "12rem" }}>Fecha de modificación</th>
 								</tr>
 							</thead>
@@ -187,9 +191,6 @@ const SearchInput = ({ onClose, onSelect }) => {
 										className={selectedResult === result.id ? "selected" : ""}>
 										<td>{result.name}</td>
 										<td>{result.tipoJornada}</td>
-										<td>
-											{moment(result.creationDate).format("YYYY-MM-DD hh:ss")}
-										</td>
 										<td>
 											{moment(result.modifiedDate).format("YYYY-MM-DD hh:ss")}
 										</td>

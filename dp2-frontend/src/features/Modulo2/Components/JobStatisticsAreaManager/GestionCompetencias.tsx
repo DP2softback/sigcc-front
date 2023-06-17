@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Button, Table} from 'react-bootstrap';
-import './GestionCompetencias.css'
 import {tipoCompetencia,CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
-import { useLocation } from 'react-router-dom';
+import { useLocation,  useNavigate  } from 'react-router-dom';
 
-const GestionCompetencia = () => {
+const GestionCompetenciaAM = () => {
+  const navigate = useNavigate();
   const location = useLocation();
-  //const { usuario } = location.state;
   console.log(location.state)
+  //const { usuario } = location.state;
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [nombreEmpleado, setNombreEmpleado] = useState('Ángela Quispe Ramírez');
     const [cargoEmpleado, setCargoEmpleado] = useState('Supervisor - Ärea de TI');
@@ -120,12 +120,6 @@ const GestionCompetencia = () => {
             <Table striped bordered>
             <thead>
                 <tr>
-                    <th onClick={() => handleOrdenarPorCampo('competence__code')}>
-                    Código
-                    {campoOrdenamiento === 'competence__code' && (
-                        <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
-                    )}
-                    </th>
                     <th onClick={() => handleOrdenarPorCampo('competence__name')}>
                     Nombre
                     {campoOrdenamiento === 'competence__name' && (
@@ -171,7 +165,6 @@ const GestionCompetencia = () => {
 
             return (
               <tr key={index}>
-                <td>{item.competence__code}</td>
                 <td>{item.competence__name}</td>
                 <td>{item.competence__type__name}</td>
                 <td>{item.levelCurrent}</td>
@@ -188,7 +181,7 @@ const GestionCompetencia = () => {
   return (
     <div className="pantalla">
       <div className='titles'>
-      <h2>Competencias de empleado del área de TI</h2>
+      <h2>Competencias de empleado</h2>
       <p className="text-muted">Competencias por empleado.</p>
       </div>
       
@@ -203,17 +196,17 @@ const GestionCompetencia = () => {
          {renderTablaCompetencias()}
       </div>
       <div className="col-sm-3 botones">
-        <Button variant="outline-primary" className="me-2" onClick={()=>{}}>
+        <Button variant="outline-primary" className="me-2" onClick={()=>{navigate(-1)}}>
           Regresar
           </Button>
       </div>
       <div className="col-sm-3 botones">
         <Button variant="outline-primary" className="me-2" onClick={()=>{}}>
-          Ver necesidades de capacitación
+        Exportar a excel
           </Button>
       </div>
     </div>
   );
 };
 
-export default GestionCompetencia;
+export default GestionCompetenciaAM;
