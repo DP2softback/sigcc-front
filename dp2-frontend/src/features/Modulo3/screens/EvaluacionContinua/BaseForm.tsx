@@ -9,6 +9,7 @@ import { Button } from "react-bootstrap";
 import { useState } from "react";
 import { navigateBack, navigateTo } from "@features/Modulo3/utils/functions";
 import { saveEvaluation } from "@features/Modulo3/services/continuousEvaluation";
+import { TEXTAREA_ROWS } from "@features/Modulo3/utils/constants";
 
 type BaseFormProps = {
 	employee: any;
@@ -86,7 +87,7 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 				as="textarea"
 				aria-label="With textarea"
 				placeholder="Ingrese los comentarios o recomendaciones que crea conveniente"
-				rows={3}
+				rows={TEXTAREA_ROWS}
 				onChange={onAdditionalCommentsChange()}
 			/>
 		</div>
@@ -99,7 +100,7 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 				navigateBack();
 			}}
 		>
-			Cancelar
+			{isReadOnly ? <>Volver</> : <>Cancelar</>}
 		</Button>
 	);
 
