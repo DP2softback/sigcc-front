@@ -67,7 +67,7 @@ const PieChart = ({ title, labels, datasets }) => {
 
         const fetchAreasActivas = async () => {
           try {
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/employeeArea', {
+            const response = await fetch('https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/positions', {
               headers: {
                 Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d'
               }
@@ -96,7 +96,7 @@ const PieChart = ({ title, labels, datasets }) => {
           };
       
           try {
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceConsolidateSearch', requestOptions);
+            const response = await fetch('https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competenceConsolidateSearch', requestOptions);
       
             if (response.ok) {
               const data = await response.json();

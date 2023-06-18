@@ -41,14 +41,15 @@ const GestionCompetenciaAM = () => {
       const fetchCompetencias = async () => {
         try {
           const body = {
-            estado: 0, //dejarlo así - luego se podrá poner 1,2,3
-            tipo: 0, //dejarlo así - luego se podrá poner 1,2,3
-            activo: 2, //dejarlo así - luego se podrá poner 0,1,2
-            idEmpleado: 1, // Poner el idEmpleado
-          };
+            "idCompetencia": 0,		//dejarlo así
+            "palabraClave": "",		//poner la palabra clave del buscador, si es nada pon ""
+            "idTipoCompetencia": 0,		//el idTipoCompetencia del buscador, si es todos pon 0
+            "activo": 2,			//el estado 0 o 1 (inactivo o activo), si es todos pon 2
+            "idEmpleado": 1			//ponerle el idEmpleado
+    };
   
           const response = await fetch(
-            'https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/trainingNeedSearch',
+            'https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competenceSearch',
             {
               method: 'POST',
               headers: {
