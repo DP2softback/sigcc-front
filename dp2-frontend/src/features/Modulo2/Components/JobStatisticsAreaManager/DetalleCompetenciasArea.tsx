@@ -4,7 +4,6 @@ import UpdateCompetencia from './Update';
 import DeleteCompetencia from './Delete';
 import {ArrowRightCircleFill,Pencil,Trash } from 'react-bootstrap-icons';
 import { useLocation,  useNavigate  } from 'react-router-dom';
-import axiosEmployeeGaps from '@features/Modulo2/services/EmployeeGapsServices';
 import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos';
 
 const DetalleCompetenciasArea = () => {
@@ -36,7 +35,7 @@ const DetalleCompetenciasArea = () => {
               posicion:  2,
             }),
           };
-          const response = await fetch('https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/employeeArea', requestOptions);
+          const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/employeeArea', requestOptions);
           const data = await response.json();
           setEmpleados(data);
         } catch (error) {

@@ -49,7 +49,7 @@ const GestionCompetenciaAM = () => {
     };
   
           const response = await fetch(
-            'https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competenceSearch',
+            'https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceSearch',
             {
               method: 'POST',
               headers: {
