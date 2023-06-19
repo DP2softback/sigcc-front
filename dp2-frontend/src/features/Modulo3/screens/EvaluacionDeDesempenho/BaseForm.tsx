@@ -37,7 +37,7 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 					</div>
 					<div className='mb-4'>
 						<Form.Control
-							value={category.additionalComent}
+							value={category?.subcategories?.[0]?.comment}
 							disabled={isReadOnly}
 							as="textarea"
 							aria-label="With textarea"
@@ -62,7 +62,8 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 	);
 
 	const cancelButton = (
-		<Button variant="outline-primary me-2" onClick={() => navigateBack()}>
+		<Button variant={`outline-primary ${isReadOnly ? '' : 'me-2'}`} 
+			onClick={() => navigateBack()}>
 			{isReadOnly ? <>Volver</> : <>Cancelar</>}
 		</Button>
 	);
@@ -95,9 +96,15 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 			var value = e.target.value;
 			setEvaluation(prevEvaluation => {
 				const updatedCategories = [...prevEvaluation.categories];
+				const selectedCategory = updatedCategories[categoryIndex];
+				const updatedSubcategories = selectedCategory.subcategories.map(subcategory => ({
+					...subcategory,
+					hasComment: true,
+					comment: value
+				}));
 				updatedCategories[categoryIndex] = {
-					...updatedCategories[categoryIndex],
-					additionalComments: value
+					...selectedCategory,
+					subcategories: updatedSubcategories
 				};
 				return { ...prevEvaluation, categories: updatedCategories };
 			});
@@ -114,7 +121,7 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 					name: employee.name
 				});
 			}catch(error){
-
+				console.error(error);
 			}
 			setIsLoading(false);
 		})();
