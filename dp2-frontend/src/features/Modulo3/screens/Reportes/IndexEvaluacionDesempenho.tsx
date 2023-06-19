@@ -7,97 +7,12 @@ import { Form, Button, Dropdown} from 'react-bootstrap';
 import { jsPDF } from 'jspdf';
 import domtoimage from 'dom-to-image';
 import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
-import { getAreas, getCategoriasContinua, getCategoriasDesempenio, postReportLineChart, getEmployeesEvaluationDashboard} from '@features/Modulo3/services/reports';
+import { getAreas, getCategoriasDesempenio, postReportLineChart} from '@features/Modulo3/services/reports';
 import { formatDashboardJson } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import { toast, ToastContainer } from 'react-toastify';  // Import react-toastify
 import 'react-toastify/dist/ReactToastify.css'; 
 import logoUrl from '../../assets/images/LogoHCM.png';
-
-const dataAreas =     [
-  {
-    id: 1,
-    name: "Infraestructura"
-  },
-  {
-    id: 2,
-    name: "Seguridad"
-  },
-  {
-    id: 3,
-    name: "Desarrollo"
-  },
-  {
-    id: 4,
-    name: "Soporte"
-  }
-];
-
-const dataCategoriasEvaluacion = [
-  {
-    id: 1,
-    name: "Calidad del Trabajo"
-  },
-  {
-    id: 2,
-    name: "Habilidades Blandas"
-  },
-  {
-    id: 3,
-    name: "Conocimientos"
-  },
-  {
-    id: 4,
-    name: "Productividad"
-  },
-  {
-    id: 5,
-    name: "Creatividad y Iniciativa"
-  }
-];
-
-const dataCategoriasDesempenio =  [
-  {
-    id: 1,
-    name: "Calidad del Trabajo"
-  },
-  {
-    id: 2,
-    name: "Productividad"
-  },
-  {
-    id: 3,
-    name: "Comportamiento y actitud"
-  },
-  {
-    id: 4,
-    name: "Habilidades técnicas"
-  },
-  {
-    id: 5,
-    name: "Comunicación"
-  },
-  {
-    id: 6,
-    name: "Colaboración y trabajo en equipo"
-  },
-  {
-    id: 7,
-    name: "Habilidades de liderazgo"
-  },
-  {
-    id: 8,
-    name: "Iniciativa y creatividad"
-  },
-  {
-    id: 9,
-    name: "Cumplimiento de objetivos y metas"
-  },
-  {
-    id: 10,
-    name: "Desarrollo profesional y personal"
-  }
-]
 
 type DataLineChart = {
   year: string;
@@ -146,20 +61,16 @@ const IndexEvaluacionDesempenho = () => {
   );
 
   useEffect(() => {
-    // Invocaciones provisionales:
     const fetchData = async () => {
       setIsLoading(true);
       try{
         const dataAreas = await getAreas();
-        const dataCategoriasContinua = await getCategoriasContinua();
         const dataCategoriasDesempenio = await getCategoriasDesempenio();
         setAreas([{id:0 , name:"Todas las áreas"},...dataAreas]);          
-        setCategoriasContinua([{id:0 , name:"Todas las categorias"},...dataCategoriasContinua]);
         setCategoriasDesempenio([{id:0 , name:"Todas las categorias"},...dataCategoriasDesempenio]);
       } catch (error){
         console.error("Error fetching data: ", error)
       }
-
       setDashboard(defaultDashboard);
       setIsLoading(false);
     };
@@ -243,14 +154,6 @@ const IndexEvaluacionDesempenho = () => {
       toast.warn("La fecha de inicio no puede ser mayor a la fecha de fin");
       return;
     }
-    // if(searchParams.area.id === 0) {
-    //   alert("Debe seleccionar un área");
-    //   return;
-    // }
-    // if(searchParams.categoria.id === 0) {
-    //   alert("Debe seleccionar una categoría");
-    //   return;
-    // }
 
     //Upate searchParams.fechaInicio and searchParams.fechaFin to ISOString
     const searchParamsCopy = {...searchParams};
@@ -301,20 +204,24 @@ const IndexEvaluacionDesempenho = () => {
       return;
     }
 
-    const chartElement = document.getElementById('chart-container');
+    printPdf();
+  };
 
+  const printPdf = async () => {
+    const chartElement = document.getElementById('chart-container');
+    
     // Captura el contenido del componente como una imagen utilizando dom-to-image
     const imageDataUrl = await domtoimage.toPng(chartElement);
-
+    
     // Crea un nuevo objeto PDF
     const doc = new jsPDF();
-
+    
     // Añade el logotipo
     await doc.addImage(logoUrl, 'PNG', 160, 5, 30, 10);
-
+    
     // Añade el nombre de la empresa
     doc.setFontSize(12);
-
+    
     // Agrega un título 
     const title = 'Reporte de Evaluación de Desempeño';
     const titleFontSize = 22;
@@ -338,17 +245,30 @@ const IndexEvaluacionDesempenho = () => {
     // Agrega la imagen al documento PDF
     doc.addImage(imageDataUrl, 'PNG', 10, 50, pdfWidth - 20, pdfHeight - 20);
 
+    // Agrega la fecha de hoy en la parte inferior derecha
+    const date = new Date();
+    const dateString = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth()+1).padStart(2, '0')}-${date.getFullYear()}`;
+    const dateFontSize = 12;
+    doc.setFontSize(dateFontSize);
+    doc.text(dateString, 10, doc.internal.pageSize.getHeight() - 10); // 10 es el margen en x, doc.internal.pageSize.getHeight() - 10 es la posición en y
+    
+    // Añade el número de hoja
+    const pageFontSize = 12;
+    doc.setFontSize(pageFontSize);
+    const numberPage = 1;
+    const pageNumberString = `Página: ${numberPage}`;
+    const pageNumberWidth = doc.getStringUnitWidth(pageNumberString) * pageFontSize / doc.internal.scaleFactor;
+    doc.text(pageNumberString, doc.internal.pageSize.getWidth() - pageNumberWidth - 10, doc.internal.pageSize.getHeight() - 10);
+
     // Descarga el archivo PDF
     doc.save('Reporte Evaluacion de Desempeno.pdf');
   };
   
   const sortMonths = (data: DataLineChart) => {
     const sortedData = JSON.parse(JSON.stringify(data)); // Deep copy
-
     sortedData.forEach((item) => {
       item.month.sort((a, b) => a.month.localeCompare(b.month));
     });
-
     return sortedData;
   };  
 
