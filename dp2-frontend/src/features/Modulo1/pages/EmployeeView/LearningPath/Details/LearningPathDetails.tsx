@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, Fragment } from 'react';
 import './learning-path-details.css';
 import learningPathDetails from './learningPathDetails.json';
 import { Link, useParams } from 'react-router-dom';
@@ -14,6 +14,8 @@ import Layout from "@layout/default/index";
 import { flatten } from 'lodash';
 import QuizFill from '@features/Modulo1/pages/LearningPath/QuizFill/QuizFill';
 import RateValue from '@features/Modulo1/components/Rate/RateValue';
+import SessionAccordion from '@features/Modulo1/components/SessionAccordion/SessionAccordionEmployee';
+
 
 function LearningPathDetails(props: any) {
     const { learningPathId } = useParams();
@@ -59,21 +61,48 @@ function LearningPathDetails(props: any) {
     }
 
     const handleQuiz = (id: number) => {
-        setQuizId(id)
-        if (quizID != 0) {
-            setLoading1(true)
-            axiosInt.get(`capacitaciones/udemy_course/questionary/${quizID}/`)
-                .then((response) => {
-                    console.log(response)
-                    setQuestion(response.data.evaluacion)
-                    setLoading1(false)
-                })
-                .catch(function (error) {
-                    setLoading1(false);
-                });
+        setLoading1(true)
+        axiosInt.get(`capacitaciones/udemy_course/questionary/${id}/`)
+            .then((response) => {
+                console.log(response)
+                setQuestion(response.data.evaluacion)
+                setLoading1(false)
+            })
+            .catch(function (error) {
+                setLoading1(false);
+            });
+    }
+
+    const handleState = (id: number) => {
+        axiosInt.post(`capacitaciones/course_lp_employee_advance/${id}/${learningPathId}/1/`)
+            .then((response) => {
+                console.log(response)
+                window.location.reload()
+            })
+            .catch(function (error) {
+
+            });
+    }
+
+    const handleFinishCourse = (id: number) => {
+        const dataFinish = {
+            employee_id: 1,
+            curso_id: id,
+            learning_path_id: learningPathId,
+            valoracion: 1,
+            apreciacion: "probando 1"
         }
 
+        axiosInt.put(`capacitaciones/course_complete/`, dataFinish)
+            .then((response) => {
+                console.log(response)
+                window.location.reload()
+            })
+            .catch(function (error) {
+
+            });
     }
+
 
     useEffect(() => {
         loadsCourses();
@@ -152,51 +181,142 @@ function LearningPathDetails(props: any) {
                             <>
                                 <div className='row'>
                                     <div className='pt-5 pb-2' style={{ display: "flex", justifyContent: "space-evenly" }}>
-                                        <div style={{ display: "flex" }}>
+                                        <div style={{ display: "flex", flexWrap: "wrap" }}>
                                             {courses.map((course: any, index: number) => (
                                                 <div key={course.id}>
-                                                    <div style={{ display: "flex", alignItems: "center" }} onClick={() => handleChange(index+1)}>
-                                                        <div className={`circulo ${index+1 == activo ? 'activo' : ''}`}>{index+1}</div>
-                                                        {(index+1) !== courses.length && <div className="linea" style={{ paddingLeft: "2rem" }}></div>}
+                                                    <div style={{ display: "flex", alignItems: "center" }} onClick={() => handleChange(index + 1)}>
+                                                        <div className={`circulo ${index + 1 == activo ? courses[activo - 1].tipo_curso == 'U' ?
+                                                            courses[activo - 1].datos_extras[0].estado == 4 ? 'completado' : 'activo' : index + 1 == activo ? 'activo' : '' : index + 1 == activo ? 'activo' : ''}`}>{index + 1}</div>
+
+                                                        {(index + 1) !== courses.length && <div className="linea" style={{ paddingLeft: "2rem" }}></div>}
                                                     </div>
-                                                    <div>Curso {index+1}</div>
+                                                    <div>Curso {index + 1}</div>
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
-                                </div>    
-                                                
-                                <div className='row'>
-                                    <div className='pt-4 pb-2' style={{ display: "flex", justifyContent: "center" }}>
-                                        <div className="card mb-3" style={{ width: "45rem" }}>
-                                            <div className="row g-0" style={{ height: "100%" }}>
-                                                <div className="col-md-4">
-                                                    <img src={url_foto_default} className="img-fluid rounded-start" style={{ height: "100%" }}></img>
-                                                </div>
-                                                <div className="col-md-8">
-                                                    <div className="card-body">
-                                                        <h5 className="card-title">{courses[activo - 1].descripcion}</h5>
-                                                        <p style={{ height: "5.5rem" }} className="card-text">{courses[activo - 1].nombre}</p>
-                                                        <p className="card-text"><small className="text-body-secondary">Duración: {courses[activo - 1].duracion}</small></p>
-                                                    </div>
-                                                    <div className="card-body" style={{ display: "flex", justifyContent: "space-between" }}>
-                                                        {
+                                </div>
 
-<button className='btn btn-primary'>Iniciar el curso</button>
+                                <div className='row' style={{ display: "flex", justifyContent: "center" }}>
+                                    <div className='pt-4 pb-2' style={{ display: "flex", justifyContent: "center", width: "40%" }}>
+
+                                        <Fragment>
+                                            <div className="col">
+                                                <div className="card h-100 px-0">
+                                                    <img src={courses[activo - 1].tipo_curso == 'U' ? courses[activo - 1].datos_udemy.image_480x270 : courses[activo - 1].foto_curso_empresa == null ? url_foto_default : courses[activo - 1].foto_curso_empresa} className="card-img-top" alt="" />
+                                                    <div className="card-body">
+                                                        <h5 style={{ height: "4rem" }} className="card-title">{courses[activo - 1].descripcion}</h5>
+                                                        <p style={{ height: "5.5rem" }} className="card-text">{courses[activo - 1].nombre}</p>
+                                                        {courses[activo - 1].tipo_curso == 'U' && <p className="card-text"><small className="text-body-secondary">Duración: {courses[activo - 1].duracion}</small></p>}
+                                                    </div>
+                                                    <div className="card-body">
+                                                        {(courses[activo - 1].tipo_curso == 'U') ?
+                                                            <div style={{ display: "flex", justifyContent: "space-between" }}>
+
+                                                                {courses[activo - 1].datos_extras[0].estado == 0 &&
+                                                                    <a target='_blank' onClick={() => handleState(courses[activo - 1].id)} type="button" className="btn btn-primary" href={`https://www.udemy.com${courses[activo - 1].datos_udemy.url}`}>Iniciar el curso</a>
+                                                                }
+
+                                                                {courses[activo - 1].datos_extras[0].estado == 1 &&
+                                                                    <>
+                                                                        <a target='_blank' type="button" className="btn btn-primary" href={`https://www.udemy.com${courses[activo - 1].datos_udemy.url}`}>Continuar</a>
+                                                                        <div className='text-end'>
+                                                                            <button type='button' className='btn btn-danger' data-bs-target='#confirmModalCourse' data-bs-toggle='modal'>
+                                                                                <div style={{ display: "flex", alignItems: "center" }}>
+                                                                                    <span className='me-3'>Finalizar curso</span>
+                                                                                    <JournalCheck />
+                                                                                </div>
+                                                                            </button>
+                                                                        </div>
+                                                                    </>
+                                                                }
+
+                                                                {courses[activo - 1].datos_extras[0].estado == 2 &&
+                                                                    <>
+                                                                        <button className='btn btn-primary' data-bs-target='#quizModal' data-bs-toggle='modal' onClick={() => handleQuiz(courses[activo - 1].curso.id)}>Rendir Evaluación</button>
+                                                                    </>
+                                                                }
+
+                                                                {courses[activo - 1].datos_extras[0].estado > 2 &&
+                                                                    <>
+                                                                        <a target='_blank' type="button" className="btn btn-primary" href={`https://www.udemy.com${courses[activo - 1].datos_udemy.url}`}>Ver curso</a>
+                                                                    </>
+                                                                }
+
+                                                            </div>
+
+                                                            :
+                                                            <SessionAccordion trainingType={courses[activo - 1].tipo} sessions={courses[activo - 1].sesiones} mode={"detailEmp"} />
                                                         }
-                                                        
-                                                        <button className='btn btn-primary' data-bs-target='#quizModal' data-bs-toggle='modal' onClick={() => handleQuiz(courses[activo - 1].curso.id)}>Rendir Evaluación</button>
+
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+
+                                        </Fragment>
+
+
+
+                                        {/* <div className="card mb-3" style={{ width: "45rem" }}>
+                                            <div className="row g-0" style={{ height: "100%" }}>
+                                                <div className="col-md-4">
+                                                    <img src={courses[activo - 1].tipo_curso == 'U' ? courses[activo - 1].datos_udemy.image_480x270 : url_foto_default} className="img-fluid rounded-start" style={{ height: "100%" }}></img>
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <div className="card-body">
+                                                        <h5 style={{ height: "4rem" }} className="card-title">{courses[activo - 1].descripcion}</h5>
+                                                        <p style={{ height: "5.5rem" }} className="card-text">{courses[activo - 1].nombre}</p>
+                                                        {courses[activo - 1].tipo_curso == 'U' && <p className="card-text"><small className="text-body-secondary">Duración: {courses[activo - 1].duracion}</small></p>}
+                                                    </div>
+
+                                                    {(courses[activo - 1].tipo_curso == 'U') &&
+                                                        <div className="card-body" style={{ display: "flex", justifyContent: "space-between" }}>
+
+                                                            {courses[activo - 1].datos_extras[0].estado == 0 &&
+                                                                <a target='_blank' type="button" className="btn btn-primary" href={`https://www.udemy.com${courses[activo - 1].datos_udemy.url}`}>Iniciar el curso</a>
+                                                            }
+
+                                                            {courses[activo - 1].datos_extras[0].estado == 1 &&
+                                                                <>
+                                                                    <a target='_blank' type="button" className="btn btn-primary" href={`https://www.udemy.com${courses[activo - 1].datos_udemy.url}`}>Continuar</a>
+                                                                </>
+                                                            }
+
+                                                            {courses[activo - 1].datos_extras[0].estado == 2 &&
+                                                                <>
+                                                                    <button className='btn btn-primary' data-bs-target='#quizModal' data-bs-toggle='modal' onClick={() => handleQuiz(courses[activo - 1].curso.id)}>Rendir Evaluación</button>
+                                                                </>
+                                                            }
+
+                                                            {courses[activo - 1].datos_extras[0].estado > 2 &&
+                                                                <>
+                                                                    <a target='_blank' type="button" className="btn btn-primary" href={`https://www.udemy.com${courses[activo - 1].datos_udemy.url}`}>Ver curso</a>
+                                                                </>
+                                                            }
+
+                                                        </div>
+                                                    }
+
+
+                                                </div>
+                                            </div>
+                                        </div> */}
                                     </div>
                                 </div>
 
 
+                                {/* {(courses[activo - 1].tipo_curso == 'U' && courses[activo - 1].datos_extras.estado == 2) &&
+                                    <div className='text-end'>
+                                        <button type='button' className='btn btn-danger' data-bs-target='#confirmModalCourse' data-bs-toggle='modal'>
+                                            <div style={{ display: "flex", alignItems: "center" }}>
+                                                <span className='me-3'>Finalizar curso</span>
+                                                <JournalCheck />
+                                            </div>
+                                        </button>
+                                    </div>
+                                } */}
 
-
-                                <div className='row' style={{ paddingTop: "1rem" }}>
+                                {/* <div className='row' style={{ paddingTop: "1rem" }}>
                                     <div className="accordion-footer">
                                         {courses.length == activo ?
                                             <div style={{ display: "flex", flexDirection: "row-reverse", justifyContent: "space-around" }}>
@@ -230,7 +350,7 @@ function LearningPathDetails(props: any) {
 
 
                                     </div>
-                                </div>
+                                </div> */}
 
                                 {/* CONFIRM MODAL COURSE */}
                                 <div className="modal fade" id="confirmModalCourse" aria-hidden="true" aria-labelledby="confirmModalCourse" tabIndex={-1}>
@@ -246,7 +366,7 @@ function LearningPathDetails(props: any) {
                                                 </div>
                                             </div>
                                             <div className="modal-footer confirm-footer">
-                                                <button className="btn btn-primary" data-bs-dismiss="modal">Si</button>
+                                                <button onClick={() => handleFinishCourse(courses[activo - 1].id)} className="btn btn-primary" data-bs-dismiss="modal">Si</button>
                                                 <button className="btn btn-danger" data-bs-dismiss="modal">No</button>
                                             </div>
                                         </div>

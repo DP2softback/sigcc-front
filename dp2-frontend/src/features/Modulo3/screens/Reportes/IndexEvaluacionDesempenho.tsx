@@ -1,5 +1,4 @@
 import react, {useState, useRef, useEffect} from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './IndexEvaluacionContinua.css';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
@@ -11,6 +10,9 @@ import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path
 import { getAreas, getCategoriasContinua, getCategoriasDesempenio, postReportLineChart, getEmployeesEvaluationDashboard} from '@features/Modulo3/services/reports';
 import { formatDashboardJson } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
+import { toast, ToastContainer } from 'react-toastify';  // Import react-toastify
+import 'react-toastify/dist/ReactToastify.css'; 
+import logoUrl from '../../assets/images/LogoHCM.png';
 
 const dataAreas =     [
   {
@@ -97,6 +99,17 @@ const dataCategoriasDesempenio =  [
   }
 ]
 
+type DataLineChart = {
+  year: string;
+  month: {
+    month: string;
+    category_scores: {
+      CategoryName: string;
+      ScoreAverage: number;
+    }[];
+  }[];
+}[];
+
 const IndexEvaluacionDesempenho = () => {
   const [activeRepContinua, setActiveRepContinua] = useState(false);
 
@@ -182,7 +195,7 @@ const IndexEvaluacionDesempenho = () => {
 
   const handleArea = (eventKey: string | null, event: React.SyntheticEvent<unknown>) => {
     const selected = areas.find(area => area.id === Number(eventKey));
-    console.log("Selected: ", selected);
+    console.log("Selected Area: ", selected);
     setSearchParams(prevState => ({
       ...prevState,
       area: selected ? selected : {id:0 , name:"Todas las áreas"},
@@ -191,6 +204,7 @@ const IndexEvaluacionDesempenho = () => {
 
   const handleCategoria = (eventKey: string | null, event: React.SyntheticEvent<unknown>) => {
     const selected = (activeRepContinua ? categoriasContinua : categoriasDesempenio).find(categoria => categoria.id === Number(eventKey));
+    console.log("Selected Categoria: ", selected);
     setSearchParams(prevState => ({
       ...prevState,
       categoria: selected ? selected : {id:0, name:"Todas las categorías"},
@@ -222,34 +236,38 @@ const IndexEvaluacionDesempenho = () => {
 
   const handleSearchClick = () => {
     if(searchParams.fechaInicio === null || searchParams.fechaFin === null) {
-      alert("Debe seleccionar un rango de fechas");
+      toast.warn("Debe seleccionar un rango de fechas");
       return;
     }
     if(searchParams.fechaInicio > searchParams.fechaFin) {
-      alert("La fecha de inicio no puede ser mayor a la fecha de fin");
+      toast.warn("La fecha de inicio no puede ser mayor a la fecha de fin");
       return;
     }
-    if(searchParams.area.id === 0) {
-      alert("Debe seleccionar un área");
-      return;
-    }
-    if(searchParams.categoria.id === 0) {
-      alert("Debe seleccionar una categoría");
-      return;
-    }
+    // if(searchParams.area.id === 0) {
+    //   alert("Debe seleccionar un área");
+    //   return;
+    // }
+    // if(searchParams.categoria.id === 0) {
+    //   alert("Debe seleccionar una categoría");
+    //   return;
+    // }
+
+    //Upate searchParams.fechaInicio and searchParams.fechaFin to ISOString
+    const searchParamsCopy = {...searchParams};
+    searchParamsCopy.fechaInicio = searchParams.fechaInicio.toISOString().split('T')[0];
+    searchParamsCopy.fechaFin = searchParams.fechaFin.toISOString().split('T')[0];
 
     if(activeRepContinua) {
       const fetchData = async () => {
         setIsLoading(true);
-        const data = await postReportLineChart(searchParams.area.id, searchParams.categoria.id, searchParams.fechaInicio, searchParams.fechaFin, searchParams.evaluationType);
+        const data = await postReportLineChart(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(data){
-          setDashboard(formatDashboardJson(data));
-          console.log("Data: ", data);
-          console.log("Dashboard: ", dashboard);
+          let dataSorted:DataLineChart = data;
+          dataSorted = sortMonths(dataSorted);
+          setDashboard(formatDashboardJson(dataSorted));
         }
         else{
           console.log("Error C: ", data);
-          console.log("Params: ", searchParams);
         }
         setIsLoading(false);
       };
@@ -258,15 +276,14 @@ const IndexEvaluacionDesempenho = () => {
     else{
       const fetchData = async () => {
         setIsLoading(true);
-        const data = await postReportLineChart(searchParams.area.id, searchParams.categoria.id, searchParams.fechaInicio, searchParams.fechaFin, searchParams.evaluationType);
+        const data = await postReportLineChart(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(data){
-          setDashboard(formatDashboardJson(data));
-          console.log("Data: ", data);
-          console.log("Dashboard: ", dashboard);
+          let dataSorted:DataLineChart = data;
+          dataSorted = sortMonths(dataSorted);
+          setDashboard(formatDashboardJson(dataSorted));
         }
         else{
           console.log("Error D: ", data);
-          console.log("Params: ", searchParams);
         }
         setIsLoading(false);
       };
@@ -275,6 +292,15 @@ const IndexEvaluacionDesempenho = () => {
   };
 
   const handleButtonExportClick = async () => {
+    if(searchParams.fechaInicio === null || searchParams.fechaFin === null) {
+      toast.warn("Debe seleccionar un rango de fechas");
+      return;
+    }
+    if(searchParams.fechaInicio > searchParams.fechaFin) {
+      toast.warn("La fecha de inicio no puede ser mayor a la fecha de fin");
+      return;
+    }
+
     const chartElement = document.getElementById('chart-container');
 
     // Captura el contenido del componente como una imagen utilizando dom-to-image
@@ -283,17 +309,49 @@ const IndexEvaluacionDesempenho = () => {
     // Crea un nuevo objeto PDF
     const doc = new jsPDF();
 
+    // Añade el logotipo
+    await doc.addImage(logoUrl, 'PNG', 160, 5, 30, 10);
+
+    // Añade el nombre de la empresa
+    doc.setFontSize(12);
+
+    // Agrega un título 
+    const title = 'Reporte de Evaluación de Desempeño';
+    const titleFontSize = 22;
+    doc.setFontSize(titleFontSize);
+    const titleWidth = doc.getStringUnitWidth(title) * titleFontSize / doc.internal.scaleFactor;
+    const titlePosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
+    doc.text(title, titlePosition, 30); // 30 es la posición en y
+
+    // Agrega un subtítulo
+    const subtitle = `Periodo: ${searchParams.fechaInicio.toISOString().split('T')[0]} a ${searchParams.fechaFin.toISOString().split('T')[0]}`;
+    const subtitleFontSize = 16;
+    doc.setFontSize(subtitleFontSize);
+    const subtitleWidth = doc.getStringUnitWidth(subtitle) * subtitleFontSize / doc.internal.scaleFactor;
+    const subtitlePosition = (doc.internal.pageSize.getWidth() - subtitleWidth) / 2;
+    doc.text(subtitle, subtitlePosition, 45); 
+
     // Calcula las dimensiones de la imagen en el documento PDF
     const pdfWidth = doc.internal.pageSize.getWidth();
     const pdfHeight = (chartElement.offsetHeight / chartElement.offsetWidth) * pdfWidth;
 
     // Agrega la imagen al documento PDF
-    doc.addImage(imageDataUrl, 'PNG', 10, 10, pdfWidth - 20, pdfHeight - 20);
+    doc.addImage(imageDataUrl, 'PNG', 10, 50, pdfWidth - 20, pdfHeight - 20);
 
     // Descarga el archivo PDF
-    doc.save('Reporte.pdf');
+    doc.save('Reporte Evaluacion de Desempeno.pdf');
   };
   
+  const sortMonths = (data: DataLineChart) => {
+    const sortedData = JSON.parse(JSON.stringify(data)); // Deep copy
+
+    sortedData.forEach((item) => {
+      item.month.sort((a, b) => a.month.localeCompare(b.month));
+    });
+
+    return sortedData;
+  };  
+
   const filters = (
     <Form>
       <Form.Group controlId='reportes' className='ec-indexFilters'>        
@@ -351,6 +409,7 @@ const IndexEvaluacionDesempenho = () => {
   
   return (
     <>
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover /> 
       <Layout
         title={'Reportes'}
         body={body}

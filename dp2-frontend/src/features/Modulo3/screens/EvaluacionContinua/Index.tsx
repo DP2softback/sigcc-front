@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
 import { CONTINUOS_EVALUATION_INDEX, CONTINUOS_EVALUATION_HISTORY } from '@features/Modulo3/routes/path';
 import { navigateTo, formatDashboardJson, formatNumber } from '@features/Modulo3/utils/functions';
@@ -37,26 +36,26 @@ const Index = () => {
   const filters = (
 		<Form.Group
 			controlId="searchEmployees"
-			className="d-flex"
+			className="d-flex justify-content-end"
 		>
-			<InputGroup className="flex-grow-1 me-2">
+			<InputGroup className="w-auto me-2">
 				<InputGroup.Text id="ec-indexSearch">
 					<Search />
 				</InputGroup.Text>
 				<Form.Control
-					placeholder="Buscar trabajador o puesto"
+					placeholder="Buscar trabajador"
 					aria-describedby="ec-indexSearch"
 				/>
 			</InputGroup>
 			<Form.Control
 				type="date"
 				placeholder="Fecha inicio"
-				className="me-2"
+				className="me-2 w-auto"
 			/>
 			<Form.Control
 				type="date"
 				placeholder="Fecha fin"
-				className="me-2"
+				className="me-2 w-auto"
 			/>
 			<Button variant="primary">Buscar</Button>
 		</Form.Group>

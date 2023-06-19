@@ -84,3 +84,7 @@ button.small-button {
 .table-bordered td {
     border: 1px solid #dee2e6;
 }
+
+.rich-text-editor {
+    background-color: rgb(164, 39, 39);
+  }

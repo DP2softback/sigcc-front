@@ -6,7 +6,8 @@ import { useLocation } from 'react-router-dom';
 
 const GestionCompetencia = () => {
   const location = useLocation();
-  const { usuario } = location.state;
+  //const { usuario } = location.state;
+  console.log(location.state)
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [nombreEmpleado, setNombreEmpleado] = useState('Ángela Quispe Ramírez');
     const [cargoEmpleado, setCargoEmpleado] = useState('Supervisor - Ärea de TI');
@@ -18,11 +19,11 @@ const GestionCompetencia = () => {
       const fetchTipoCompetencias = async () => {
         try {
   
-          const response = await fetch('https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competenceTypes', {
+          const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceTypes', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              Authorization: 'Token 2e768413e0d75dd79983cd115422fee5291c668d',
+              Authorization: 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
             },
           });
   
@@ -47,12 +48,12 @@ const GestionCompetencia = () => {
           };
   
           const response = await fetch(
-            'https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/trainingNeedSearch',
+            'https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/trainingNeedSearch',
             {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Token 2e768413e0d75dd79983cd115422fee5291c668d',
+                Authorization: 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
               },
               body: JSON.stringify(body),
             }

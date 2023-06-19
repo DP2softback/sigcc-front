@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./EvaluacionContinua.css";
 import { CONTINUOS_EVALUATION_HISTORY, CONTINUOS_EVALUATION_INDEX } from "@features/Modulo3/routes/path";
 import Layout from "@features/Modulo3/components/Layout/Content/Content";
@@ -105,10 +104,7 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 	);
 
 	const saveButton = !isReadOnly && (
-		<Button
-			onClick={() => {
-				handleSave();
-			}}
+		<Button onClick={() => handleSave()}
 		>
 			Guardar evaluación
 		</Button>
@@ -129,21 +125,21 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 			<div className="row">
 				<div className="col-md-4">
 					<Section
-						title={"Categoría de evaluación"}
+						title={"Categoría de evaluación *"}
 						content={evaluationCategory}
 						titleStyle={aditionTitleStyle}
 					/>
 				</div>
 				<div className="col-md-4">
 					<Section
-						title={"Proyecto asociado"}
+						title={"Proyecto asociado *"}
 						content={asociatedProject}
 						titleStyle={aditionTitleStyle}
 					/>
 				</div>
 			</div>
 			<Section
-				title={"Evaluación"}
+				title={"Evaluación *"}
 				content={evaluationMatrix}
 				titleStyle={aditionTitleStyle}
 			/>
@@ -151,6 +147,7 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 				title={"Comentarios adicionales"}
 				content={additionalCommentsAndSave}
 				titleStyle={aditionTitleStyle}
+				sectionStyle={{marginBottom: 0}}
 			/>
 		</>
 	);
@@ -208,6 +205,7 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 		<div>
 			<Layout
 				title={`Evaluación continua - ${employee.name}`}
+				subtitle="Los campos con (*) son obligatorios."
 				body={isLoading ? <LoadingScreen/> : body}
 				route={CONTINUOS_EVALUATION_INDEX}
 			/>

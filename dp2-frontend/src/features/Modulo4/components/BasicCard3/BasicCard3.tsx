@@ -55,6 +55,7 @@ class BasicCard2 extends Component<Props>
             if (this.props.button1Text === "Agregar" && this.props.typeCard === "Empleado") {
                 this.props.option(employees)
             }
+            localStorage.setItem("idOffer",this.props.id)
         }
 
 
