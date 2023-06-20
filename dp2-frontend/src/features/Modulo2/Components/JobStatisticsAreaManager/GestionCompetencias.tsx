@@ -187,7 +187,7 @@ const GestionCompetenciaAM = () => {
       </div>
       
     <div className='container-fluid'>
-    <img alt='Foto de perfil del empleado' src=''></img>
+    <img  src='https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg' ></img>
     <div>{nombreEmpleado}</div>
     <div>{cargoEmpleado}</div>
     </div>

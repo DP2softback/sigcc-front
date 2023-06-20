@@ -11,6 +11,8 @@
     width: 50%; 
     height: 50%;
     padding-top: 32px;
+
+
 }
 
 .botones{
@@ -51,9 +53,17 @@ top: 335px;
 
 .Head{
     font-size: 48px;
-    font-weight: bold;
+    font-weight: bold !important;
 }
 
 .subtitle{
     opacity: 50%;
+}
+
+.small{
+    width: 8%;
+}
+
+.big{
+    width: 90%;
 }

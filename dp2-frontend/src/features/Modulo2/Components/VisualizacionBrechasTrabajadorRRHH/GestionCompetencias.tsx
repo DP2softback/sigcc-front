@@ -188,8 +188,8 @@ const GestionCompetencia = () => {
   return (
     <div className="pantalla">
       <div className='titles'>
-      <h2>Competencias de empleado del área de TI</h2>
-      <p className="text-muted">Competencias por empleado.</p>
+      <h2 className='Head'>Competencias de empleado del área de TI</h2>
+      <p className="text-muted subtitle">Competencias por empleado.</p>
       </div>
       
     <div className='container-fluid'>
