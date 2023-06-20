@@ -7,7 +7,7 @@ import { Form, Button, Dropdown} from 'react-bootstrap';
 import { jsPDF } from 'jspdf';
 import domtoimage from 'dom-to-image';
 import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
-import { getAreas, getCategoriasDesempenio, postReportLineChart} from '@features/Modulo3/services/reports';
+import { getAreas, getCategoriasDesempenio, postReportLineChart, postReportLineChartAll} from '@features/Modulo3/services/reports';
 import { formatDashboardJson } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import { toast, ToastContainer } from 'react-toastify';  // Import react-toastify
@@ -68,10 +68,17 @@ const IndexEvaluacionDesempenho = () => {
         const dataCategoriasDesempenio = await getCategoriasDesempenio();
         setAreas([{id:0 , name:"Todas las áreas"},...dataAreas]);          
         setCategoriasDesempenio([{id:0 , name:"Todas las categorias"},...dataCategoriasDesempenio]);
+        const dateInicio = new Date(); 
+        const dateFin = new Date();
+        dateInicio.setMonth(dateInicio.getMonth() - 6); 
+        const reportData = await postReportLineChartAll(0, 0,dateInicio.toISOString().split('T')[0] , dateFin.toISOString().split('T')[0], "Evaluación de Desempeño");
+        let dataSorted:DataLineChart = reportData;
+        dataSorted = sortMonths(dataSorted);
+        setDashboard(formatDashboardJson(dataSorted));
       } catch (error){
         console.error("Error fetching data: ", error)
+        setDashboard(defaultDashboard);
       }
-      setDashboard(defaultDashboard);
       setIsLoading(false);
     };
 
