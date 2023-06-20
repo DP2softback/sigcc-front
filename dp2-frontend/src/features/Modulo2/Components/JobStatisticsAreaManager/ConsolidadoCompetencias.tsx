@@ -67,15 +67,21 @@ const PieChart = ({ title, labels, datasets }) => {
         };
 
         const fetchAreasActivas = async () => {
+          const requestOptions = {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+            }
+          }
           try {
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/employeeArea', {
-              headers: {
-                Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d'
-              }
-            });
-            const data = await response.json();
-            setAreasActivas(data);
-          } catch (error) {
+            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/positions', requestOptions);
+            if (response.ok) {
+              const data = await response.json();
+              setAreasActivas(data);
+            }
+          }
+            catch (error) {
             console.error('Error fetching competencias:', error);
           }
         };
