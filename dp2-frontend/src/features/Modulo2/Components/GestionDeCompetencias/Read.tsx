@@ -95,7 +95,7 @@ const CompetenciasRead: React.FC = () => {
         competenciasFiltradas = competenciasFiltradas.filter(competencia =>
           competencia.id.toString().toLowerCase().includes(palabrasClaveLower) ||
           competencia.name.toLowerCase().includes(palabrasClaveLower) ||
-          competencia.code.toLowerCase().includes(palabrasClaveLower) ||
+          //competencia.code.toString().toLowerCase().includes(palabrasClaveLower) ||
           competencia.type.toString().toLowerCase().includes(palabrasClaveLower)||
           competencia.active.toString().toLowerCase().includes(palabrasClaveLower)
         );
@@ -282,7 +282,9 @@ const borrarCompetencia = async (id) => {
 
   const renderTablaCompetencias = () => {
     
-    return (<Table striped bordered hover>
+    
+    return (
+    <Table striped bordered hover>
       <thead>
         <tr>
             <th onClick={() => handleOrdenarPorCampo('code')}>Código {campoOrdenamiento === 'code' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
