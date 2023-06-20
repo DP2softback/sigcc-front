@@ -10,8 +10,7 @@ const App: React.FC = () => {
 
 	{
 
-		//return <Provider store={store}>{content}</Provider>;
-		return <DetalleCompetenciasArea />;
+		return <Provider store={store}>{content}</Provider>;
 	}
 
 };
