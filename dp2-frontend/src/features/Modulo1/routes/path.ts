@@ -26,4 +26,3 @@ export const EMP_LEARNING_PATH_INTEGRAL_EVALUATION = 'detalle/:learningPathId/ev
 /*----- Vista Empleado CE -----*/
 export const EMP_ORG_COURSE_INDEX = 'empleado/cursoempresa';
 export const EMP_ORG_COURSE_DETAIL = 'sessions/:trainingID';
-
