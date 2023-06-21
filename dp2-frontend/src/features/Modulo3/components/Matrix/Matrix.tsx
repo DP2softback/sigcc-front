@@ -1,4 +1,4 @@
-import { CONTINUOS_EVALUATION_TYPE, PERFORMANCE_EVALUATION_TYPE } from "@features/Modulo3/utils/constants";
+import { CONTINUOS_EVALUATION_TYPE } from "@features/Modulo3/utils/constants";
 import "./Matrix.css";
 import RadioButton from "@features/Modulo3/components/Shared/RadioButton/RadioButton";
 
@@ -39,10 +39,10 @@ const Matrix = ({header, rows, evaluation, setEvaluation, isReadOnly, index}: Ma
 
 	function displayRow(categoryIndex: number, row: any, header: string[]) {
 		const rowStyle = `matrixRow ${getBackgroundColor(categoryIndex)}`;
-		let subcategories = [];
-		if(isContinuosEvaluation)
+		let subcategories;
+		if (isContinuosEvaluation && !isReadOnly)
 			subcategories = evaluation.subcategories;
-		else
+		else 
 			subcategories = evaluation.categories[index].subcategories;
 
 		return (
