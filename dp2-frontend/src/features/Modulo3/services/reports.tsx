@@ -202,7 +202,8 @@ export const postReportLineChartAll = async (areaid, categoriaid, dateFechaInici
         headers:{
           "Authorization": `Token ${TOKEN}`,
           "Content-Type": 'application/json'
-        }
+        },
+        timeout: 100000 // Establece un tiempo de espera de 30 segundos
       }
     );
     return response.data;

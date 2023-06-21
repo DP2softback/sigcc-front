@@ -8,7 +8,7 @@ import { jsPDF } from 'jspdf';
 import domtoimage from 'dom-to-image';
 import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
 import { getAreas, getCategoriasDesempenio, postReportLineChart, postReportLineChartAll} from '@features/Modulo3/services/reports';
-import { formatDashboardJson } from '@features/Modulo3/utils/functions';
+import { formatDashboardJson, formatDashboardJsonAreas } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import { toast, ToastContainer } from 'react-toastify';  // Import react-toastify
 import 'react-toastify/dist/ReactToastify.css'; 
@@ -68,13 +68,24 @@ const IndexEvaluacionDesempenho = () => {
         const dataCategoriasDesempenio = await getCategoriasDesempenio();
         setAreas([{id:0 , name:"Todas las áreas"},...dataAreas]);          
         setCategoriasDesempenio([{id:0 , name:"Todas las categorias"},...dataCategoriasDesempenio]);
+
         const dateInicio = new Date(); 
         const dateFin = new Date();
         dateInicio.setMonth(dateInicio.getMonth() - 6); 
-        const reportData = await postReportLineChartAll(0, 0,dateInicio.toISOString().split('T')[0] , dateFin.toISOString().split('T')[0], "Evaluación de Desempeño");
-        let dataSorted:DataLineChart = reportData;
-        dataSorted = sortMonths(dataSorted);
-        setDashboard(formatDashboardJson(dataSorted));
+        console.log("Fecha inicio: ", dateInicio.toISOString().split('T')[0]);
+        console.log("Fecha fin: ", dateFin.toISOString().split('T')[0]);
+        // const reportData = await postReportLineChartAll(0, 0,dateInicio.toISOString().split('T')[0] , dateFin.toISOString().split('T')[0], "Evaluación de Desempeño");
+        const reportData = await postReportLineChartAll(0, 0,"2022-12-21" , "2023-06-21", "Evaluación de Desempeño");
+        
+        if(reportData){
+          console.log("Report data: ", reportData);
+          // let dataSorted:DataLineChart = reportData;
+          // dataSorted = sortMonths(dataSorted);
+          // setDashboard(formatDashboardJsonAreas(dataSorted));
+        }
+        else{
+          console.log("Error en report data: ", reportData);
+        }
       } catch (error){
         console.error("Error fetching data: ", error)
         setDashboard(defaultDashboard);
@@ -140,15 +151,6 @@ const IndexEvaluacionDesempenho = () => {
     setSearchParams(prevState => ({
       ...prevState,
       fechaFin: new Date(event.target.value),
-    }));
-  };
-
-  const handleButtonModeClick = () => {
-    setActiveRepContinua(!activeRepContinua);
-    setSearchParams(prevState => ({
-      ...prevState,
-      area: {id:0 , name:"Todas las áreas"},
-      categoria: {id:0, name:"Todas las categorías"},
     }));
   };
 

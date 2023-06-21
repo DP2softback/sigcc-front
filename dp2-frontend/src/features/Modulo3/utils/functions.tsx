@@ -121,3 +121,44 @@ function getMonthName(monthNumber: string): string {
   const index = parseInt(monthNumber) - 1;
   return months[index];
 }
+
+export function formatDashboardJsonAreas(jsonData: any[]): any {
+  if (!jsonData || jsonData.length < 0) return { months: [], data: [] };
+
+  const months: string[] = [];
+  const data: any[] = [];
+
+  jsonData.forEach((item) => {
+    const year = item.year;
+    item.month.forEach((monthItem) => {
+      const month = getMonthName(monthItem.month);
+      const categoryScores = monthItem.category_scores;
+
+      categoryScores.forEach((scoreItem, index) => {
+        const area = scoreItem.Area;
+        const scoreAverage = scoreItem.ScoreAverage;
+
+        const existingData = data.find((d) => d.description === area);
+
+        if (existingData) {
+          existingData.values.push(scoreAverage);
+        } else {
+          const values = Array(months.length).fill(null);
+          values.push(scoreAverage);
+
+          data.push({
+            description: area,
+            values: values,
+          });
+        }
+      });
+
+      months.push(`${year} ${month}`);
+    });
+  });
+
+  return {
+    months: months,
+    data: data,
+  };
+}
