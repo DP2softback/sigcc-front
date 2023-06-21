@@ -20,6 +20,7 @@ const DATAVACIA = {
     descripcion_evaluacion: null,
     archivo_eval: null,
     archivo_emp: null,
+    rubrica: null
 }
 
 const dataEvaluation: EvaluationObj = {
@@ -42,6 +43,7 @@ type LPObj = {
     descripcion_evaluacion: string;
     archivo_eval: string;
     archivo_emp: string;
+    rubrica: any;
 }
 
 type EvaluationObj = {
@@ -54,7 +56,7 @@ type EvaluationObj = {
 const IntegralEvaluation = () => {
     const { learningPathId } = useParams();
     const [loading, setLoading] = useState<boolean>(false);
-    const [fileUploaded, setFileUploaded] = useState<boolean>(false);
+    const [fileUploaded, setFileUploaded] = useState<boolean>(true);
     const [lpDetails, setLPDetails] = useState<LPObj>(DATAVACIA)
     const [lpCourses, setLPCourses] = useState<CourseObj[]>([])
 
@@ -68,12 +70,15 @@ const IntegralEvaluation = () => {
     const loadIntegralEval = () => {
         setLoading(true);
         
-        // POR MIENTRAS
         axiosInt.get(`capacitaciones/learning_path/${learningPathId}/empleado/1/evaluacion/`)
             .then(function (response) {
                 console.log(response.data)
                 setLPDetails(response.data.datos_learning_path)
                 setLPCourses(response.data.cursos)
+
+                if(response.data.archivo_emp === null){
+                    setFileUploaded(false)
+                }
                 setLoading(false);
             })
             .catch(function (error) {
@@ -123,24 +128,22 @@ const IntegralEvaluation = () => {
 
     const saveRate = () => {
         console.log(refLPRate.current.state.rateValue)
-        //setLoading(true)
 
         const data = {
+            learning_path: learningPathId,
+            empleado: 1,    // CAMBIAR
             valoracion: refLPRate.current?.state.rateValue,
-            comentarios: refLPComment.current?.value
+            comentario: refLPComment.current?.value
         }
 
-        /*
-        axiosInt.post(`algo`, data)
+        axiosInt.post(`capacitaciones/valorar_learning_path/`, data)
             .then(function (response) {
                 console.log(response.data)
-                setLoading(false)
+                navigate('/modulo1/empleado/rutadeaprendizaje')
             })
             .catch(function (error) {
                 console.log(error);
-                setLoading(false)
             })
-        */
     }
 
     const navigate = useNavigate();

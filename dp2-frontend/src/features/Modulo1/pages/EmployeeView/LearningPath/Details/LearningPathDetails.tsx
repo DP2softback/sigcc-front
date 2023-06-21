@@ -30,6 +30,7 @@ function LearningPathDetails(props: any) {
     const [activo, setActivo] = useState(1);
     const [quizID, setQuizId] = useState(0);
     const [question, setQuestion] = useState([])
+    const [courseID, setCourseID] = useState<number>(0);
 
     const navigate = useNavigate();
 
@@ -39,8 +40,10 @@ function LearningPathDetails(props: any) {
 
     let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
 
-    const handleChange = (id: number) => {
+    const handleChange = (id: number, courseID: number) => {
         setActivo(id);
+        setCourseID(courseID)
+        console.log(courseID)
     }
 
     const loadsCourses = () => {
@@ -114,27 +117,28 @@ function LearningPathDetails(props: any) {
 
     const refCourseComment = useRef<HTMLTextAreaElement>(null);
     const refCourseRate = useRef(null);
+
     
     const saveRate = () => {
         console.log(refCourseRate.current.state.rateValue)
         //setLoading(true)
 
         const data = {
+            curso: 11,
+            empleado: 1,    //CAMBIAR
             valoracion: refCourseRate.current?.state.rateValue,
-            comentarios: refCourseComment.current?.value
+            comentario: refCourseComment.current?.value
         }
-
-        /*
-        axiosInt.post(`algo`, data)
+ 
+        axiosInt.post('capacitaciones/valorar_curso/', data)
             .then(function (response) {
                 console.log(response.data)
-                setLoading(false)
+                //setLoading(false)
             })
             .catch(function (error) {
                 console.log(error);
-                setLoading(false)
+                //setLoading(false)
             })
-        */
     }
 
     return (
@@ -184,7 +188,7 @@ function LearningPathDetails(props: any) {
                                         <div style={{ display: "flex", flexWrap: "wrap" }}>
                                             {courses.map((course: any, index: number) => (
                                                 <div key={course.id}>
-                                                    <div style={{ display: "flex", alignItems: "center" }} onClick={() => handleChange(index + 1)}>
+                                                    <div style={{ display: "flex", alignItems: "center" }} onClick={() => handleChange(index + 1, course.id)}>
                                                         <div className={`circulo ${index + 1 == activo ? courses[activo - 1].tipo_curso == 'U' ?
                                                             courses[activo - 1].datos_extras[0].estado == 4 ? 'completado' : 'activo' : index + 1 == activo ? 'activo' : '' : index + 1 == activo ? 'activo' : ''}`}>{index + 1}</div>
 
