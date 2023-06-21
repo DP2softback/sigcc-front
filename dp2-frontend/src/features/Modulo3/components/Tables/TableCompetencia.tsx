@@ -3,7 +3,7 @@ import { formatDate, formatNumberWithTwoDecimals, navigateTo } from '@features/M
 import './TableHistory.css';
 import { CATEGORIES_DETAIL } from '@features/Modulo3/routes/path';
 
-export default function TableCompetencia({ rows, isReadOnly = false }) {
+export default function TableCompetencia({ rows, isReadOnly = false,setShow,setIdSubCat }) {
   function getBackgroundColor(categoryIndex: number) {
     return isReadOnly
       ? categoryIndex % 2 == 0
@@ -13,12 +13,18 @@ export default function TableCompetencia({ rows, isReadOnly = false }) {
       ? 'bg-blue'
       : 'bg-white';
   }
+  const handleEliminar = (idSubCategory)=>{
+    setIdSubCat(idSubCategory)
+    setShow(true);
+    
+  }
 
   return (
     <Table striped className='TableCategorie'>
       <thead className={`bg-white${isReadOnly ? 'ReadOnly' : ''}`}>
         <tr>
           <th className='categorie_name'>Nombre</th>
+          <th>Competencia</th>
           <th className='text-end competencia'>Acciones</th>
         </tr>
       </thead>
@@ -26,17 +32,19 @@ export default function TableCompetencia({ rows, isReadOnly = false }) {
         {rows.map((row, index) => {
           const rowStyle = `matrixRow ${getBackgroundColor(index)}`;
           return (
-            <tr key={row.id} className={rowStyle}>
-              <td className='categorie_name'>{row.name}</td>
+            row.isActive === true?
+            <tr key={row.idSubcategory} className={rowStyle}>
+              <td className='categorie_name'>{row.nameSubCategory}</td>
+              <td>Competencia</td>
               <td className='text-center'>                
                 <div className='acciones'>
-                <Button variant="outline-danger" className='accion'>
+                <Button variant="outline-danger" className='accion' onClick={()=>handleEliminar(row.idSubcategory)}>
                   Eliminar
                 </Button>
                 </div>
 
               </td>
-            </tr>
+            </tr>:<tr key={row.idSubcategory}></tr>
           );
         })}
       </tbody>

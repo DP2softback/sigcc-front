@@ -3,30 +3,34 @@ import { formatDashboardJson, navigateBack, navigateTo } from '@features/Modulo3
 import { Form, Button } from 'react-bootstrap';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
-import TableCategories from '@features/Modulo3/components/Tables/TableCategories';
-import Linechart from '@features/Modulo3/components/Charts/Linechart/Linechart';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 import cat from '@features/Modulo3/jsons/Categories';
 import { CATEGORIES_DETAIL, CATEGORIES_INDEX } from '@features/Modulo3/routes/path';
 import TableCompetencia from '@features/Modulo3/components/Tables/TableCompetencia';
+import ModalConfirmacion from '@features/Modulo3/components/Modals/ModalConfirmacion';
+import 'react-toastify/dist/ReactToastify.css'; 
+import { toast, ToastContainer } from 'react-toastify';
+import ModalAddSubcategorie from '@features/Modulo3/components/Modals/ModalAddSubcategorie';
+import { listSubcategories } from '@features/Modulo3/services/categories';
 
 const Detail = () => {
   const urlParams = new URLSearchParams(window.location.search);
-
+	const [show,setShow] = useState(false);
+	const [showAS,setShowAS] = useState(false);
+	const [idSubCat,setIdSubCat]=useState(-1);
   const [categorie, setCategorie] = useState({
     id: parseInt(urlParams.get('id')),
     name: urlParams.get('name')
   });
   const [categories,setCategories]=useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [competencias, setCompetencias]=useState([])
+  const [competencias, setCompetencias]=useState([]);
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-       const response= cat.find((cate) => cate.id === categorie.id);
-      setCompetencias(response["subcategories"]);
-      console.log(response);
+       const response= await listSubcategories(categorie.id)
+      setCompetencias(response);
       setIsLoading(false);
     })();
   }, []);
@@ -50,7 +54,7 @@ const Detail = () => {
 
   const table =(
     <div >
-      <TableCompetencia rows ={competencias}/>
+      <TableCompetencia rows ={competencias} setShow={setShow} setIdSubCat={setIdSubCat}/>
     </div>
   );
 
@@ -71,7 +75,7 @@ const Detail = () => {
 					}}>
 					Volver
 				</Button>
-				<Button>
+				<Button onClick={()=>setShowAS(true)}>
 					Agregar nueva subcategoría
 				</Button>
 			</div>
@@ -88,6 +92,9 @@ const Detail = () => {
 
   return (
 		<div>
+			<ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />  
+			<ModalAddSubcategorie show={showAS} setShow={setShowAS} idCategory={categorie.id}></ModalAddSubcategorie>
+			<ModalConfirmacion show={show} setShow={setShow} type={"subcategoria"} idSubCat={idSubCat} idCategorie={categorie.id}></ModalConfirmacion>
 			<Layout
 				title={`Categoría - ${categorie.name}`}
 				body={body}
