@@ -2,20 +2,20 @@ import { ajax } from '../tools/ajax';
 import { CONTINUOS_EVALUATION_TYPE, BACKEND_URL, TOKEN } from '../utils/constants';
 import { getEmployeeEvaluationDashboardShared, getEmployeesEvaluationDashboardShared, getEmployeesShared, getEvaluationsHistoryShared } from './shared';
 
-export const getEmployees = async (bossId: number, fechaInicio? : Date, fechaFin? : Date) => { 
-  return await getEmployeesShared(bossId, CONTINUOS_EVALUATION_TYPE, fechaInicio, fechaFin);
+export const getEmployees = async (params: any) => { 
+  return await getEmployeesShared(CONTINUOS_EVALUATION_TYPE, params.bossId, params.fecha_inicio, params.fecha_fin, params.employeeName);
 }
 
-export const getEvaluationsHistory = async (employeeId: number, nivel? : number, fechaInicio? : Date, fechaFin? : Date) => {
-  return await getEvaluationsHistoryShared(employeeId, CONTINUOS_EVALUATION_TYPE, nivel, fechaInicio, fechaFin);
+export const getEvaluationsHistory = async (params: any) => {
+  return await getEvaluationsHistoryShared(CONTINUOS_EVALUATION_TYPE, params.employeeId, params.nivel, params.fecha_inicio, params.fecha_fin);
 }
 
-export const getEmployeesEvaluationDashboard = async (bossId: number) => {
-  return await getEmployeesEvaluationDashboardShared(bossId, CONTINUOS_EVALUATION_TYPE);
+export const getEmployeesEvaluationDashboard = async (params: any) => {
+  return await getEmployeesEvaluationDashboardShared(params.bossId, CONTINUOS_EVALUATION_TYPE, params.fecha_inicio, params.fecha_fin, params.employeeName);
 }
 
-export const getEmployeeEvaluationDashboard = async (employeeId: number) => {
-  return await getEmployeeEvaluationDashboardShared(employeeId, CONTINUOS_EVALUATION_TYPE);
+export const getEmployeeEvaluationDashboard = async (params: any) => {
+  return await getEmployeeEvaluationDashboardShared(params.employeeId, CONTINUOS_EVALUATION_TYPE, params.fecha_inicio, params.fecha_fin);
 }
 
 export const saveEvaluation = async (evaluation) => {

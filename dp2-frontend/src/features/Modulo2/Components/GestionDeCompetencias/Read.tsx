@@ -95,7 +95,7 @@ const CompetenciasRead: React.FC = () => {
         competenciasFiltradas = competenciasFiltradas.filter(competencia =>
           competencia.id.toString().toLowerCase().includes(palabrasClaveLower) ||
           competencia.name.toLowerCase().includes(palabrasClaveLower) ||
-          competencia.code.toLowerCase().includes(palabrasClaveLower) ||
+          //competencia.code.toString().toLowerCase().includes(palabrasClaveLower) ||
           competencia.type.toString().toLowerCase().includes(palabrasClaveLower)||
           competencia.active.toString().toLowerCase().includes(palabrasClaveLower)
         );
@@ -282,7 +282,9 @@ const borrarCompetencia = async (id) => {
 
   const renderTablaCompetencias = () => {
     
-    return (<Table striped bordered hover>
+    
+    return (
+    <Table striped bordered hover>
       <thead>
         <tr>
             <th onClick={() => handleOrdenarPorCampo('code')}>Código {campoOrdenamiento === 'code' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
@@ -302,12 +304,14 @@ const borrarCompetencia = async (id) => {
             <td>{tipoCompetencias.find((tipo) => tipo.id == competencia.type)?.name}</td>
             <td>{competencia.active ? 'Activo' : 'Inactivo'}</td>
                   <td>
+      
                     <Button variant="link" size="sm">
                     <ArrowRightCircleFill color='gray'></ArrowRightCircleFill>
                       <i className="bi bi-box-arrow-in-right"></i>
                     </Button>
-                    <Button variant="secondary" onClick={() => handleMostrarPopUpActualizar(competencia)}><Pencil /></Button>
-                    <Button variant="danger" onClick={() => handleMostrarPopUpBorrar(competencia)}><Trash /></Button>
+                    <Button variant="secondary" size="sm" onClick={() => handleMostrarPopUpActualizar(competencia)}><Pencil /></Button>
+                    <Button variant="danger" size="sm" onClick={() => handleMostrarPopUpBorrar(competencia)}><Trash /></Button>
+                 
                   </td>
           </tr>
         ))}
@@ -318,8 +322,8 @@ const borrarCompetencia = async (id) => {
   return (
     <div className='pantalla'>
       <div className='titles'>
-      <h2>Gestión de Competencias</h2>
-      <p className="text-muted">Agrega, edita y desactiva competencias.</p>
+      <h2 className='Head'>Gestión de Competencias</h2>
+      <p className="text-muted subtitle">Agrega, edita y desactiva competencias.</p>
       </div>
 
       <div className='container-fluid'>

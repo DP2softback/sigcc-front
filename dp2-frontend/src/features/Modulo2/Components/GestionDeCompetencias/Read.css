@@ -1,16 +1,18 @@
 .pantalla{
-    background-color: #f1f1f1;
-    padding-left: 20px;
+    background-color: #F8f8f9;
+
 }
 
 .titles{
-padding-top: 20px;
+
 }
 
 .basicSearch{
     width: 50%; 
     height: 50%;
     padding-top: 32px;
+
+
 }
 
 .botones{
@@ -47,4 +49,21 @@ top: 335px;
     position: absolute;
     left: 290px;
     top: 95px;
+}
+
+.Head{
+    font-size: 48px;
+    font-weight: bold !important;
+}
+
+.subtitle{
+    opacity: 50%;
+}
+
+.small{
+    width: 8%;
+}
+
+.big{
+    width: 90%;
 }

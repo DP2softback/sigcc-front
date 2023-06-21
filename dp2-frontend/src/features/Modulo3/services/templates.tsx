@@ -113,3 +113,18 @@ export const guardarPlantilla = async(plantilla) =>{
     }
     return await ajax(optionsRequest);
 }
+
+export const eliminarPlantilla = async(id) =>{
+  const optionsRequest = {
+      method: 'DELETE',
+      url: BACKEND_URL + 'PlantillaCrear',
+      headers:{
+          Authorization: `Token ${TOKEN}`
+        },
+      data:{
+        "idPlantilla":id
+      }
+      // data: {...plantilla}  
+    }
+    return await ajax(optionsRequest);
+}

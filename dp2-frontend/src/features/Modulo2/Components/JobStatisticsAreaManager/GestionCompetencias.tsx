@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, Table} from 'react-bootstrap';
 import {tipoCompetencia,CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
 import { useLocation,  useNavigate  } from 'react-router-dom';
+import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE } from '@features/Modulo2/routes/path';
 
 const GestionCompetenciaAM = () => {
   const navigate = useNavigate();
@@ -41,19 +42,20 @@ const GestionCompetenciaAM = () => {
       const fetchCompetencias = async () => {
         try {
           const body = {
-            estado: 0, //dejarlo así - luego se podrá poner 1,2,3
-            tipo: 0, //dejarlo así - luego se podrá poner 1,2,3
-            activo: 2, //dejarlo así - luego se podrá poner 0,1,2
-            idEmpleado: 1, // Poner el idEmpleado
-          };
+            "idCompetencia": 0,		//dejarlo así
+            "palabraClave": "",		//poner la palabra clave del buscador, si es nada pon ""
+            "idTipoCompetencia": 0,		//el idTipoCompetencia del buscador, si es todos pon 0
+            "activo": 2,			//el estado 0 o 1 (inactivo o activo), si es todos pon 2
+            "idEmpleado": 1			//ponerle el idEmpleado
+    };
   
           const response = await fetch(
-            'https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/trainingNeedSearch',
+            'https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceSearch',
             {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
+                Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
               },
               body: JSON.stringify(body),
             }
@@ -170,7 +172,7 @@ const GestionCompetenciaAM = () => {
                 <td>{item.levelCurrent}</td>
                 <td>{item.levelRequired}</td>
                 <td>{brecha}</td>
-                <td>{item.description}</td>
+                <td>{item.observacion}</td>
               </tr>
             );
           })}
@@ -186,7 +188,7 @@ const GestionCompetenciaAM = () => {
       </div>
       
     <div className='container-fluid'>
-    <img alt='Foto de perfil del empleado' src=''></img>
+    <img  src='https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg' ></img>
     <div>{nombreEmpleado}</div>
     <div>{cargoEmpleado}</div>
     </div>
@@ -198,11 +200,6 @@ const GestionCompetenciaAM = () => {
       <div className="col-sm-3 botones">
         <Button variant="outline-primary" className="me-2" onClick={()=>{navigate(-1)}}>
           Regresar
-          </Button>
-      </div>
-      <div className="col-sm-3 botones">
-        <Button variant="outline-primary" className="me-2" onClick={()=>{}}>
-        Exportar a excel
           </Button>
       </div>
     </div>
