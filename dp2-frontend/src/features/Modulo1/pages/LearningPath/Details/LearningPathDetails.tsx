@@ -30,18 +30,33 @@ function LearningPathDetails(props: any) {
         navigate(-1);
     };
 
+    let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
+
+
     const loadsCourses = () => {
         setLoading(true);
         axiosInt.get(`capacitaciones/learning_path/${learningPathId}/course/`)
             .then(function (response) {
-                console.log(response.data)
+                // console.log(response.data)
                 setLPName(response.data.nombre);
                 setLPDescription(response.data.descripcion);
                 setLPPhoto(response.data.url_foto);
                 setLPParticipants(response.data.cant_empleados);
                 setLPRate(response.data.suma_valoraciones);
-                setCourses(response.data.curso_x_learning_path);
-                setLoading(false);
+
+                axiosInt.get(`capacitaciones/learning_path_from_template/${learningPathId}/`)
+                    .then(function (response) {
+                        console.log(response.data[1])
+                        setCourses(response.data[1]);
+                        setLoading(false);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        setLoading(false);
+                    });
+
+
+
             })
             .catch(function (error) {
                 console.log(error);
@@ -180,7 +195,7 @@ function LearningPathDetails(props: any) {
                                 <div className='col-xs-12 col-md-4 col-xl-2'>
                                     <div className='d-grid gap-2 mx-auto mb-3'>
                                         <Link to={`evaluacionintegral`} className='btn btn-sm btn-primary'>Ver evaluaciones</Link>
-                                        <Link to={``} className='btn btn-sm btn-primary'>Ver reportes</Link>
+                                        <Link to={`reportecursos`} className='btn btn-sm btn-primary'>Ver reportes</Link>
                                     </div>
                                 </div>
                             </div>
@@ -200,42 +215,52 @@ function LearningPathDetails(props: any) {
                         <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 align-items-stretch g-3 py-3">
                             {
                                 courses.map((course: any, index: number) => (
-                                    <div className='col' key={course.course_udemy_detail.id}>
+                                    <div className='col' key={course.id}>
                                         <div className="card h-100">
                                             <img
-                                                src={course.course_udemy_detail.image_480x270}
+                                                src={course.tipo_curso == 'U' ? course.course_udemy_detail.image_480x270 == null ? url_foto_default : course.course_udemy_detail.image_480x270 : course.url_foto}
                                                 className="card-img-top lp-card-img"
                                                 alt="Card"
                                             />
                                             <div className="card-body">
-                                                <h6 className="card-title">{course.course_udemy_detail.title}</h6>
-                                                <p className='mb-0'><small className="opacity-50">{course.course_udemy_detail.headline}</small></p>
+                                                <h6 className="card-title">{course.nombre}</h6>
+                                                <p className='mb-0'><small className="opacity-50">{course.descripcion}</small></p>
                                             </div>
-                                            <div className="card-footer pb-3 lpd-footer">
-                                                {
-                                                    coursesQuizStatuses[index] == 0 ?
-                                                        <>
-                                                            <div className="d-flex justify-content-center">
-                                                                <div className="spinner-border spinner-border-sm me-1" role="status">
-                                                                    <span className="visually-hidden">Cargando...</span>
+                                            {course.tipo_curso == 'U' ?
+                                                <div className="card-footer pb-3 lpd-footer">
+                                                    {
+                                                        coursesQuizStatuses[index] == 0 ?
+                                                            <>
+                                                                <div className="d-flex justify-content-center">
+                                                                    <div className="spinner-border spinner-border-sm me-1" role="status">
+                                                                        <span className="visually-hidden">Cargando...</span>
+                                                                    </div>
+                                                                    <div>
+                                                                        <p style={{ marginTop: '-0.25rem' }}>
+                                                                            <small>Generando evaluación</small>
+                                                                        </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div>
-                                                                    <p style={{ marginTop: '-0.25rem' }}>
-                                                                        <small>Generando evaluación</small>
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </> :
-                                                        <>
-                                                            <button type="button" className="btn btn-primary w-100 mb-3" data-bs-toggle="modal" data-bs-target={`#quizGeneratorModal${course.id}`}>Validar cuestionario</button>
-                                                            <QuizGenerator title={course.title} quizId={course.id} />
-                                                        </>
-                                                }
-                                                <button className="btn btn-danger w-100" onClick={(e) => handleRemoveCard(e, course.id)}>
-                                                    <span className="spinner-border spinner-border-sm hidden me-3" role="status" aria-hidden="true"></span>
-                                                    Eliminar curso
-                                                </button>
-                                            </div>
+                                                            </> :
+                                                            <>
+                                                                <button type="button" className="btn btn-primary w-100 mb-3" data-bs-toggle="modal" data-bs-target={`#quizGeneratorModal${course.id}`}>Validar cuestionario</button>
+                                                                <QuizGenerator title={course.nombre} quizId={course.id} />
+                                                            </>
+                                                    }
+                                                    <button className="btn btn-danger w-100" onClick={(e) => handleRemoveCard(e, course.id)}>
+                                                        <span className="spinner-border spinner-border-sm hidden me-3" role="status" aria-hidden="true"></span>
+                                                        Eliminar curso
+                                                    </button>
+                                                </div>
+                                                :
+                                                <div className="card-footer pb-3 lpd-footer">
+                                                    <button className="btn btn-danger w-100" onClick={(e) => handleRemoveCard(e, course.id)}>
+                                                        <span className="spinner-border spinner-border-sm hidden me-3" role="status" aria-hidden="true"></span>
+                                                        Eliminar curso
+                                                    </button>
+                                                </div>
+                                            }
+
 
                                         </div>
                                     </div>
@@ -302,7 +327,7 @@ function LearningPathDetails(props: any) {
             {
                 coursesQuizStatuses.includes(0) ?
                     <>
-                        <div style={{marginTop: "4rem"}} className="toast show align-items-center text-bg-primary position-fixed top-0 end-0 border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div style={{ marginTop: "4rem" }} className="toast show align-items-center text-bg-primary position-fixed top-0 end-0 border-0" role="alert" aria-live="assertive" aria-atomic="true">
                             <div className="d-flex">
                                 <div className="toast-body">
                                     Se está generando la evaluación para el curso en segundo plano.
@@ -313,7 +338,7 @@ function LearningPathDetails(props: any) {
                     </> :
                     <></>
             }
-            
+
         </>
     );
 }
