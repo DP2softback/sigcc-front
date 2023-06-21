@@ -8,6 +8,7 @@ import Form from "react-bootstrap/Form";
 import { Button } from "react-bootstrap";
 import { navigateBack, navigateTo } from "@features/Modulo3/utils/functions";
 import { saveEvaluation } from "@features/Modulo3/services/performanceEvaluation";
+import { TEXTAREA_ROWS } from "@features/Modulo3/utils/constants";
 
 type BaseFormProps = {
 	employee: any;
@@ -20,7 +21,7 @@ type BaseFormProps = {
 };
 
 const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, setIsLoading, isReadOnly}: BaseFormProps) => {
-	
+
 	const evaluationMatrix = categories && (
 		categories.map((category, index) => {
 			const matrixAndComent = <div className="row">
@@ -36,12 +37,12 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 					</div>
 					<div className='mb-4'>
 						<Form.Control
-							value={evaluation && evaluation.additionalComments}
+							value={category?.subcategories?.[0]?.comment}
 							disabled={isReadOnly}
 							as="textarea"
 							aria-label="With textarea"
 							placeholder="Ingrese los comentarios o recomendaciones que crea conveniente"
-							rows={3}
+							rows={TEXTAREA_ROWS}
 							onChange={onAdditionalCommentsChange(index)} />
 					</div>
 				</div>
@@ -50,7 +51,7 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 			return (
 				<div key={category.id}>
 					<Section
-						title={category.name + ' *'}
+						title={category.name + (isReadOnly ? "" : "*")}
 						titleStyle={{marginBottom: '1em'}}
 						sectionStyle={{marginBottom: 0}}
 						content={matrixAndComent}
@@ -61,8 +62,9 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 	);
 
 	const cancelButton = (
-		<Button variant="outline-primary me-2" onClick={() => navigateBack()}>
-			Cancelar
+		<Button variant={`outline-primary ${isReadOnly ? '' : 'me-2'}`} 
+			onClick={() => navigateBack()}>
+			{isReadOnly ? <>Volver</> : <>Cancelar</>}
 		</Button>
 	);
 
@@ -94,9 +96,15 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 			var value = e.target.value;
 			setEvaluation(prevEvaluation => {
 				const updatedCategories = [...prevEvaluation.categories];
+				const selectedCategory = updatedCategories[categoryIndex];
+				const updatedSubcategories = selectedCategory.subcategories.map(subcategory => ({
+					...subcategory,
+					hasComment: true,
+					comment: value
+				}));
 				updatedCategories[categoryIndex] = {
-					...updatedCategories[categoryIndex],
-					additionalComments: value
+					...selectedCategory,
+					subcategories: updatedSubcategories
 				};
 				return { ...prevEvaluation, categories: updatedCategories };
 			});
@@ -113,7 +121,7 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 					name: employee.name
 				});
 			}catch(error){
-
+				console.error(error);
 			}
 			setIsLoading(false);
 		})();
@@ -123,7 +131,7 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 		<div>
 			<Layout
 				title={`Evaluación de desempeño - ${employee.name}`}
-				subtitle="Los campos con (*) son obligatorios."
+				subtitle={isReadOnly ? null : "Los campos con (*) son obligatorios."}
 				body={isLoading ? <LoadingScreen/> : body}
 				route={PERFORMANCE_EVALUATION_INDEX}
 			/>
