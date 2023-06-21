@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, Table} from 'react-bootstrap';
 import {tipoCompetencia,CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
 import { useLocation,  useNavigate  } from 'react-router-dom';
+import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE } from '@features/Modulo2/routes/path';
 
 const GestionCompetenciaAM = () => {
   const navigate = useNavigate();
@@ -171,7 +172,7 @@ const GestionCompetenciaAM = () => {
                 <td>{item.levelCurrent}</td>
                 <td>{item.levelRequired}</td>
                 <td>{brecha}</td>
-                <td>{item.description}</td>
+                <td>{item.observacion}</td>
               </tr>
             );
           })}
@@ -199,11 +200,6 @@ const GestionCompetenciaAM = () => {
       <div className="col-sm-3 botones">
         <Button variant="outline-primary" className="me-2" onClick={()=>{navigate(-1)}}>
           Regresar
-          </Button>
-      </div>
-      <div className="col-sm-3 botones">
-        <Button variant="outline-primary" className="me-2" onClick={()=>{}}>
-        Exportar a excel
           </Button>
       </div>
     </div>

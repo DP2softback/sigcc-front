@@ -6,6 +6,7 @@ import {ArrowRightCircleFill,Pencil,Trash } from 'react-bootstrap-icons';
 import { useLocation,  useNavigate  } from 'react-router-dom';
 import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos';
 import './DetalleCompetenciasArea.css';
+import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE } from '@features/Modulo2/routes/path';
 
 const DetalleCompetenciasArea = () => {
   const navigate = useNavigate();
@@ -86,7 +87,7 @@ const DetalleCompetenciasArea = () => {
     };
 
     const handleClick = (usuario) => {        
-      navigate('/GestionCompetencias', { state: { usuario } });
+      navigate(`/${GAPS_ANALYSIS_MODULE}/${GAPS_EMPLOYEES_AREA}/${GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE}`, { state: { usuario } });
       };
 
     const handleOrdenarPorCampo = (campo) => {
@@ -188,16 +189,6 @@ const DetalleCompetenciasArea = () => {
                       ()=>{handleClick(competencia);}}>
                     <ArrowRightCircleFill color='gray'></ArrowRightCircleFill>
                       <i className="bi bi-box-arrow-in-right"></i>
-                    </Button>
-                    <Button variant="link" size="sm" onClick={
-                      ()=>{handleMostrarPopUpActualizar(competencia);}}>
-                      <Pencil></Pencil>
-                      <i className="bi bi-pencil"></i>
-                    </Button>
-                    <Button variant="link" size="sm" onClick={
-                      ()=>{handleMostrarPopUpBorrar(competencia);}}>
-                      <Trash color='red'></Trash>
-                      <i className="bi bi-trash"></i>
                     </Button>
                   </td>
                 </tr>

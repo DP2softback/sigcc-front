@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { Button, Table} from 'react-bootstrap';
 import './GestionCompetencias.css'
 import {tipoCompetencia,CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const GestionCompetencia = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   //const { usuario } = location.state;
   console.log(location.state)
@@ -203,13 +204,8 @@ const GestionCompetencia = () => {
          {renderTablaCompetencias()}
       </div>
       <div className="col-sm-3 botones">
-        <Button variant="outline-primary" className="me-2" onClick={()=>{}}>
+        <Button variant="outline-primary" className="me-2" onClick={()=>{navigate(-1)}}>
           Regresar
-          </Button>
-      </div>
-      <div className="col-sm-3 botones">
-        <Button variant="outline-primary" className="me-2" onClick={()=>{}}>
-          Ver necesidades de capacitación
           </Button>
       </div>
     </div>

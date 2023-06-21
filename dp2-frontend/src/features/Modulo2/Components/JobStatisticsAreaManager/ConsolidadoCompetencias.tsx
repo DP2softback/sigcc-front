@@ -6,6 +6,8 @@ import { Competencia, tipoCompetencia,AreaActiva } from "../GestionDeCompetencia
 import DetalleCompetenciasArea from "./DetalleCompetenciasArea";
 import { set } from "lodash";
 import './ConsolidadoCompetencias.css';
+import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL } from '@features/Modulo2/routes/path';
+
 
 const PieChart = ({ title, labels, datasets }) => {
     ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -188,7 +190,7 @@ const PieChart = ({ title, labels, datasets }) => {
       const handleBuscarClick = () => {
       };
       const handleClick = () => {        
-      navigate('/DetalleCompetenciasArea', { state: { tipoCompetencia } });
+      navigate(`/${GAPS_ANALYSIS_MODULE}/${GAPS_EMPLOYEES_AREA}/${GAPS_EMPLOYEES_AREA_DETAIL}`, { state: { tipoCompetencia } });
       };
       const handleMostrarLineChartClick = () => {
       };
