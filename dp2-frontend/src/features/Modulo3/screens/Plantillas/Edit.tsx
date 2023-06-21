@@ -15,6 +15,7 @@ import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/Loa
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
 import { delay } from 'lodash';
+import ModalConfirmacion from '@features/Modulo3/components/Modals/ModalConfirmacion';
 
 const dataIni ={
   categoriaNombre: "",
@@ -25,7 +26,6 @@ const Edit = () => {
 
   const urlParams = new URLSearchParams(window.location.search);
 
-  const [show,setShow]=useState(false);
   const [showAC,setShowAC]=useState(false);
   const [categorias,setCategorias]= useState([]);
   const [file, setFile] = useState(null);
@@ -39,7 +39,7 @@ const Edit = () => {
   const [plantillaName, setPlantillaName] = useState('');
   const [idPlantilla,setIdPlantilla]=useState(parseInt(urlParams.get('id')));
   const [typePlantilla,setTypePlantilla]=useState(urlParams.get('type'));
-
+  const [show,setShow]=useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -103,19 +103,6 @@ const Edit = () => {
 
   const handleRadioChange = (categoryName) => {
    
-    if (selectedOption === "Evaluación Continua") {
-      setSelectedCategory(categoryName);
-      const updatedCategorias = categorias.map((categoria) => ({
-        ...categoria,
-        "Category-active": categoria.name === categoryName,
-        subcategory: categoria.subcategory.map((sub) => ({
-          ...sub,
-          "subcategory-isActive": categoria.name === categoryName,
-        })),
-      }));
-  
-      setCategorias(updatedCategorias);
-    } else if (selectedOption === "Evaluación de Desempeño") {
       const updatedCategorias = categorias.map((categoria) => {
         if (categoria.name === categoryName) {
           return {
@@ -131,8 +118,7 @@ const Edit = () => {
       });
   
       setCategorias(updatedCategorias);
-    }
-    console.log("update",categorias)
+
   };
   
   
@@ -158,7 +144,7 @@ const Edit = () => {
     <>
     {plantilla && plantilla.length >0 ? (
       <>
-      <Form className='ec-indexFilters'>
+      <Form className='ec-indexFilters d-flex flex-row align-items-center'>
       <Form.Group className='flex1'>
         <label className='label-estilizado' htmlFor='nombrePlantilla'>Nombre de plantilla</label>
         <Form.Control id="nombrePlantilla" value={plantillaName} onChange={handleChangePlantillaName}/>
@@ -176,7 +162,8 @@ const Edit = () => {
       </Form.Group>
       <Form.Group className='sub-image flex1'>
         <ImageUploader onImageSelect={handleImageChange} />
-      </Form.Group>     
+      </Form.Group>
+       
     </Form>
       </>
     ):(<NoDataFound/>)}
@@ -233,7 +220,7 @@ const Edit = () => {
           <Accordion.Header>
             <FormCheck
               name='opciones'
-              type={selectedOption === "Evaluación Continua" ? 'radio' : 'checkbox'}
+              type={'checkbox'}
               label={categoria.name}  
               checked={categoria["Category-active"]}            
               onChange={() => handleRadioChange(categoria.name)}
@@ -251,7 +238,7 @@ const Edit = () => {
                   checked={subcategoria["subcategory-isActive"]}
                   multiple={selectedOption === "Evaluación de Desempeño"}
                   onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria)}
-                  disabled={(selectedOption === "Evaluación de Desempeño" && !categoria["Category-active"])  || (selectedOption === "Evaluación Continua" && (!categoria["Category-active"] || selectedCategory !== categoria.name))}
+                  disabled={!categoria["Category-active"]}
 
                 />
               ))}
@@ -269,20 +256,17 @@ const Edit = () => {
       </>
     ):(<NoDataFound/>)}
    
-    <div className="text-end mt-32" >
-    <Button variant='outline-primary me-2' className='boton-dejar mr-20' onClick={() => {
-         
-          navigateBack();
-        }}>
-        Volver
-      </Button>
-      <Button onClick={handleGuardarEditar}>
-        Guardar
-      </Button>
-    </div>
-    
-
-    
+    <div className="mt-32">
+      <div className="d-flex justify-content-between">
+        <Button variant="outline-danger" className="ms-0" onClick={() => setShow(true)}>Eliminar Plantilla</Button>
+        <div>
+          <div className="d-flex">
+            <Button variant="outline-primary" className="boton-dejar mr-20" onClick={() => navigateBack()}>Volver</Button>
+            <Button onClick={handleGuardarEditar}>Guardar</Button>
+          </div>
+        </div>
+      </div>
+    </div>    
     </>
   )
 
@@ -297,7 +281,7 @@ const Edit = () => {
       {plantilla && plantilla.length >0 ?(
         <>
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />  
-        <ModalAddCategorie showAC={showAC} setShowAC={setShowAC} categorias={categorias} setCategorias={setCategorias}></ModalAddCategorie>
+        <ModalConfirmacion show={show} setShow={setShow} idPlantilla={idPlantilla} type={"plantilla"}></ModalConfirmacion>
         <Layout
         title={'Plantilla - '+plantilla[0].name }
         body={body}
