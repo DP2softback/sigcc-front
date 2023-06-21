@@ -7,6 +7,7 @@ import { useLocation,  useNavigate  } from 'react-router-dom';
 import './DetalleCompetenciasArea.css'
 import axiosEmployeeGaps from '@features/Modulo2/services/EmployeeGapsServices';
 import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos';
+import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_ORG, GAPS_EMPLOYEES_ORG_DETAIL_EMPLOYEE } from '@features/Modulo2/routes/path';
 
 const DetalleCompetenciasArea = () => {
   const navigate = useNavigate();
@@ -90,7 +91,7 @@ const DetalleCompetenciasArea = () => {
     };
 
     const handleClick = (usuario) => {        
-      navigate('/GestionCompetencias', { state: { usuario } });
+      navigate(`/${GAPS_ANALYSIS_MODULE}/${GAPS_EMPLOYEES_ORG}/${GAPS_EMPLOYEES_ORG_DETAIL_EMPLOYEE}`, { state: { usuario } });
       };
 
     const handleOrdenarPorCampo = (campo) => {
@@ -201,16 +202,6 @@ const DetalleCompetenciasArea = () => {
                     <ArrowRightCircleFill color='gray'></ArrowRightCircleFill>
                       <i className="bi bi-box-arrow-in-right"></i>
                     </Button>
-                    <Button variant="link" size="sm" onClick={
-                      ()=>{handleMostrarPopUpActualizar(competencia);}}>
-                      <Pencil></Pencil>
-                      <i className="bi bi-pencil"></i>
-                    </Button>
-                    <Button variant="link" size="sm" onClick={
-                      ()=>{handleMostrarPopUpBorrar(competencia);}}>
-                      <Trash color='red'></Trash>
-                      <i className="bi bi-trash"></i>
-                    </Button>
                   </td>
                 </tr>
               ))}
@@ -222,8 +213,8 @@ const DetalleCompetenciasArea = () => {
   return (
     <div className="pantalla">
       <div className='titles'>
-      <h2>Competencias por empleado del área de TI</h2>
-      <p className="text-muted">Consultar competencias de los empleados.</p>
+      <h2 className='Head'>Competencias por empleado del área de TI</h2>
+      <p className="text-muted subtitle">Consultar competencias de los empleados.</p>
       </div>
 
       <Form className="FormComp">
@@ -289,7 +280,7 @@ const DetalleCompetenciasArea = () => {
          {renderTablaCompetencias()}
       </div>
       <div className="col-sm-3 botones">
-              <Button variant="outline-secondary" className="me-2" onClick={()=>{}}>
+              <Button variant="outline-secondary" className="me-2" onClick={()=>{navigate(-1)}}>
                 Regresar
               </Button>
             </div>
