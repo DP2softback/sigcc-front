@@ -43,7 +43,6 @@ function LearningPathDetails(props: any) {
     const handleChange = (id: number, courseID: number) => {
         setActivo(id);
         setCourseID(courseID)
-        console.log(courseID)
     }
 
     const loadsCourses = () => {
@@ -55,6 +54,7 @@ function LearningPathDetails(props: any) {
                 setLPDescription(response.data[0].descripcion);
                 setLPPhoto(response.data[0].url_foto);
                 setCourses(response.data[0].cursos);
+                setCourseID(response.data[0].cursos[0].id)
                 setLoading(false);
             })
             .catch(function (error) {
@@ -124,19 +124,20 @@ function LearningPathDetails(props: any) {
 
     const refCourseComment = useRef<HTMLTextAreaElement>(null);
     const refCourseRate = useRef(null);
-
     
     const saveRate = () => {
-        console.log(refCourseRate.current.state.rateValue)
         //setLoading(true)
 
         const data = {
-            curso: 11,
-            empleado: 1,    //CAMBIAR
-            valoracion: refCourseRate.current?.state.rateValue,
+            curso: courseID,
+            empleado: 1,    //CAMBIAR CUANDO SE TENGA LA INFO DEL EMPLEADO
+            valoracion: refCourseRate.current?.refValueSelected,
             comentario: refCourseComment.current?.value
         }
- 
+
+        console.log(data)
+        refCourseComment.current.value = ""
+
         axiosInt.post('capacitaciones/valorar_curso/', data)
             .then(function (response) {
                 console.log(response.data)
@@ -146,6 +147,7 @@ function LearningPathDetails(props: any) {
                 console.log(error);
                 //setLoading(false)
             })
+            
     }
 
     return (
@@ -251,7 +253,7 @@ function LearningPathDetails(props: any) {
                                                                 {courses[activo - 1].datos_extras[0].estado > 2 &&
                                                                     <>
                                                                         <a target='_blank' type="button" className="btn btn-primary" href={`https://www.udemy.com${courses[activo - 1].datos_udemy.url}`}>Ver curso</a>
-                                                                        <button className='btn btn-primary' data-bs-target='#evaluateCourseModal' data-bs-toggle='modal'>Evaluar Curso</button>
+                                                                        <button className='btn btn-primary' data-bs-target='#rateCourse' data-bs-toggle='modal'>Evaluar Curso</button>
                                                                     </>
                                                                 }
 
@@ -358,7 +360,7 @@ function LearningPathDetails(props: any) {
                                     </div>
                                 </div>
                                 
-                                {/* MODAL RATE LP */}
+                                {/* MODAL RATE COURSE */}
                                 <div className="modal fade" id="rateCourse" aria-hidden="true" aria-labelledby="rateCourse" tabIndex={-1}>
                                     <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                     <div className="modal-content">
@@ -367,7 +369,7 @@ function LearningPathDetails(props: any) {
                                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div className="modal-body">
-                                            <div>
+                                            <div className="d-flex justify-content-between align-items-baseline">
                                                 <label className="form-label">Valoración</label>
                                                 <RateValue ref={refCourseRate} />
                                             </div>
@@ -377,7 +379,7 @@ function LearningPathDetails(props: any) {
                                             </div>
                                         </div>
                                         <div className="modal-footer">
-                                            <button className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => navigate('/modulo1/empleado/rutadeaprendizaje')}>Omitir</button>
+                                            <button className="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Omitir</button>
                                             <button className="btn btn-primary" data-bs-dismiss="modal" onClick={() => saveRate()}>Enviar</button>
                                         </div>
                                     </div>

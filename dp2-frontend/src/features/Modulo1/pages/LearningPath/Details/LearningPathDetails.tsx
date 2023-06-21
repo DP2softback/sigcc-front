@@ -194,7 +194,7 @@ function LearningPathDetails(props: any) {
                                 <div className='col-xs-12 col-md-4 col-xl-2'>
                                     <div className='d-grid gap-2 mx-auto mb-3'>
                                         <Link to={`evaluacionintegral`} className='btn btn-sm btn-primary'>Ver evaluaciones</Link>
-                                        <Link to={`reportecursos`} className='btn btn-sm btn-primary'>Ver reportes</Link>
+                                        <Link to={`reporte`} className='btn btn-sm btn-primary'>Ver reportes</Link>
                                     </div>
                                 </div>
                             </div>

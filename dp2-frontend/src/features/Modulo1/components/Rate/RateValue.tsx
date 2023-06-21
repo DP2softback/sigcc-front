@@ -1,18 +1,17 @@
-import { Component } from 'react';
+import { Component, createRef } from 'react';
 import type { Props, State } from './RateValue.types';
 import './rate.css';
 import { v4 as uuidv4 } from 'uuid';
 
 class RateValue extends Component<Props, State>
 {
+    refValueSelected: any;
     uuid: any;
     constructor(props: any)
     {
         super(props);
         this.uuid = uuidv4();
-        this.state = {
-            rateValue: this.props.rate
-        };
+        this.refValueSelected = createRef()
     }
     static defaultProps = {
         rate: 0,
@@ -22,9 +21,7 @@ class RateValue extends Component<Props, State>
     }
 
     rateValue = (value: number) => {
-        this.setState({
-            rateValue: value
-        });
+        this.refValueSelected = value
     }
 
     render ()

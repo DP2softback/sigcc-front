@@ -127,16 +127,15 @@ const IntegralEvaluation = () => {
     }
 
     const saveRate = () => {
-        console.log(refLPRate.current.state.rateValue)
-
         const data = {
             learning_path: learningPathId,
             empleado: 1,    // CAMBIAR
-            valoracion: refLPRate.current?.state.rateValue,
+            valoracion: refLPRate.current?.refValueSelected,
             comentario: refLPComment.current?.value
         }
-
-        axiosInt.post(`capacitaciones/valorar_learning_path/`, data)
+        console.log(data)
+        
+        axiosInt.post(`capacitaciones/valorar_learning_path/${learningPathId}/`, data)
             .then(function (response) {
                 console.log(response.data)
                 navigate('/modulo1/empleado/rutadeaprendizaje')
@@ -303,7 +302,7 @@ const IntegralEvaluation = () => {
                                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div className="modal-body">
-                                                <div>
+                                                <div className="d-flex justify-content-between align-items-baseline">
                                                     <label className="form-label">Valoración</label>
                                                     <RateValue ref={refLPRate} />
                                                 </div>
