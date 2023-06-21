@@ -8,7 +8,7 @@ export const LEARNING_PATH_DETAIL = 'detalle/:learningPathId';
 export const LEARNING_PATH_ASSIGNMENT = 'asignacion/:learningPathId';
 export const LEARNING_PATH_EVALUATION_DETAILS = 'detalle/:learningPathId/evaluacionintegral';
 export const LEARNING_PATH_EVALUATION_REVIEW = 'detalle/:learningPathId/evaluacionintegral/revision/:employeeID';
-export const LEARNING_PATH_COURSE_REPORT = 'detalle/:learningPathId/reportecursos';
+export const LEARNING_PATH_COURSE_REPORT = 'detalle/:learningPathId/reporte';
 
 /*----- Curso Empresa -----*/
 export const ORG_COURSE_INDEX = 'cursoempresa';
