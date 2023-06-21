@@ -12,6 +12,7 @@ import {
 	LEARNING_PATH_EVALUATION_DETAILS,
 	LEARNING_PATH_EVALUATION_REVIEW,
 	LEARNING_PATH_COURSE_REPORT,
+	LEARNING_PATH_REVIEW_DETAILS,
 	ORG_COURSE_INDEX,
 	ORG_COURSE_CREATE, 
 	ORG_COURSE_DETAIL,
@@ -21,7 +22,7 @@ import {
 	EMP_LEARNING_PATH_DETAIL,
 	EMP_LEARNING_PATH_INTEGRAL_EVALUATION,
 	EMP_ORG_COURSE_INDEX,
-	EMP_ORG_COURSE_DETAIL
+	EMP_ORG_COURSE_DETAIL,
 } from "./path";
 
 const Loader = (Component) => (props) =>
@@ -61,6 +62,10 @@ const M1LearningPathIntegralEvaluationReview = Loader(
 
 const M1LearningPathIntegralCoursesReporte = Loader(
 	lazy(() => import("@features/Modulo1/pages/LearningPath/CourseReport"))
+);
+
+const M1LearningPathReviewDetails = Loader(
+	lazy(() => import("@features/Modulo1/pages/LearningPath/ReviewDetails/ReviewDetails"))
 );
 
 const M1ListTraining = Loader(
@@ -111,6 +116,19 @@ export const routes: RouteObject[] = [
 			{
 				path: LEARNING_PATH_INDEX,
 				children: [
+					{
+						path: LEARNING_PATH_REVIEW_DETAILS,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN, 
+									Roles.HR_MANAGER, 
+									Roles.HEAD_OF_AREA
+								]}>
+								<M1LearningPathReviewDetails />
+							</AppLayout>
+						)
+					},
 					{
 						path: LEARNING_PATH_EVALUATION_DETAILS,
 						element: (
