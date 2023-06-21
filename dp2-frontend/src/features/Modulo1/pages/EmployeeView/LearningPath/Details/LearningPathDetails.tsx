@@ -61,19 +61,26 @@ function LearningPathDetails(props: any) {
     }
 
     const handleQuiz = (id: number) => {
+        setQuizId(id)
         setLoading1(true)
-        axiosInt.get(`capacitaciones/udemy_course/questionary/${id}/`)
-            .then((response) => {
-                console.log(response)
-                setQuestion(response.data.evaluacion)
-                setLoading1(false)
-            })
-            .catch(function (error) {
-                setLoading1(false);
-            });
+        // axiosInt.get(`capacitaciones/udemy_course/questionary/${id}/`)
+        //     .then((response) => {
+        //         console.log(response)
+        //         setQuestion(response.data.evaluacion)
+        //         setLoading1(false)
+        //     })
+        //     .catch(function (error) {
+        //         setLoading1(false);
+        //     });
+
+        setTimeout(() => {
+            setLoading1(false);
+            // handleState(id)
+        }, 500);
     }
 
     const handleState = (id: number) => {
+
         axiosInt.post(`capacitaciones/course_lp_employee_advance/${id}/${learningPathId}/1/`)
             .then((response) => {
                 console.log(response)
@@ -233,7 +240,7 @@ function LearningPathDetails(props: any) {
 
                                                                 {courses[activo - 1].datos_extras[0].estado == 2 &&
                                                                     <>
-                                                                        <button className='btn btn-primary' data-bs-target='#quizModal' data-bs-toggle='modal' onClick={() => handleQuiz(courses[activo - 1].curso.id)}>Rendir Evaluación</button>
+                                                                        <button className='btn btn-primary' data-bs-target='#quizModal' data-bs-toggle='modal' onClick={() => handleQuiz(courses[activo - 1].id)}>Rendir Evaluación</button>
                                                                     </>
                                                                 }
 
@@ -316,18 +323,10 @@ function LearningPathDetails(props: any) {
                                     </div>
                                 } */}
 
-                                {/* <div className='row' style={{ paddingTop: "1rem" }}>
+                                <div className='row' style={{ paddingTop: "1rem" }}>
                                     <div className="accordion-footer">
-                                        {courses.length == activo ?
+                                        {courses.length == activo &&
                                             <div style={{ display: "flex", flexDirection: "row-reverse", justifyContent: "space-around" }}>
-                                                <div className='text-end'>
-                                                    <button type='button' className='btn btn-danger' data-bs-target='#confirmModalCourse' data-bs-toggle='modal'>
-                                                        <div style={{ display: "flex", alignItems: "center" }}>
-                                                            <span className='me-3'>Finalizar curso</span>
-                                                            <JournalCheck />
-                                                        </div>
-                                                    </button>
-                                                </div>
                                                 <div>
                                                     <button type='button' className='btn' data-bs-target='#confirmModalLP' data-bs-toggle='modal' style={{ backgroundColor: "#198754", border: "none", color: "white" }}>
                                                         <div style={{ display: "flex", alignItems: "center" }}>
@@ -336,21 +335,12 @@ function LearningPathDetails(props: any) {
                                                         </div>
                                                     </button>
                                                 </div>
-                                            </div>
-                                            :
-                                            <div className='text-end'>
-                                                <button type='button' className='btn btn-danger' data-bs-target='#confirmModalCourse' data-bs-toggle='modal'>
-                                                    <div style={{ display: "flex", alignItems: "center" }}>
-                                                        <span className='me-3'>Finalizar curso</span>
-                                                        <JournalCheck />
-                                                    </div>
-                                                </button>
-                                            </div>
+                                            </div>                                            
                                         }
 
 
                                     </div>
-                                </div> */}
+                                </div>
 
                                 {/* CONFIRM MODAL COURSE */}
                                 <div className="modal fade" id="confirmModalCourse" aria-hidden="true" aria-labelledby="confirmModalCourse" tabIndex={-1}>
@@ -366,7 +356,7 @@ function LearningPathDetails(props: any) {
                                                 </div>
                                             </div>
                                             <div className="modal-footer confirm-footer">
-                                                <button onClick={() => handleFinishCourse(courses[activo - 1].id)} className="btn btn-primary" data-bs-dismiss="modal">Si</button>
+                                                <button onClick={() => handleState(courses[activo - 1].id)} className="btn btn-primary" data-bs-dismiss="modal">Si</button>
                                                 <button className="btn btn-danger" data-bs-dismiss="modal">No</button>
                                             </div>
                                         </div>
@@ -411,7 +401,7 @@ function LearningPathDetails(props: any) {
                                                 </>
                                                 :
 
-                                                <QuizFill questions={question} />
+                                                <QuizFill questions={question} courseId={quizID} />
 
 
                                             }

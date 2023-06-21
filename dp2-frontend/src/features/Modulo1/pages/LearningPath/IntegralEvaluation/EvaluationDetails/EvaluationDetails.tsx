@@ -7,8 +7,8 @@ import { ArrowLeftCircleFill } from 'react-bootstrap-icons';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const dataHard = {
-    nombre: "Nombre de la ruta de aprendizaje",
-    descripcion: "Descripción de la ruta de aprendizaje"
+    nombre: "Ruta de Aprendizaje 2.0",
+    descripcion: "Ruta de Aprendizaje 2.0 es una prueba pa ver si se cae o no."
 }
 
 const employeesData: EmployeeObj[] = [

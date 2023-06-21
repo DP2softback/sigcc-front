@@ -1,0 +1,209 @@
+import Sidebar from '@components/Sidebar'
+import sidebarItems from '@features/Modulo1/utils/sidebarItemsE'
+import { useState, useRef, useEffect, Fragment } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import TrainingCardE from '@features/Modulo1/components/Training/TrainingCardE';
+import Pagination from '@features/Modulo1/components/Pagination';
+import '../../../basic.css';
+import './CourseReporte.css';
+import axiosInt from '@config/axios';
+import { ArrowLeftCircleFill, People, BarChart } from 'react-bootstrap-icons'
+
+
+// type TrainingObj = {
+//     id: number;
+//     fechaAsignacion: string;
+//     porcentajeProgreso: string;
+//     cursoEmpresa: {
+//         id: number,
+//         nombre: string,
+//         url_foto: string,
+//         descripcion: string,
+//         fecha_creacion: string,
+//         fecha_primera_sesion: string,
+//         cantidad_empleados: number,
+//         tipo: string,
+//     }
+// }
+
+let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
+
+const CourseReport = () => {
+
+    const [loading, setLoading] = useState(false);
+    const [loading1, setLoading1] = useState(false);
+
+    const [lp, setLp] = useState<any>([])
+    const [courses, setCourses] = useState<any[]>([])
+    const [courseSelected, setCourseSelected] = useState<any>([])
+    const { learningPathId } = useParams();
+
+    const navigate = useNavigate();
+    const goBack = () => {
+        navigate(-1);
+    };
+
+
+    const loadCourses = () => {
+        setLoading(true);
+        setLoading(true);
+        axiosInt.get(`capacitaciones/learning_path/${learningPathId}/course/`)
+            .then(function (response) {
+                console.log(response.data)
+                setLp(response.data);
+
+                axiosInt.get(`capacitaciones/learning_path_from_template/${learningPathId}/`)
+                    .then(function (response) {
+                        console.log(response.data[1])
+                        setCourses(response.data[1]);
+                        setLoading(false);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        setLoading(false);
+                    });
+            })
+            .catch(function (error) {
+                console.log(error);
+                setLoading(false);
+            });
+    }
+
+    useEffect(() => {
+        loadCourses();
+    }, []);
+
+
+
+    return (
+        <>
+            {
+                loading ?
+                    <>
+                        <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                            <div className='vertical-align-child'>
+                                <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                    <span className="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                    :
+                    <>
+                        <div className='row'>
+                            <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
+                                <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
+                                    <ArrowLeftCircleFill className='mouseHover' onClick={goBack} style={{ height: "32px", width: "32px", color: "black" }} />
+                                </div>
+
+                                <div style={{ display: "flex", alignItems: "center" }}>
+                                    <div style={{ paddingRight: "2rem" }}>
+                                        {
+                                            lp.url_foto === null ?
+                                                (<img src={url_foto_default} style={{ borderRadius: "100%", width: "6rem", height: "6rem" }}></img>)
+                                                :
+                                                (<img src={lp.url_foto} style={{ borderRadius: "100%", width: "6rem", height: "6rem" }}></img>)
+                                        }
+                                    </div>
+                                    <div>
+                                        <h1 className='screenTitle'>{lp.nombre}</h1>
+                                        <p><small className='subtitle'>{lp.descripcion}</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='row' style={{ paddingTop: "2rem", display: "flex" }}>
+
+
+                            <div style={{ width: "34%" }}>
+                                <div style={{ fontWeight: "bold" }}>Cursos</div>
+                                <div style={{ display: "flex", flexDirection: "column", paddingTop: "0.75rem" }}>
+                                    <div className='align-items-stretch g-3 px-0 mx-0'>
+                                        {
+                                            courses.map((course) => {
+                                                return (
+                                                    <div className='col' key={course.id} style={{ paddingBottom: "1rem"}}>
+                                                        <div className="card h-100" style={{display: "flex", flexDirection: "row"}}>
+                                                            <img
+                                                                src={course.tipo_curso == 'U' ? course.course_udemy_detail.image_480x270 == null ? url_foto_default : course.course_udemy_detail.image_480x270 : course.url_foto}
+                                                                className="card-img-top lp-card-img"
+                                                                alt="Card"
+                                                                style={{width: "50%"}}
+                                                            />
+                                                            <div className="card-body" style={{display: "flex", alignItems: "center"}}>
+                                                                <h6 style={{fontSize: "12px"}}>{course.nombre}</h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* <div style={{ width: "34%" }}>
+                                <div style={{ fontWeight: "bold" }}>Cursos</div>
+                                <div style={{ display: "flex", flexDirection: "column", paddingTop: "0.75rem" }}>
+                                    <div className='align-items-stretch g-3 px-0 mx-0'>
+                                        {
+                                            courses.map((course) => {
+                                                return (
+                                                    <div className='col' key={course.id} style={{ paddingBottom: "1rem" }}>
+                                                        <div className="card h-100">
+                                                            <img
+                                                                src={course.tipo_curso == 'U' ? course.course_udemy_detail.image_480x270 == null ? url_foto_default : course.course_udemy_detail.image_480x270 : course.url_foto}
+                                                                className="card-img-top lp-card-img"
+                                                                alt="Card"
+                                                            />
+                                                            <div className="card-body">
+                                                                <h6 className="card-title">{course.nombre}</h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                </div>
+                            </div> */}
+
+                            {courseSelected.length == 0 &&
+                                <div style={{ width: "66%" }}>
+                                    <div style={{ fontWeight: "bold" }}>Cursos 2</div>
+                                    <div style={{ display: "flex", flexDirection: "column", paddingTop: "0.75rem" }}>
+                                        <div className='align-items-stretch g-3 px-0 mx-0'>
+                                            {
+                                                courses.map((course) => {
+                                                    return (
+                                                        <div className='col' key={course.id} style={{ paddingBottom: "1rem" }}>
+                                                            <div className="card h-100" style={{ display: "flex" }}>
+                                                                <img
+                                                                    src={course.tipo_curso == 'U' ? course.course_udemy_detail.image_480x270 == null ? url_foto_default : course.course_udemy_detail.image_480x270 : course.url_foto}
+                                                                    className="card-img-top lp-card-img"
+                                                                    alt="Card"
+                                                                />
+                                                                <div className="card-body">
+                                                                    <h6 className="card-title">{course.nombre}</h6>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+
+                        </div>
+
+                    </>
+            }
+        </>
+    )
+}
+
+export default CourseReport

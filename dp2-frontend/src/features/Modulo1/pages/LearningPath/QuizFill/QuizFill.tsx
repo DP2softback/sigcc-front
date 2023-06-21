@@ -1,6 +1,6 @@
 import React, { Component, ChangeEvent } from 'react';
 import { QuizComponentProps, QuizComponentState, Question, Option } from './QuizFill.types';
-
+import axiosInt from '@config/axios';
 class QuizFill extends Component<QuizComponentProps, QuizComponentState> {
     constructor(props: QuizComponentProps) {
         super(props);
@@ -18,26 +18,39 @@ class QuizFill extends Component<QuizComponentProps, QuizComponentState> {
         }));
     };
 
+
     handleSubmit = () => {
-        const { answers } = this.state;
-        const answers_formated = Object.entries(answers).map(([question_id, option_id]) => ({
-            id_pregunta: parseInt(question_id),
-            id_opcion: option_id
-        }));
-        // Generar el archivo JSON con las respuestas
-        const jsonData = JSON.stringify({
-            id_cuestionario: 1,
-            respuestas: answers_formated
-        }, null, 2);
-        console.log(jsonData); // Aquí puedes hacer lo que necesites con el archivo JSON generado
+        axiosInt.post(`capacitaciones/course_lp_employee_advance/${this.props.courseId}/10/1/`)
+            .then((response) => {
+                console.log(response)
+                window.location.reload()
+            })
+            .catch(function (error) {
 
-        // También puedes enviar el archivo JSON a través de una solicitud HTTP si lo deseas
+            });
 
-        // Reiniciar el estado del componente
-        this.setState({
-            answers: {},
-        });
     };
+
+    // handleSubmit = () => {
+    //     const { answers } = this.state;
+    //     const answers_formated = Object.entries(answers).map(([question_id, option_id]) => ({
+    //         id_pregunta: parseInt(question_id),
+    //         id_opcion: option_id
+    //     }));
+    //     // Generar el archivo JSON con las respuestas
+    //     const jsonData = JSON.stringify({
+    //         id_cuestionario: 1,
+    //         respuestas: answers_formated
+    //     }, null, 2);
+    //     console.log(jsonData); // Aquí puedes hacer lo que necesites con el archivo JSON generado
+
+    //     // También puedes enviar el archivo JSON a través de una solicitud HTTP si lo deseas
+
+    //     // Reiniciar el estado del componente
+    //     this.setState({
+    //         answers: {},
+    //     });
+    // };
 
     render() {
         const { questions } = this.props;
