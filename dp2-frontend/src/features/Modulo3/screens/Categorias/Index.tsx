@@ -10,6 +10,7 @@ import cat from '@features/Modulo3/jsons/Categories';
 import { listAllCategorias } from '@features/Modulo3/services/categories';
 import { CATEGORIES_CREATE, CATEGORIES_INDEX } from '@features/Modulo3/routes/path';
 import '../EvaluacionContinua/EvaluacionContinua.css';
+import { CONTINUOS_EVALUATION_TYPE } from '@features/Modulo3/utils/constants';
 const Index = () => {
 
   const [categories, setCategories] = useState([]);
@@ -18,7 +19,7 @@ const Index = () => {
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-      const response = await listAllCategorias();
+      const response = await listAllCategorias(CONTINUOS_EVALUATION_TYPE);
       if(response){
         console.log("response",response);
         setCategories(response)
