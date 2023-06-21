@@ -2,14 +2,13 @@ import { Fragment, useEffect, useState } from 'react';
 import './learning-path-details.css';
 import { Link, useParams } from 'react-router-dom';
 import axiosInt from '@config/axios';
-import Sidebar from '@components/Sidebar';
-import sidebarItems from '@utils/sidebarItems';
 import '../../../content/common.css';
 import { ArrowLeftCircleFill, People, BarChart } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router-dom';
 import Rate from '@features/Modulo1/components/Rate';
 import LearningPathAssignment from '../Assignment';
 import QuizGenerator from '../QuizGenerator/QuizGenerator';
+import LearningPathComprehensiveEvaluation from '../ComprehensiveEvaluation';
 
 
 function LearningPathDetails(props: any) {
@@ -23,6 +22,7 @@ function LearningPathDetails(props: any) {
     const [courses, setCourses] = useState<any>([]);
     const [coursesQuizStatuses, setCoursesQuizStatuses] = useState<any>([]);
     const [employees, setEmployees] = useState<any>([]);
+    const [evaluation, setEvaluation] = useState<any>([]);
 
     const navigate = useNavigate();
 
@@ -147,7 +147,6 @@ function LearningPathDetails(props: any) {
 
     return (
         <>
-            {/* <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'> */}
             {
                 loading ?
                     <>
@@ -200,7 +199,11 @@ function LearningPathDetails(props: any) {
                                 </div>
                             </div>
                         </div>
-                        <div className='pt-3 d-flex gap-2 w-100 justify-content-between'>
+                        <div className='pt-3'>
+                            <h4>Acciones</h4>
+                            <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#comprehensiveEvaluationModal">Configurar evaluación integral</button>
+                        </div>
+                        <div className='pt-3 d-flex g-2 w-100 justify-content-between'>
                             <h4>Cursos seleccionados</h4>
                             <div className="dropdown">
                                 <button className="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -339,6 +342,7 @@ function LearningPathDetails(props: any) {
                     <></>
             }
 
+            <LearningPathComprehensiveEvaluation learningPathId={learningPathId} data={evaluation} />
         </>
     );
 }

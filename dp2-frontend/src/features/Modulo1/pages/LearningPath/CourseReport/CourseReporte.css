@@ -1,3 +1,19 @@
 .mouseHover:hover{
     cursor: pointer;
 }
+
+.optionActive{
+    border: none;
+    border-radius: 4px;
+    font-size: 20px;
+    font-weight: 500;
+    background-color: #F8F8F9;
+}
+
+.optionNoActive{
+    border: 1px solid #1967e1;
+    background-color: #fff;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 400;
+}

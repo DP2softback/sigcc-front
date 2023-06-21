@@ -109,6 +109,10 @@ const M1TrainingEDetails = Loader(
 	lazy(() => import("@features/Modulo1/pages/EmployeeView/Training/Details"))
 );
 
+const GSettings = Loader(
+	lazy(() => import("@features/Modulo1/pages/LearningPath/ComprehensiveEvaluation"))
+);
+
 export const routes: RouteObject[] = [
 	{
 		path: TRAINING_MANAGMENT_MODULE,
@@ -173,8 +177,8 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN, 
-									Roles.HR_MANAGER, 
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
 									Roles.HEAD_OF_AREA
 								]}>
 								<M1LearningPathDetails />
@@ -186,8 +190,8 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN, 
-									Roles.HR_MANAGER, 
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
 									Roles.HEAD_OF_AREA
 								]}>
 								<M1ListLearningPath />
@@ -199,8 +203,8 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN, 
-									Roles.HR_MANAGER, 
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
 									Roles.HEAD_OF_AREA
 								]}>
 								<M1ListLearningPath />
@@ -212,8 +216,8 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN, 
-									Roles.HR_MANAGER, 
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
 									Roles.HEAD_OF_AREA
 								]}>
 								<M1LearningPathAssignment />
@@ -227,8 +231,8 @@ export const routes: RouteObject[] = [
 				element: (
 					<AppLayout
 						allowedRoles={[
-							Roles.HR_ADMIN, 
-							Roles.HR_MANAGER, 
+							Roles.HR_ADMIN,
+							Roles.HR_MANAGER,
 							Roles.HEAD_OF_AREA
 						]}>
 						<M1AddCourse />
@@ -256,8 +260,8 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN, 
-									Roles.HR_MANAGER, 
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
 									Roles.HEAD_OF_AREA
 								]}>
 								<M1TrainingCreate />
@@ -269,8 +273,8 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN, 
-									Roles.HR_MANAGER, 
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
 									Roles.HEAD_OF_AREA
 								]}>
 								<M1ListTraining />
@@ -282,8 +286,8 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN, 
-									Roles.HR_MANAGER, 
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
 									Roles.HEAD_OF_AREA
 								]}>
 								<M1ListTraining />
@@ -295,8 +299,8 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN, 
-									Roles.HR_MANAGER, 
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
 									Roles.HEAD_OF_AREA
 								]}>
 								<M1TrainingDetails />
@@ -308,8 +312,8 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN, 
-									Roles.HR_MANAGER, 
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
 									Roles.HEAD_OF_AREA
 								]}>
 								<M1TrainingAttendance />
@@ -321,8 +325,8 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN, 
-									Roles.HR_MANAGER, 
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
 									Roles.HEAD_OF_AREA
 								]}>
 								<M1TrainingAssignment />
@@ -332,7 +336,7 @@ export const routes: RouteObject[] = [
 				]
 			},
 			{
-				path: 	EMP_LEARNING_PATH_INDEX,
+				path: EMP_LEARNING_PATH_INDEX,
 				children: [
 					{
 						path: EMP_LEARNING_PATH_INTEGRAL_EVALUATION,
@@ -352,8 +356,8 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN, 
-									Roles.HR_MANAGER, 
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
 									Roles.WORKER
 								]}>
 								<M1ListLearningPathEDetails />
@@ -365,8 +369,8 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN, 
-									Roles.HR_MANAGER, 
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
 									Roles.WORKER
 								]}>
 								<M1ListLearningPathE />
@@ -378,8 +382,8 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN, 
-									Roles.HR_MANAGER, 
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
 									Roles.WORKER
 								]}>
 								<M1ListLearningPathE />
@@ -389,15 +393,15 @@ export const routes: RouteObject[] = [
 				]
 			},
 			{
-				path: 	EMP_ORG_COURSE_INDEX,
+				path: EMP_ORG_COURSE_INDEX,
 				children: [
 					{
 						path: EMP_ORG_COURSE_DETAIL,
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN, 
-									Roles.HR_MANAGER, 
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
 									Roles.WORKER
 								]}>
 								<M1TrainingEDetails />
@@ -409,8 +413,8 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN, 
-									Roles.HR_MANAGER, 
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
 									Roles.WORKER
 								]}>
 								<M1ListTrainingE />
@@ -422,8 +426,8 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN, 
-									Roles.HR_MANAGER, 
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
 									Roles.WORKER
 								]}>
 								<M1ListTrainingE />

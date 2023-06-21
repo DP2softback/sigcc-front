@@ -1,0 +1,2 @@
+import LearningPathComprehensiveEvaluation from "./ComprehensiveEvaluation";
+export default LearningPathComprehensiveEvaluation;
