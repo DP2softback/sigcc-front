@@ -64,7 +64,7 @@ const optionsBar = {
         },
         title: {
           display: true,
-          text: 'Adecuación a las competencias',
+          text: 'Adecuación a las capacidades',
         },
       },
     scales: {

@@ -23,7 +23,7 @@ const TrainingNeeds = () => {
       .then(function (response) {
         let temp = {
           id: -1,
-          name: "Tipos de competencia"
+          name: "Tipos de capacidad"
         }
         let temp2 = {
           id: 0,
@@ -110,8 +110,8 @@ const TrainingNeeds = () => {
         <Form className="row align-items-center mb-4">
           <Form.Group className="col-6">
             <FormControl
-              placeholder="Ingrese palabras clave, código o nombre de las competencias"
-              aria-label="Buscar competencias"
+              placeholder="Ingrese palabras clave, código o nombre de las capacidad"
+              aria-label="Buscar capacidades"
               aria-describedby="buscar-icono"
               value={palabrasClave}
               onChange={(e) => setPalabrasClave(e.target.value)}
@@ -147,20 +147,14 @@ const TrainingNeeds = () => {
               <Table striped bordered className='table-need'>
                 <thead>
                   <tr>
-                    <th onClick={() => handleOrdenarPorCampo('competence__code')}>
-                      Código
-                      {campoOrdenamiento === 'competence__code' && (
-                        <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
-                      )}
-                    </th>
                     <th onClick={() => handleOrdenarPorCampo('competence__name')}>
-                      Competencia
+                      Capacidad
                       {campoOrdenamiento === 'competence__name' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                       )}
                     </th>
                     <th onClick={() => handleOrdenarPorCampo('competence__type__name')}>
-                      Tipo de competencia
+                      Tipo de capacidad
                       {campoOrdenamiento === 'competence__type__name' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                       )}
@@ -184,7 +178,7 @@ const TrainingNeeds = () => {
                       )}
                     </th>
                     <th onClick={() => handleOrdenarPorCampo('description')}>
-                      Descripción
+                      Observación
                       {campoOrdenamiento === 'description' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                       )}
@@ -194,7 +188,6 @@ const TrainingNeeds = () => {
                 <tbody className='table-need'>
                   {trainingNeed && trainingNeed.map((competence, index) => (
                     <tr key={index} className={index % 0 === 0 ? "evenRow" : "oddRow"}>
-                      <td>{competence.competence__code}</td>
                       <td>{competence.competence__name}</td>
                       <td>{competence.competence__type__name}</td>
                       <td>{returnLevel(competence.levelCurrent)}</td>

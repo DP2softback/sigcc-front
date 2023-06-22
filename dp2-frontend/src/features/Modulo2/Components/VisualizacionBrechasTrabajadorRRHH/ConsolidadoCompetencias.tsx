@@ -5,6 +5,10 @@ import { Link, useNavigate  } from 'react-router-dom';
 import { Competencia, tipoCompetencia,AreaActiva } from "../GestionDeCompetencias/Tipos";
 import DetalleCompetenciasArea from "./DetalleCompetenciasArea";
 import { set } from "lodash";
+import './ConsolidadoCompetencias.css';
+import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_ORG, GAPS_EMPLOYEES_ORG_DETAIL } from '@features/Modulo2/routes/path';
+
+import {TOKEN_SERVICE} from '@features/Modulo2/services/ServicesApis'
 
 const PieChart = ({ title, labels, datasets }) => {
     ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -38,13 +42,15 @@ const PieChart = ({ title, labels, datasets }) => {
       const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
       const [tipoCompetencia, setTipoCompetencia] = useState<tipoCompetencia>(null);
       const [areasActivas, setAreasActivas] = useState<AreaActiva[]>([]);
-      const [abbreviation, setAbbreviation] = useState('');
+      const [name, setname] = useState('');
+      const [area, setAre] = useState<tipoCompetencia>(null);
+      
       useEffect(() => {    
 
         const fetchTipoCompetencias = async () => {
           try {
     
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceTypes', {
+            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/employeeArea', {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -55,6 +61,7 @@ const PieChart = ({ title, labels, datasets }) => {
             if (response.ok) {
               const data = await response.json();
               setTipoCompetencias(data);
+              console.log(data);
             } else {
               console.log('Error al obtener los datos de competencias');
             }
@@ -82,7 +89,7 @@ const PieChart = ({ title, labels, datasets }) => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+              'Authorization': TOKEN_SERVICE,
             },
             body: JSON.stringify({
               idArea: 0,
@@ -166,9 +173,9 @@ const PieChart = ({ title, labels, datasets }) => {
 
       const handleCompetenciaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {    
         const tipo  = tipoCompetencias.find((tipo) => tipo.id.toString() === event.target.value)
+        setAre(tipo)
         setTipoCompetencia(tipoCompetencias[0]);
-        console.log(tipoCompetencia)
-        setAbbreviation(tipo.abbreviation)
+        setname(area.name)
         setData1(data1);
         setData2(data2);
       }
@@ -177,7 +184,7 @@ const PieChart = ({ title, labels, datasets }) => {
       const handleBuscarClick = () => {
       };
       const handleClick = () => {        
-      navigate('/DetalleCompetenciasArea', { state: { tipoCompetencia } });
+      navigate(`/${GAPS_ANALYSIS_MODULE}/${GAPS_EMPLOYEES_ORG}/${GAPS_EMPLOYEES_ORG_DETAIL}`, { state: { tipoCompetencia } });
       };
       const handleMostrarLineChartClick = () => {
       };
@@ -187,15 +194,15 @@ const PieChart = ({ title, labels, datasets }) => {
       
       return (
         <div className="container">
-          <h2>Consolidado de competencias</h2>
+          <h2 className="Head">Consolidado de competencias</h2>
           
           <div className="row">
             <div className="col-md-6">
-              <label htmlFor="competencia-select">Competencias por area:</label>
+              <label className="subtitle" htmlFor="competencia-select">Areas de la empresa:</label>
               <select
                 id="competencia-select"
                 className="form-control"
-                value={abbreviation}
+                value={name}
                 onChange={handleCompetenciaChange}
               ><option value="">Todas</option>
                 {areasActivas.map((area) => (
@@ -222,11 +229,11 @@ const PieChart = ({ title, labels, datasets }) => {
                   </div>
                 </div>
               </div>
-              {abbreviation!='' && data2 && (
+              {name!='' && data2 && (
               <div className="col-md-6">
                <div className="card">
                  <div className="card-body">
-                   <h3 className="card-title">Adecuación a competencias de área de {abbreviation}</h3>
+                   <h3 className="card-title">Adecuación a competencias de {name}</h3>
                    <PieChart title='' labels= {labels} datasets={data2} />
                    <div className="chart-legend">
                      {/* Agregar aquí la leyenda del gráfico 2 */}
