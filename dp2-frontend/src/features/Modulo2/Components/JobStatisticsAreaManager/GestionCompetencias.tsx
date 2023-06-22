@@ -4,6 +4,7 @@ import {tipoCompetencia,CompetenciaTrabajador } from '../GestionDeCompetencias/T
 import { useLocation,  useNavigate  } from 'react-router-dom';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE } from '@features/Modulo2/routes/path';
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
+const examplePhoto = 'https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg?b=1&s=170667a&w=0&k=20&c=0aBawAGIMPymGUppOgw1HmV8MNXB1536B3sX_PP9_SQ='
 
 const GestionCompetenciaAM = (state) => {
   const navigate = useNavigate();
@@ -166,7 +167,7 @@ const GestionCompetenciaAM = (state) => {
       </div>
       
     <div className='container-fluid'>
-    <img  src='https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg' ></img>
+    <img  src={examplePhoto} style={{width: '80px',height: '80px', borderRadius:'50%',objectFit:'cover'}} ></img>
     <div>{nombreEmpleado}</div>
     <div>{cargoEmpleado}</div>
     </div>
