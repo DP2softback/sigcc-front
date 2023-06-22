@@ -37,7 +37,6 @@ function LearningPathDetails(props: any) {
         setLoading(true);
         axiosInt.get(`capacitaciones/learning_path/${learningPathId}/course/`)
             .then(function (response) {
-                console.log(response.data)
                 setLPName(response.data.nombre);
                 setLPDescription(response.data.descripcion);
                 setLPPhoto(response.data.url_foto);
@@ -46,7 +45,6 @@ function LearningPathDetails(props: any) {
 
                 axiosInt.get(`capacitaciones/learning_path_from_template/${learningPathId}/`)
                     .then(function (response) {
-                        console.log(response.data.cursos)
                         setCourses(response.data.cursos);
                         setLoading(false);
                     })
@@ -67,7 +65,6 @@ function LearningPathDetails(props: any) {
     const loadEmployees = () => {
         axiosInt.get(`capacitaciones/learning_path/${learningPathId}/employees/`)
             .then(function (response) {
-                console.log(response.data)
                 setEmployees(response.data);
             })
             .catch(function (error) {
@@ -140,7 +137,6 @@ function LearningPathDetails(props: any) {
             "id_lp": learningPathId,
             "empleados": employees
         }).then((res) => {
-            console.log(res.data);
             window.location.reload();
         })
         closeFunction.current.click();

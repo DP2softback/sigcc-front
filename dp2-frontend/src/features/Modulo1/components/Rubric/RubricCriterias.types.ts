@@ -1,7 +1,13 @@
+export type Level = {
+    id?: number,
+    name?: string,
+}
+
 export type Criteria = {
     id: number,
     name: string,
     limit?: number,
+    level?: Level,
 }
 
 export type PropsRubricCriterias = {

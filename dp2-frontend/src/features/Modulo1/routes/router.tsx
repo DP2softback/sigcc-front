@@ -109,7 +109,7 @@ const GSettings = Loader(
 );
 
 const AngelSamples = Loader(
-	lazy(() => import("@features/Modulo1/pages/AngelSamples"))
+	lazy(() => import("@features/Modulo1/pages/LearningPath/CreateFromTemplate"))
 );
 
 export const routes: RouteObject[] = [

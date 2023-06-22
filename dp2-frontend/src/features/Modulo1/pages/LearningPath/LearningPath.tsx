@@ -9,6 +9,7 @@ import PictureUpload from '@features/Modulo1/components/PictureUpload';
 import Rate from '@features/Modulo1/components/Rate';
 import { ThreeDotsVertical, People, Clock } from 'react-bootstrap-icons'
 import Layout from "@layout/default/index";
+import LearningPathCreateFromTemplate from './CreateFromTemplate';
 
 
 function LearningPath (props: any)
@@ -16,6 +17,8 @@ function LearningPath (props: any)
     const [lps, setLps] = useState([]);
     const [loading, setLoading] = useState(false);
     const [lpsFiltered, setLpsFiltered] = useState([]);
+    const [selectedLP, setSelectedLP] = useState(null);
+    const [selectedLPID, setSelectedLPID] = useState(null);
     const [assessmentParameters, setAssessmentParameters] = useState({
         courseTriedNumber: 3,
         courseTriedNumberFE: 3,
@@ -28,6 +31,7 @@ function LearningPath (props: any)
 
     const refLpName = useRef<HTMLInputElement>(null);
     const refLpDescription = useRef<HTMLTextAreaElement>(null);
+    const refLPFT = useRef<LearningPathCreateFromTemplate>(null);
 
     const courseTriedNumberRef = useRef(null);
     const minimumPassingScoreRef = useRef(null);
@@ -54,6 +58,7 @@ function LearningPath (props: any)
             {
             });
     }
+
     const loadLPs = () =>
     {
         setLoading(true);
@@ -69,6 +74,31 @@ function LearningPath (props: any)
                 setLoading(false);
             });
     }
+
+    const loadSelectedLP = (id: number) =>
+    {
+        axiosInt.get(`capacitaciones/learning_path_from_template/${id}/`)
+            .then(function (response)
+            {
+                window.location.reload();
+            })
+            .catch(function (error)
+            {
+            });
+    }
+
+    const createLPFromTemplate = () =>
+    {
+        axiosInt.post(`capacitaciones/learning_path_from_template/${selectedLPID}/`, refLPFT.current.get())
+            .then(function (response)
+            {
+                navigate(`/modulo1/rutadeaprendizaje/detalle/${response.data.id}`);
+            })
+            .catch(function (error)
+            {
+            });
+    }
+
 
     useEffect(() =>
     {
@@ -102,117 +132,117 @@ function LearningPath (props: any)
         <>
             {/* <Layout title="Grupo 1 App" content="container"> */}
             {/* <Sidebar items={sidebarItems} active='/modulo1/rutadeaprendizaje'> */}
-                {
-                    loading ?
-                        <>
-                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
-                                <div className='vertical-align-child'>
-                                    <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
-                                        <span className="visually-hidden">Loading...</span>
-                                    </div>
+            {
+                loading ?
+                    <>
+                        <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                            <div className='vertical-align-child'>
+                                <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                    <span className="visually-hidden">Loading...</span>
                                 </div>
                             </div>
-                        </> :
-                        <>
-                            <div className='row'>
-                                <div className='col'>
-                                    <h1>Rutas de aprendizaje</h1>
-                                    <p><small className='opacity-50'>Lista de rutas de aprendizaje creadas que los empleados pueden completar para adquirir habilidades y competencias específicas.</small></p>
-                                </div>
-                                <div style={{ flex: '0 0 15rem' }} className="col text-end">
-                                    <button type="button" className="btn btn-primary" data-bs-target="#createLPModalChoose" data-bs-toggle="modal">
-                                        <span className='me-3'>Crear ruta</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                            className="bi bi-plus-circle" viewBox="0 0 16 16">
-                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                            <path
-                                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                                        </svg>
-                                    </button>
-                                </div>
+                        </div>
+                    </> :
+                    <>
+                        <div className='row'>
+                            <div className='col'>
+                                <h1>Rutas de aprendizaje</h1>
+                                <p><small className='opacity-50'>Lista de rutas de aprendizaje creadas que los empleados pueden completar para adquirir habilidades y competencias específicas.</small></p>
                             </div>
-                            <div className="row">
-                                <div className="col">
-                                    <input className="form-control" type="text" placeholder="Buscar" onChange={handleFilter} />
-                                </div>
+                            <div style={{ flex: '0 0 15rem' }} className="col text-end">
+                                <button type="button" className="btn btn-primary" data-bs-target="#createLPModalChoose" data-bs-toggle="modal">
+                                    <span className='me-3'>Crear ruta</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        className="bi bi-plus-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                        <path
+                                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                    </svg>
+                                </button>
                             </div>
-                            <div className='row row-cols-1 row-cols-sm-2 row-cols-lg-3 align-items-stretch g-3 py-3'>
+                        </div>
+                        <div className="row">
+                            <div className="col">
+                                <input className="form-control" type="text" placeholder="Buscar" onChange={handleFilter} />
+                            </div>
+                        </div>
+                        <div className='row row-cols-1 row-cols-sm-2 row-cols-lg-3 align-items-stretch g-3 py-3'>
+                            {
+                                lpsFiltered.map((lp: {
+                                    id: number,
+                                    nombre: string,
+                                    descripcion: string,
+                                    url_foto: string,
+                                    suma_valoraciones: number,
+                                    cant_empleados: number,
+                                    horas_duracion: number,
+                                }, i: number) =>
                                 {
-                                    lpsFiltered.map((lp: {
-                                        id: number,
-                                        nombre: string,
-                                        descripcion: string,
-                                        url_foto: string,
-                                        suma_valoraciones: number,
-                                        cant_empleados: number,
-                                        horas_duracion: number,
-                                    }, i: number) =>
-                                    {
-                                        return <Fragment key={i}>
-                                            <div className='col'>
-                                                <div className="card h-100">
-                                                    <img src={lp.url_foto} className="card-img-top lp-card-img" alt="Card" />
-                                                    <div className="card-body">
-                                                        <div className="lp-header justify-content-between d-flex">
-                                                            <div className="align-self-center">
-                                                                <h6 className="card-title">{lp.nombre}</h6>
-                                                            </div>
-                                                            <button className='btn btn-link'>
-                                                                <ThreeDotsVertical />
-                                                            </button>
+                                    return <Fragment key={i}>
+                                        <div className='col'>
+                                            <div className="card h-100">
+                                                <img src={lp.url_foto} className="card-img-top lp-card-img" alt="Card" />
+                                                <div className="card-body">
+                                                    <div className="lp-header justify-content-between d-flex">
+                                                        <div className="align-self-center">
+                                                            <h6 className="card-title">{lp.nombre}</h6>
                                                         </div>
-                                                        <p className='mb-0'><small className="opacity-50">{lp.descripcion}</small></p>
+                                                        <button className='btn btn-link'>
+                                                            <ThreeDotsVertical />
+                                                        </button>
                                                     </div>
-                                                    <div className="card-footer pb-3 lp-footer">
-                                                        <div className='d-flex mb-3'>
-                                                            <Clock className='align-self-center me-3' />
-                                                            <div className='w-100 d-flex justify-content-between'>
-                                                                <span>Duración: </span>
-                                                                <small className='fw-bold'>{lp.horas_duracion}</small>
-                                                            </div>
+                                                    <p className='mb-0'><small className="opacity-50">{lp.descripcion}</small></p>
+                                                </div>
+                                                <div className="card-footer pb-3 lp-footer">
+                                                    <div className='d-flex mb-3'>
+                                                        <Clock className='align-self-center me-3' />
+                                                        <div className='w-100 d-flex justify-content-between'>
+                                                            <span>Duración: </span>
+                                                            <small className='fw-bold'>{lp.horas_duracion}</small>
                                                         </div>
-                                                        <div className='d-flex'>
-                                                            <People className='align-self-center me-3' />
-                                                            <div className='w-100 d-flex justify-content-between'>
-                                                                <span>Inscritos: </span>
-                                                                <small className='fw-bold'>{lp.cant_empleados}</small>
-                                                            </div>
+                                                    </div>
+                                                    <div className='d-flex'>
+                                                        <People className='align-self-center me-3' />
+                                                        <div className='w-100 d-flex justify-content-between'>
+                                                            <span>Inscritos: </span>
+                                                            <small className='fw-bold'>{lp.cant_empleados}</small>
                                                         </div>
-                                                        <div className="d-flex gap-2 w-100 justify-content-between pt-3">
-                                                            <span>
-                                                                <Rate disabled={true} rate={lp.suma_valoraciones} />
-                                                            </span>
-                                                            <Link to={`/modulo1/rutadeaprendizaje/detalle/${lp.id}`} className="btn btn-primary float-right">Detalles</Link>
-                                                        </div>
+                                                    </div>
+                                                    <div className="d-flex gap-2 w-100 justify-content-between pt-3">
+                                                        <span>
+                                                            <Rate disabled={true} rate={lp.suma_valoraciones} />
+                                                        </span>
+                                                        <Link to={`/modulo1/rutadeaprendizaje/detalle/${lp.id}`} className="btn btn-primary float-right">Detalles</Link>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </Fragment>
-                                    })
-                                }
-                            </div>
-                            {
-                                lpsFiltered.length === 0 && <>
-                                    <div className='row align-items-stretch g-3 py-3'>
-                                        <div className='col'>
-                                            <div className='card'>
-                                                <div className='card-body'>
-                                                    <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                        <div className='vertical-align-child'>
-                                                            <h5 className='opacity-50 text-center'>Crea una ruta de aprendizaje para empezar</h5>
-                                                        </div>
+                                        </div>
+                                    </Fragment>
+                                })
+                            }
+                        </div>
+                        {
+                            lpsFiltered.length === 0 && <>
+                                <div className='row align-items-stretch g-3 py-3'>
+                                    <div className='col'>
+                                        <div className='card'>
+                                            <div className='card-body'>
+                                                <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                    <div className='vertical-align-child'>
+                                                        <h5 className='opacity-50 text-center'>Crea una ruta de aprendizaje para empezar</h5>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </>
-                            }
-                        </>
-                }
+                                </div>
+                            </>
+                        }
+                    </>
+            }
             {/* </Sidebar> */}
             {/* </Layout> */}
-            
+
             <div className="modal fade" id="createLPModalChoose" aria-hidden="true" aria-labelledby="createLPModalChoose" tabIndex={-1}>
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
@@ -222,7 +252,7 @@ function LearningPath (props: any)
                         </div>
                         <div className="modal-footer d-flex justify-content-between">
                             <button className="btn btn-primary" data-bs-target="#createLPModal" data-bs-toggle="modal">Nueva ruta</button>
-                            <button className="btn btn-primary" data-bs-target="#createLPModalChoose" data-bs-toggle="modal">Utilizar una plantilla</button>
+                            <button className="btn btn-primary" data-bs-target="#createLPFromTemplateModal" data-bs-toggle="modal">Utilizar una plantilla</button>
                         </div>
                     </div>
                 </div>
@@ -280,6 +310,89 @@ function LearningPath (props: any)
                     </div>
                 </div>
             </div>
+
+            <div className="modal fade" id="createLPFromTemplateModal" aria-hidden="true" aria-labelledby="createLPFromTemplateModal" tabIndex={-1}>
+                <div className="modal-dialog modal-lg modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5">Crear ruta de aprendizaje desde plantilla</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            {
+                                selectedLP ?
+                                    <>
+                                    <LearningPathCreateFromTemplate ref={refLPFT} data={selectedLP} />
+                                    </> :
+                                    <>
+                                        <div className='row row-cols-1 row-cols-sm-2 row-cols-lg-3 align-items-stretch g-3 py-3'>
+                                            {
+                                                lpsFiltered.map((lp: {
+                                                    id: number,
+                                                    nombre: string,
+                                                    descripcion: string,
+                                                    url_foto: string,
+                                                    suma_valoraciones: number,
+                                                    cant_empleados: number,
+                                                    horas_duracion: number,
+                                                }, i: number) =>
+                                                {
+                                                    return <Fragment key={i}>
+                                                        <div className='col'>
+                                                            <div className="card h-100">
+                                                                <img src={lp.url_foto} className="card-img-top lp-card-img" alt="Card" />
+                                                                <div className="card-body">
+                                                                    <div className="lp-header justify-content-between d-flex">
+                                                                        <div className="align-self-center">
+                                                                            <h6 className="card-title">{lp.nombre}</h6>
+                                                                        </div>
+                                                                        <button className='btn btn-link'>
+                                                                            <ThreeDotsVertical />
+                                                                        </button>
+                                                                    </div>
+                                                                    <p className='mb-0'><small className="opacity-50">{lp.descripcion}</small></p>
+                                                                </div>
+                                                                <div className="card-footer p-0">
+                                                                    <div className="d-flex gap-2 w-100 justify-content-between">
+                                                                        <button className="btn btn-primary float-right w-100 rounded-0 rounded-bottom"
+                                                                        onClick={() => loadSelectedLP(lp.id)}
+                                                                        >Seleccionar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </Fragment>
+                                                })
+                                            }
+                                        </div>
+                                        {
+                                            lpsFiltered.length === 0 && <>
+                                                <div className='row align-items-stretch g-3 py-3'>
+                                                    <div className='col'>
+                                                        <div className='card'>
+                                                            <div className='card-body'>
+                                                                <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                                    <div className='vertical-align-child'>
+                                                                        <h5 className='opacity-50 text-center'>Crea una ruta de aprendizaje para empezar</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        }
+                                    </>
+                            }
+                        </div>
+                        <div className="modal-footer d-flex justify-content-between">
+                            <span></span>
+                            <button className="btn btn-primary" data-bs-target="#createLPFromTemplateModal" data-bs-toggle="modal" onClick={createLPFromTemplate}>Crear ruta de aprendizaje</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </>
     );
 }

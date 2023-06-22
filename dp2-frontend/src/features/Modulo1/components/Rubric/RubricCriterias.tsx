@@ -49,6 +49,14 @@ export default class RubricCriterias extends React.Component<PropsRubricCriteria
 
     get ()
     {
+        const criterias = this.state.criterias.map((criteria, index) =>
+        {
+            criteria.level = {}
+            criteria.level.id = 1
+            criteria.level.name = "No presenta"
+            return criteria;
+        })
+
         return this.state.criterias;
     }
 
@@ -141,8 +149,8 @@ class ChoiceBase extends React.Component<PropsChoiceBase, StateChoiceBase>
                             }
                         </select>
                     </div>
-                    <div className='col' style={{flex: '0 0 8rem'}}>
-                    <select className="form-select" value={this.props.choice.limit} onChange={this.handleLimitChange.bind(this)}>
+                    <div className='col' style={{ flex: '0 0 8rem' }}>
+                        <select className="form-select" value={this.props.choice.limit} onChange={this.handleLimitChange.bind(this)}>
                             {
                                 levelsCriterias.map((item: {
                                     id: number,
