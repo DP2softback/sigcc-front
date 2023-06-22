@@ -236,11 +236,6 @@ function ConfigProcesoSeleccion(props: any) {
 		newRow.nombreTipoEtapa = option.name;
 	};
 
-	/*
-	useEffect(() => {
-		console.log(rows), [rows];
-	}); */
-
 	interface TableRow {
 		id: number;
 		idTipoEtapa: number;
@@ -297,16 +292,29 @@ function ConfigProcesoSeleccion(props: any) {
 
 	const [idCounter, setIdCounter] = useState(0); // Contador para el ID
 	const handleAddRowEtapa = () => {
+		console.log("newRow", newRow);
+		console.log("selectedRow", selectedRow);
 		if (
-			newRow.nombreTipoEtapa == "" ||
-			newRow.nombreEtapa == "" ||
-			newRow.fechaInicio == "" ||
-			newRow.fechaFin == ""
+			siNuevaEtapa == true &&
+			(newRow.nombreTipoEtapa == "" ||
+				newRow.nombreEtapa == "" ||
+				newRow.fechaInicio == "" ||
+				newRow.fechaFin == "")
 		) {
 			return;
-		} else {
-			setValidatedModal(true);
 		}
+
+		if (
+			siNuevaEtapa == false &&
+			(selectedRow.nombreTipoEtapa == "" ||
+				selectedRow.nombreEtapa == "" ||
+				selectedRow.fechaInicio == "" ||
+				selectedRow.fechaFin == "")
+		) {
+			return;
+		}
+
+		setValidatedModal(true);
 
 		if (selectedRow === null) {
 			// Agregar nueva fila
@@ -345,9 +353,12 @@ function ConfigProcesoSeleccion(props: any) {
 	const handleDeleteRow = (id: number) => {
 		setRows((prevRows) => prevRows.filter((row) => row.id !== id));
 	};
-	const openModal = (row: TableRow | null) => {
+
+	const [siNuevaEtapa, setSiNuevaEtapa] = useState(true);
+	const openModal = (row: TableRow | null, SiNuevaEtapaEstado: boolean) => {
 		setSelectedRow(row);
 		setShowModal(true);
+		setSiNuevaEtapa(SiNuevaEtapaEstado);
 	};
 	const closeModal = () => {
 		setShowModal(false);
@@ -410,9 +421,6 @@ function ConfigProcesoSeleccion(props: any) {
 		setShowSaveModal(false);
 		console.log("guardado final");
 		navigate(0);
-
-		//navigate(`/selection-offers-and-positions/job-offers/create/`);
-		//navigate(`/selection-offers-and-positions/selection-process/create/`);
 	};
 
 	return (
@@ -583,7 +591,7 @@ function ConfigProcesoSeleccion(props: any) {
 								}}>
 								<Button
 									variant="primary"
-									onClick={() => openModal(null)}
+									onClick={() => openModal(null, true)}
 									style={{ width: "10rem", maxWidth: "10rem" }}
 									className="ml-auto custom">
 									Agregar etapa
@@ -617,10 +625,10 @@ function ConfigProcesoSeleccion(props: any) {
 									}}>
 									<tr>
 										<th style={{ width: "4rem" }}>Orden</th>
-										<th style={{ width: "13rem" }}>Tipo de etapa</th>
-										<th style={{ width: "16rem" }}>Nombre de la etapa</th>
-										<th style={{ width: "10rem" }}>Fecha de Inicio</th>
-										<th style={{ width: "10rem" }}>Fecha de Fin</th>
+										<th style={{ width: "8rem" }}>Tipo de etapa</th>
+										<th style={{ width: "13rem" }}>Nombre de la etapa</th>
+										<th style={{ width: "9rem" }}>Fecha de Inicio</th>
+										<th style={{ width: "9rem" }}>Fecha de Fin</th>
 										<th>Estado</th>
 										<th style={{ width: "12rem" }}>Acciones</th>
 									</tr>
@@ -669,7 +677,7 @@ function ConfigProcesoSeleccion(props: any) {
 													{/* Editar etapa */}
 													<Button
 														variant="light"
-														onClick={() => openModal(row)}>
+														onClick={() => openModal(row, false)}>
 														<svg
 															xmlns="http://www.w3.org/2000/svg"
 															width="16"
