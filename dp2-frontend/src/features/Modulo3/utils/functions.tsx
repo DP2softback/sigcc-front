@@ -122,7 +122,7 @@ function getMonthName(monthNumber: string): string {
   return months[index];
 }
 
-export function formatDashboardJsonAreas(jsonData: any[]): any {
+export function formatDashboardJsonAreasCategorias(jsonData: any[]): any {
   if (!jsonData || jsonData.length < 0) return { months: [], data: [] };
 
   const months: string[] = [];
@@ -161,4 +161,93 @@ export function formatDashboardJsonAreas(jsonData: any[]): any {
     months: months,
     data: data,
   };
+}
+
+export function formatPrueba(jsonData: any[]): any {
+  if (!jsonData || jsonData.length < 0) return { months: [], data: [] };
+
+  const months: string[] = [];
+  const data: any[] = [];
+
+  jsonData = sortDatabyAreaMonth(jsonData);
+
+  jsonData.forEach((item) => {
+    const area = item.Area;
+    const year = item.Year;
+    item.Month.forEach((monthItem) => {
+      const month = getMonthName(monthItem.month);
+      const subCategory_scores = monthItem.subCategory_scores;
+
+      subCategory_scores.forEach((scoreItem, index) => {
+        const subCategory = scoreItem.SubCategory;
+        const scoreAverage = scoreItem.ScoreAverage;
+
+        const existingData = data.find((d) => d.description === subCategory);
+
+        if (existingData) {
+          existingData.values.push(scoreAverage);
+        } else {
+          const values = Array(months.length).fill(null);
+          values.push(scoreAverage);
+
+          data.push({
+            description: area,
+            values: values,
+          });
+        }
+      });
+
+      months.push(`${year} ${month}`);
+    });
+  });
+
+  return {
+    months: months,
+    data: data,
+  };
+}
+
+const sortDatabyAreaMonth = (jsonData: any[]): any[] => {
+  jsonData.sort((a, b) => {
+    if (a.Area < b.Area) {
+      return -1;
+    } 
+    if (a.Area > b.Area) {
+      return 1;
+    }
+    // En este punto, las Areas son iguales, así que comparamos los años.
+    if (a.Year < b.Year) {
+      return -1;
+    } 
+    if (a.Year > b.Year) {
+      return 1;
+    }
+    // Las Areas y los años son iguales.
+    return 0;
+  });
+  return jsonData;
+}
+
+type OriginalDataCategoryType = {
+  Area: string;
+  Year: string;
+  Month: {
+    month: string;
+    subCategory_scores: {
+      SubCategory: string;
+      ScoreAverage: number;
+    }[];
+  }[];
+};
+
+export function formatDashboardJsonCategory(data: OriginalDataCategoryType[]): any {
+  return data.map((areaData) => {
+    const values = areaData.Month.flatMap((monthData) =>
+      monthData.subCategory_scores.map((scoreData) => scoreData.ScoreAverage)
+    );
+    return {
+      data: [{ description: areaData.Area, values }],
+      months: areaData.Month.map((monthData) => `${areaData.Year} ${monthData.month}`),
+    };
+  });
 }

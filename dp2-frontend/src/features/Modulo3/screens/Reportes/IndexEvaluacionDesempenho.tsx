@@ -8,7 +8,7 @@ import { jsPDF } from 'jspdf';
 import domtoimage from 'dom-to-image';
 import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
 import { getAreas, getCategoriasDesempenio, postReportLineChart, postReportLineChartAll} from '@features/Modulo3/services/reports';
-import { formatDashboardJson, formatDashboardJsonAreas } from '@features/Modulo3/utils/functions';
+import { formatDashboardJson, formatDashboardJsonAreasCategorias, formatDashboardJsonCategory,formatPrueba } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import { toast, ToastContainer } from 'react-toastify';  // Import react-toastify
 import 'react-toastify/dist/ReactToastify.css'; 
@@ -74,14 +74,14 @@ const IndexEvaluacionDesempenho = () => {
         dateInicio.setMonth(dateInicio.getMonth() - 6); 
         console.log("Fecha inicio: ", dateInicio.toISOString().split('T')[0]);
         console.log("Fecha fin: ", dateFin.toISOString().split('T')[0]);
-        // const reportData = await postReportLineChartAll(0, 0,dateInicio.toISOString().split('T')[0] , dateFin.toISOString().split('T')[0], "Evaluación de Desempeño");
-        const reportData = await postReportLineChartAll(0, 0,"2022-12-21" , "2023-06-21", "Evaluación de Desempeño");
+        const reportData = await postReportLineChartAll(0, 0,dateInicio.toISOString().split('T')[0] , dateFin.toISOString().split('T')[0], "Evaluación de Desempeño");
+        // const reportData = await postReportLineChartAll(0, 0,"2023-01-01" , "2023-06-21", "Evaluación de Desempeño");
         
         if(reportData){
           console.log("Report data: ", reportData);
-          // let dataSorted:DataLineChart = reportData;
-          // dataSorted = sortMonths(dataSorted);
-          // setDashboard(formatDashboardJsonAreas(dataSorted));
+          let dataSorted:DataLineChart = reportData;
+          dataSorted = sortMonths(dataSorted);
+          setDashboard(formatDashboardJsonAreasCategorias(dataSorted));
         }
         else{
           console.log("Error en report data: ", reportData);
@@ -154,6 +154,14 @@ const IndexEvaluacionDesempenho = () => {
     }));
   };
 
+  type TransformedDataType = {
+    data: {
+      description: string;
+      values: number[];
+    }[];
+    months: string[];
+  };  
+
   const handleSearchClick = () => {
     if(searchParams.fechaInicio === null || searchParams.fechaFin === null) {
       toast.warn("Debe seleccionar un rango de fechas");
@@ -169,17 +177,42 @@ const IndexEvaluacionDesempenho = () => {
     searchParamsCopy.fechaInicio = searchParams.fechaInicio.toISOString().split('T')[0];
     searchParamsCopy.fechaFin = searchParams.fechaFin.toISOString().split('T')[0];
 
-    if(activeRepContinua) {
+    if(searchParamsCopy.area.id === 0 && searchParamsCopy.categoria.id === 0) {
+      console.log("Area y categoria: ", searchParamsCopy.area.id, searchParamsCopy.categoria.id);
+      // const fetchData = async () => {
+      //   setIsLoading(true);
+      //   const reportData = await postReportLineChartAll(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
+      //   if(reportData){
+      //     console.log("Report data: ", reportData);
+      //     let dataSorted:DataLineChart = reportData;
+      //     dataSorted = sortMonths(dataSorted);
+      //     setDashboard(formatDashboardJsonAreasCategorias(dataSorted));
+      //   }
+      //   else{
+      //     console.log("Error en report data: ", reportData);
+      //   }
+      //   setIsLoading(false);
+      // };
+      // fetchData();
+    }
+    else if(searchParamsCopy.area.id !== 0 && searchParamsCopy.categoria.id === 0) {
+
+    }
+    else if(searchParamsCopy.area.id === 0 && searchParamsCopy.categoria.id !== 0) {
       const fetchData = async () => {
         setIsLoading(true);
-        const data = await postReportLineChart(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
-        if(data){
-          let dataSorted:DataLineChart = data;
-          dataSorted = sortMonths(dataSorted);
-          setDashboard(formatDashboardJson(dataSorted));
+        const reportData = await postReportLineChartAll(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
+        if(reportData){
+          console.log("Report data: ", reportData);
+          // const formattedData: TransformedDataType[] = formatDashboardJsonCategory(reportData);
+          const formattedData: TransformedDataType[] = formatPrueba(reportData);
+          console.log("Formatted data: ", formattedData);
+          // let dataSorted:DataLineChart = reportData;
+          // dataSorted = sortMonths(dataSorted);
+          // setDashboard(formatDashboardJsonAreasCategorias(dataSorted));
         }
         else{
-          console.log("Error C: ", data);
+          console.log("Error en report data: ", reportData);
         }
         setIsLoading(false);
       };
@@ -192,6 +225,7 @@ const IndexEvaluacionDesempenho = () => {
         if(data){
           let dataSorted:DataLineChart = data;
           dataSorted = sortMonths(dataSorted);
+          console.log("Data formatted: ", formatDashboardJson(dataSorted));
           setDashboard(formatDashboardJson(dataSorted));
         }
         else{
@@ -200,7 +234,8 @@ const IndexEvaluacionDesempenho = () => {
         setIsLoading(false);
       };
       fetchData();
-    }        
+    }
+           
   };
 
   const handleButtonExportClick = async () => {
@@ -212,7 +247,6 @@ const IndexEvaluacionDesempenho = () => {
       toast.warn("La fecha de inicio no puede ser mayor a la fecha de fin");
       return;
     }
-
     printPdf();
   };
 
