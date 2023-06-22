@@ -8,7 +8,7 @@ import { jsPDF } from 'jspdf';
 import domtoimage from 'dom-to-image';
 import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
 import { getAreas, getCategoriasDesempenio, postReportLineChart, postReportLineChartAll} from '@features/Modulo3/services/reports';
-import { formatDashboardJson, formatDashboardJsonAreasCategorias, formatDashboardJsonCategory,formatPrueba } from '@features/Modulo3/utils/functions';
+import { formatDashboardJson, formatDashboardJsonAreasCategorias, formatDashboardJsonCategory,formatPrueba, transformData } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import { toast, ToastContainer } from 'react-toastify';  // Import react-toastify
 import 'react-toastify/dist/ReactToastify.css'; 
@@ -155,6 +155,7 @@ const IndexEvaluacionDesempenho = () => {
   };
 
   type TransformedDataType = {
+    area: string,
     data: {
       description: string;
       values: number[];
@@ -205,8 +206,9 @@ const IndexEvaluacionDesempenho = () => {
         if(reportData){
           console.log("Report data: ", reportData);
           // const formattedData: TransformedDataType[] = formatDashboardJsonCategory(reportData);
-          const formattedData: TransformedDataType[] = formatPrueba(reportData);
-          console.log("Formatted data: ", formattedData);
+          // const formattedData: TransformedDataType[] = formatPrueba(reportData);
+          const transformedData = transformData(reportData);
+          console.log("Formatted data: ", transformedData);
           // let dataSorted:DataLineChart = reportData;
           // dataSorted = sortMonths(dataSorted);
           // setDashboard(formatDashboardJsonAreasCategorias(dataSorted));
