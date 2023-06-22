@@ -1,6 +1,7 @@
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
 	ButtonGroup,
@@ -33,6 +34,8 @@ import {
 } from "@features/Modulo4/utils/constants";
 
 function ConfigOfertaLaboral(props: any) {
+	const navigate = useNavigate();
+
 	const createPS = async () => {
 		const dataPost = {
 			hiring_process: 1,
@@ -180,6 +183,7 @@ function ConfigOfertaLaboral(props: any) {
 		// Lógica para guardar cambios
 		createPS();
 		setShowSaveModal(false);
+		navigate(`/selection-offers-and-positions/job-offers/list/`);
 	};
 
 	return (
