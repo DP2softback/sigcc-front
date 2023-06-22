@@ -56,6 +56,10 @@ const RegisterInOferta = Loader(
 	lazy(() => import("@features/Modulo4/pages/JobPositions/CreateJobOffer/index"))
 );
 
+const ListProcess = Loader(
+	lazy(() => import("@features/Modulo4/pages/EvaluationProcess/ListProcess/ListProcess"))
+);
+
 export const routes: RouteObject[] = [
 	{
 		path: SELECTION_PROCESS_AND_JOB_OFFERS_MODULE,
@@ -139,6 +143,20 @@ export const routes: RouteObject[] = [
 									Roles.CANDIDATE
 								]}>
 								<ConfigSelectionProcess />
+							</AppLayout>
+						)
+					},
+					{
+						path: LIST_SELECTION_PROCESS,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
+									Roles.HR_WORKER,
+									Roles.CANDIDATE
+								]}>
+								<ListProcess/>
 							</AppLayout>
 						)
 					},
