@@ -8,7 +8,11 @@ import { set } from "lodash";
 import './ConsolidadoCompetencias.css';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_ORG, GAPS_EMPLOYEES_ORG_DETAIL } from '@features/Modulo2/routes/path';
 
+<<<<<<< HEAD
 import {TOKEN_SERVICE, URL_SERVICE} from '@features/Modulo2/Services/ServicesApis'
+=======
+import {TOKEN_SERVICE} from '@features/Modulo2/services/ServicesApis'
+>>>>>>> 0dcbabdf2cda641ad7555d677b2f91fc3c4a6fe7
 
 const PieChart = ({ title, labels, datasets }) => {
     ChartJS.register(ArcElement, Tooltip, Legend, Title);
