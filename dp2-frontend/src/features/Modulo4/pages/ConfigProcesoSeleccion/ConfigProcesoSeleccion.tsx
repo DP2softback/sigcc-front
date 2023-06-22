@@ -1,5 +1,6 @@
 import React from "react";
 import Dropdown from "react-bootstrap/Dropdown";
+import { Link, useNavigate } from "react-router-dom";
 
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -63,6 +64,8 @@ import {
 */
 
 function ConfigProcesoSeleccion(props: any) {
+	const navigate = useNavigate();
+
 	/*
 	useEffect(() => {
 		setSelectedIdPuestoLaboral(1);
@@ -175,12 +178,11 @@ function ConfigProcesoSeleccion(props: any) {
 		marginBottom: "0.78rem"
 	};
 
-	// AREA DE TRABAJO
+	// PUESTO DE TRABAJO
 	const [selectedIdPuestoLaboral, setSelectedIdPuestoLaboral] = useState(null);
 	const [selectedPuestoLaboralFijo, setSelectedPuestoLaboralFijo] =
 		useState("");
 	const [selectedPuestoLaboral, setSelectedPuestoLaboral] = useState("");
-	const [cantVacantes, setCantVacantes] = useState(0);
 	const [isSelectedNombreOfertaValid, setIsSelectedNombreOfertaValid] =
 		useState(true);
 
@@ -191,9 +193,16 @@ function ConfigProcesoSeleccion(props: any) {
 		setSelectedPuestoLaboral(optionValue);
 	};
 
+	// CANTIDAD DE VACANTES
+	const [cantVacantes, setCantVacantes] = useState(1);
+	const [isCantVacantesValid, setIsCantVacantesValid] = useState(true);
 	const handlecantVacantes = (event: any) => {
 		const optionValue = event.target.value;
 		setCantVacantes(optionValue);
+		if (optionValue <= 0) {
+			console.log("menor a 0");
+			setIsCantVacantesValid(false);
+		}
 	};
 
 	// CREAR TIPO ETAPA SELECCION
@@ -227,9 +236,10 @@ function ConfigProcesoSeleccion(props: any) {
 		newRow.nombreTipoEtapa = option.name;
 	};
 
+	/*
 	useEffect(() => {
 		console.log(rows), [rows];
-	});
+	}); */
 
 	interface TableRow {
 		id: number;
@@ -264,8 +274,40 @@ function ConfigProcesoSeleccion(props: any) {
 		}
 	};
 
+	// VALIDA MODAL
+	const [validatedModal, setValidatedModal] = useState(false);
+	const handleSubmitModal = (event) => {
+		const form = event.currentTarget;
+		if (form.checkValidity() === false) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+
+		setValidatedModal(true);
+		event.preventDefault();
+	};
+
+	useEffect(() => {
+		console.log("validatedModal", validatedModal);
+	}, [validatedModal]);
+
+	useEffect(() => {
+		console.log("newRow", newRow);
+	}, [newRow]);
+
 	const [idCounter, setIdCounter] = useState(0); // Contador para el ID
 	const handleAddRowEtapa = () => {
+		if (
+			newRow.nombreTipoEtapa == "" ||
+			newRow.nombreEtapa == "" ||
+			newRow.fechaInicio == "" ||
+			newRow.fechaFin == ""
+		) {
+			return;
+		} else {
+			setValidatedModal(true);
+		}
+
 		if (selectedRow === null) {
 			// Agregar nueva fila
 			// Usar el valor actual del contador más 1 como nuevo ID
@@ -320,9 +362,20 @@ function ConfigProcesoSeleccion(props: any) {
 		setShowModalBuscador(false);
 	};
 	const handleOptionSelectBuscador = (selectedOptionPuesto) => {
+		let nombrePosicionFijo =
+			selectedOptionPuesto.area_name +
+			" " +
+			selectedOptionPuesto.position_name +
+			" " +
+			selectedOptionPuesto.position_detail.tipoJornada +
+			" " +
+			selectedOptionPuesto.position_detail.modalidadTrabajo;
+
 		setSelectedIdPuestoLaboral(selectedOptionPuesto.id);
-		setSelectedPuestoLaboralFijo(selectedOptionPuesto.name);
-		setSelectedPuestoLaboral("Proceso en " + selectedOptionPuesto.name);
+		setSelectedPuestoLaboralFijo(nombrePosicionFijo);
+		setSelectedPuestoLaboral(
+			"Proc. selección en " + selectedOptionPuesto.position_name
+		);
 	};
 
 	// MODAL DE RESPONSABLE BUSCADOR, ABRE Y RETORNA LOS VALORES
@@ -355,6 +408,11 @@ function ConfigProcesoSeleccion(props: any) {
 	const handleSaveChanges = () => {
 		createPS();
 		setShowSaveModal(false);
+		console.log("guardado final");
+		navigate(0);
+
+		//navigate(`/selection-offers-and-positions/job-offers/create/`);
+		//navigate(`/selection-offers-and-positions/selection-process/create/`);
 	};
 
 	return (
@@ -390,10 +448,9 @@ function ConfigProcesoSeleccion(props: any) {
 								placeholder="Seleccionar el nombre del puesto para el proceso de selección."
 								value={selectedPuestoLaboralFijo}
 								rows={2}
-								readOnly={true}
-								disabled={true}
+								className="readonly-text"
 							/>
-						</Form.Group>{" "}
+						</Form.Group>
 						<Form.Group xs={2} as={Col}>
 							<Button
 								style={{
@@ -443,15 +500,18 @@ function ConfigProcesoSeleccion(props: any) {
 									Cantidad de vacantes: (*)
 								</Form.Label>
 							</Form.Group>
-							<Form.Control
-								style={{ width: "15rem", maxWidth: "15rem" }}
-								type="text"
-								placeholder="Número de vacantes"
-								value={cantVacantes}
-								onChange={handlecantVacantes}
-								required
-							/>
-							<Form.Control.Feedback></Form.Control.Feedback>
+							<Form.Group>
+								<Form.Control
+									style={{ width: "15rem", maxWidth: "15rem" }}
+									type="text"
+									placeholder="Número de vacantes"
+									value={cantVacantes}
+									onChange={handlecantVacantes}
+									required
+									className={!isCantVacantesValid ? "is-invalid" : ""}
+								/>
+								<Form.Control.Feedback></Form.Control.Feedback>
+							</Form.Group>
 						</Form.Group>
 						<Form.Group className="mb-2" as={Col}>
 							<Col>
@@ -531,8 +591,8 @@ function ConfigProcesoSeleccion(props: any) {
 							</Col>
 						</Row>
 					</Form.Group>
-					{/*---------------------------------------------------------------------------- */}
-					{/* AQUI EMPIEZA LA TABLA*/}
+
+					{/* EMPIEZA LA TABLA ------------------------------------------------------------------- */}
 					<div style={{ paddingLeft: "1%", maxWidth: "99%" }}>
 						<Form.Group
 							className="mb-1"
@@ -640,159 +700,10 @@ function ConfigProcesoSeleccion(props: any) {
 									))}
 								</tbody>
 							</Table>
-							{/*---------------------------------------------------------------------------- */}
-
-							{/*----------------------------------------------------------------------------
-							MODAL PARA CREAR ETAPA*/}
-
-							<Modal show={showModal} onHide={closeModal}>
-								<Modal.Header closeButton>
-									<Modal.Title>
-										{selectedRow
-											? "Editar Información de la etapa"
-											: "Agregar Información de la etapa"}
-									</Modal.Title>
-								</Modal.Header>
-								<Modal.Body>
-									<Form>
-										<Form.Group>
-											<Form.Label>Seleccionar el tipo de etapa:</Form.Label>
-											<Dropdown
-												drop="down-centered"
-												align="end"
-												className="mb-2">
-												<Dropdown.Toggle
-													variant="secondary"
-													id="dropdown-basic"
-													style={{ width: "100%", textAlign: "center" }}>
-													{"Seleccionar el tipo de etapa:   \u00A0"}
-												</Dropdown.Toggle>
-
-												<Dropdown.Menu
-													style={{ width: "100%", textAlign: "center" }}>
-													{optionsTipoEtapaSelec
-														? optionsTipoEtapaSelec.map((optionRow) => (
-																<Dropdown.Item
-																	key={optionRow.id}
-																	onClick={() =>
-																		handleOptionsTipoEtapaSelec(optionRow)
-																	}>
-																	{optionRow.name}
-																</Dropdown.Item>
-														  ))
-														: []}
-												</Dropdown.Menu>
-											</Dropdown>
-											<Form.Control
-												type="text"
-												name="nombreTipoEtapa"
-												value={newRow.nombreTipoEtapa}
-												placeholder="Tipo de etapa"
-												//onChange={handleInputChange}
-												style={{
-													maxHeight: "8rem",
-													textAlign: "center"
-												}}
-												readOnly={true}
-												className="readonly-text"
-											/>
-											<Form.Label
-												id="passwordHelpBlock"
-												muted
-												style={{ fontSize: "0.8rem", maxHeight: "2rem" }}>
-												* Una vez seleccionado no se puede modificar el tipo de
-												etapa.
-											</Form.Label>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Nombre de la etapa:</Form.Label>
-											<Form.Control
-												type="text"
-												name="nombreEtapa"
-												value={
-													selectedRow
-														? selectedRow.nombreEtapa
-														: newRow.nombreEtapa
-												}
-												placeholder="Escribir el nombre de la etapa."
-												onChange={handleInputChange}
-												style={stylesSelect}
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Descripción de la etapa:</Form.Label>
-											<Form.Control
-												as="textarea"
-												type="text"
-												rows={2}
-												name="descripcionEtapa"
-												value={
-													selectedRow
-														? selectedRow.descripcionEtapa
-														: newRow.descripcionEtapa
-												}
-												placeholder="Escribir la descripción de la etapa del proceso de selección."
-												onChange={handleInputChange}
-												style={stylesSelect}
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Fecha de inicio:</Form.Label>
-											<Form.Control
-												type="date"
-												name="fechaInicio"
-												value={
-													selectedRow
-														? new Date(selectedRow.fechaInicio)
-																.toISOString()
-																.slice(0, 10)
-														: new Date(newRow.fechaInicio)
-																.toISOString()
-																.slice(0, 10)
-												}
-												onChange={handleInputChange}
-												style={stylesSelect}
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Fecha fin:</Form.Label>
-											<Form.Control
-												type="date"
-												name="fechaFin"
-												value={
-													selectedRow
-														? new Date(selectedRow.fechaFin)
-																.toISOString()
-																.slice(0, 10)
-														: new Date(newRow.fechaFin)
-																.toISOString()
-																.slice(0, 10)
-												}
-												onChange={handleInputChange}
-												style={stylesSelect}
-											/>
-										</Form.Group>
-									</Form>
-								</Modal.Body>
-								<Modal.Footer>
-									<Button
-										style={{ width: "8rem", maxWidth: "8rem" }}
-										variant="secondary"
-										onClick={closeModal}>
-										Cancelar
-									</Button>
-									<Button
-										style={{ width: "8rem", maxWidth: "8rem" }}
-										variant="primary"
-										onClick={handleAddRowEtapa}>
-										{selectedRow ? "Guardar Cambios" : "Agregar etapa"}
-									</Button>
-								</Modal.Footer>
-							</Modal>
 						</Form.Group>
 					</div>
-					{/* AQUI termina LA TABLA*/}
-					{/*---------------------------------------------------------------------------- */}
+					{/* Termina LA TABLA -------------------------------------------------------------------- */}
+
 					<Row style={{ position: "static", borderTop: "10rem" }}>
 						<p></p>
 						<p></p>
@@ -822,14 +733,14 @@ function ConfigProcesoSeleccion(props: any) {
 											if (
 												selectedPuestoLaboral != "" &&
 												typeof +cantVacantes == "number" &&
-												+cantVacantes != 0
+												+cantVacantes > 0
 											) {
 												setShowSaveModal(true);
 											} else {
 												setIsSelectedNombreOfertaValid(false);
 											}
 										}}>
-										Guardar Cambios
+										Guardar proceso
 									</Button>
 								</Col>
 							</Row>
@@ -838,7 +749,147 @@ function ConfigProcesoSeleccion(props: any) {
 				</Form>
 			</div>
 
-			{/* Modal para crear asignar personal */}
+			<Modal show={showModal} onHide={closeModal}>
+				<Form
+					noValidate
+					validated={validatedModal}
+					onSubmit={handleSubmitModal}>
+					<Modal.Header closeButton>
+						<Modal.Title>
+							{selectedRow
+								? "Editar Información de la etapa"
+								: "Agregar Información de la etapa"}
+						</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
+						<Form.Group>
+							<Form.Label>Seleccionar el tipo de etapa:</Form.Label>
+							<Dropdown drop="down-centered" align="end" className="mb-2">
+								<Dropdown.Toggle
+									variant="secondary"
+									id="dropdown-basic"
+									style={{ width: "100%", textAlign: "center" }}>
+									{"Seleccionar el tipo de etapa:   \u00A0"}
+								</Dropdown.Toggle>
+								<Dropdown.Menu style={{ width: "100%", textAlign: "center" }}>
+									{optionsTipoEtapaSelec
+										? optionsTipoEtapaSelec.map((optionRow) => (
+												<Dropdown.Item
+													key={optionRow.id}
+													onClick={() =>
+														handleOptionsTipoEtapaSelec(optionRow)
+													}>
+													{optionRow.name}
+												</Dropdown.Item>
+										  ))
+										: []}
+								</Dropdown.Menu>
+							</Dropdown>
+							<Form.Control
+								type="text"
+								name="nombreTipoEtapa"
+								value={
+									selectedRow
+										? selectedRow.nombreTipoEtapa
+										: newRow.nombreTipoEtapa
+								}
+								placeholder="Tipo de etapa"
+								style={{
+									maxHeight: "8rem",
+									textAlign: "center"
+								}}
+								className="readonly-text"
+								required
+							/>
+							<Form.Label
+								id="passwordHelpBlock"
+								muted
+								style={{ fontSize: "0.8rem", maxHeight: "2rem" }}>
+								* Una vez seleccionado no se puede modificar el tipo de etapa.
+							</Form.Label>
+						</Form.Group>
+						<Form.Group>
+							<Form.Label>Nombre de la etapa:</Form.Label>
+							<Form.Control
+								type="text"
+								name="nombreEtapa"
+								value={
+									selectedRow ? selectedRow.nombreEtapa : newRow.nombreEtapa
+								}
+								placeholder="Escribir el nombre de la etapa."
+								onChange={handleInputChange}
+								style={stylesSelect}
+								required
+							/>
+							<Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+						</Form.Group>
+						<Form.Group>
+							<Form.Label>Descripción de la etapa:</Form.Label>
+							<Form.Control
+								as="textarea"
+								type="text"
+								rows={2}
+								name="descripcionEtapa"
+								value={
+									selectedRow
+										? selectedRow.descripcionEtapa
+										: newRow.descripcionEtapa
+								}
+								placeholder="Escribir la descripción de la etapa del proceso de selección."
+								onChange={handleInputChange}
+								style={stylesSelect}
+								required
+							/>
+							<Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+						</Form.Group>
+						<Form.Group>
+							<Form.Label>Fecha de inicio:</Form.Label>
+							<Form.Control
+								type="date"
+								name="fechaInicio"
+								value={
+									selectedRow
+										? new Date(selectedRow.fechaInicio)
+												.toISOString()
+												.slice(0, 10)
+										: new Date(newRow.fechaInicio).toISOString().slice(0, 10)
+								}
+								onChange={handleInputChange}
+								style={stylesSelect}
+							/>
+						</Form.Group>
+						<Form.Group>
+							<Form.Label>Fecha fin:</Form.Label>
+							<Form.Control
+								type="date"
+								name="fechaFin"
+								value={
+									selectedRow
+										? new Date(selectedRow.fechaFin).toISOString().slice(0, 10)
+										: new Date(newRow.fechaFin).toISOString().slice(0, 10)
+								}
+								onChange={handleInputChange}
+								style={stylesSelect}
+							/>
+						</Form.Group>
+					</Modal.Body>
+					<Modal.Footer>
+						<Button
+							style={{ width: "8rem", maxWidth: "8rem" }}
+							variant="secondary"
+							onClick={closeModal}>
+							Cancelar
+						</Button>
+						<Button
+							style={{ width: "8rem", maxWidth: "8rem" }}
+							type="submit"
+							variant="primary"
+							onClick={handleAddRowEtapa}>
+							{selectedRow ? "Guardar Cambios" : "Agregar etapa"}
+						</Button>
+					</Modal.Footer>
+				</Form>
+			</Modal>
 
 			{/* Modal para Eliminar */}
 			<Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
