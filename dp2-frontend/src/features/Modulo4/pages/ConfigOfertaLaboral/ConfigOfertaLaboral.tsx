@@ -1,9 +1,7 @@
-import React from "react";
-import { BsTrash } from "react-icons/bs";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
 	ButtonGroup,
@@ -15,52 +13,49 @@ import {
 } from "react-bootstrap";
 import { Table, Button, Modal } from "react-bootstrap";
 
-import { Link, useNavigate } from "react-router-dom";
-import axiosInt from "@config/axios";
-import { Fragment, ChangeEvent, useEffect, useRef, useState } from "react";
-import Sidebar from "@components/Sidebar";
-import sidebarItems from "../../utils/sidebarItems";
+import React, {
+	Fragment,
+	ChangeEvent,
+	useEffect,
+	useRef,
+	useState
+} from "react";
 import PhotoCard from "@features/Modulo4/components/PhotoCard";
+
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import SearchInput from "./SearchInputOfertaLaboral/SearchInput";
-import CustomInput from "@features/Modulo4/components/CustomInput";
-import { TextCenter } from "react-bootstrap-icons";
+import { ajax } from "@features/Modulo4/tools/ajax";
+
+import {
+	SAMPLE_TOKEN,
+	LOCAL_CONNECTION,
+	CREATE_OFERTA_LABORAL
+} from "@features/Modulo4/utils/constants";
 
 function ConfigOfertaLaboral(props: any) {
-	const createLP = () => {
-		/*
-        const data = {
-            nombre: refLpName.current?.value,
-            descripcion: refLpDescription.current?.value,
-        };
+	const navigate = useNavigate();
 
-        axiosInt
-            .post("capacitaciones/learning_path/", data)
-            .then(function (response) {
-                navigate(
-                    `/modulo1/rutadeaprendizaje/detalle/${response.data.id}`
-                );
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-            */
-	};
-	const loadLPs = () => {
-		/*
-        axiosInt
-            .get("capacitaciones/learning_path/")
-            .then(function (response) {
-                setLps(response.data);
-                setLpsFiltered(response.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });*/
-	};
+	const createPS = async () => {
+		const dataPost = {
+			hiring_process: 1,
+			introduction: introduccionOferta,
+			offer_introduction: descripcionPuesto,
+			responsabilities_introduction: descripcionResponsa
+		};
 
-	useEffect(() => {
-		loadLPs();
-	}, []);
+		const optionsRequest = {
+			method: "POST",
+			url: LOCAL_CONNECTION + CREATE_OFERTA_LABORAL,
+			headers: {
+				Authorization: `Token ${SAMPLE_TOKEN}`
+			},
+			data: dataPost
+		};
+		console.log("guardado");
+		console.log(dataPost);
+		return await ajax(optionsRequest);
+	};
 
 	// VALIDA INFORMACION
 	const [validated, setValidated] = useState(false);
@@ -96,11 +91,25 @@ function ConfigOfertaLaboral(props: any) {
 		setSelectedNombreOferta(optionValue);
 	};
 
-	// DESCRIPCIONES 3 CUSTOM INPUTS
+	// DESCRIPCION 3 CON QUILL
 	const [introduccionOferta, setIntroduccionOferta] = useState("");
 	const [descripcionPuesto, setDescripcionPuesto] = useState("");
 	const [descripcionResponsa, setDescripcionResponsa] = useState("");
 
+	const handleChangeIntroOferta = (html) => {
+		setIntroduccionOferta(html);
+	};
+
+	const handleChangeDescripPuesto = (html) => {
+		setDescripcionPuesto(html);
+	};
+
+	const handleChangeDescripResponsa = (html) => {
+		setDescripcionResponsa(html);
+	};
+
+	/*
+	// DESCRIPCIONES 3 CUSTOM INPUTS
 	const handleInputChangeIntroduccionOferta = (event: any) => {
 		const optionValue = event.target.value;
 		setIntroduccionOferta(optionValue);
@@ -113,6 +122,7 @@ function ConfigOfertaLaboral(props: any) {
 		const optionValue = event.target.value;
 		setDescripcionResponsa(optionValue);
 	};
+	*/
 
 	// IMAGEN DE REFERENCIA
 	const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -151,8 +161,8 @@ function ConfigOfertaLaboral(props: any) {
 	};
 	const handleOptionSelectBuscador = (selectedOption) => {
 		console.log(selectedOption);
-		setSelectedNombreOferta(selectedOption.nombre + " - Oferta laboral");
-		setSelectedNombreOfertaFijo(selectedOption.nombre);
+		setSelectedNombreOferta("Oferta laboral - " + selectedOption.name);
+		setSelectedNombreOfertaFijo(selectedOption.name);
 		setIsSelectedNombreOfertaValid(true);
 	};
 
@@ -171,7 +181,9 @@ function ConfigOfertaLaboral(props: any) {
 	};
 	const handleSaveChanges = () => {
 		// Lógica para guardar cambios
+		createPS();
 		setShowSaveModal(false);
+		navigate(`/selection-offers-and-positions/job-offers/list/`);
 	};
 
 	return (
@@ -192,7 +204,7 @@ function ConfigOfertaLaboral(props: any) {
 				</div>
 				<div style={{ flex: "0 0 15rem" }} className="col text-end">
 					<button
-						style={{ width: "11rem", maxWidth: "11rem" }}
+						style={{ width: "10rem", maxWidth: "10rem" }}
 						type="button"
 						className="btn btn-primary"
 						data-bs-target="#createLPModalChoose"
@@ -213,8 +225,8 @@ function ConfigOfertaLaboral(props: any) {
 						<span className="me-3">Publicar oferta</span>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
-							width="16"
-							height="16"
+							width="14"
+							height="14"
 							fill="currentColor"
 							className="bi bi-plus-circle"
 							viewBox="0 0 16 16">
@@ -246,143 +258,178 @@ function ConfigOfertaLaboral(props: any) {
 			</div>
 			<div className="row" style={{ paddingTop: "1rem" }}>
 				<Form noValidate validated={validated} onSubmit={handleSubmit}>
-					<div className="col-9">
-						<Form.Group as={Row}>
-							<Form.Group as={Col} className="mb-3">
-								<Form.Label style={{ fontSize: "15px" }}>
-									Nombre de la oferta laboral para un proceso de seleccion: (*)
-								</Form.Label>
-								<Row>
-									<Col xs={9}>
-										<Form.Control
-											as="textarea"
-											type="text"
-											placeholder="Nombre proceso selección"
-											value={selectedNombreOfertaFijo}
-											rows={2}
-											readOnly={true}
-										/>
-									</Col>
-									<Col>
-										<Button onClick={handleShowBuscadorFromButtom}>
-											Buscar proceso selección
-										</Button>
-									</Col>
-								</Row>
-							</Form.Group>
-						</Form.Group>
-
-						<Row>
-							<Form.Group xs={9} as={Col} className="mb-3">
-								<Form.Label style={{ fontSize: "15px" }}>
-									Nombre de la oferta laboral para un proceso de seleccion: (*)
-								</Form.Label>
-								<Form.Control
-									as="textarea"
-									type="text"
-									placeholder="Especificar el nombre de la oferta laboral"
-									value={selectedNombreOferta}
-									required
-									onChange={handleNombreOferta}
-									rows={3}
-									disabled={selectedNombreOferta == "" ? true : false}
-									//readOnly // Hace que el input sea de solo lectura
-									className={!isSelectedNombreOfertaValid ? "is-invalid" : ""}
-								/>
-								<Form.Control.Feedback></Form.Control.Feedback>
-							</Form.Group>
-							<Form.Group as={Col} className="mb-3">
-								<Form.Label>Imagen referencial:</Form.Label>
-								<PhotoCard imageSrc={previewUrl} width={7} height={5} />
-								<input
-									style={{
-										width: "100%",
-										maxWidth: "9rem"
-									}}
-									type="file"
-									ref={inputRef}
-									onChange={handleImageUpload}
-									className="d-none"
-									accept="image/*"
-								/>
-								<div style={{ paddingTop: "0.4rem" }}>
-									<button
+					<Form.Group as={Row}>
+						<Form.Group as={Col} className="mb-3">
+							<Form.Label style={{ fontSize: "15px" }}>
+								Proceso de seleccion: (*)
+							</Form.Label>
+							<Row>
+								<Col xs={10}>
+									<Form.Control
+										as="textarea"
+										type="text"
+										placeholder="Seleccionar el proceso de seleccion para la oferta laboral"
+										value={selectedNombreOfertaFijo}
+										rows={2}
+										readOnly={true}
+										disabled={true}
+									/>
+								</Col>
+								<Col xs={2}>
+									<Button
 										style={{
-											width: "8rem",
-											height: "2.5rem"
+											width: "10rem",
+											maxWidth: "10rem",
+											minHeight: "100%"
 										}}
-										onClick={handleUpload}
-										className={`btn btn-outline-${
-											uploadedFileName ? "success" : "primary"
-										}`}>
-										{uploadedFileName ? uploadedFileName : "Subir imagen"}
-									</button>
-								</div>
-							</Form.Group>
-						</Row>
+										onClick={handleShowBuscadorFromButtom}>
+										Buscar proceso selección
+									</Button>
+								</Col>
+							</Row>
+						</Form.Group>
+					</Form.Group>
 
-						<Row>
-							<Form.Group className="mb-3">
-								<Form.Label style={{ fontSize: "15px" }}>
-									Introducción a la oferta laboral:
-								</Form.Label>
-								<Form.Control
-									as="textarea"
-									type="text"
-									placeholder="Introducción a la oferta laboral."
-									value={introduccionOferta}
-									onChange={handleInputChangeIntroduccionOferta}
-									rows={2}
-									required
-								/>
-								<Form.Control.Feedback type="invalid"></Form.Control.Feedback>
-							</Form.Group>
-						</Row>
-						<Row>
+					<Row>
+						<Form.Group as={Col} className="mb-3">
+							<Form.Label style={{ fontSize: "15px" }}>
+								Nombre de la oferta laboral del proceso de seleccion: (*)
+							</Form.Label>
+							<Form.Control
+								type="text"
+								placeholder="Especificar el proceso de selección para la oferta laboral."
+								value={selectedNombreOferta}
+								required
+								onChange={handleNombreOferta}
+								disabled={selectedNombreOferta == "" ? true : false}
+								//readOnly // Hace que el input sea de solo lectura
+								className={!isSelectedNombreOfertaValid ? "is-invalid" : ""}
+							/>
+							<Form.Control.Feedback></Form.Control.Feedback>
+						</Form.Group>
+					</Row>
+
+					<Row>
+						<Form.Group xs={10} as={Col} className="mb-3">
+							<Form.Label style={{ fontSize: "15px" }}>
+								Introducción a la oferta laboral:
+							</Form.Label>
+							<ReactQuill
+								theme="snow"
+								value={introduccionOferta}
+								onChange={handleChangeIntroOferta}
+								style={{
+									height: "8rem",
+									marginBottom: "3rem"
+								}}
+							/>
+							{/*
+							<Form.Control
+								as="textarea"
+								type="text"
+								placeholder="Introducción a la oferta laboral."
+								value={introduccionOferta}
+								onChange={handleInputChangeIntroduccionOferta}
+								rows={4}
+								required
+							/>
+							<Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+							*/}
+						</Form.Group>
+						<Form.Group as={Col} className="mb-3">
+							<Form.Label>Imagen referencial:</Form.Label>
+							<div style={{ paddingLeft: "3%" }}>
+								<PhotoCard imageSrc={previewUrl} width={7} height={5} />
+							</div>
+							<input
+								style={{
+									width: "100%",
+									maxWidth: "9rem"
+								}}
+								type="file"
+								ref={inputRef}
+								onChange={handleImageUpload}
+								className="d-none"
+								accept="image/*"
+							/>
+							<div style={{ paddingTop: "0.4rem" }}>
+								<button
+									style={{
+										width: "8rem",
+										height: "2.5rem"
+									}}
+									onClick={handleUpload}
+									className={`btn btn-outline-${
+										uploadedFileName ? "success" : "primary"
+									}`}>
+									{uploadedFileName ? uploadedFileName : "Subir imagen"}
+								</button>
+							</div>
+						</Form.Group>
+					</Row>
+					<Row>
+						<Col>
 							<Form.Group
 								className="mb-3"
 								controlId="exampleForm.ControlTextarea1">
 								<Form.Label style={{ fontSize: "15px" }}>
 									Descripción del puesto:
 								</Form.Label>
-								<Form.Control
+
+								<ReactQuill
+									theme="snow"
+									value={descripcionPuesto}
+									onChange={handleChangeDescripPuesto}
+									style={{
+										height: "8rem",
+										marginBottom: "3rem"
+									}}
+								/>
+								{/*<Form.Control
 									as="textarea"
 									placeholder="Descripción del puesto."
 									value={descripcionPuesto}
 									required
-									rows={2}
+									rows={4}
 									onChange={handleInputChangeDescripcion}
 								/>
-								<Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+								<Form.Control.Feedback type="invalid"></Form.Control.Feedback> */}
 							</Form.Group>
-						</Row>
-						<Row>
+						</Col>
+						<Col>
 							<Form.Group
 								className="mb-3"
 								controlId="exampleForm.ControlTextarea1">
 								<Form.Label style={{ fontSize: "15px" }}>
 									Descripción de las responsabilidades:
 								</Form.Label>
-								<Form.Control
+								<ReactQuill
+									theme="snow"
+									value={descripcionResponsa}
+									onChange={handleChangeDescripResponsa}
+									style={{
+										height: "8rem",
+										marginBottom: "3rem"
+									}}
+								/>
+								{/* <Form.Control
 									as="textarea"
 									placeholder="Descripción de las responsabilidades."
 									value={descripcionResponsa}
 									required
-									rows={2}
+									rows={4}
 									onChange={handleInputChangeResponsa}
 								/>
-								<Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+								<Form.Control.Feedback type="invalid"></Form.Control.Feedback>*/}
 							</Form.Group>
-						</Row>
-					</div>
+						</Col>
+					</Row>
 					<Row style={{ position: "static", borderTop: "10rem" }}>
-						<p></p>
-						<p></p>
-						<p></p> <p></p> <p></p>
+						<p></p> <p></p>
 						<Col>
 							{/* Botón Eliminar */}
 							<Button
-								style={{ width: "11rem", maxWidth: "11rem" }}
+								style={{ width: "10rem", maxWidth: "10rem" }}
 								variant="danger"
 								onClick={() => setShowDeleteModal(true)}>
 								Eliminar oferta
@@ -390,7 +437,7 @@ function ConfigOfertaLaboral(props: any) {
 						</Col>
 						<Col xs="auto" className="d-flex justify-content-end">
 							<Button
-								style={{ width: "11rem", maxWidth: "11rem" }}
+								style={{ width: "10rem", maxWidth: "10rem" }}
 								type="submit"
 								variant="primary"
 								onClick={() => {

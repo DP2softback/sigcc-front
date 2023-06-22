@@ -1,5 +1,6 @@
 import React from "react";
 import Dropdown from "react-bootstrap/Dropdown";
+import { Link, useNavigate } from "react-router-dom";
 
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
@@ -21,23 +22,110 @@ import { ajax } from "@features/Modulo4/tools/ajax";
 import moment from "moment";
 import SearchInputResponsablesNuevo from "./SearchInputResponsablesNuevo/SearchInputResponsablesNuevo";
 import {
-	BACKEND_URL_CREATE_PROCESO_SELECCION,
-	SAMPLE_TOKEN
+	SAMPLE_TOKEN,
+	LOCAL_CONNECTION,
+	CREATE_PROCESO_SELECCION,
+	GET_TIPO_ETAPAS_PROCESO_SELECCION
 } from "@features/Modulo4/utils/constants";
 
+/*
+{
+    "position": 1,
+    "available_positions_quantity": "1",
+    "name": "Proceso en Nombre de prueba",
+    "process_stages": [
+        {
+            "stage_type": 1,
+            "order": 1,
+            "start_date": "2023-06-12",
+            "end_date": "2023-06-12",
+            "name": "asdf",
+            "description": "asdf"
+        },
+        {
+            "stage_type": 1,
+            "order": 2,
+            "start_date": "2023-06-12",
+            "end_date": "2023-06-12",
+            "name": "df",
+            "description": "dsfds"
+        }
+    ],
+    "employees": [
+        {
+            "employee": 3
+        },
+        {
+            "employee": 1
+        }
+    ]
+}
+
+*/
+
 function ConfigProcesoSeleccion(props: any) {
+	const navigate = useNavigate();
+
+	/*
+	useEffect(() => {
+		setSelectedIdPuestoLaboral(1);
+		setCantVacantes(1);
+		setSelectedPuestoLaboral("Proceso en Nombre de prueb!!!a");
+		setRows([
+			{
+				id: 1,
+				idTipoEtapa: 1,
+				nombreTipoEtapa: "dsf",
+				nombreEtapa: "df",
+				descripcionEtapa: "",
+				fechaInicio: new Date(),
+				fechaFin: new Date(),
+				estado: ""
+			}
+		]);
+		setArrResponsables([
+			{
+				id: 1,
+				user: {
+					id: 2,
+					password:
+						"pbkdf2_sha256$216000$smhYwuNQNpRV$2loGVwY2W3TSeowjsPSdk08goKrYn70j0s5I/aVkX0Q=",
+					last_login: null,
+					is_superuser: false,
+					username: "Joseson",
+					first_name: "Jose",
+					last_name: "Joseson",
+					is_staff: false,
+					is_active: true,
+					date_joined: "2023-05-25T13:35:51-05:00",
+					created: "2023-05-25T13:35:51.109000-05:00",
+					modified: "2023-06-01T10:31:41.234000-05:00",
+					deleted: null,
+					email: "Jose@joseson.com",
+					second_name: "",
+					maiden_name: "",
+					recovery_code: null,
+					groups: [],
+					user_permissions: [],
+					roles: [2]
+				}
+			}
+		]);
+	}, []);
+	*/
+
 	const createPS = async () => {
 		//console.log(rows);
 		const listaEtapas = rows.map(
 			({
-				tipoEtapa,
+				idTipoEtapa,
 				id,
 				fechaInicio,
 				fechaFin,
 				nombreEtapa,
 				descripcionEtapa
 			}) => ({
-				stage_type: 1,
+				stage_type: idTipoEtapa,
 				order: id,
 				start_date: moment(fechaInicio).format("YYYY-MM-DD"),
 				end_date: moment(fechaFin).format("YYYY-MM-DD"),
@@ -46,23 +134,21 @@ function ConfigProcesoSeleccion(props: any) {
 			})
 		);
 
-		const listaResponsables = arrResponsables.map(
-			({ idResponsable }) => idResponsable
-		);
+		const listaIdResponsables = arrResponsables.map(({ id }) => ({
+			employee: id
+		}));
 
 		const dataPost = {
 			position: selectedIdPuestoLaboral,
 			available_positions_quantity: cantVacantes,
+			name: selectedPuestoLaboral,
 			process_stages: listaEtapas,
-			id: listaResponsables
+			employees: listaIdResponsables
 		};
 
 		const optionsRequest = {
 			method: "POST",
-			url:
-				"https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1" +
-				BACKEND_URL_CREATE_PROCESO_SELECCION +
-				"",
+			url: LOCAL_CONNECTION + CREATE_PROCESO_SELECCION,
 			headers: {
 				Authorization: `Token ${SAMPLE_TOKEN}`
 			},
@@ -72,23 +158,6 @@ function ConfigProcesoSeleccion(props: any) {
 		console.log(dataPost);
 		return await ajax(optionsRequest);
 	};
-
-	const loadLPs = () => {
-		/*
-        axiosInt
-            .get("capacitaciones/learning_path/")
-            .then(function (response) {
-                setLps(response.data);
-                setLpsFiltered(response.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });*/
-	};
-
-	useEffect(() => {
-		loadLPs();
-	}, []);
 
 	// VALIDA INFORMACION
 	const [validated, setValidated] = useState(false);
@@ -109,12 +178,11 @@ function ConfigProcesoSeleccion(props: any) {
 		marginBottom: "0.78rem"
 	};
 
-	// AREA DE TRABAJO
+	// PUESTO DE TRABAJO
 	const [selectedIdPuestoLaboral, setSelectedIdPuestoLaboral] = useState(null);
 	const [selectedPuestoLaboralFijo, setSelectedPuestoLaboralFijo] =
 		useState("");
 	const [selectedPuestoLaboral, setSelectedPuestoLaboral] = useState("");
-	const [cantVacantes, setCantVacantes] = useState("");
 	const [isSelectedNombreOfertaValid, setIsSelectedNombreOfertaValid] =
 		useState(true);
 
@@ -125,28 +193,53 @@ function ConfigProcesoSeleccion(props: any) {
 		setSelectedPuestoLaboral(optionValue);
 	};
 
+	// CANTIDAD DE VACANTES
+	const [cantVacantes, setCantVacantes] = useState(1);
+	const [isCantVacantesValid, setIsCantVacantesValid] = useState(true);
 	const handlecantVacantes = (event: any) => {
 		const optionValue = event.target.value;
 		setCantVacantes(optionValue);
+		if (optionValue <= 0) {
+			console.log("menor a 0");
+			setIsCantVacantesValid(false);
+		}
 	};
 
-	// TABLA DE ETAPAS DEL PROCESO DE SELECCIÓN
+	// CREAR TIPO ETAPA SELECCION
 	const [selectedTipoEtapaSelec, setSelectedTipoEtapaSelec] = useState(null);
-	const optionsTipoEtapaSelec = [
-		{ value: "opcion1Entrevista", label: "Entrevista personal" },
-		{ value: "opcion2Formulario", label: "Formulario general" },
-		{ value: "opcion3Formulario", label: "Formulario personalizado" }
-	];
+	const [optionsTipoEtapaSelec, setOptionsTipoEtapaSelec] = useState<any[]>([]);
 
-	const handleOptionsTipoEtapaSelec = (label: any) => {
-		setSelectedTipoEtapaSelec(label);
-		newRow.tipoEtapa = label;
-		//selectedRow.tipoEtapa = label;
+	const getTiposEtapas = async () => {
+		const optionsRequest = {
+			method: "GET",
+			url: LOCAL_CONNECTION + GET_TIPO_ETAPAS_PROCESO_SELECCION,
+			headers: {
+				Authorization: `Token ${SAMPLE_TOKEN}`
+			}
+		};
+		return await ajax(optionsRequest);
+	};
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const tiposEtapas = await getTiposEtapas();
+			setOptionsTipoEtapaSelec(tiposEtapas);
+		};
+
+		fetchData();
+	}, []);
+
+	// TABLA DE ETAPAS DEL PROCESO DE SELECCIÓN
+	const handleOptionsTipoEtapaSelec = (option: any) => {
+		setSelectedTipoEtapaSelec(option.name);
+		newRow.idTipoEtapa = option.id;
+		newRow.nombreTipoEtapa = option.name;
 	};
 
 	interface TableRow {
 		id: number;
-		tipoEtapa: string;
+		idTipoEtapa: number;
+		nombreTipoEtapa: string;
 		nombreEtapa: string;
 		descripcionEtapa: string;
 		fechaInicio: Date | string;
@@ -156,7 +249,8 @@ function ConfigProcesoSeleccion(props: any) {
 	const [rows, setRows] = useState<TableRow[]>([]);
 	const [newRow, setNewRow] = useState<TableRow>({
 		id: 0,
-		tipoEtapa: "",
+		idTipoEtapa: 0,
+		nombreTipoEtapa: "",
 		nombreEtapa: "",
 		descripcionEtapa: "",
 		fechaInicio: new Date(),
@@ -175,8 +269,53 @@ function ConfigProcesoSeleccion(props: any) {
 		}
 	};
 
+	// VALIDA MODAL
+	const [validatedModal, setValidatedModal] = useState(false);
+	const handleSubmitModal = (event) => {
+		const form = event.currentTarget;
+		if (form.checkValidity() === false) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+
+		setValidatedModal(true);
+		event.preventDefault();
+	};
+
+	useEffect(() => {
+		console.log("validatedModal", validatedModal);
+	}, [validatedModal]);
+
+	useEffect(() => {
+		console.log("newRow", newRow);
+	}, [newRow]);
+
 	const [idCounter, setIdCounter] = useState(0); // Contador para el ID
-	const handleAddRow = () => {
+	const handleAddRowEtapa = () => {
+		console.log("newRow", newRow);
+		console.log("selectedRow", selectedRow);
+		if (
+			siNuevaEtapa == true &&
+			(newRow.nombreTipoEtapa == "" ||
+				newRow.nombreEtapa == "" ||
+				newRow.fechaInicio == "" ||
+				newRow.fechaFin == "")
+		) {
+			return;
+		}
+
+		if (
+			siNuevaEtapa == false &&
+			(selectedRow.nombreTipoEtapa == "" ||
+				selectedRow.nombreEtapa == "" ||
+				selectedRow.fechaInicio == "" ||
+				selectedRow.fechaFin == "")
+		) {
+			return;
+		}
+
+		setValidatedModal(true);
+
 		if (selectedRow === null) {
 			// Agregar nueva fila
 			// Usar el valor actual del contador más 1 como nuevo ID
@@ -198,7 +337,8 @@ function ConfigProcesoSeleccion(props: any) {
 
 		setNewRow({
 			id: 0,
-			tipoEtapa: "",
+			idTipoEtapa: 0,
+			nombreTipoEtapa: "",
 			nombreEtapa: "",
 			descripcionEtapa: "",
 			fechaInicio: new Date(),
@@ -210,18 +350,15 @@ function ConfigProcesoSeleccion(props: any) {
 		setIdCounter((prevCounter) => prevCounter + 1); // Incrementar el contador en 1
 	};
 
-	/*
-	useEffect(() => {
-		console.log(rows);
-	}, [rows]);
-	*/
-
 	const handleDeleteRow = (id: number) => {
 		setRows((prevRows) => prevRows.filter((row) => row.id !== id));
 	};
-	const openModal = (row: TableRow | null) => {
+
+	const [siNuevaEtapa, setSiNuevaEtapa] = useState(true);
+	const openModal = (row: TableRow | null, SiNuevaEtapaEstado: boolean) => {
 		setSelectedRow(row);
 		setShowModal(true);
+		setSiNuevaEtapa(SiNuevaEtapaEstado);
 	};
 	const closeModal = () => {
 		setShowModal(false);
@@ -236,16 +373,30 @@ function ConfigProcesoSeleccion(props: any) {
 		setShowModalBuscador(false);
 	};
 	const handleOptionSelectBuscador = (selectedOptionPuesto) => {
+		let nombrePosicionFijo =
+			selectedOptionPuesto.area_name +
+			" " +
+			selectedOptionPuesto.position_name +
+			" " +
+			selectedOptionPuesto.position_detail.tipoJornada +
+			" " +
+			selectedOptionPuesto.position_detail.modalidadTrabajo;
+
 		setSelectedIdPuestoLaboral(selectedOptionPuesto.id);
+		setSelectedPuestoLaboralFijo(nombrePosicionFijo);
 		setSelectedPuestoLaboral(
-			selectedOptionPuesto.nombre + "- Proceso de selección"
+			"Proc. selección en " + selectedOptionPuesto.position_name
 		);
-		setSelectedPuestoLaboralFijo(selectedOptionPuesto.nombre);
 	};
 
 	// MODAL DE RESPONSABLE BUSCADOR, ABRE Y RETORNA LOS VALORES
 	const [arrResponsables, setArrResponsables] = useState([]);
 	const [cantResponsables, setCantResponsables] = useState(0);
+
+	useEffect(() => {
+		setCantResponsables(arrResponsables.length);
+	}, [arrResponsables]);
+
 	const [showModalBuscadorResponsable, setShowModalBuscadorResponsable] =
 		useState(false);
 	const handleShowBuscadorResponsableFromButtom = () => {
@@ -259,7 +410,7 @@ function ConfigProcesoSeleccion(props: any) {
 		setCantResponsables(responsables.length);
 	};
 
-	// ESTOS MODAL SE USARAN EN LOS BOTONES DE ELIMINAR Y GUARDAR TODO EL PROCECSO
+	// ESTOS MODAL BOTONES DE ELIMINAR Y GUARDAR TODO EL PROCECSO
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [showSaveModal, setShowSaveModal] = useState(false);
 	const handleDelete = () => {
@@ -268,6 +419,8 @@ function ConfigProcesoSeleccion(props: any) {
 	const handleSaveChanges = () => {
 		createPS();
 		setShowSaveModal(false);
+		console.log("guardado final");
+		navigate(0);
 	};
 
 	return (
@@ -293,25 +446,25 @@ function ConfigProcesoSeleccion(props: any) {
 					<Form.Group as={Row} className="mb-3">
 						<Form.Group as={Row}>
 							<Form.Label style={{ fontSize: "15px" }}>
-								Nombre del proceso de selección para un puesto:
+								Puesto de trabajo: (*)
 							</Form.Label>
 						</Form.Group>
 						<Form.Group xs={10} as={Col}>
 							<Form.Control
 								as="textarea"
 								type="text"
-								placeholder="Nombre del puesto"
+								placeholder="Seleccionar el nombre del puesto para el proceso de selección."
 								value={selectedPuestoLaboralFijo}
 								rows={2}
-								readOnly={true}
-								disabled={true}
+								className="readonly-text"
 							/>
-						</Form.Group>{" "}
+						</Form.Group>
 						<Form.Group xs={2} as={Col}>
 							<Button
 								style={{
 									width: "10rem",
-									maxWidth: "10rem"
+									maxWidth: "10rem",
+									minHeight: "100%"
 								}}
 								onClick={handleShowBuscadorFromButtom}>
 								Buscar puesto de trabajo
@@ -322,18 +475,16 @@ function ConfigProcesoSeleccion(props: any) {
 						<Col>
 							<Row>
 								<Form.Label sm="2" style={{ fontSize: "15px" }}>
-									Nombre del proceso de selección para un puesto:
+									Nombre del proceso de selección para un puesto: (*)
 								</Form.Label>
 							</Row>
 							<Row>
 								<Form.Group xs={12} as={Col}>
 									<Form.Control
-										as="textarea"
 										type="text"
-										placeholder="Especificar el nombre del proceso de selección"
+										placeholder="Especificar el puesto laboral para el proceso de selección."
 										value={selectedPuestoLaboral}
 										onChange={handleNombrePuestoSeleccionado}
-										rows={2}
 										disabled={selectedPuestoLaboral == "" ? true : false}
 										required
 										className={!isSelectedNombreOfertaValid ? "is-invalid" : ""}
@@ -354,18 +505,21 @@ function ConfigProcesoSeleccion(props: any) {
 										height: "2rem",
 										fontSize: "15px"
 									}}>
-									Cantidad de vacantes:
+									Cantidad de vacantes: (*)
 								</Form.Label>
 							</Form.Group>
-							<Form.Control
-								style={{ width: "15rem", maxWidth: "15rem" }}
-								type="text"
-								placeholder="Número de vacantes"
-								value={cantVacantes}
-								onChange={handlecantVacantes}
-								required
-							/>
-							<Form.Control.Feedback></Form.Control.Feedback>
+							<Form.Group>
+								<Form.Control
+									style={{ width: "15rem", maxWidth: "15rem" }}
+									type="text"
+									placeholder="Número de vacantes"
+									value={cantVacantes}
+									onChange={handlecantVacantes}
+									required
+									className={!isCantVacantesValid ? "is-invalid" : ""}
+								/>
+								<Form.Control.Feedback></Form.Control.Feedback>
+							</Form.Group>
 						</Form.Group>
 						<Form.Group className="mb-2" as={Col}>
 							<Col>
@@ -390,21 +544,21 @@ function ConfigProcesoSeleccion(props: any) {
 										required
 										disabled
 										readOnly={true}
-										style={{ width: "17.5rem", maxWidth: "17.5rem" }}
+										style={{ width: "18rem", maxWidth: "18rem" }}
 									/>
 									<Form.Control.Feedback></Form.Control.Feedback>
 								</Col>
 								<Col>
-									<div style={{ paddingLeft: "3rem" }}>
+									<div style={{ paddingLeft: "3.5rem" }}>
 										<Button
 											variant="primary"
 											style={{
-												width: "11rem",
-												maxWidth: "11rem"
+												width: "10rem",
+												maxWidth: "10rem"
 											}}
 											className="ml-auto custom"
 											onClick={handleShowBuscadorResponsableFromButtom}>
-											Gestión responsables
+											Ver responsables
 										</Button>
 									</div>
 								</Col>
@@ -416,22 +570,28 @@ function ConfigProcesoSeleccion(props: any) {
 						<Row>
 							<Col
 								md={{
-									span: 3
+									span: 4
 								}}>
-								<h5>
-									<small className="opacity-90" style={{ marginTop: "100px" }}>
-										Etapas del proceso de selección.
+								<h1>
+									<small
+										className="opacity-90"
+										style={{
+											marginTop: "100px",
+											fontSize: "17px",
+											verticalAlign: "bottom"
+										}}>
+										Etapas del proceso de selección:
 									</small>
-								</h5>
+								</h1>
 							</Col>
 							<Col
 								md={{
 									span: 1,
-									offset: 7
+									offset: 6
 								}}>
 								<Button
 									variant="primary"
-									onClick={() => openModal(null)}
+									onClick={() => openModal(null, true)}
 									style={{ width: "10rem", maxWidth: "10rem" }}
 									className="ml-auto custom">
 									Agregar etapa
@@ -439,6 +599,8 @@ function ConfigProcesoSeleccion(props: any) {
 							</Col>
 						</Row>
 					</Form.Group>
+
+					{/* EMPIEZA LA TABLA ------------------------------------------------------------------- */}
 					<div style={{ paddingLeft: "1%", maxWidth: "99%" }}>
 						<Form.Group
 							className="mb-1"
@@ -453,9 +615,6 @@ function ConfigProcesoSeleccion(props: any) {
 								marginBottom: "18rem",
 								height: "500px"
 							}}>
-							{/*---------------------------------------------------------------------------- */}
-							{/* AQUI EMPIEZA TODA LA TABLA*/}
-
 							<Table striped={true} bordered>
 								<thead
 									style={{
@@ -466,10 +625,10 @@ function ConfigProcesoSeleccion(props: any) {
 									}}>
 									<tr>
 										<th style={{ width: "4rem" }}>Orden</th>
-										<th style={{ width: "13rem" }}>Tipo de etapa</th>
-										<th style={{ width: "16rem" }}>Nombre de la etapa</th>
-										<th style={{ width: "10rem" }}>Fecha de Inicio</th>
-										<th style={{ width: "10rem" }}>Fecha de Fin</th>
+										<th style={{ width: "8rem" }}>Tipo de etapa</th>
+										<th style={{ width: "13rem" }}>Nombre de la etapa</th>
+										<th style={{ width: "9rem" }}>Fecha de Inicio</th>
+										<th style={{ width: "9rem" }}>Fecha de Fin</th>
 										<th>Estado</th>
 										<th style={{ width: "12rem" }}>Acciones</th>
 									</tr>
@@ -478,7 +637,7 @@ function ConfigProcesoSeleccion(props: any) {
 									{rows.map((row) => (
 										<tr key={row.id}>
 											<td>{row.id}</td>
-											<td>{row.tipoEtapa}</td>
+											<td>{row.nombreTipoEtapa}</td>
 											<td>{row.nombreEtapa}</td>
 											<td>
 												{row.fechaInicio instanceof Date
@@ -518,7 +677,7 @@ function ConfigProcesoSeleccion(props: any) {
 													{/* Editar etapa */}
 													<Button
 														variant="light"
-														onClick={() => openModal(row)}>
+														onClick={() => openModal(row, false)}>
 														<svg
 															xmlns="http://www.w3.org/2000/svg"
 															width="16"
@@ -549,157 +708,10 @@ function ConfigProcesoSeleccion(props: any) {
 									))}
 								</tbody>
 							</Table>
-
-							<Modal show={showModal} onHide={closeModal}>
-								<Modal.Header closeButton>
-									<Modal.Title>
-										{selectedRow
-											? "Editar Información de la etapa"
-											: "Agregar Información de la etapa"}
-									</Modal.Title>
-								</Modal.Header>
-								<Modal.Body>
-									<Form>
-										<Form.Group>
-											<Form.Label>Seleccionar el tipo de etapa:</Form.Label>
-											<Dropdown
-												drop="down-centered"
-												align="end"
-												className="mb-2">
-												<Dropdown.Toggle
-													variant="secondary"
-													id="dropdown-basic"
-													style={{ width: "100%", textAlign: "center" }}>
-													{
-														"Seleccionar el tipo de etapa del proceso de selección:"
-													}
-												</Dropdown.Toggle>
-
-												<Dropdown.Menu
-													style={{ width: "100%", textAlign: "center" }}>
-													{optionsTipoEtapaSelec.map((optionRow) => (
-														<Dropdown.Item
-															key={optionRow.value}
-															onClick={() =>
-																handleOptionsTipoEtapaSelec(optionRow.label)
-															}>
-															{optionRow.label}
-														</Dropdown.Item>
-													))}
-												</Dropdown.Menu>
-											</Dropdown>
-											<Form.Control
-												type="text"
-												name="tipoEtapa"
-												value={
-													selectedRow ? selectedRow.tipoEtapa : newRow.tipoEtapa
-												}
-												placeholder="Tipo de etapa"
-												onChange={handleInputChange}
-												style={{
-													maxHeight: "8rem",
-													textAlign: "center"
-												}}
-												readOnly={true}
-												className="readonly-text"
-											/>
-											<Form.Label
-												id="passwordHelpBlock"
-												muted
-												style={{ fontSize: "0.8rem", maxHeight: "2rem" }}>
-												* Una vez seleccionado no se puede modificar el tipo de
-												etapa.
-											</Form.Label>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Nombre de la etapa:</Form.Label>
-											<Form.Control
-												type="text"
-												name="nombreEtapa"
-												value={
-													selectedRow
-														? selectedRow.nombreEtapa
-														: newRow.nombreEtapa
-												}
-												placeholder="Aquí va el nombre de la etapa"
-												onChange={handleInputChange}
-												style={stylesSelect}
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Descripción de la etapa:</Form.Label>
-											<Form.Control
-												as="textarea"
-												type="text"
-												rows={2}
-												name="descripcionEtapa"
-												value={
-													selectedRow
-														? selectedRow.descripcionEtapa
-														: newRow.descripcionEtapa
-												}
-												placeholder="Aquí va la descripción de la etapa del proceso de selección"
-												onChange={handleInputChange}
-												style={stylesSelect}
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Fecha de inicio:</Form.Label>
-											<Form.Control
-												type="date"
-												name="fechaInicio"
-												value={
-													selectedRow
-														? new Date(selectedRow.fechaInicio)
-																.toISOString()
-																.slice(0, 10)
-														: new Date(newRow.fechaInicio)
-																.toISOString()
-																.slice(0, 10)
-												}
-												onChange={handleInputChange}
-												style={stylesSelect}
-											/>
-										</Form.Group>
-										<Form.Group>
-											<Form.Label>Fecha fin:</Form.Label>
-											<Form.Control
-												type="date"
-												name="fechaFin"
-												value={
-													selectedRow
-														? new Date(selectedRow.fechaFin)
-																.toISOString()
-																.slice(0, 10)
-														: new Date(newRow.fechaFin)
-																.toISOString()
-																.slice(0, 10)
-												}
-												onChange={handleInputChange}
-												style={stylesSelect}
-											/>
-										</Form.Group>
-									</Form>
-								</Modal.Body>
-								<Modal.Footer>
-									<Button
-										style={{ width: "8rem", maxWidth: "8rem" }}
-										variant="secondary"
-										onClick={closeModal}>
-										Cancelar
-									</Button>
-									<Button
-										style={{ width: "8rem", maxWidth: "8rem" }}
-										variant="primary"
-										onClick={handleAddRow}>
-										{selectedRow ? "Guardar Cambios" : "Agregar etapa"}
-									</Button>
-								</Modal.Footer>
-							</Modal>
 						</Form.Group>
 					</div>
-					{/* AQUI termina LA TABLA*/}
-					{/*---------------------------------------------------------------------------- */}
+					{/* Termina LA TABLA -------------------------------------------------------------------- */}
+
 					<Row style={{ position: "static", borderTop: "10rem" }}>
 						<p></p>
 						<p></p>
@@ -729,14 +741,14 @@ function ConfigProcesoSeleccion(props: any) {
 											if (
 												selectedPuestoLaboral != "" &&
 												typeof +cantVacantes == "number" &&
-												+cantVacantes != 0
+												+cantVacantes > 0
 											) {
 												setShowSaveModal(true);
 											} else {
 												setIsSelectedNombreOfertaValid(false);
 											}
 										}}>
-										Guardar Cambios
+										Guardar proceso
 									</Button>
 								</Col>
 							</Row>
@@ -745,7 +757,147 @@ function ConfigProcesoSeleccion(props: any) {
 				</Form>
 			</div>
 
-			{/* Modal para crear asignar personal */}
+			<Modal show={showModal} onHide={closeModal}>
+				<Form
+					noValidate
+					validated={validatedModal}
+					onSubmit={handleSubmitModal}>
+					<Modal.Header closeButton>
+						<Modal.Title>
+							{selectedRow
+								? "Editar Información de la etapa"
+								: "Agregar Información de la etapa"}
+						</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
+						<Form.Group>
+							<Form.Label>Seleccionar el tipo de etapa:</Form.Label>
+							<Dropdown drop="down-centered" align="end" className="mb-2">
+								<Dropdown.Toggle
+									variant="secondary"
+									id="dropdown-basic"
+									style={{ width: "100%", textAlign: "center" }}>
+									{"Seleccionar el tipo de etapa:   \u00A0"}
+								</Dropdown.Toggle>
+								<Dropdown.Menu style={{ width: "100%", textAlign: "center" }}>
+									{optionsTipoEtapaSelec
+										? optionsTipoEtapaSelec.map((optionRow) => (
+												<Dropdown.Item
+													key={optionRow.id}
+													onClick={() =>
+														handleOptionsTipoEtapaSelec(optionRow)
+													}>
+													{optionRow.name}
+												</Dropdown.Item>
+										  ))
+										: []}
+								</Dropdown.Menu>
+							</Dropdown>
+							<Form.Control
+								type="text"
+								name="nombreTipoEtapa"
+								value={
+									selectedRow
+										? selectedRow.nombreTipoEtapa
+										: newRow.nombreTipoEtapa
+								}
+								placeholder="Tipo de etapa"
+								style={{
+									maxHeight: "8rem",
+									textAlign: "center"
+								}}
+								className="readonly-text"
+								required
+							/>
+							<Form.Label
+								id="passwordHelpBlock"
+								muted
+								style={{ fontSize: "0.8rem", maxHeight: "2rem" }}>
+								* Una vez seleccionado no se puede modificar el tipo de etapa.
+							</Form.Label>
+						</Form.Group>
+						<Form.Group>
+							<Form.Label>Nombre de la etapa:</Form.Label>
+							<Form.Control
+								type="text"
+								name="nombreEtapa"
+								value={
+									selectedRow ? selectedRow.nombreEtapa : newRow.nombreEtapa
+								}
+								placeholder="Escribir el nombre de la etapa."
+								onChange={handleInputChange}
+								style={stylesSelect}
+								required
+							/>
+							<Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+						</Form.Group>
+						<Form.Group>
+							<Form.Label>Descripción de la etapa:</Form.Label>
+							<Form.Control
+								as="textarea"
+								type="text"
+								rows={2}
+								name="descripcionEtapa"
+								value={
+									selectedRow
+										? selectedRow.descripcionEtapa
+										: newRow.descripcionEtapa
+								}
+								placeholder="Escribir la descripción de la etapa del proceso de selección."
+								onChange={handleInputChange}
+								style={stylesSelect}
+								required
+							/>
+							<Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+						</Form.Group>
+						<Form.Group>
+							<Form.Label>Fecha de inicio:</Form.Label>
+							<Form.Control
+								type="date"
+								name="fechaInicio"
+								value={
+									selectedRow
+										? new Date(selectedRow.fechaInicio)
+												.toISOString()
+												.slice(0, 10)
+										: new Date(newRow.fechaInicio).toISOString().slice(0, 10)
+								}
+								onChange={handleInputChange}
+								style={stylesSelect}
+							/>
+						</Form.Group>
+						<Form.Group>
+							<Form.Label>Fecha fin:</Form.Label>
+							<Form.Control
+								type="date"
+								name="fechaFin"
+								value={
+									selectedRow
+										? new Date(selectedRow.fechaFin).toISOString().slice(0, 10)
+										: new Date(newRow.fechaFin).toISOString().slice(0, 10)
+								}
+								onChange={handleInputChange}
+								style={stylesSelect}
+							/>
+						</Form.Group>
+					</Modal.Body>
+					<Modal.Footer>
+						<Button
+							style={{ width: "8rem", maxWidth: "8rem" }}
+							variant="secondary"
+							onClick={closeModal}>
+							Cancelar
+						</Button>
+						<Button
+							style={{ width: "8rem", maxWidth: "8rem" }}
+							type="submit"
+							variant="primary"
+							onClick={handleAddRowEtapa}>
+							{selectedRow ? "Guardar Cambios" : "Agregar etapa"}
+						</Button>
+					</Modal.Footer>
+				</Form>
+			</Modal>
 
 			{/* Modal para Eliminar */}
 			<Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>

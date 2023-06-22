@@ -6,7 +6,8 @@ import { useLocation } from 'react-router-dom';
 
 const GestionCompetencia = () => {
   const location = useLocation();
-  const { usuario } = location.state;
+  //const { usuario } = location.state;
+  console.log(location.state)
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [nombreEmpleado, setNombreEmpleado] = useState('Ángela Quispe Ramírez');
     const [cargoEmpleado, setCargoEmpleado] = useState('Supervisor - Ärea de TI');
@@ -52,7 +53,7 @@ const GestionCompetencia = () => {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
+                Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
               },
               body: JSON.stringify(body),
             }

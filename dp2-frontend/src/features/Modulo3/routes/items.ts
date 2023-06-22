@@ -1,12 +1,13 @@
 import { TSidebarItemGroup } from "@routes/types/sidebarItem";
 import { Roles } from "@routes/types/roles";
-import { ArrowRepeat, JournalCheck, FileEarmarkText, GraphUp } from "react-bootstrap-icons";
+import { ArrowRepeat, JournalCheck, FileEarmarkText, GraphUp, ListUl } from "react-bootstrap-icons";
 import {
 	CONTINUOS_EVALUATION_INDEX,
 	PERFORMANCE_EVALUATION_INDEX,
 	EVALUATION_TEMPLATE_INDEX,
 	REPORT_CONTINUOS_EVALUATION_INDEX,
-  REPORT_PERFORMANCE_EVALUATION_INDEX
+  REPORT_PERFORMANCE_EVALUATION_INDEX,
+	CATEGORIES_INDEX
 } from "./path";
 
 export const sideBarItemsGroup3: TSidebarItemGroup[] = [
@@ -34,6 +35,13 @@ export const sideBarItemsGroup3: TSidebarItemGroup[] = [
 				roles: [Roles.HR_ADMIN, Roles.HR_MANAGER],
 				hasChildren: false,
         route: EVALUATION_TEMPLATE_INDEX
+      },
+      {
+				name: "Categorías",
+				icon: ListUl,
+				roles: [Roles.HR_ADMIN, Roles.HR_MANAGER],
+				hasChildren: false,
+        route: CATEGORIES_INDEX
       },
       {
         name: "Reportes",

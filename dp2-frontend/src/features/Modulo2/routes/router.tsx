@@ -13,7 +13,11 @@ import {
 	GAPS_EMPLOYEE_EMP_DETAIL,
 	MY_JOB_OPPORTUNITIES,
 	EMPLOYEES_JOB_CANDIDATES,
-	INDEX
+	GAPS_EMPLOYEES_AREA,
+	GAPS_EMPLOYEES_AREA_DETAIL,
+	GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE,
+	INDEX,
+	MY_JOB_OPPORTUNITIES_DETAIL
 } from "./path";
 
 const Loader = (Component) => (props) =>
@@ -35,6 +39,10 @@ const JobOpportunitiesRelatedToSkills = Loader(
 	lazy(() => import("@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/index"))
 );
 
+const JobOpportunitiesSelected = Loader(
+	lazy(() => import("@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/JobOpportunitySelected"))
+);
+
 const JobOpportunitiesHumanResources = Loader(
 	lazy(() => import("@features/Modulo2/Components/JobOpportunitiesHumanResources/index"))
 );
@@ -47,8 +55,8 @@ const VisualizacionBrechasEmpleado = Loader(
 	lazy(() => import("@features/Modulo2/Components/VisualizacionBrechasEmpleado/Read"))
 );
 
-const JobOpportunitiesSelected = Loader(
-	lazy(() => import("@features/Modulo2/Components/JobOpportunitiesRelatedToSkills/JobOpportunitySelected"))
+const VisualizacionBrechasEmpleadoDetalle = Loader(
+	lazy(() => import("@features/Modulo2/Components/VisualizacionBrechasEmpleado/Detail"))
 );
   
 const EstadisticasCompetencias = Loader(
@@ -59,20 +67,44 @@ const DetalleCompetenciasArea = Loader(
 	lazy(() => import("@features/Modulo2/Components/VisualizacionBrechasTrabajadorRRHH/DetalleCompetenciasArea"))
 );
 
+const ConsolidadoCompetenciasAM = Loader(
+	lazy(() => import("@features/Modulo2/Components/JobStatisticsAreaManager/ConsolidadoCompetencias"))
+);
+
+const DetalleCompetenciaPuesto= Loader(
+	lazy(() => import("@features/Modulo2/Components/JobStatisticsAreaManager/DetalleCompetenciasArea"))
+);
+
+const GestionCompetenciaEmpleadoAM = Loader(
+	lazy(() => import("@features/Modulo2/Components/JobStatisticsAreaManager/GestionCompetencias"))
+);
+
+const GestionCompetenciaEmpleado = Loader(
+	lazy(() => import("@features/Modulo2/Components/VisualizacionBrechasTrabajadorRRHH/GestionCompetencias"))
+);
+
+//ConsolidadoCompetenciasAM
+//GestionCompetencia
+
 export const routes: RouteObject[] = [
 	{
 		path: GAPS_ANALYSIS_MODULE,
 		children: [
 			{
 				path: COMPETENCES,
-				element: (
-					<AppLayout
-						allowedRoles={[
-							Roles.HR_ADMIN
-						]}>
-						<GestionDeCompetencias />
-					</AppLayout>
-				)
+				children: [
+					{
+						path: INDEX,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN
+								]}>
+								<GestionDeCompetencias />
+							</AppLayout>
+						)
+					}
+				]
 			},
 			{
 				path: GAPS_EMPLOYEES_ORG,
@@ -112,7 +144,54 @@ export const routes: RouteObject[] = [
 									Roles.GENERAL_MANAGER,
 									Roles.HR_WORKER,
 								]}>
-								<ConsolidadoCompetencias />
+								<GestionCompetenciaEmpleado/>
+							</AppLayout>
+						)
+					},
+				]
+			},
+			{
+				path: GAPS_EMPLOYEES_AREA,
+				children: [
+					{
+						path: INDEX,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.GENERAL_MANAGER,
+									Roles.HR_WORKER,
+									Roles.HEAD_OF_AREA,
+								]}>
+								<ConsolidadoCompetenciasAM/>
+							</AppLayout>
+						)
+					},
+					{
+						path: GAPS_EMPLOYEES_AREA_DETAIL,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.GENERAL_MANAGER,
+									Roles.HR_WORKER,
+									Roles.HEAD_OF_AREA,
+								]}>
+								<DetalleCompetenciaPuesto/>
+							</AppLayout>
+						)
+					},
+					{
+						path: GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.GENERAL_MANAGER,
+									Roles.HR_WORKER,
+									Roles.HEAD_OF_AREA,
+								]}>
+								<GestionCompetenciaEmpleadoAM/>
 							</AppLayout>
 						)
 					},
@@ -163,17 +242,17 @@ export const routes: RouteObject[] = [
 							</AppLayout>
 						)
 					},
-					// {
-					// 	path: GAPS_EMPLOYEE_EMP_DETAIL,
-					// 	element: (
-					// 		<AppLayout
-					// 			allowedRoles={[
-					// 				Roles.HR_WORKER,
-					// 			]}>
-					// 			<VisualizacionBrechasEmpleado />
-					// 		</AppLayout>
-					// 	)
-					// },
+					{
+						path: GAPS_EMPLOYEE_EMP_DETAIL,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_WORKER,
+								]}>
+								<VisualizacionBrechasEmpleadoDetalle />
+							</AppLayout>
+						)
+					},
 				]
 			},
 			{
@@ -201,12 +280,24 @@ export const routes: RouteObject[] = [
 						]}>
 						<JobOpportunitiesRelatedToSkills />
 					</AppLayout>)
+					},
+					{
+						path: MY_JOB_OPPORTUNITIES_DETAIL,
+						element: (
+							<AppLayout
+						allowedRoles={[
+							Roles.HR_WORKER,
+						]}>
+						<JobOpportunitiesSelected />
+					</AppLayout>
+							
+						)
 					}
 				]
 			},	
 			{
 				path: "*",
-				element: <Navigate to={`/${GAPS_ANALYSIS_MODULE}/${COMPETENCES}`} 
+				element: <Navigate to={`/${GAPS_ANALYSIS_MODULE}/${COMPETENCES}/${INDEX}`} 
 				replace />
 			}
 		]

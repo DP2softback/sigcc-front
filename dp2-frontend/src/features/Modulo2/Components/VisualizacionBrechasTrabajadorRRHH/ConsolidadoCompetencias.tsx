@@ -2,7 +2,7 @@ import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { useEffect, useState } from "react";
 import { Link, useNavigate  } from 'react-router-dom';
-import { Competencia, tipoCompetencia } from "../GestionDeCompetencias/Tipos";
+import { Competencia, tipoCompetencia,AreaActiva } from "../GestionDeCompetencias/Tipos";
 import DetalleCompetenciasArea from "./DetalleCompetenciasArea";
 import { set } from "lodash";
 
@@ -37,8 +37,10 @@ const PieChart = ({ title, labels, datasets }) => {
       const [data2, setData2] = useState(null);
       const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
       const [tipoCompetencia, setTipoCompetencia] = useState<tipoCompetencia>(null);
+      const [areasActivas, setAreasActivas] = useState<AreaActiva[]>([]);
       const [abbreviation, setAbbreviation] = useState('');
-      useEffect(() => {        
+      useEffect(() => {    
+
         const fetchTipoCompetencias = async () => {
           try {
     
@@ -46,7 +48,7 @@ const PieChart = ({ title, labels, datasets }) => {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
+                Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
               },
             });
     
@@ -61,18 +63,31 @@ const PieChart = ({ title, labels, datasets }) => {
           }
         };
 
+        const fetchAreasActivas = async () => {
+          try {
+            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/employeeArea', {
+              headers: {
+                Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d'
+              }
+            });
+            const data = await response.json();
+            setAreasActivas(data);
+          } catch (error) {
+            console.error('Error fetching competencias:', error);
+          }
+        };
 
-        
         const fetchData = async () => {
           const requestOptions = {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
+              'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
             },
             body: JSON.stringify({
-              idArea: 0, // Poner 0 para toda la empresa, poner el <id> si es por área
-              activo: 2, // Poner 2 si es cualquiera, poner 0 o 1 si es inactivo o activo
+              idArea: 0,
+              idPosicion:  0,
+              activo: 2
             }),
           };
       
@@ -143,6 +158,7 @@ const PieChart = ({ title, labels, datasets }) => {
           }
         };
 
+        fetchAreasActivas();
         fetchData();
         fetchTipoCompetencias();
       }, []);
@@ -156,6 +172,8 @@ const PieChart = ({ title, labels, datasets }) => {
         setData1(data1);
         setData2(data2);
       }
+
+      
       const handleBuscarClick = () => {
       };
       const handleClick = () => {        
@@ -169,7 +187,7 @@ const PieChart = ({ title, labels, datasets }) => {
       
       return (
         <div className="container">
-          <h2>Competencias por área</h2>
+          <h2>Consolidado de competencias</h2>
           
           <div className="row">
             <div className="col-md-6">
@@ -180,8 +198,8 @@ const PieChart = ({ title, labels, datasets }) => {
                 value={abbreviation}
                 onChange={handleCompetenciaChange}
               ><option value="">Todas</option>
-                {tipoCompetencias.map((competencia) => (
-                  <option key={competencia.id} value={competencia.id}>{competencia.abbreviation}</option>
+                {areasActivas.map((area) => (
+                  <option key={area.id} value={area.id}>{area.name}</option>
                 ))}
               </select>
             </div>
@@ -190,22 +208,22 @@ const PieChart = ({ title, labels, datasets }) => {
             </div>
           </div>
 
-          {abbreviation!='' && data1 && data2 && (
-             <div className="row mt-4">
-             <div className="col-md-6">
-               <div className="card">
-                 <div className="card-body">
-                   <h3 className="card-title">Adecuación a competencias de la organización</h3>
-                   <PieChart title='' labels= ''datasets={data1} />
-                   <div className="chart-legend"> 
-                     {/* Agregar aquí la leyenda del gráfico 1 */}
-                   </div>
-                   <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
-                 </div>
-               </div>
-             </div>
-             
-             <div className="col-md-6">
+          {data1 && (
+          <div className="row mt-4">
+              <div className="col-md-6">
+                <div className="card">
+                  <div className="card-body">
+                    <h3 className="card-title">Adecuación a competencias de la organización</h3>
+                    <PieChart title='' labels= ''datasets={data1} />
+                    <div className="chart-legend"> 
+                      {/* Agregar aquí la leyenda del gráfico 1 */}
+                    </div>
+                    <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
+                  </div>
+                </div>
+              </div>
+              {abbreviation!='' && data2 && (
+              <div className="col-md-6">
                <div className="card">
                  <div className="card-body">
                    <h3 className="card-title">Adecuación a competencias de área de {abbreviation}</h3>
@@ -218,12 +236,13 @@ const PieChart = ({ title, labels, datasets }) => {
                    </div>
                </div>
              </div>
-           </div>
-
-
           )
-          
           }
+           </div>
+          )
+          }
+
+          
          
         </div>
       );

@@ -126,12 +126,17 @@
   flex: 1;
   padding-right: 32px;
 }
+.boton-eliminar{
+  align-items: center !important;
+
+}
 .notification {
   position: fixed;
-  top: 50px;
+  top: 6em !important;
   left: 50%;
   transform: translateX(-50%);
   width: 300px;
+  height: 100px;
   opacity: 1;
   background-color: #ffffff;
 }

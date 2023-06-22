@@ -9,6 +9,13 @@ import {
 	ListGroup
 } from "react-bootstrap";
 import "./SearchInput.css";
+import {
+	SAMPLE_TOKEN,
+	LOCAL_CONNECTION,
+	LIST_ALL_PROCESOS_SELECCION
+} from "@features/Modulo4/utils/constants";
+import { ajax } from "@features/Modulo4/tools/ajax";
+import moment from "moment";
 
 const SearchInput = ({ onClose, onSelect }) => {
 	const [showModal, setShowModal] = useState(true);
@@ -43,25 +50,47 @@ const SearchInput = ({ onClose, onSelect }) => {
 		return () => clearTimeout(timer);
 	}, [searchQuery]);
 
+	// OBTIENE LOS PROCESOS DE SELECCION
+	const getProcesosSeleccion = async () => {
+		const optionsRequest = {
+			method: "GET",
+			url: LOCAL_CONNECTION + LIST_ALL_PROCESOS_SELECCION,
+			headers: {
+				Authorization: `Token ${SAMPLE_TOKEN}`
+			}
+		};
+		return await ajax(optionsRequest);
+	};
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const procesos_seleccion = await getProcesosSeleccion();
+			setSearchResults(procesos_seleccion);
+		};
+
+		fetchData();
+	}, []);
+
 	const performSearch = (query) => {
 		// Lógica para realizar la búsqueda y actualizar los resultados
-
+		/*
 		const results = [
 			{ id: 1, nombre: "Puesto 1", fecha: "2023-03-04" },
 			{ id: 2, nombre: "Puesto 2", fecha: "2023-03-04" },
 			{ id: 3, nombre: "Puesto 3", fecha: "2023-03-04" },
 			{ id: 4, nombre: "Puesto 4", fecha: "2023-03-04" }
 		];
-		setSearchResults(results);
+		//setSearchResults(results);
+		*/
 		setFilteredResults(
 			searchResults.filter((item) =>
-				item.nombre.toLowerCase().includes(query.toLowerCase())
+				item.name.toLowerCase().includes(query.toLowerCase())
 			)
 		);
 	};
 
 	const selectOption = (option: any) => {
-		setSelectedResult(option.nombre);
+		setSelectedResult(option.id);
 		setResultToSend(option);
 	};
 
@@ -73,15 +102,19 @@ const SearchInput = ({ onClose, onSelect }) => {
 	};
 
 	return (
-		<>
+		<div
+			style={{
+				minWidth: "20 rem",
+				maxWidth: "20 rem"
+			}}>
 			<Modal
 				show={showModal}
 				onHide={closeModal}
-				size="xl"
-				className="custom-modal"
+				size="lg"
 				style={{
 					borderCollapse: "collapse",
-					height: "100 rem"
+					minWidth: "40 rem",
+					maxWidth: "30 rem"
 				}}>
 				<Modal.Header closeButton>
 					<Modal.Title>Buscar información</Modal.Title>
@@ -113,6 +146,7 @@ const SearchInput = ({ onClose, onSelect }) => {
 							borderRadius: "4px",
 							maxHeight: "18rem",
 							overflowY: "auto",
+							overflowX: "auto",
 							borderCollapse: "collapse",
 							marginBottom: "1rem",
 							height: "20rem"
@@ -125,9 +159,9 @@ const SearchInput = ({ onClose, onSelect }) => {
 									backgroundColor: "white"
 								}}>
 								<tr>
-									<th style={{ width: "2rem" }}>ID</th>
-									<th style={{ width: "1rem" }}>Fecha de creación</th>
-									<th style={{ width: "3rem" }}>Nombre</th>
+									<th style={{ minWidth: "24rem" }}>Nombre del proceso</th>
+									<th style={{ minWidth: "5rem" }}>Postulantes</th>
+									<th style={{ minWidth: "12rem" }}>Fecha de modificación</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -135,12 +169,12 @@ const SearchInput = ({ onClose, onSelect }) => {
 									<tr
 										key={result.id}
 										onClick={() => selectOption(result)}
-										className={
-											selectedResult === result.nombre ? "selected" : ""
-										}>
-										<td>{result.id}</td>
-										<td>{result.fecha}</td>
-										<td>{result.nombre}</td>
+										className={selectedResult === result.id ? "selected" : ""}>
+										<td>{result.name}</td>
+										<td style={{ textAlign: "center" }}>
+											{result.available_positions_quantity}
+										</td>
+										<td>{moment(result.modifiedDate).format("YYYY-MM-DD")}</td>
 									</tr>
 								))}
 							</tbody>
@@ -156,7 +190,7 @@ const SearchInput = ({ onClose, onSelect }) => {
 					</Button>
 				</Modal.Footer>
 			</Modal>
-		</>
+		</div>
 	);
 };
 

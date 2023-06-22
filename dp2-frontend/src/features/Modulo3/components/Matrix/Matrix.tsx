@@ -1,6 +1,6 @@
+import { CONTINUOS_EVALUATION_TYPE } from "@features/Modulo3/utils/constants";
 import "./Matrix.css";
 import RadioButton from "@features/Modulo3/components/Shared/RadioButton/RadioButton";
-import { useEffect, useState } from "react";
 
 type MatrixProps = {
 	header: string[];
@@ -8,12 +8,14 @@ type MatrixProps = {
 	evaluation?: any;
 	setEvaluation?: any;
 	isReadOnly?: boolean;
+	index?: number;
 };
 
-const Matrix = ({header, rows, evaluation, setEvaluation, isReadOnly}: MatrixProps) => {
+const Matrix = ({header, rows, evaluation, setEvaluation, isReadOnly, index}: MatrixProps) => {
 	const headerStyle = `matrixHeader ${isReadOnly ? "matrixWhiteReadOnly" : ""}`;
 	const blueBackgroundColor = isReadOnly ? "matrixBlueReadOnly" : "matrixRowBGBlue";
 	const whiteBackgroundColor = isReadOnly ? "matrixWhiteReadOnly" : "matrixRowBGWhite";
+	const isContinuosEvaluation = evaluation.evaluationType === CONTINUOS_EVALUATION_TYPE;
 
 	const headerComponent = (
 		<div className={headerStyle}>
@@ -37,6 +39,12 @@ const Matrix = ({header, rows, evaluation, setEvaluation, isReadOnly}: MatrixPro
 
 	function displayRow(categoryIndex: number, row: any, header: string[]) {
 		const rowStyle = `matrixRow ${getBackgroundColor(categoryIndex)}`;
+		let subcategories;
+		if (isContinuosEvaluation && !isReadOnly)
+			subcategories = evaluation.subcategories;
+		else 
+			subcategories = evaluation.categories[index].subcategories;
+
 		return (
 			<div key={categoryIndex} className={rowStyle}>
 				<div className="matrixRowName">{row.name}</div>
@@ -45,12 +53,8 @@ const Matrix = ({header, rows, evaluation, setEvaluation, isReadOnly}: MatrixPro
 						<div className="matrixRowRadio" key={item}>
 							<RadioButton
 								parentIndex={row.id}
-								optionIndex={optionIndex}
-								value={
-									evaluation.subcategories.find(
-										(sub) => sub.id == row.id
-									).score == optionIndex
-								}
+								optionIndex={optionIndex + 1}
+								value={subcategories.find((sub) => sub.id == row.id).score == optionIndex + 1}
 								handleClick={changeEvaluation}
 								isReadOnly={isReadOnly}
 							/>
@@ -66,6 +70,39 @@ const Matrix = ({header, rows, evaluation, setEvaluation, isReadOnly}: MatrixPro
 	}
 
 	function changeEvaluation(id: number, value: number) {
+		if(isContinuosEvaluation){
+			updateContinuousEvaluation(id, value);
+		}else{
+			updatePerformanceEvaluation(id, value);
+		}
+	}
+
+	return (
+		<div className="matrix">
+			{headerComponent}
+			{bodyComponent}
+		</div>
+	);
+
+	function updatePerformanceEvaluation(id: number, value: number) {
+		setEvaluation(prevEvaluation => {
+			const updatedCategories = prevEvaluation.categories.map(category => {
+				if (category.id === prevEvaluation.categories[index].id) {
+					const updatedSubcategories = category.subcategories.map(subcategory => {
+						if (subcategory.id === id) {
+							return { ...subcategory, score: value };
+						}
+						return subcategory;
+					});
+					return { ...category, subcategories: updatedSubcategories };
+				}
+				return category;
+			});
+			return { ...prevEvaluation, categories: updatedCategories };
+		});
+	}
+
+	function updateContinuousEvaluation(id: number, value: number) {
 		setEvaluation((prevState) => ({
 			...prevState,
 			subcategories: prevState.subcategories.map(
@@ -81,13 +118,6 @@ const Matrix = ({header, rows, evaluation, setEvaluation, isReadOnly}: MatrixPro
 			)
 		}));
 	}
-
-	return (
-		<div>
-			{headerComponent}
-			{bodyComponent}
-		</div>
-	);
 };
 
 export default Matrix;

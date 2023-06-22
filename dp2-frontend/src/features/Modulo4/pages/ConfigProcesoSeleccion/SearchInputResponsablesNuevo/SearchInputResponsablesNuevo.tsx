@@ -14,6 +14,13 @@ import {
 } from "react-bootstrap";
 import "./SearchInputResponsablesNuevo.css";
 import { forEach } from "lodash";
+import {
+	SAMPLE_TOKEN,
+	LOCAL_CONNECTION,
+	GET_ALL_EMPLOYEES
+} from "@features/Modulo4/utils/constants";
+import { ajax } from "@features/Modulo4/tools/ajax";
+import moment from "moment";
 
 const customStylesTablesPersonal = {
 	header: {
@@ -32,6 +39,37 @@ const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 		onClose();
 	};
 
+	const closeOnSelectModal = () => {
+		onSelect(arrSelectedResponsables);
+		closeModal();
+	};
+
+	// get all trabajadores de RR.HH.
+	const getEmployeesRRHH = async () => {
+		const optionsRequest = {
+			method: "GET",
+			url: LOCAL_CONNECTION + GET_ALL_EMPLOYEES,
+			headers: {
+				Authorization: `Token ${SAMPLE_TOKEN}`
+			}
+		};
+		return await ajax(optionsRequest);
+	};
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const arrEmpCompleto = await getEmployeesRRHH();
+			const arrEmpleados = arrEmpCompleto.map(({ id, user }) => ({
+				id: id,
+				user: user
+			}));
+			//console.log("arrEmpleados:", arrEmpleados);
+			setSearchResults(arrEmpleados);
+		};
+
+		fetchData();
+	}, []);
+
 	// proceso de busqueda
 	const [searchQuery, setSearchQuery] = useState("");
 	const [filteredResults, setFilteredResults] = useState([]);
@@ -44,78 +82,35 @@ const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 	}, [searchQuery]);
 
 	const performSearch = (query) => {
-		setSearchResults(data);
-		setFilteredResults(
-			searchResults.filter((persona) =>
-				persona.nombreCompleto.toLowerCase().includes(query.toLowerCase())
-			)
-		);
-	};
-
-	const closeOnSelectModal = () => {
-		onSelect(arrSelectedResponsables);
-		closeModal();
+		if (query == "") {
+			setFilteredResults([]);
+		} else {
+			setFilteredResults(
+				searchResults.filter((persona) =>
+					(persona.user.last_name + persona.user.first_name)
+						.toLowerCase()
+						.includes(query.toLowerCase())
+				)
+			);
+		}
 	};
 
 	// TODOS LAS TABLAS ESTRUCTURA
 	const columns = [
 		{
-			name: "Registro",
-			selector: (row) => row.registro
+			name: "Nombre completo",
+			selector: (row) => row.user.last_name + " " + row.user.first_name
 		},
 		{
-			name: "Nombre y apellido",
-			selector: (row) => row.nombreCompleto
-		}
-	];
-
-	const data = [
-		{
-			idResponsable: 1,
-			registro: "R123213",
-			nombreCompleto: "Jaime Lannister"
-		},
-		{
-			idResponsable: 2,
-			registro: "R333413",
-			nombreCompleto: "Eddard Stark"
-		},
-		{
-			idResponsable: 3,
-			registro: "R723513",
-			nombreCompleto: "Jon Snow"
-		},
-		{
-			idResponsable: 4,
-			registro: "R623513",
-			nombreCompleto: "Daenerys Targaryen"
-		},
-		{
-			idResponsable: 5,
-			registro: "R343513",
-			nombreCompleto: "Tyrion Lannister"
-		},
-		{
-			idResponsable: 6,
-			registro: "R323513",
-			nombreCompleto: "Sansa Stark"
-		},
-		{
-			idResponsable: 7,
-			registro: "R555513",
-			nombreCompleto: "Arya Stark"
+			name: "Correo eletrónico",
+			selector: (row) => row.user.email
 		}
 	];
 
 	interface TableRow {
-		idResponsable: number;
-		registro: string;
-		nombreCompleto: string;
+		id: number;
+		last_name: string;
 	}
-
-	useEffect(() => {
-		setArrSelectedResponsables(arrResponsables);
-	}, [arrResponsables]);
 
 	// primera tabla
 	const [selectedTrabajador, setSelectedReponsable] = useState<TableRow | null>(
@@ -125,14 +120,15 @@ const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 	const [toggleClearedTrabajador, setToggleClearedTrabajador] =
 		React.useState(false);
 
+	useEffect(() => {
+		setArrSelectedResponsables(arrResponsables);
+	}, [arrResponsables]);
+
 	const handleChangeSelectTable = ({ selectedRows }) => {
 		setSelectedReponsable(selectedRows);
 	};
 
 	const handleAddResponsableToTable = () => {
-		console.log("selectedTrabajador:", selectedTrabajador); // Verificar si selectedTrabajador está definido y es un array
-		console.log("arrSelectedResponsables:", arrSelectedResponsables); // Verificar si selectedTrabajador está definido y es un array
-
 		setToggleClearedTrabajador(!toggleClearedTrabajador);
 		if (Array.isArray(selectedTrabajador) && selectedTrabajador.length > 0) {
 			forEach(selectedTrabajador, (trabajador) => {
@@ -161,7 +157,7 @@ const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 				Agregar
 			</Button>
 		);
-	}, [data, selectedTrabajador, toggleClearedTrabajador]);
+	}, [searchResults, selectedTrabajador, toggleClearedTrabajador]);
 
 	// segunda tabla
 	const [selectedResponsable, setSelectedResponsable] = useState<
@@ -182,7 +178,7 @@ const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 				arrSelectedResponsables.filter(
 					(responsable) =>
 						!(selectedResponsable as any[]).some(
-							(selected) => selected.idResponsable === responsable.idResponsable
+							(selected) => selected.id === responsable.id
 						)
 				)
 			);
@@ -205,12 +201,15 @@ const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 	}, [arrSelectedResponsables, selectedResponsable, toggleClearedResponsable]);
 
 	return (
-		<>
+		<div
+			style={{
+				minWidth: "40rem",
+				maxWidth: "40rem"
+			}}>
 			<Modal
 				show={showModal}
 				onHide={closeModal}
 				size="xl"
-				className="custom-modal"
 				style={{
 					borderCollapse: "collapse",
 					height: "100 rem"
@@ -221,56 +220,60 @@ const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 					</Modal.Title>
 				</Modal.Header>
 				<Modal.Body style={{ paddingLeft: "3%", maxWidth: "98%" }}>
-					<Row style={{ paddingLeft: "3%" }}>
+					<Row style={{ paddingLeft: "1.6%" }}>
 						<Form>
 							<Form.Group controlId="searchInput">
-								<Form.Label style={{ marginBottom: "3s.78em" }}>
-									Buscar al personal responsable:
+								<Form.Label
+									style={{ marginBottom: "3s.78em", fontSize: "1rem" }}>
+									Búsqueda de personal RR.HH. responsable:
 								</Form.Label>
 								<FormControl
 									type="text"
-									placeholder="Escribe aquí el nombre del personal"
+									placeholder="Escribe el nombre del personal."
 									value={searchQuery}
 									onChange={(e) => setSearchQuery(e.target.value)}
 									style={{ marginBottom: "3s.78em", maxWidth: "98%" }}
 								/>
 							</Form.Group>
-						</Form>{" "}
+						</Form>
 					</Row>
 					<Row>
-						<div style={{ height: "19rem" }}>
-							<FixedHeaderStory
-								title="Lista del personal de RR.HH."
-								columns={columns}
-								data={filteredResults}
-								selectableRows
-								contextActions={contextActionsTrabajador}
-								onSelectedRowsChange={handleChangeSelectTable}
-								clearSelectedRows={toggleClearedTrabajador}
-								pagination
-								fixedHeader
-								fixedHeaderScrollHeight="12rem"
-								customStyles={customStylesTablesPersonal}
-							/>
-						</div>
-					</Row>
-					<hr />
-					<Row>
-						<div style={{ height: "16rem" }}>
-							<FixedHeaderStory
-								title="Listado de responsables seleccionados"
-								columns={columns}
-								data={arrSelectedResponsables}
-								selectableRows
-								contextActions={contextActions}
-								onSelectedRowsChange={handleRowSelected}
-								clearSelectedRows={toggleClearedResponsable}
-								pagination
-								fixedHeader
-								fixedHeaderScrollHeight="11rem"
-								customStyles={customStylesTablesPersonal}
-							/>
-						</div>
+						<Col>
+							<div style={{ height: "20rem" }}>
+								<FixedHeaderStory
+									title="Resultados de búsqueda"
+									noDataComponent="No hay resultados de búsqueda"
+									columns={columns}
+									data={filteredResults}
+									selectableRows
+									contextActions={contextActionsTrabajador}
+									onSelectedRowsChange={handleChangeSelectTable}
+									clearSelectedRows={toggleClearedTrabajador}
+									pagination
+									fixedHeader
+									fixedHeaderScrollHeight="14rem"
+									customStyles={customStylesTablesPersonal}
+								/>
+							</div>
+						</Col>
+						<Col>
+							<div style={{ height: "20rem" }}>
+								<FixedHeaderStory
+									title="Responsables seleccionados"
+									noDataComponent="No hay responsables seleccionados"
+									columns={columns}
+									data={arrSelectedResponsables}
+									selectableRows
+									contextActions={contextActions}
+									onSelectedRowsChange={handleRowSelected}
+									clearSelectedRows={toggleClearedResponsable}
+									pagination
+									fixedHeader
+									fixedHeaderScrollHeight="14rem"
+									customStyles={customStylesTablesPersonal}
+								/>
+							</div>
+						</Col>
 					</Row>
 				</Modal.Body>
 				<Modal.Footer>
@@ -288,7 +291,7 @@ const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 					</Button>
 				</Modal.Footer>
 			</Modal>
-		</>
+		</div>
 	);
 };
 

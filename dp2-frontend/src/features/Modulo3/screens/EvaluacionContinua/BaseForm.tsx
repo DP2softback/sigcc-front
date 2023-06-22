@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./EvaluacionContinua.css";
 import { CONTINUOS_EVALUATION_HISTORY, CONTINUOS_EVALUATION_INDEX } from "@features/Modulo3/routes/path";
 import Layout from "@features/Modulo3/components/Layout/Content/Content";
@@ -10,6 +9,7 @@ import { Button } from "react-bootstrap";
 import { useState } from "react";
 import { navigateBack, navigateTo } from "@features/Modulo3/utils/functions";
 import { saveEvaluation } from "@features/Modulo3/services/continuousEvaluation";
+import { TEXTAREA_ROWS } from "@features/Modulo3/utils/constants";
 
 type BaseFormProps = {
 	employee: any;
@@ -26,10 +26,7 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
   const [selectedCategory, setSelectedCategory] = useState(null);
 	
 	const evaluationCategory = isReadOnly ? (
-		evaluation &&
-		evaluation.categoryName && (
-			<Form.Control type="text" disabled value={evaluation.categoryName[0]} />
-		)
+		<Form.Control type="text" disabled value={evaluation?.categories?.[0]?.name} />
 	) : (
 		<Form.Select
 			value={evaluation && evaluation.categoryId}
@@ -56,21 +53,18 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 	);
 
 	const evaluationMatrix = isReadOnly ? (
-		evaluation && evaluation.subcategories ? (
-			<Matrix
-				header={["Muy mala", "Mala", "Regular", "Buena", "Muy buena"]}
-				rows={evaluation.subcategories}
-				evaluation={evaluation}
-				setEvaluation={setEvaluation}
-				isReadOnly={isReadOnly}
-			/>
-		) : (
-			<></>
-		)
+		<Matrix
+			header={["Muy mala", "Mala", "Regular", "Buena", "Muy buena"]}
+			rows={evaluation?.categories?.[0]?.subcategories}
+			evaluation={evaluation}
+			setEvaluation={setEvaluation}
+			index={0}
+			isReadOnly={isReadOnly}
+		/>
 	) : evaluation && evaluation.categoryId ? (
 		<Matrix
 			header={["Muy mala", "Mala", "Regular", "Buena", "Muy buena"]}
-			rows={selectedCategory.subcategories}
+			rows={selectedCategory?.subcategories}
 			evaluation={evaluation}
 			setEvaluation={setEvaluation}
 			isReadOnly={isReadOnly}
@@ -82,12 +76,12 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 	const additionalComments = (
 		<div className={isReadOnly ? `mb-4` : ""}>
 			<Form.Control
-				value={evaluation && evaluation.additionalComments}
+				value={evaluation?.additionalComments}
 				disabled={isReadOnly}
 				as="textarea"
 				aria-label="With textarea"
 				placeholder="Ingrese los comentarios o recomendaciones que crea conveniente"
-				rows={3}
+				rows={TEXTAREA_ROWS}
 				onChange={onAdditionalCommentsChange()}
 			/>
 		</div>
@@ -95,21 +89,17 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 
 	const cancelButton = (
 		<Button
-			variant="outline-primary me-2"
+			variant={`outline-primary ${isReadOnly ? '' : 'me-2'}`}
 			onClick={() => {
 				navigateBack();
 			}}
 		>
-			Cancelar
+			{isReadOnly ? <>Volver</> : <>Cancelar</>}
 		</Button>
 	);
 
 	const saveButton = !isReadOnly && (
-		<Button
-			onClick={() => {
-				handleSave();
-			}}
-		>
+		<Button onClick={() => handleSave()}>
 			Guardar evaluación
 		</Button>
 	);
@@ -117,7 +107,7 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 	const additionalCommentsAndSave = (
 		<>
 			{additionalComments}
-			<div className="text-end mt-32 mb-4">
+			<div className="text-end mt-32">
 				{cancelButton}
 				{saveButton}
 			</div>
@@ -126,31 +116,33 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 
 	const body = (
 		<>
-			<div className="row">
+			<div className="row" style={aditionTitleStyle}>
 				<div className="col-md-4">
 					<Section
-						title={"Categoría de evaluación"}
+						title={`Categoría de evaluación ${isReadOnly ? '' : '*'}`}
 						content={evaluationCategory}
 						titleStyle={aditionTitleStyle}
 					/>
 				</div>
 				<div className="col-md-4">
 					<Section
-						title={"Proyecto asociado"}
+						title={`Proyecto asociado ${isReadOnly ? '' : '*'}`}
 						content={asociatedProject}
 						titleStyle={aditionTitleStyle}
 					/>
 				</div>
 			</div>
 			<Section
-				title={"Evaluación"}
+				title={`Evaluación ${isReadOnly ? '' : '*'}`}
 				content={evaluationMatrix}
 				titleStyle={aditionTitleStyle}
+				sectionStyle={aditionTitleStyle}
 			/>
 			<Section
-				title={"Comentarios adicionales"}
+				title={`Comentarios adicionales ${isReadOnly ? '' : '*'}`}
 				content={additionalCommentsAndSave}
 				titleStyle={aditionTitleStyle}
+				sectionStyle={{marginBottom: 0}}
 			/>
 		</>
 	);
@@ -208,6 +200,7 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 		<div>
 			<Layout
 				title={`Evaluación continua - ${employee.name}`}
+				subtitle="Los campos con (*) son obligatorios."
 				body={isLoading ? <LoadingScreen/> : body}
 				route={CONTINUOS_EVALUATION_INDEX}
 			/>
