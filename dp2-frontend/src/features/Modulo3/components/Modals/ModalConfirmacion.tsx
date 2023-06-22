@@ -7,7 +7,7 @@ import { navigateTo } from "@features/Modulo3/utils/functions";
 import { ToastContainer, toast } from "react-toastify";
 import { EVALUATION_TEMPLATE_INDEX } from "@features/Modulo3/routes/path";
 import { eliminarSubcategorie } from "@features/Modulo3/services/categories";
-import { Console } from "console";
+
 
 const ModalConfirmacion = (props) => {
 	const { show, setShow, idPlantilla,type,idSubCat,idCategorie } = props;
@@ -40,8 +40,7 @@ const ModalConfirmacion = (props) => {
 		(async () => { 
 			const response = await eliminarSubcategorie(idSubCat,idCategorie);
 			if (response){
-				console.log("response",response)
-				toast.success("Se ha eliminado correctamente la subcategoria");
+				toast.success("Se ha quitado correctamente la competencia");
 				setShow(false);
 				closeNotification();
 			}
@@ -65,7 +64,7 @@ const ModalConfirmacion = (props) => {
 				{type === "plantilla" ? 
 				<div>¿Esta seguro que quieres eliminar la plantilla actual?</div>
 				:
-				<div>¿Esta seguro que quieres eliminar la subcategoria seleccionada?</div>
+				<div>¿Esta seguro que quieres quitar la competencia seleccionada?</div>
 				}
 				
 			</Modal.Body>
@@ -74,7 +73,7 @@ const ModalConfirmacion = (props) => {
        			Volver
      		</Button>
             <Button variant="danger" onClick={type==="plantilla"? handleEliminarPlantilla :handleEliminarSubCate}>
-              Eliminar
+			{type==="plantilla"? <div>Eliminar</div> :<div>Quitar</div>}
             </Button>
             </Modal.Footer>
 		</Modal>
