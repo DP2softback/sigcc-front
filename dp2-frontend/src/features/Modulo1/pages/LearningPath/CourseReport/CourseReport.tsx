@@ -34,6 +34,7 @@ const CourseReport = () => {
     const [loading, setLoading] = useState(false);
     const [loading1, setLoading1] = useState(false);
     const [loading2, setLoading2] = useState(false);
+    const [loading3, setLoading3] = useState(false);
 
     const [lp, setLp] = useState<any>([])
     const [courses, setCourses] = useState<any[]>([])
@@ -41,6 +42,7 @@ const CourseReport = () => {
     const { learningPathId } = useParams();
     const [optionCourse, setOptionCourse] = useState('Avance')
     const [statesLP, setStatesLP] = useState<any[]>([])
+    const [statesCourse, setStatesCourse] = useState<any>([])
 
     const navigate = useNavigate();
     const goBack = () => {
@@ -53,7 +55,8 @@ const CourseReport = () => {
 
 
     const handleCourseReporte = (course: any) => {
-        setCourseSelected(course)
+        setCourseSelected(course);
+        loadStatesCourse(course.id);
     }
 
 
@@ -96,8 +99,22 @@ const CourseReport = () => {
             });
     }
 
-    const loadStars = () => {
+    const loadStatesCourse = (id: number) => {
         setLoading2(true);
+        axiosInt.get(`capacitaciones/learning_path/progress_course/employees/${learningPathId}/${id}/`)
+            .then(function (response) {
+                console.log(response.data)
+                setStatesCourse(response.data);
+                setLoading2(false);
+            })
+            .catch(function (error) {
+                console.log(error);
+                setLoading2(false);
+            });
+    }
+
+    const loadStars = () => {
+        setLoading3(true);
         // axiosInt.get(`capacitaciones/learning_path_from_template/${learningPathId}/`)
         //     .then(function (response) {
         //         console.log(response.data[1])
@@ -108,7 +125,7 @@ const CourseReport = () => {
         //         console.log(error);
         //         setLoading(false);
         //     });
-        setLoading2(false);
+        setLoading3(false);
     }
 
     useEffect(() => {
@@ -184,7 +201,6 @@ const CourseReport = () => {
                                     :
                                     <div className='row' style={{ paddingTop: "1.25rem", display: "flex" }}>
 
-
                                         <div style={{ width: "34%" }}>
                                             <div style={{ fontWeight: "bold" }}>Cursos</div>
                                             <div style={{ display: "flex", flexDirection: "column", paddingTop: "0.75rem" }}>
@@ -211,7 +227,6 @@ const CourseReport = () => {
                                                 </div>
                                             </div>
                                         </div>
-
 
                                         {courseSelected.length == 0 ?
                                             <div style={{ width: "66%" }}>
@@ -242,8 +257,8 @@ const CourseReport = () => {
                                                                                 <div className="h-100" style={{ display: "flex", flexDirection: "row" }}>
                                                                                     <div className="card-body" style={{ display: "flex", flexDirection: "column" }}>
                                                                                         <h6 style={{ fontSize: "12px" }}>{employee.empleado.usuario.first_name + " " + employee.empleado.usuario.last_name}</h6>
-                                                                                        <h6 style={{ fontSize: "12px" }}>{employee.estado}</h6>
-                                                                                        <h6 style={{ fontSize: "12px" }}>{employee.porcentaje_progreso}</h6>
+                                                                                        <h6 style={{ fontSize: "12px" }}>Estado: {employee.estado}</h6>
+                                                                                        <h6 style={{ fontSize: "12px" }}>Progreso: {employee.porcentaje_progreso}</h6>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -253,38 +268,76 @@ const CourseReport = () => {
                                                             </div>
 
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>
 
                                             :
+                                            <>
 
-                                            <div style={{ width: "66%" }}>
-                                                <div style={{ fontWeight: "bold", color: "#F8F8F9" }}>CURSO</div>
-                                                <div style={{ display: "flex", flexDirection: "column", paddingTop: "0.75rem" }}>
-                                                    <div className='align-items-stretch g-3 px-0 mx-0'>
-                                                        {
-                                                            courses.map((course) => {
-                                                                return (
-                                                                    <div className='col' key={course.id} style={{ paddingBottom: "1rem" }}>
-                                                                        <div className="card h-100" style={{ display: "flex" }}>
-                                                                            <img
-                                                                                src={course.tipo_curso == 'U' ? course.course_udemy_detail.image_480x270 == null ? url_foto_default : course.course_udemy_detail.image_480x270 : course.url_foto}
-                                                                                className="card-img-top lp-card-img"
-                                                                                alt="Card"
-                                                                            />
-                                                                            <div className="card-body">
-                                                                                <h6 className="card-title">{course.nombre}</h6>
+
+                                                <div style={{ width: "66%" }}>
+                                                    <div style={{ fontWeight: "bold", color: "#F8F8F9" }}>LP</div>
+                                                    <div style={{ display: "flex", flexDirection: "column", paddingTop: "0.75rem" }}>
+                                                        <div className='align-items-stretch g-3 px-0 mx-0'>
+                                                            <div className="card h-100" style={{ display: "flex", padding: "1rem" }}>
+
+                                                                {loading2 ?
+                                                                    <>
+                                                                        <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                                                                            <div className='vertical-align-child'>
+                                                                                <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                                                                    <span className="visually-hidden">Loading...</span>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                )
-                                                            })
-                                                        }
+                                                                    </>
+
+
+                                                                    :
+                                                                    <>
+                                                                        <div style={{ display: "flex", alignItems: "center", paddingBottom: "1rem" }}>
+                                                                            <div style={{ paddingRight: "1rem" }}>
+                                                                                {
+                                                                                    statesCourse[0].url_foto === null ?
+                                                                                        (<img src={url_foto_default} style={{ borderRadius: "100%", width: "3rem", height: "3rem" }}></img>)
+                                                                                        :
+                                                                                        (<img src={statesCourse[0].url_foto} style={{ borderRadius: "100%", width: "3rem", height: "3rem" }}></img>)
+                                                                                }
+                                                                            </div>
+                                                                            <div>
+                                                                                <h1 className='screenTitle' style={{ fontSize: "20px" }}>Avance {statesCourse[0].nombre}</h1>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div>
+                                                                            {
+                                                                                statesCourse[1].map((employee) => {
+                                                                                    return (
+                                                                                        <div className='col' key={employee.id} style={{ paddingBottom: "1rem" }}>
+                                                                                            <div className="h-100" style={{ display: "flex", flexDirection: "row" }}>
+                                                                                                <div className="card-body" style={{ display: "flex", flexDirection: "column" }}>
+                                                                                                    <h6 style={{ fontSize: "12px" }}>{employee.empleado.usuario.first_name + " " + employee.empleado.usuario.last_name}</h6>
+                                                                                                    <h6 style={{ fontSize: "12px" }}>Estado: {employee.estado}</h6>
+                                                                                                    <h6 style={{ fontSize: "12px" }}>Progreso: {employee.porcentaje_progreso}</h6>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                        </div>
+                                                                    </>
+
+                                                                }
+
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+
+                                            </>
+
 
                                         }
 
