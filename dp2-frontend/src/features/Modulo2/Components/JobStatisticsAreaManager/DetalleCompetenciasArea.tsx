@@ -4,8 +4,9 @@ import UpdateCompetencia from './Update';
 import DeleteCompetencia from './Delete';
 import {ArrowRightCircleFill,Pencil,Trash } from 'react-bootstrap-icons';
 import { useLocation,  useNavigate  } from 'react-router-dom';
-import axiosEmployeeGaps from '@features/Modulo2/services/EmployeeGapsServices';
 import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos';
+import './DetalleCompetenciasArea.css';
+import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE } from '@features/Modulo2/routes/path';
 
 const DetalleCompetenciasArea = () => {
   const navigate = useNavigate();
@@ -21,15 +22,30 @@ const DetalleCompetenciasArea = () => {
     const [competenciaSeleccionada, setCompetenciaSeleccionada] = useState(null);
     const [empleados, setEmpleados] = useState<EmpleadoDeArea[]>([]);
       useEffect(() => {
-        const obj = {
-          area: 2,
-          posicion:  0
+  
+        const fetchAreasActivas = async () => {
+        try {
+          
+          const requestOptions = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+            },
+            body: JSON.stringify({ 
+              area: 1,
+              posicion:  2,
+            }),
+          };
+          const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/employeeArea', requestOptions);
+          const data = await response.json();
+          setEmpleados(data);
+        } catch (error) {
+          console.error('Error fetching competencias:', error);
         }
-        axiosEmployeeGaps.post("gaps/employeeArea", obj)
-        .then((response) => {
-          setEmpleados(response.data);
-        });
-      }, []);     
+      }
+      fetchAreasActivas();
+    }, []);     
     const actualizarCompetencia = (nuevaCompetencia) => {
       var tablaAux = empleados;
       const indice = empleados.findIndex((competencia) => competencia.id=== nuevaCompetencia.id);
@@ -71,7 +87,7 @@ const DetalleCompetenciasArea = () => {
     };
 
     const handleClick = (usuario) => {        
-      navigate('/GestionCompetencias', { state: { usuario } });
+      navigate(`/${GAPS_ANALYSIS_MODULE}/${GAPS_EMPLOYEES_AREA}/${GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE}`, { state: { usuario } });
       };
 
     const handleOrdenarPorCampo = (campo) => {
@@ -128,20 +144,26 @@ const DetalleCompetenciasArea = () => {
             <thead>
                 <tr>
                     <th onClick={() => handleOrdenarPorCampo('user__first_name')}>
-                    Nombres
+                    Nombre
                     {campoOrdenamiento === 'user__first_name' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
                     <th onClick={() => handleOrdenarPorCampo('user__last_name')}>
-                    Apellido
+                    Apellidos
                     {campoOrdenamiento === 'user__last_name' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
                     <th onClick={() => handleOrdenarPorCampo('position__name')}>
-                    Revisar competencias
+                    Porcentaje de adecuación
                     {campoOrdenamiento === 'position__name' && (
+                        <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
+                    )}
+                    </th>
+                    <th onClick={() => handleOrdenarPorCampo('user__email')}>
+                    Correo
+                    {campoOrdenamiento === 'user__email' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
@@ -168,16 +190,6 @@ const DetalleCompetenciasArea = () => {
                     <ArrowRightCircleFill color='gray'></ArrowRightCircleFill>
                       <i className="bi bi-box-arrow-in-right"></i>
                     </Button>
-                    <Button variant="link" size="sm" onClick={
-                      ()=>{handleMostrarPopUpActualizar(competencia);}}>
-                      <Pencil></Pencil>
-                      <i className="bi bi-pencil"></i>
-                    </Button>
-                    <Button variant="link" size="sm" onClick={
-                      ()=>{handleMostrarPopUpBorrar(competencia);}}>
-                      <Trash color='red'></Trash>
-                      <i className="bi bi-trash"></i>
-                    </Button>
                   </td>
                 </tr>
               ))}
@@ -189,8 +201,8 @@ const DetalleCompetenciasArea = () => {
   return (
     <div className="pantalla">
       <div className='titles'>
-      <h2>Empleados del puesto de asistente</h2>
-      <p className="text-muted">Consultar competencias de los empleados.</p>
+      <h2 className='Head'>Empleados del puesto de asistente</h2>
+      <p className="text-muted subtitle">Consultar competencias de los empleados.</p>
       </div>
 
       <Form className="FormComp">
