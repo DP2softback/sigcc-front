@@ -8,11 +8,7 @@ import { set } from "lodash";
 import './ConsolidadoCompetencias.css';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_ORG, GAPS_EMPLOYEES_ORG_DETAIL } from '@features/Modulo2/routes/path';
 
-<<<<<<< HEAD
 import {TOKEN_SERVICE, URL_SERVICE} from '@features/Modulo2/Services/ServicesApis'
-=======
-import {TOKEN_SERVICE} from '@features/Modulo2/services/ServicesApis'
->>>>>>> 0dcbabdf2cda641ad7555d677b2f91fc3c4a6fe7
 
 const PieChart = ({ title, labels, datasets }) => {
     ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -71,20 +67,6 @@ const PieChart = ({ title, labels, datasets }) => {
             }
           } catch (error) {
             console.log('Error al obtener los datos de competencias:', error);
-          }
-        };
-
-        const fetchAreasActivas = async () => {
-          try {
-            const response = await fetch(URL_SERVICE + '/gaps/employeeArea', {
-              headers: {
-                Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d'
-              }
-            });
-            const data = await response.json();
-            setAreasActivas(data);
-          } catch (error) {
-            console.error('Error fetching competencias:', error);
           }
         };
 
@@ -169,7 +151,6 @@ const PieChart = ({ title, labels, datasets }) => {
           }
         };
 
-        fetchAreasActivas();
         fetchData();
         fetchTipoCompetencias();
       }, []);
