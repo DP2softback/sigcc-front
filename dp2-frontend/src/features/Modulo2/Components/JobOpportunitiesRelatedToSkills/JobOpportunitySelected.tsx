@@ -1,7 +1,6 @@
 import React from 'react'
-import { ArrowLeftCircleFill } from 'react-bootstrap-icons';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-
+import { useLocation, useNavigate } from 'react-router-dom';
+import './JobOpportunitySelected.css';
 
 const JobOpportunitySelected = () => {
 
@@ -16,95 +15,72 @@ const JobOpportunitySelected = () => {
 
     const handleSubmit = () => {
         setShowModal(false)
-        navigate("/selection-offers-and-positions/job-offers/register");
     }
 
     return (
         <>
             <div className='row'>
-            <div
-				style={{
-					display: "flex",
-					alignItems: "center",
-					paddingLeft: "10px"
-				}}>
-
 				<div className="col">
-					<h1 className="screenTitle">{"Detalle de la oferta laboral"}</h1>
-					<p>
-						<small className="subtitle">
-							Descripción de la oferta, requisitos para el puesto y beneficios
-							otorgados para el contratado.
-						</small>
-					</p>
-				</div>
+				<h2 className="screenTitle">Detalle de la oferta laboral</h2>
+				<p className="text-muted">
+					Descripción de la oferta, requisitos para el puesto y beneficios otorgados para el contratado.
+				</p>
 			</div>
-            
 			<div>
 				<div className="row mt-3">
 					<div className="col-12">
-						<div className="card px-2">
+						<div className="card-job px-3 py-2">
 							<div className="row">
 								<div className="col-6">
-									<h1>{jobOpp.introduction}</h1>
-									<div>Área de desarrollo de software</div>
+									<div className='job-title'>{jobOpp.introduction}</div>
+									<div className='job-area'>Área de desarrollo de software</div>
 								</div>
 								<div className="col-6 d-flex justify-content-end align-items-center">
 									<button type="button" className="btn btn-primary mx-2" onClick={()=>handleSubmit()}>
 										Aceptar postulación
 									</button>
-                                    <button type="button" className="btn btn-primary" onClick={()=>handleSubmit()}>
-										Declinar postulación
-									</button>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-
-				<div className="row mt-3">
-					<div className="col-6">
+				<div className="row mt-3 mx-0">
+					<div className="col-6 card-job">
 						<div className="row-7 mt-2">
-							<div className="card">
-								<h3 className="px-1">Descripcion del puesto</h3>
-								<div className="px-3">{jobOpp.job_description}</div>
-							</div>
+							<h3 className="px-1">Descripcion del puesto</h3>
+							<div className="px-3 job-text">{jobOpp.responsabilities_introduction ? jobOpp.responsabilities_introduction : 'Descripción no disponible'}</div>
 						</div>
 						<div className="row-7 mt-2">
-							<div className="card">
-								<h3 className="px-1">Responsabilidades</h3>
-								<div className="px-3">
-									{jobOpp.responsibilities
-										.split("\n")
-										.map((element, index) => (
-											<div key={index}>{element}</div>
-										))}
-								</div>
-							</div>
-						</div>
-						<div className="row-7 mt-2">
-							<div className="card">
-								<h3 className="px-1">Requisitos</h3>
-								<div className="px-3">
-									{jobOpp.requirements.split("\n").map((element, index) => (
+							<h3 className="px-1">Responsabilidades</h3>
+							<div className="px-3 job-text">
+								{jobOpp.responsibilities
+									.split("\n")
+									.map((element, index) => (
 										<div key={index}>{element}</div>
 									))}
-								</div>
+							</div>
+						</div>
+						<div className="row-7 mt-2">
+							<h3 className="px-1">Requisitos</h3>
+							<div className="px-3 job-text">
+								{jobOpp.requirements.split("\n").map((element, index) => (
+									<div key={index}>{element}</div>
+								))}
 							</div>
 						</div>
 					</div>
 					<div className="col-6">
-						<div className="row-5 mt-2">
-							<div className="card">
-								<h3 className="px-1">Beneficios</h3>
-								<div className="px-3">{jobOpp.benefits}</div>
+						<div className="row-7 mb-2 card-job py-2">
+							<h3 className="px-3">Beneficios</h3>
+							<div className='px-4 job-text'>
+							{jobOpp.benefits.split("\n").map((element, index) => (
+									<div key={index}>{element}</div>
+								))}
 							</div>
 						</div>
-						<div className="row-5 mt-2">
-							<div className="card">
-								<h3 className="px-1">Resumen</h3>
-								<div className="px-3">{jobOpp.summary}</div>
-							</div>
+						<div className="row-5 mt-2 card-job py-2	">
+							<h3 className="px-3">Resumen</h3>
+							<div className="px-4 job-text">{jobOpp.summary}</div>
 						</div>
 					</div>
 				</div>

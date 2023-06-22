@@ -26,7 +26,9 @@ const JobOpportunitiesRelatedToSkills = () => {
                 "requirements":
                     "1. Experiencia demostrable en análisis de datos y el uso de herramientas como SQL, Python y Tableau.\n2. Conocimiento sólido de estadísticas y métodos de análisis de datos.\n3. Habilidad para comunicar de manera efectiva los resultados del análisis.\n4. Capacidad para trabajar en equipo y colaborar con otros departamentos.\n5. Titulación universitaria en estadística, ciencias de la computación o campo relacionado.",
                 "summary":
-                    "Buscamos un analista de datos con experiencia en el manejo de grandes conjuntos de datos y habilidades en herramientas como SQL, Python y Tableau. Ofrecemos un ambiente desafiante, oportunidades de desarrollo y un paquete de beneficios competitivo."
+                    "Buscamos un analista de datos con experiencia en el manejo de grandes conjuntos de datos y habilidades en herramientas como SQL, Python y Tableau. Ofrecemos un ambiente desafiante, oportunidades de desarrollo y un paquete de beneficios competitivo.",
+                "benefits":
+                    "1. Planilla desde el primer día de trabajo.\n2. Beneficios de Ley\n 3.Aprendizaje continuo\n 4.Capacitación constante"
             },
             {
                 "id": 2,
@@ -45,7 +47,9 @@ const JobOpportunitiesRelatedToSkills = () => {
                 "requirements":
                     "1. Experiencia demostrable en el desarrollo de software utilizando lenguajes como Java y Python.\n2. Conocimientos sólidos en bases de datos y desarrollo web.\n3. Capacidad para trabajar en equipo y comunicarse de manera efectiva.\n4. Habilidades analíticas y capacidad para resolver problemas técnicos.\n5. Creatividad y capacidad para proponer soluciones innovadoras.\n6. Titulación universitaria en ciencias de la computación, ingeniería de software o campo relacionado.",
                 "summary":
-                    "Buscamos un desarrollador de software altamente motivado y creativo con experiencia en Java, Python, bases de datos y desarrollo web. Ofrecemos un ambiente de trabajo desafiante, oportunidades de crecimiento profesional y un paquete de beneficios competitivo."
+                    "Buscamos un desarrollador de software altamente motivado y creativo con experiencia en Java, Python, bases de datos y desarrollo web. Ofrecemos un ambiente de trabajo desafiante, oportunidades de crecimiento profesional y un paquete de beneficios competitivo.",
+                "benefits":
+                    "1. Planilla desde el primer día de trabajo.\n2. Beneficios de Ley\n 3.Aprendizaje continuo\n 4.Capacitación constante"
             },
             
             {
@@ -65,7 +69,9 @@ const JobOpportunitiesRelatedToSkills = () => {
                 "requirements":
                     "1. Experiencia demostrable en diseño gráfico y el uso de herramientas como Adobe Photoshop e Illustrator.\n2. Conocimiento sólido de los principios del diseño, como la composición, el color y la tipografía.\n3. Habilidad para trabajar en equipo y comunicarse de manera efectiva.\n4. Creatividad y capacidad para proponer ideas innovadoras.\n5. Titulación universitaria en diseño gráfico, artes visuales o campo relacionado.",
                 "summary":
-                    "Buscamos un diseñador gráfico talentoso y apasionado con experiencia en el uso de herramientas como Adobe Photoshop e Illustrator. Ofrecemos un entorno de trabajo creativo, flexibilidad horaria y un paquete de beneficios competitivo."
+                    "Buscamos un diseñador gráfico talentoso y apasionado con experiencia en el uso de herramientas como Adobe Photoshop e Illustrator. Ofrecemos un entorno de trabajo creativo, flexibilidad horaria y un paquete de beneficios competitivo.",
+                "benefits":
+                    "1. Planilla desde el primer día de trabajo.\n2. Beneficios de Ley\n 3.Aprendizaje continuo\n 4.Capacitación constante"
             }
 
         ]
