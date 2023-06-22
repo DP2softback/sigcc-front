@@ -3,7 +3,7 @@ import { formatDate, formatNumberWithTwoDecimals, navigateTo } from '@features/M
 import './TableHistory.css';
 import { CATEGORIES_DETAIL } from '@features/Modulo3/routes/path';
 
-export default function TableCompetencia({ rows, isReadOnly = false }) {
+export default function TableCompetencia({ rows, isReadOnly = false,setShow,setIdSubCat }) {
   function getBackgroundColor(categoryIndex: number) {
     return isReadOnly
       ? categoryIndex % 2 == 0
@@ -12,6 +12,11 @@ export default function TableCompetencia({ rows, isReadOnly = false }) {
       : categoryIndex % 2 == 0
       ? 'bg-blue'
       : 'bg-white';
+  }
+  const handleEliminar = (idSubCategory)=>{
+    setIdSubCat(idSubCategory)
+    setShow(true);
+    
   }
 
   return (
@@ -26,17 +31,18 @@ export default function TableCompetencia({ rows, isReadOnly = false }) {
         {rows.map((row, index) => {
           const rowStyle = `matrixRow ${getBackgroundColor(index)}`;
           return (
-            <tr key={row.id} className={rowStyle}>
-              <td className='categorie_name'>{row.name}</td>
+            row.isActive === true?
+            <tr key={row.idSubcategory} className={rowStyle}>
+              <td className='categorie_name'>{row.nameSubCategory}</td>
               <td className='text-center'>                
                 <div className='acciones'>
-                <Button variant="outline-danger" className='accion'>
-                  Eliminar
+                <Button variant="outline-danger" className='accion' onClick={()=>handleEliminar(row.idSubcategory)}>
+                  Quitar
                 </Button>
                 </div>
 
               </td>
-            </tr>
+            </tr>:<tr key={row.idSubcategory}></tr>
           );
         })}
       </tbody>

@@ -1,3 +1,5 @@
+import { MONTHS_NAMES } from "./constants";
+
 export const navigateTo = (url: string, params?: any) => {
   if (params && Object.keys(params).length > 0) {
     const queryString = Object.keys(params)
@@ -11,7 +13,41 @@ export const navigateTo = (url: string, params?: any) => {
   }
 };
 
-export const navigateBack = () => {
+export const obtenerFechaActual = (): string => {
+  const fecha: Date = new Date();
+  const anio: number = fecha.getFullYear();
+  let mes: string | number = fecha.getMonth() + 1;
+  let dia: string | number = fecha.getDate();
+
+  if (mes < 10) {
+    mes = '0' + mes;
+  }
+  if (dia < 10) {
+    dia = '0' + dia;
+  }
+
+  const fechaActual: string = `${anio}-${mes}-${dia}`;
+  return fechaActual;
+}
+
+export const obtenerFechaHaceUnAnio = (): string => {
+  const fecha: Date = new Date();
+  const anio: number = fecha.getFullYear() - 1;
+  let mes: string | number = fecha.getMonth() + 1;
+  let dia: string | number = fecha.getDate();
+
+  if (mes < 10) {
+    mes = '0' + mes;
+  }
+  if (dia < 10) {
+    dia = '0' + dia;
+  }
+
+  const fechaHaceUnAnio: string = `${anio}-${mes}-${dia}`;
+  return fechaHaceUnAnio;
+}
+
+export const navigateBack = (): void => {
   history.back();
 }
 
@@ -28,7 +64,7 @@ export const formatDate = (dateString: string) => {
   return `${day}/${month}/${year}`;
 };
 
-export function formatNumber(number: number): string {
+export function formatEmployeeCode(number: number): string {
   const paddedNumber = number.toString().padStart(8, '0');
   return paddedNumber;
 }
@@ -67,6 +103,24 @@ export function formatDashboardJson(jsonData: any[]): any {
   const months: string[] = [];
   const data: any[] = [];
 
+  function sortMonths(months: string[]) {
+    months.sort((a, b) => {
+      const [yearA, monthA] = a.split(' ');
+      const [yearB, monthB] = b.split(' ');
+  
+      if (yearA !== yearB) {
+        return parseInt(yearA) - parseInt(yearB);
+      } else {
+        return MONTHS_NAMES.indexOf(monthA) - MONTHS_NAMES.indexOf(monthB);
+      }
+    });
+  }
+  
+  function getMonthName(monthNumber: string): string {
+    const index = parseInt(monthNumber) - 1;
+    return MONTHS_NAMES[index];
+  }
+
   jsonData.forEach((item) => {
     const year = item.year;
     item.month.forEach((monthItem) => {
@@ -91,10 +145,11 @@ export function formatDashboardJson(jsonData: any[]): any {
           });
         }
       });
-
       months.push(`${year} ${month}`);
     });
   });
+
+  sortMonths(months);
 
   return {
     months: months,
