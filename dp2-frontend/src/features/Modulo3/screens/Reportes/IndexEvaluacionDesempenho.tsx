@@ -8,11 +8,12 @@ import { jsPDF } from 'jspdf';
 import domtoimage from 'dom-to-image';
 import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
 import { getAreas, getCategoriasDesempenio, postReportLineChart, postReportLineChartAll} from '@features/Modulo3/services/reports';
-import { formatDashboardJson, formatDashboardJsonAreasCategorias, formatDashboardJsonCategory,formatPrueba, transformData } from '@features/Modulo3/utils/functions';
+import { formatDashboardJson, formatDashboardJsonAreasCategorias,formatDashboardJsonAreas, formatDashboardJsonCategorias } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import { toast, ToastContainer } from 'react-toastify';  // Import react-toastify
 import 'react-toastify/dist/ReactToastify.css'; 
 import logoUrl from '../../assets/images/LogoHCM.png';
+import index from '@components/Input';
 
 type DataLineChart = {
   year: string;
@@ -39,8 +40,11 @@ const IndexEvaluacionDesempenho = () => {
   const [areas, setAreas] = useState([]); // Cuando tengamos las apis dejarlo como array vacío
   const [categoriasContinua, setCategoriasContinua] = useState([]); // Cuando tengamos las apis dejarlo como array vacío
   const [categoriasDesempenio, setCategoriasDesempenio] = useState([]); // Cuando tengamos las apis dejarlo como array vacío
+  const [dataAllAreasByAreas, setDataAllAreasByAreas] = useState([]);
+  const [dataAllAreasByCategories, setDataAllAreasByCategories] = useState([]);
 
   const [dashboard, setDashboard] = useState(null);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [defaultDashboard, setDefaultDashboard] = useState(
@@ -115,10 +119,25 @@ const IndexEvaluacionDesempenho = () => {
       )}
     </div>
   );
+
+  const charts = dataAllAreasByAreas.map((areaData, index) => (
+    <div
+      key={index}  // Se añade un key para elementos en una lista
+      id="chart-container"
+      className="col-md-12 mb-32px"
+      style={{ paddingBottom: '12px', marginBottom: '32px', marginTop: '20px' }}
+    >
+      <Linechart
+        title={`Evaluaciones de Desempeño - Area: ${areaData.area} - Categoria: ${searchParams.categoria.name}`}
+        dataInfoprops={areaData.data}
+        labelsX={areaData.months}
+      />
+    </div>
+  ));
   
   const content = (
     <>
-    {chart}
+    {dataAllAreasByAreas.length===0?chart:charts}
     </>
   )
 
@@ -205,12 +224,9 @@ const IndexEvaluacionDesempenho = () => {
         const reportData = await postReportLineChartAll(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(reportData){
           console.log("Report data: ", reportData);
-          // const formattedData: TransformedDataType[] = formatDashboardJsonCategory(reportData);
-          // const formattedData: TransformedDataType[] = formatPrueba(reportData);
-          const transformedData = transformData(reportData);
+          const transformedData = formatDashboardJsonAreas(reportData);
           console.log("Formatted data: ", transformedData);
-          // let dataSorted:DataLineChart = reportData;
-          // dataSorted = sortMonths(dataSorted);
+          setDataAllAreasByAreas(transformedData);
           // setDashboard(formatDashboardJsonAreasCategorias(dataSorted));
         }
         else{
