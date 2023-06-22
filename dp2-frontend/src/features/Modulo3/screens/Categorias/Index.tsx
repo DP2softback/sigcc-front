@@ -28,7 +28,6 @@ const Index = () => {
     (async () => {
       const response = await listAllCategorias(CONTINUOS_EVALUATION_TYPE);
       if(response){
-        console.log("response",response);
         setCategories(response)
       }
         
