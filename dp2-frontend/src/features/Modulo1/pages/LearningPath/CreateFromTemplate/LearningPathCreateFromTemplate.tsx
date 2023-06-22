@@ -1,11 +1,9 @@
 import React, { createRef } from "react";
-import { Props, State } from "./AngelSamples.types";
+import { Props, State } from "./LearningPathCreateFromTemplate.types";
 import datajson from './data.json';
 import RubricCriterias from "@features/Modulo1/components/Rubric/RubricCriterias";
-import RubricGrade from "@features/Modulo1/components/Rubric/RubricGrade";
-import gradeSample from '../../components/Rubric/gradeSample.json';
 
-export default class AngelSamples extends React.Component<Props, State>
+export default class LearningPathCreateFromTemplate extends React.Component<Props, State>
 {
     refRubrica: any;
 
@@ -16,10 +14,6 @@ export default class AngelSamples extends React.Component<Props, State>
         this.state = {
             data: props.data,
         }
-    }
-
-    static defaultProps = {
-        data: JSON.parse(JSON.stringify(datajson)),
     }
 
     handleLPPropertyChange (key: string, value: string)
@@ -55,12 +49,20 @@ export default class AngelSamples extends React.Component<Props, State>
         }
     }
 
+    get ()
+    {
+        {
+            let lp = this.state.data;
+            lp.learning_path.rubrica = this.refRubrica.current.get()
+            return lp;
+        }
+    }
+
     render ()
     {
         const removeCourse = this.removeCourse.bind(this);
         const handleLPPropertyChange = this.handleLPPropertyChange.bind(this);
         return (<>
-        <RubricGrade criterias={gradeSample.criterias}/>
             <div className="container-fluid">
                 <h1>Ruta de aprendizaje</h1>
                 <h3>Datos generales</h3>
@@ -106,7 +108,7 @@ export default class AngelSamples extends React.Component<Props, State>
 
                 <h3>Rúbrica de calificación</h3>
                 <div className="mb-4">
-                <RubricCriterias criterias={this.props.data.learning_path.rubrica ?? []} />
+                    <RubricCriterias ref={this.refRubrica} criterias={this.props.data.learning_path.rubrica ?? []} />
                 </div>
                 <h3>Cursos</h3>
                 <div className="row g-3">

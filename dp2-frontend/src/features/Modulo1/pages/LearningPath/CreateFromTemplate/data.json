@@ -1,0 +1,17 @@
+{
+    "learning_path": {
+        "nombre": "Probando duplicado LP2",
+        "descripcion": "Probando asignación de un CE",
+        "url_foto": "https://dp2-bucket-dev.s3.amazonaws.com/capacitaciones/REACT_46578758-da2d-43e0-9683-2d5fa3ffe03f.png",
+        "suma_valoraciones": 0,
+        "cant_valoraciones": 0,
+        "cant_empleados": 0,
+        "horas_duracion": "0.0",
+        "cant_intentos_cursos_max": 3,
+        "cant_intentos_evaluacion_integral_max": 3,
+        "estado": "0",
+        "cantidad_cursos": 1,
+        "rubrica": []
+    },
+    "cursos": []
+}
