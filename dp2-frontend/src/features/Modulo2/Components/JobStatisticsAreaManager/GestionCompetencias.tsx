@@ -3,7 +3,7 @@ import { Button, Table} from 'react-bootstrap';
 import {tipoCompetencia,CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
 import { useLocation,  useNavigate  } from 'react-router-dom';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE } from '@features/Modulo2/routes/path';
-import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/Services/ServicesApis'
+import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
 
 const GestionCompetenciaAM = (state) => {
   const navigate = useNavigate();

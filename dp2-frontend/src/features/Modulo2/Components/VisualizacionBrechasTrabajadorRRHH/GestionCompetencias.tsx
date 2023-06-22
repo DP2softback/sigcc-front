@@ -4,7 +4,7 @@ import './GestionCompetencias.css'
 import {tipoCompetencia,CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos';
-import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/Services/ServicesApis'
+import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
 const GestionCompetencia = (state) => {
   const navigate = useNavigate();
   const location = useLocation();
