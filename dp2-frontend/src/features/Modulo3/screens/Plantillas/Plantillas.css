@@ -126,6 +126,10 @@
   flex: 1;
   padding-right: 32px;
 }
+.boton-eliminar{
+  align-items: center !important;
+
+}
 .notification {
   position: fixed;
   top: 6em !important;

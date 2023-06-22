@@ -13,3 +13,20 @@ export const BACKEND_URL = 'https://payd6uk5t9.execute-api.us-east-1.amazonaws.c
 export const TOKEN = '90833f32c0b04ddb0754ddd74c864354baf1940d';
 
 export const USER_ID = 5;
+
+export const TEXTAREA_ROWS = 3;
+
+export const MONTHS_NAMES: string[] = [
+  'Enero',
+  'Febrero',
+  'Marzo',
+  'Abril',
+  'Mayo',
+  'Junio',
+  'Julio',
+  'Agosto',
+  'Septiembre',
+  'Octubre',
+  'Noviembre',
+  'Diciembre',
+];
