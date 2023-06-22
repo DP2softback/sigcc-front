@@ -7,7 +7,6 @@ import { agregarSubcategorias, listarCompetenciasFree } from "@features/Modulo3/
 import { ToastContainer, toast } from "react-toastify";
 import { PlusCircle } from "react-bootstrap-icons";
 
-const competenciasIni= ["Competencia 1","Competencia 2","Competencia 3"]
 const ModalAddSubcategorie = (props) => {
 	const { show, setShow,idCategory } = props;
 	const handleClose = () => {
@@ -75,7 +74,7 @@ const ModalAddSubcategorie = (props) => {
           <thead className='bg-white'>
             <tr>
               <th className='subcategorie_name'>Competencias</th>
-              <th className='text-end competencia'>Acciones</th>
+             <th className='text-end competencia'>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -119,27 +118,6 @@ const ModalAddSubcategorie = (props) => {
               </div>
             </div>
           </Form.Group>
-          <Form.Group>
-            <div className="label-input-container">
-              <label className="label-estilizado" htmlFor="dropdown">
-                Competencia existente
-              </label>
-              <div className="input-button-container">
-                <Form.Select
-                  value={selectedOption}
-                  onChange={(e) => handleOptionSelect(e.target.value)}
-                >
-                  <option hidden>Seleccione una competencia</option>
-                  {competencias.map((competencia, index) => {
-                    return <option key={competencia.id}> {competencia.name} </option>;
-                  })}
-                </Form.Select>
-                <Button variant="outline-primary" onClick={handleAgregarExistente} className="ca-buttonAdd">
-                  +
-                </Button>
-              </div>
-            </div>
-          </Form.Group>
         </Form>
       );
       
@@ -155,7 +133,6 @@ const ModalAddSubcategorie = (props) => {
         window.location.reload();
         };
     const handleGuardar = ()=>{
-      console.log(subcategorias);
       (async () => { 
         const response = await agregarSubcategorias(subcategorias,idCategory);
         if (response){
