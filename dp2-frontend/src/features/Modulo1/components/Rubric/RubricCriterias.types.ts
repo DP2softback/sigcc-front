@@ -1,14 +1,13 @@
 export type Criteria = {
     id: number,
+    name: string,
 }
 export type PropsRubricCriterias = {
     criterias: Array<Criteria>,
 }
 
 export type StateRubricCriterias = {
-    criterias: Array<{
-        id: number,
-    }>
+    criterias: Array<Criteria>
 }
 
 export type PropsChoiceBase = {

@@ -1,0 +1,20 @@
+{
+    "criterias": [
+        {
+            "id": 1,
+            "name": "Capacidad para crear aplicaciones y sitios web utilizando tecnologías como HTML, CSS, JavaScript, y frameworks populares como React, Angular o Vue.js.",
+            "level": {
+                "id": 0,
+                "name": ""
+            }
+        },
+        {
+            "id": 2,
+            "name": "Habilidad para desarrollar programas y aplicaciones utilizando el lenguaje de programación Python, aprovechando su amplio conjunto de librerías y su versatilidad en diferentes áreas.",
+            "level": {
+                "id": 0,
+                "name": ""
+            }
+        }
+    ]
+}
