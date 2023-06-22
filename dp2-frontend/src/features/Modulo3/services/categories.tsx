@@ -60,3 +60,16 @@ export const listAllCategorias = async(type) =>{
         }
         return await ajax(optionsRequest);
   }
+
+  export const listarCompetenciasFree = async() =>{
+    const optionsRequest = {
+        method: 'GET',
+        url: BACKEND_URL +'competences/free',
+        headers:{
+            Authorization: `Token ${TOKEN}`
+          },
+
+          
+        }
+        return await ajax(optionsRequest);
+  }
