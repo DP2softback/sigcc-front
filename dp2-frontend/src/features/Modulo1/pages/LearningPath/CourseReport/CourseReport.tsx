@@ -8,6 +8,7 @@ import '../../../basic.css';
 import './CourseReporte.css';
 import axiosInt from '@config/axios';
 import { ArrowLeftCircleFill, People, BarChart } from 'react-bootstrap-icons'
+import ReviewDetails from '../ReviewDetails/ReviewDetails';
 
 
 // type TrainingObj = {
@@ -295,7 +296,7 @@ const CourseReport = () => {
 
                             :
                             <>
-
+                                <ReviewDetails></ReviewDetails>
                             </>
                         }
 

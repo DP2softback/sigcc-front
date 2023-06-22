@@ -21,7 +21,7 @@ import {
 	EMP_LEARNING_PATH_DETAIL,
 	EMP_LEARNING_PATH_INTEGRAL_EVALUATION,
 	EMP_ORG_COURSE_INDEX,
-	EMP_ORG_COURSE_DETAIL
+	EMP_ORG_COURSE_DETAIL,
 } from "./path";
 
 const Loader = (Component) => (props) =>

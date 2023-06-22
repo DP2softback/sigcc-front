@@ -30,6 +30,7 @@ function LearningPathDetails(props: any) {
     const [activo, setActivo] = useState(1);
     const [quizID, setQuizId] = useState(0);
     const [question, setQuestion] = useState([])
+    const [courseID, setCourseID] = useState<number>(0);
 
     const navigate = useNavigate();
 
@@ -39,8 +40,9 @@ function LearningPathDetails(props: any) {
 
     let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
 
-    const handleChange = (id: number) => {
+    const handleChange = (id: number, courseID: number) => {
         setActivo(id);
+        setCourseID(courseID)
     }
 
     const loadsCourses = () => {
@@ -52,6 +54,7 @@ function LearningPathDetails(props: any) {
                 setLPDescription(response.data[0].descripcion);
                 setLPPhoto(response.data[0].url_foto);
                 setCourses(response.data[0].cursos);
+                setCourseID(response.data[0].cursos[0].id)
                 setLoading(false);
             })
             .catch(function (error) {
@@ -123,25 +126,28 @@ function LearningPathDetails(props: any) {
     const refCourseRate = useRef(null);
     
     const saveRate = () => {
-        console.log(refCourseRate.current.state.rateValue)
         //setLoading(true)
 
         const data = {
-            valoracion: refCourseRate.current?.state.rateValue,
-            comentarios: refCourseComment.current?.value
+            curso: courseID,
+            empleado: 1,    //CAMBIAR CUANDO SE TENGA LA INFO DEL EMPLEADO
+            valoracion: refCourseRate.current?.refValueSelected,
+            comentario: refCourseComment.current?.value
         }
 
-        /*
-        axiosInt.post(`algo`, data)
+        console.log(data)
+        refCourseComment.current.value = ""
+
+        axiosInt.post('capacitaciones/valorar_curso/', data)
             .then(function (response) {
                 console.log(response.data)
-                setLoading(false)
+                //setLoading(false)
             })
             .catch(function (error) {
                 console.log(error);
-                setLoading(false)
+                //setLoading(false)
             })
-        */
+            
     }
 
     return (
@@ -191,7 +197,7 @@ function LearningPathDetails(props: any) {
                                         <div style={{ display: "flex", flexWrap: "wrap" }}>
                                             {courses.map((course: any, index: number) => (
                                                 <div key={course.id}>
-                                                    <div style={{ display: "flex", alignItems: "center" }} onClick={() => handleChange(index + 1)}>
+                                                    <div style={{ display: "flex", alignItems: "center" }} onClick={() => handleChange(index + 1, course.id)}>
                                                         <div className={`circulo ${index + 1 == activo ? courses[activo - 1].tipo_curso == 'U' ?
                                                             courses[activo - 1].datos_extras[0].estado == 4 ? 'completado' : 'activo' : index + 1 == activo ? 'activo' : '' : index + 1 == activo ? 'activo' : ''}`}>{index + 1}</div>
 
@@ -247,7 +253,7 @@ function LearningPathDetails(props: any) {
                                                                 {courses[activo - 1].datos_extras[0].estado > 2 &&
                                                                     <>
                                                                         <a target='_blank' type="button" className="btn btn-primary" href={`https://www.udemy.com${courses[activo - 1].datos_udemy.url}`}>Ver curso</a>
-                                                                        <button className='btn btn-primary' data-bs-target='#evaluateCourseModal' data-bs-toggle='modal'>Evaluar Curso</button>
+                                                                        <button className='btn btn-primary' data-bs-target='#rateCourse' data-bs-toggle='modal'>Evaluar Curso</button>
                                                                     </>
                                                                 }
 
@@ -354,7 +360,7 @@ function LearningPathDetails(props: any) {
                                     </div>
                                 </div>
                                 
-                                {/* MODAL RATE LP */}
+                                {/* MODAL RATE COURSE */}
                                 <div className="modal fade" id="rateCourse" aria-hidden="true" aria-labelledby="rateCourse" tabIndex={-1}>
                                     <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                     <div className="modal-content">
@@ -363,7 +369,7 @@ function LearningPathDetails(props: any) {
                                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div className="modal-body">
-                                            <div>
+                                            <div className="d-flex justify-content-between align-items-baseline">
                                                 <label className="form-label">Valoración</label>
                                                 <RateValue ref={refCourseRate} />
                                             </div>
@@ -373,7 +379,7 @@ function LearningPathDetails(props: any) {
                                             </div>
                                         </div>
                                         <div className="modal-footer">
-                                            <button className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => navigate('/modulo1/empleado/rutadeaprendizaje')}>Omitir</button>
+                                            <button className="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Omitir</button>
                                             <button className="btn btn-primary" data-bs-dismiss="modal" onClick={() => saveRate()}>Enviar</button>
                                         </div>
                                     </div>

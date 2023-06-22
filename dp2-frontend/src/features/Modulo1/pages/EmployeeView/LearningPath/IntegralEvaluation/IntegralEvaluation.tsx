@@ -12,6 +12,17 @@ import RateValue from '@features/Modulo1/components/Rate/RateValue';
 
 const DATA = lpdata
 
+const DATAVACIA = {
+    nombre: "",
+    descripcion: "",
+    url_foto: "",
+    cursos: [],
+    descripcion_evaluacion: null,
+    archivo_eval: null,
+    archivo_emp: null,
+    rubrica: null
+}
+
 const dataEvaluation: EvaluationObj = {
     descripcion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sollicitudin eget dui nec vulputate. Cras pharetra varius viverra. Quisque nec maximus libero. In quis mollis erat. Aenean ac dapibus diam, id feugiat leo. Ut tristique lobortis erat, non consequat ligula mattis eget. Sed ac fermentum urna. Donec nec mi vehicula, aliquam tortor a, fermentum eros. Ut ex tortor, tincidunt eu ligula vitae, sodales fringilla sem. Aliquam lacinia, eros et maximus porta, leo est ornare eros, et gravida sem lectus non elit. In congue magna eget nisi varius, sed varius mauris convallis. Pellentesque vel vulputate nunc, ac ultricies tellus. Cras ac dui est. In ut lorem euismod, auctor augue maximus, tristique lectus. Ut tempus pellentesque urna a lobortis. Phasellus tempus laoreet mollis. ",
     documento_base: "url1",
@@ -22,13 +33,17 @@ let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/def
 
 type CourseObj = {
     id: number;
+    nro_orden: number;
 }
 
 type LPObj = {
     nombre: string;
     descripcion: string;
     url_foto: string;
-    cursos: CourseObj[];
+    descripcion_evaluacion: string;
+    archivo_eval: string;
+    archivo_emp: string;
+    rubrica: any;
 }
 
 type EvaluationObj = {
@@ -41,8 +56,9 @@ type EvaluationObj = {
 const IntegralEvaluation = () => {
     const { learningPathId } = useParams();
     const [loading, setLoading] = useState<boolean>(false);
-    const [fileUploaded, setFileUploaded] = useState<boolean>(false);
-    const [lpDetails, setLPDetails] = useState<LPObj>({ nombre: "", descripcion: "", url_foto: "", cursos: [] })
+    const [fileUploaded, setFileUploaded] = useState<boolean>(true);
+    const [lpDetails, setLPDetails] = useState<LPObj>(DATAVACIA)
+    const [lpCourses, setLPCourses] = useState<CourseObj[]>([])
 
     const [fileName, setFileName] = useState<string>("")
     const [fileURL, setFileURL] = useState<string>("")
@@ -53,12 +69,16 @@ const IntegralEvaluation = () => {
 
     const loadIntegralEval = () => {
         setLoading(true);
-
-        // POR MIENTRAS
-        axiosInt.get(`capacitaciones/learning_path/detalle_empleado_modified/1/${learningPathId}/`)
+        
+        axiosInt.get(`capacitaciones/learning_path/${learningPathId}/empleado/1/evaluacion/`)
             .then(function (response) {
-                console.log(response.data[0])
-                setLPDetails(response.data[0])
+                console.log(response.data)
+                setLPDetails(response.data.datos_learning_path)
+                setLPCourses(response.data.cursos)
+
+                if(response.data.archivo_emp === null){
+                    setFileUploaded(false)
+                }
                 setLoading(false);
             })
             .catch(function (error) {
@@ -107,25 +127,22 @@ const IntegralEvaluation = () => {
     }
 
     const saveRate = () => {
-        console.log(refLPRate.current.state.rateValue)
-        //setLoading(true)
-
         const data = {
-            valoracion: refLPRate.current?.state.rateValue,
-            comentarios: refLPComment.current?.value
+            learning_path: learningPathId,
+            empleado: 1,    // CAMBIAR
+            valoracion: refLPRate.current?.refValueSelected,
+            comentario: refLPComment.current?.value
         }
-
-        /*
-        axiosInt.post(`algo`, data)
+        console.log(data)
+        
+        axiosInt.post(`capacitaciones/valorar_learning_path/${learningPathId}/`, data)
             .then(function (response) {
                 console.log(response.data)
-                setLoading(false)
+                navigate('/modulo1/empleado/rutadeaprendizaje')
             })
             .catch(function (error) {
                 console.log(error);
-                setLoading(false)
             })
-        */
     }
 
     const navigate = useNavigate();
@@ -172,34 +189,21 @@ const IntegralEvaluation = () => {
                             </div>
                         </div>
 
-                        {lpDetails.cursos.length > 0 ?
+                        {lpCourses.length > 0 ?
                             <>
                                 <div className='row'>
                                     <div className='pt-5 pb-2' style={{ display: "flex", justifyContent: "space-evenly" }}>
-
                                         <div style={{ display: "flex", flexWrap: "wrap" }}>
-                                            {lpDetails.cursos.map((course: any, index: number) => (
+                                            {lpCourses.map((course: any, index: number) => (
                                                 <div key={course.id}>
                                                     <div style={{ display: "flex", alignItems: "center" }}>
                                                     <div className="circulo-terminado"><Check /></div>
-                                                        {(index + 1) !== lpDetails.cursos.length && <div className="linea" style={{ paddingLeft: "2rem" }}></div>}
+                                                        {(index + 1) !== lpCourses.length && <div className="linea" style={{ paddingLeft: "2rem" }}></div>}
                                                     </div>
                                                     <div>Curso {index + 1}</div>
                                                 </div>
                                             ))}
                                         </div>
-
-                                        {/* <div style={{ display: "flex" }}>
-                                            {lpDetails.cursos.map((course: any) => (
-                                                <div key={course.id}>
-                                                    <div style={{ display: "flex", alignItems: "center" }}>
-                                                        <div className="circulo-terminado"><Check /></div>
-                                                        {(course.nro_orden) !== lpDetails.cursos.length && <div className="linea" style={{ paddingLeft: "2rem" }}></div>}
-                                                    </div>
-                                                    <div>Curso {course.nro_orden}</div>
-                                                </div>
-                                            ))}
-                                        </div> */}
                                     </div>
 
                                     <div className='pt-4 pb-2' style={{ display: "flex", justifyContent: "center" }}>
@@ -207,7 +211,7 @@ const IntegralEvaluation = () => {
                                             <div className="row g-0" style={{ height: "100%" }}>
                                                 <div className="card-body">
                                                     <h3 className="card-title">Evaluación Integral</h3>
-                                                    <p className="card-text">{dataEvaluation.descripcion}</p>
+                                                    <p className="card-text">{lpDetails.descripcion_evaluacion === null ? dataEvaluation.descripcion : lpDetails.descripcion_evaluacion}</p>
                                                     <div className='row mt-3'>
                                                         <div className='col'>
                                                             <button className='btn btn-outline-primary'><Download /><span style={{ marginLeft: "1rem" }}>Especificaciones de la evaluación</span></button>
@@ -298,7 +302,7 @@ const IntegralEvaluation = () => {
                                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div className="modal-body">
-                                                <div>
+                                                <div className="d-flex justify-content-between align-items-baseline">
                                                     <label className="form-label">Valoración</label>
                                                     <RateValue ref={refLPRate} />
                                                 </div>
