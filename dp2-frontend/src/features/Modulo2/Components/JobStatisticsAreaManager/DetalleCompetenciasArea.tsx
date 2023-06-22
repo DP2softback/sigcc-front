@@ -8,7 +8,7 @@ import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias
 import './DetalleCompetenciasArea.css';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE } from '@features/Modulo2/routes/path';
 
-import {TOKEN_SERVICE} from '@features/Modulo2/Services/ServicesApis'
+import {TOKEN_SERVICE} from '@features/Modulo2/services/ServicesApis'
 const DetalleCompetenciasArea = () => {
   const navigate = useNavigate();
   const location = useLocation();

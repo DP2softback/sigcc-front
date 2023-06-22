@@ -6,7 +6,7 @@ import { Competencia, tipoCompetencia,AreaActiva } from "../GestionDeCompetencia
 import './ConsolidadoCompetencias.css';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL } from '@features/Modulo2/routes/path';
 
-import {TOKEN_SERVICE} from '@features/Modulo2/Services/ServicesApis'
+import {TOKEN_SERVICE} from '@features/Modulo2/services/ServicesApis'
 
 const PieChart = ({ title, labels, datasets }) => {
     ChartJS.register(ArcElement, Tooltip, Legend, Title);

@@ -7,7 +7,7 @@ import BorrarCompetencia from './Delete';
 import Info from './Info';
 import {Competencia,tipoCompetencia} from './Tipos'
 import './Read.css';
-import {TOKEN_SERVICE} from '@features/Modulo2/Services/ServicesApis'
+import {TOKEN_SERVICE} from '@features/Modulo2/services/ServicesApis'
 
 const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
 
