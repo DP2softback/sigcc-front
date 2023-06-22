@@ -177,14 +177,15 @@ const CompetenciasRead: React.FC = () => {
 */
 
 const actualizarCompetencia = async (competenciaActualizada) => {
+  console.log(competenciaActualizada)
   try {
     const response = await fetch(
-      'https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competences',
+      'https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competences',
       {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+          'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
         },
         body: JSON.stringify(competenciaActualizada),
       }
@@ -290,8 +291,8 @@ const borrarCompetencia = async (id) => {
             <th onClick={() => handleOrdenarPorCampo('code')}>Código {campoOrdenamiento === 'code' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th onClick={() => handleOrdenarPorCampo('name')}>Nombre {campoOrdenamiento === 'name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th onClick={() => handleOrdenarPorCampo('description')}>Descripción {campoOrdenamiento === 'description' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-            <th onClick={() => handleOrdenarPorCampo('type')}>Tipo de Competencia {campoOrdenamiento === 'type' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-            <th onClick={() => handleOrdenarPorCampo('active')}>Activo {campoOrdenamiento === 'active' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
+            <th onClick={() => handleOrdenarPorCampo('type')}>Tipo de Capacidad {campoOrdenamiento === 'type' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
+            <th onClick={() => handleOrdenarPorCampo('active')}>Estado {campoOrdenamiento === 'active' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th>Acciones</th>        
         </tr>
       </thead>
@@ -322,8 +323,8 @@ const borrarCompetencia = async (id) => {
   return (
     <div className='pantalla'>
       <div className='titles'>
-      <h2 className='Head'>Gestión de Competencias</h2>
-      <p className="text-muted subtitle">Agrega, edita y desactiva competencias.</p>
+      <h2 className='Head'>Gestión de Capacidades</h2>
+      <p className="text-muted subtitle">Agrega, edita y desactiva capacidades.</p>
       </div>
 
       <div className='container-fluid'>
@@ -332,7 +333,7 @@ const borrarCompetencia = async (id) => {
             <Form.Group controlId="search">
               <Form.Control
                 type="text"
-                placeholder="Buscar competencia..."
+                placeholder="Buscar capacidad..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -391,7 +392,7 @@ const borrarCompetencia = async (id) => {
         
               <div className="col-sm-3 botones2 justify-content-center">          
                 <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
-                  Agregar competencia
+                  Agregar capacidad
                 </Button>
               </div>  
           </div>

@@ -41,13 +41,13 @@ const PieChart = ({ title, labels, datasets }) => {
       const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
       const [tipoCompetencia, setTipoCompetencia] = useState<tipoCompetencia>(null);
       const [areasActivas, setAreasActivas] = useState<AreaActiva[]>([]);
-      const [abbreviation, setAbbreviation] = useState('');
+      const [name, setname] = useState('');
       useEffect(() => {    
 
         const fetchTipoCompetencias = async () => {
           try {
     
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceTypes', {
+            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/employeeArea', {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -58,6 +58,7 @@ const PieChart = ({ title, labels, datasets }) => {
             if (response.ok) {
               const data = await response.json();
               setTipoCompetencias(data);
+              console.log(data);
             } else {
               console.log('Error al obtener los datos de competencias');
             }
@@ -171,7 +172,7 @@ const PieChart = ({ title, labels, datasets }) => {
         const tipo  = tipoCompetencias.find((tipo) => tipo.id.toString() === event.target.value)
         setTipoCompetencia(tipoCompetencias[0]);
         console.log(tipoCompetencia)
-        setAbbreviation(tipo.abbreviation)
+        setname(tipo.name)
         setData1(data1);
         setData2(data2);
       }
@@ -198,7 +199,7 @@ const PieChart = ({ title, labels, datasets }) => {
               <select
                 id="competencia-select"
                 className="form-control"
-                value={abbreviation}
+                value={name}
                 onChange={handleCompetenciaChange}
               ><option value="">Todas</option>
                 {areasActivas.map((area) => (
@@ -225,11 +226,11 @@ const PieChart = ({ title, labels, datasets }) => {
                   </div>
                 </div>
               </div>
-              {abbreviation!='' && data2 && (
+              {name!='' && data2 && (
               <div className="col-md-6">
                <div className="card">
                  <div className="card-body">
-                   <h3 className="card-title">Adecuación a competencias de área de {abbreviation}</h3>
+                   <h3 className="card-title">Adecuación a competencias de {name}</h3>
                    <PieChart title='' labels= {labels} datasets={data2} />
                    <div className="chart-legend">
                      {/* Agregar aquí la leyenda del gráfico 2 */}
