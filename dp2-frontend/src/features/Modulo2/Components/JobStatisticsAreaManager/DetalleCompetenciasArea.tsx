@@ -4,7 +4,6 @@ import UpdateCompetencia from './Update';
 import DeleteCompetencia from './Delete';
 import {ArrowRightCircleFill,Pencil,Trash } from 'react-bootstrap-icons';
 import { useLocation,  useNavigate  } from 'react-router-dom';
-import './DetalleCompetenciasArea.css'
 import axiosEmployeeGaps from '@features/Modulo2/services/EmployeeGapsServices';
 import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos';
 
@@ -17,13 +16,10 @@ const DetalleCompetenciasArea = () => {
     const [position__name, setposition__name] = useState('');
     const [palabrasClave, setPalabrasClave] = useState('');
     const [busquedaRelizada, setBusquedaRealizada] = useState(false);
-    const [mostrarPopUpCrear , setmostrarPopUpCrear] = useState(false);
     const [mostrarPopUpActualizar, setmostrarPopUpActualizar] = useState(false);
     const [mostrarPopUpBorrar, setmostrarPopUpBorrar] = useState(false);
     const [competenciaSeleccionada, setCompetenciaSeleccionada] = useState(null);
     const [empleados, setEmpleados] = useState<EmpleadoDeArea[]>([]);
-
-
       useEffect(() => {
         const obj = {
           area: 2,
@@ -33,22 +29,7 @@ const DetalleCompetenciasArea = () => {
         .then((response) => {
           setEmpleados(response.data);
         });
-      }, []);  
-
-    
-    const agregarCompetencia = (nuevaCompetencia) => {
-        setEmpleados([...empleados, nuevaCompetencia]);
-        handleCerrarPopUpCrear();
-    };
-    
-    const handleMostrarPopUpCrear  = () => {
-      setmostrarPopUpCrear(true);
-    };
-    
-    const handleCerrarPopUpCrear = () => {
-      setmostrarPopUpCrear(false);
-    };
-    
+      }, []);     
     const actualizarCompetencia = (nuevaCompetencia) => {
       var tablaAux = empleados;
       const indice = empleados.findIndex((competencia) => competencia.id=== nuevaCompetencia.id);
@@ -58,7 +39,7 @@ const DetalleCompetenciasArea = () => {
       setEmpleados(tablaAux);
       handleCerrarPopUpActualizar();
     };
-    
+    console.log(empleados);
     const handleMostrarPopUpActualizar = (competencia) => {
       setCompetenciaSeleccionada(competencia);
       setmostrarPopUpActualizar(true);
@@ -120,7 +101,7 @@ const DetalleCompetenciasArea = () => {
               competencia.user__email.toLowerCase().includes(palabrasClaveLower) ||
               competencia.user__is_active.toString().toLowerCase().includes(palabrasClaveLower)
             );
-          }
+          } 
 
       
         return competenciasFiltradas;
@@ -159,25 +140,13 @@ const DetalleCompetenciasArea = () => {
                     )}
                     </th>
                     <th onClick={() => handleOrdenarPorCampo('position__name')}>
-                    Puesto
+                    Revisar competencias
                     {campoOrdenamiento === 'position__name' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
-                    <th onClick={() => handleOrdenarPorCampo('area__name')}>
-                    Area
-                    {campoOrdenamiento === 'area__name' && (
-                        <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
-                    )}
-                    </th>
-                    <th onClick={() => handleOrdenarPorCampo('user__email')}>
-                    E-mail
-                    {campoOrdenamiento === 'user__email' && (
-                        <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
-                    )}
-                    </th>
                     <th onClick={() => handleOrdenarPorCampo('user__is_active')}>
-                    Activo
+                    Estado
                     {campoOrdenamiento === 'user__is_active' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
@@ -192,9 +161,7 @@ const DetalleCompetenciasArea = () => {
                 <td>{competencia.user__first_name}</td>
                 <td>{competencia.user__last_name}</td>
                 <td>{competencia.position__name}</td>
-                <td>{competencia.area__name}</td>
-                <td>{competencia.user__email}</td>
-                <td>{competencia.user__is_active}</td>
+                <td>{competencia.user__is_active? 'Activo': 'Inactivo'}</td>
                 <td>
                     <Button variant="link" size="sm" onClick={
                       ()=>{handleClick(competencia);}}>
@@ -222,7 +189,7 @@ const DetalleCompetenciasArea = () => {
   return (
     <div className="pantalla">
       <div className='titles'>
-      <h2>Competencias por empleado del área de TI</h2>
+      <h2>Empleados del puesto de asistente</h2>
       <p className="text-muted">Consultar competencias de los empleados.</p>
       </div>
 
@@ -241,27 +208,12 @@ const DetalleCompetenciasArea = () => {
                 <i className="bi bi-search"></i>
               </Button>
             </InputGroup>
-
-            <Form.Group className="col-sm-3" controlId="filtroTipoCompetencia">
-                <Form.Label>Puesto de trabajo</Form.Label>
-                <Form.Control as="select" value={position__name} onChange={(e) => setposition__name(e.target.value)}>
-                    <option value="">Todos</option>
-                    {empleados.map((competencia, index) => (
-                    <option key={index} value={competencia.position__name}>{competencia.position__name}</option>
-                    ))}
-                </Form.Control>
-            </Form.Group>
-
             <div className="col-sm-3 botones">
-              <Button variant="outline-primary" className="me-2" onClick={limpiarFiltros}>
-                Limpiar Filtros
-              </Button>
               <Button variant="primary" className ="col-sm-4">Buscar</Button>
             </div>
           </div>
         </div>
       </Form>
-
         
       {mostrarPopUpActualizar  && (
         <Modal show={mostrarPopUpActualizar} onHide={handleCerrarPopUpActualizar}>
@@ -289,7 +241,7 @@ const DetalleCompetenciasArea = () => {
          {renderTablaCompetencias()}
       </div>
       <div className="col-sm-3 botones">
-              <Button variant="outline-secondary" className="me-2" onClick={()=>{}}>
+              <Button variant="outline-secondary" className="me-2" onClick={()=>{navigate(-1)}}>
                 Regresar
               </Button>
             </div>

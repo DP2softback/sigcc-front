@@ -12,7 +12,10 @@ import { getCategories,getPlantilla,getPlantillasEditar,guardarEditar } from '@f
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 import { PERFORMANCE_EVALUATION_TYPE,CONTINUOS_EVALUATION_TYPE } from '../../utils/constants';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
-import { Toast } from 'react-bootstrap';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
+import { delay } from 'lodash';
+import ModalConfirmacion from '@features/Modulo3/components/Modals/ModalConfirmacion';
 
 const dataIni ={
   categoriaNombre: "",
@@ -23,7 +26,6 @@ const Edit = () => {
 
   const urlParams = new URLSearchParams(window.location.search);
 
-  const [show,setShow]=useState(false);
   const [showAC,setShowAC]=useState(false);
   const [categorias,setCategorias]= useState([]);
   const [file, setFile] = useState(null);
@@ -37,7 +39,7 @@ const Edit = () => {
   const [plantillaName, setPlantillaName] = useState('');
   const [idPlantilla,setIdPlantilla]=useState(parseInt(urlParams.get('id')));
   const [typePlantilla,setTypePlantilla]=useState(urlParams.get('type'));
-
+  const [show,setShow]=useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -67,8 +69,15 @@ const Edit = () => {
       setIsLoading(false);
     })();
   }, []);
-  const closeNotification = () => {
+
+  function delay(ms: number): Promise<void> {
+    return new Promise<void>((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }
+  const closeNotification = async () => {
     setShowNotification(false);
+    await delay(4000);
     window.location.reload();
   };
   
@@ -81,15 +90,12 @@ const Edit = () => {
       ...editar,
       "plantilla-nombre": plantillaName,
     };
-    
-    console.log("aux",aux);
-    console.log("plantillaName",plantillaName)
-    console.log(categorias);
     (async () => { 
-      console.log("entro");
       const response = await guardarEditar(aux, categorias);
       if (response){
         setShowNotification(true); 
+        toast.success("Se ha editado correctamente la plantilla");
+        closeNotification();
       }
     })();
   };
@@ -97,19 +103,6 @@ const Edit = () => {
 
   const handleRadioChange = (categoryName) => {
    
-    if (selectedOption === "Evaluación Continua") {
-      setSelectedCategory(categoryName);
-      const updatedCategorias = categorias.map((categoria) => ({
-        ...categoria,
-        "Category-active": categoria.name === categoryName,
-        subcategory: categoria.subcategory.map((sub) => ({
-          ...sub,
-          "subcategory-isActive": categoria.name === categoryName,
-        })),
-      }));
-  
-      setCategorias(updatedCategorias);
-    } else if (selectedOption === "Evaluación de Desempeño") {
       const updatedCategorias = categorias.map((categoria) => {
         if (categoria.name === categoryName) {
           return {
@@ -125,8 +118,7 @@ const Edit = () => {
       });
   
       setCategorias(updatedCategorias);
-    }
-    console.log("update",categorias)
+
   };
   
   
@@ -152,7 +144,7 @@ const Edit = () => {
     <>
     {plantilla && plantilla.length >0 ? (
       <>
-      <Form className='ec-indexFilters'>
+      <Form className='ec-indexFilters d-flex flex-row align-items-center'>
       <Form.Group className='flex1'>
         <label className='label-estilizado' htmlFor='nombrePlantilla'>Nombre de plantilla</label>
         <Form.Control id="nombrePlantilla" value={plantillaName} onChange={handleChangePlantillaName}/>
@@ -170,7 +162,8 @@ const Edit = () => {
       </Form.Group>
       <Form.Group className='sub-image flex1'>
         <ImageUploader onImageSelect={handleImageChange} />
-      </Form.Group>     
+      </Form.Group>
+       
     </Form>
       </>
     ):(<NoDataFound/>)}
@@ -227,7 +220,7 @@ const Edit = () => {
           <Accordion.Header>
             <FormCheck
               name='opciones'
-              type={selectedOption === "Evaluación Continua" ? 'radio' : 'checkbox'}
+              type={'checkbox'}
               label={categoria.name}  
               checked={categoria["Category-active"]}            
               onChange={() => handleRadioChange(categoria.name)}
@@ -245,7 +238,7 @@ const Edit = () => {
                   checked={subcategoria["subcategory-isActive"]}
                   multiple={selectedOption === "Evaluación de Desempeño"}
                   onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria)}
-                  disabled={(selectedOption === "Evaluación de Desempeño" && !categoria["Category-active"])  || (selectedOption === "Evaluación Continua" && (!categoria["Category-active"] || selectedCategory !== categoria.name))}
+                  disabled={!categoria["Category-active"]}
 
                 />
               ))}
@@ -263,34 +256,32 @@ const Edit = () => {
       </>
     ):(<NoDataFound/>)}
    
-    <div className="text-end mt-32" >
-    <Button variant='outline-primary me-2' className='boton-dejar mr-20' onClick={() => {
-         
-          navigateBack();
-        }}>
-        Volver
-      </Button>
-      <Button onClick={handleGuardarEditar}>
-        Guardar
-      </Button>
-    </div>
-    <Toast show={showNotification} onClose={closeNotification} className="notification">
-      <Toast.Header>
-        <strong className="me-auto">Notificación</strong>
-      </Toast.Header>
-      <Toast.Body>Se ha editado con éxito.</Toast.Body>
-    </Toast>
+    <div className="mt-32">
+      <div className="d-flex justify-content-between">
+        <Button variant="outline-danger" className="ms-0" onClick={() => setShow(true)}>Eliminar Plantilla</Button>
+        <div>
+          <div className="d-flex">
+            <Button variant="outline-primary" className="boton-dejar mr-20" onClick={() => navigateBack()}>Volver</Button>
+            <Button onClick={handleGuardarEditar}>Guardar</Button>
+          </div>
+        </div>
+      </div>
+    </div>    
     </>
   )
 
   const body = (
-    <Section title={null} content={content} filters={filters} filtersStyle={{width:'100%'}}/>
+    <>
+    <Section title={null} content={filters}/>
+    <Section title={null} content={content}/>
+    </> 
   );
   return (
     <div>
       {plantilla && plantilla.length >0 ?(
         <>
-        <ModalAddCategorie showAC={showAC} setShowAC={setShowAC} categorias={categorias} setCategorias={setCategorias}></ModalAddCategorie>
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />  
+        <ModalConfirmacion show={show} setShow={setShow} idPlantilla={idPlantilla} type={"plantilla"}></ModalConfirmacion>
         <Layout
         title={'Plantilla - '+plantilla[0].name }
         body={body}

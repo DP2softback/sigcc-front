@@ -1,7 +1,7 @@
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { useEffect, useState } from "react";
-import { Link, useNavigate  } from 'react-router-dom';
+import { useLocation,  useNavigate  } from 'react-router-dom';
 import { Competencia, tipoCompetencia,AreaActiva } from "../GestionDeCompetencias/Tipos";
 import DetalleCompetenciasArea from "./DetalleCompetenciasArea";
 import { set } from "lodash";
@@ -31,14 +31,16 @@ const PieChart = ({ title, labels, datasets }) => {
     );
   };
 
-  const ConsolidadoCompetencias = () => {
+  const ConsolidadoCompetenciasAM = () => {
     const navigate = useNavigate();
+    const location = useLocation();
       const [data1, setData1] = useState(null);
       const [data2, setData2] = useState(null);
       const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
       const [tipoCompetencia, setTipoCompetencia] = useState<tipoCompetencia>(null);
       const [areasActivas, setAreasActivas] = useState<AreaActiva[]>([]);
       const [abbreviation, setAbbreviation] = useState('');
+      
       useEffect(() => {    
 
         const fetchTipoCompetencias = async () => {
@@ -84,10 +86,12 @@ const PieChart = ({ title, labels, datasets }) => {
               'Content-Type': 'application/json',
               'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
             },
-            body: JSON.stringify({
-              idArea: 0,
-              idPosicion:  0,
-              activo: 2
+            // Poner 2 si es cualquiera, poner 0 o 1 si es inactivo o activo
+            // Poner 0 para toda la empresa, poner el <id> si es por área
+            body: JSON.stringify({ 
+                idArea: 2,
+                idPosicion:  0,
+                activo: 2
             }),
           };
       
@@ -187,11 +191,11 @@ const PieChart = ({ title, labels, datasets }) => {
       
       return (
         <div className="container">
-          <h2>Consolidado de competencias</h2>
+          <h2>Consolidado de competencias de área de TI</h2>
           
           <div className="row">
             <div className="col-md-6">
-              <label htmlFor="competencia-select">Competencias por area:</label>
+              <label htmlFor="competencia-select">Competencias por puesto:</label>
               <select
                 id="competencia-select"
                 className="form-control"
@@ -213,7 +217,7 @@ const PieChart = ({ title, labels, datasets }) => {
               <div className="col-md-6">
                 <div className="card">
                   <div className="card-body">
-                    <h3 className="card-title">Adecuación a competencias de la organización</h3>
+                    <h3 className="card-title">Adecuación a competencias del area</h3>
                     <PieChart title='' labels= ''datasets={data1} />
                     <div className="chart-legend"> 
                       {/* Agregar aquí la leyenda del gráfico 1 */}
@@ -226,13 +230,13 @@ const PieChart = ({ title, labels, datasets }) => {
               <div className="col-md-6">
                <div className="card">
                  <div className="card-body">
-                   <h3 className="card-title">Adecuación a competencias de área de {abbreviation}</h3>
+                   <h3 className="card-title">Adecuación a competencias de  {abbreviation}</h3>
                    <PieChart title='' labels= {labels} datasets={data2} />
                    <div className="chart-legend">
                      {/* Agregar aquí la leyenda del gráfico 2 */}
                    </div>
                    <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
-                   <button className="btn btn-secondary" onClick={handleClick}>Ver detalle del área</button>
+                   <button className="btn btn-secondary" onClick={handleClick}>Ver detalle del puesto</button>
                    </div>
                </div>
              </div>
@@ -247,5 +251,5 @@ const PieChart = ({ title, labels, datasets }) => {
         </div>
       );
     };
-  export default ConsolidadoCompetencias
+  export default ConsolidadoCompetenciasAM
   
