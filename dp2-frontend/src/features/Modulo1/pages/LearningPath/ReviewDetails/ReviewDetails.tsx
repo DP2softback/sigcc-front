@@ -19,7 +19,8 @@ type DetailObj = {
 
 type ReviewObj = {
     valoracion: number
-    comentario_valoracion: string
+    comentario_valoracion?: string
+    comentario?: string
 }
 
 function ReviewDetails() {
@@ -63,12 +64,13 @@ function ReviewDetails() {
         setCourseSelected(null);
     }, []);
 
-    const selectCourse = (courseIndex: number) => {
-        //setLoadingCourseReviews(true)
+    const selectCourse = (courseIndex: number, courseID: number) => {
+        setLoadingCourseReviews(true)
         setCourseSelected(courseIndex)
-        /*
-        axiosInt.get(``)
+        
+        axiosInt.get(`capacitaciones/valorar_curso/${courseID}/`)
             .then(function (response) {
+                console.log(response.data)
                 setCourseDetails(response.data.datos_curso)
                 setReviewCourseDetails(response.data.valoraciones)
                 setLoadingCourseReviews(false);
@@ -77,7 +79,7 @@ function ReviewDetails() {
                 console.log(error);
                 setLoadingCourseReviews(false);
             });
-        */
+        
     };
     
     return (
@@ -129,7 +131,7 @@ function ReviewDetails() {
                                             courses.map((course, indexC) => {
                                                 return (
                                                     <div className='col mouseHover' key={course.id} style={{ paddingBottom: "1rem"}}>
-                                                        <div className="card h-100" style={{display: "flex", flexDirection: "row"}} onClick={() => selectCourse(indexC)}>
+                                                        <div className="card h-100" style={{display: "flex", flexDirection: "row"}} onClick={() => selectCourse(indexC, course.id)}>
                                                             <img
                                                                 src={course.tipo_curso == 'U' ? course.course_udemy_detail.image_480x270 == null ? url_foto_default : course.course_udemy_detail.image_480x270 : course.url_foto}
                                                                 className="card-img-top lp-card-img"
@@ -147,136 +149,148 @@ function ReviewDetails() {
                                     </div>
                                 </div>
                             </div>
-
-                            {courseSelected !== null ?
-                                (
-                                    <div style={{ width: "66%" , borderLeftStyle: "groove"}}>
-                                        <div style={{ fontWeight: "bold" }}>Valorizaciones del curso</div>
-                                        <div style={{ display: "flex", flexDirection: "column", paddingTop: "0.75rem" }}>
-                                            <div className='align-items-stretch g-3 px-0 mx-0'>
-                                                <div className='col' style={{ paddingBottom: "1rem" }}>
-                                                    <div className="card h-100" style={{ display: "flex", flexDirection: "row" }}>
-                                                        <div className="card-body card-body-gi">
-                                                            <div className='col-4 general-info-brs'>
-                                                                <h6>Empleados asignados</h6>
-                                                                {/*<h5>{courseDetails.cant_empleados}</h5>*/}
-                                                                <h5>{lpDetails.cant_empleados}</h5>
-                                                            </div>
-                                                            <div className='col-4 general-info-brs'>
-                                                                <h6>Valorizaciones realizadas</h6>
-                                                                {/*<h5>{courseDetails.cant_valoraciones}</h5>*/}
-                                                                <h5>{lpDetails.cant_valoraciones}</h5>
-                                                            </div>
-                                                            <div className='col-4 general-info'>
-                                                                <h6>Valoración promedio</h6>
-                                                                {/*<h5>{courseDetails.cant_valoraciones}</h5>*/}
-                                                                <h5>{lpDetails.cant_empleados === 0 ? ("-") : (lpDetails.suma_valoraciones/lpDetails.cant_empleados)}</h5>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                {
-                                                    reviewCourseDetails.length > 0 ?
-                                                    (
-                                                        reviewCourseDetails.map((reviewCourse, indexRC) => {
-                                                            return (
-                                                                <div className='col' key={indexRC} style={{ paddingBottom: "1rem"}}>
-                                                                    <div className="card h-100" style={{display: "flex", flexDirection: "row"}}>
-                                                                        <div className="card-body">
-                                                                            <div className="d-flex justify-content-between align-items-baseline">
-                                                                                <h6>Valoración:</h6>
-                                                                                <Rate rate={reviewCourse.valoracion}/>
-                                                                            </div>
-                                                                            <h6>Comentario: {reviewCourse.comentario_valoracion}</h6>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            )
-                                                        })
-                                                    )
-                                                    :
-                                                    (
-                                                        <div className='col'>
-                                                            <div className='card'>
-                                                                <div className='card-body'>
-                                                                    <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                                        <div className='vertical-align-child'>
-                                                                            <h5 className='opacity-50 text-center'>Todavía no cuenta con valorizaciones</h5>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                }
+                            {
+                                loadingCourseReviews ?
+                                <>
+                                    <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
+                                        <div className='vertical-align-child'>
+                                            <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                                <span className="visually-hidden">Loading...</span>
                                             </div>
                                         </div>
                                     </div>
-                                )
+                                </>
                                 :
-                                (
-                                    <div style={{ width: "66%" , borderLeftStyle: "groove"}}>
-                                        <div style={{ fontWeight: "bold" }}>Valorizaciones de la ruta de aprendizaje</div>
-                                        <div style={{ display: "flex", flexDirection: "column", paddingTop: "0.75rem" }}>
-                                            <div className='align-items-stretch g-3 px-0 mx-0'>
-                                                <div className='col' style={{ paddingBottom: "1rem" }}>
-                                                    <div className="card h-100" style={{ display: "flex", flexDirection: "row" }}>
-                                                        <div className="card-body card-body-gi">
-                                                            <div className='col-4 general-info-brs'>
-                                                                <h6>Empleados asignados</h6>
-                                                                <h5>{lpDetails.cant_empleados}</h5>
-                                                            </div>
-                                                            <div className='col-4 general-info-brs'>
-                                                                <h6>Valorizaciones realizadas</h6>
-                                                                <h5>{lpDetails.cant_valoraciones}</h5>
-                                                            </div>
-                                                            <div className='col-4 general-info'>
-                                                                <h6>Valoración promedio</h6>
-                                                                <h5>{lpDetails.cant_empleados === 0 ? ("-") : (lpDetails.suma_valoraciones/lpDetails.cant_empleados)}</h5>
+                                <>
+                                    {courseSelected !== null ?
+                                        (
+                                            <div style={{ width: "66%" , borderLeftStyle: "groove"}}>
+                                                <div style={{ fontWeight: "bold" }}>Valoraciones del curso</div>
+                                                <div style={{ display: "flex", flexDirection: "column", paddingTop: "0.75rem" }}>
+                                                    <div className='align-items-stretch g-3 px-0 mx-0'>
+                                                        <div className='col' style={{ paddingBottom: "1rem" }}>
+                                                            <div className="card h-100" style={{ display: "flex", flexDirection: "row" }}>
+                                                                <div className="card-body card-body-gi">
+                                                                    <div className='col-4 general-info-brs'>
+                                                                        <h6>Empleados asignados</h6>
+                                                                        {/*<h5>{courseDetails.cant_empleados}</h5>*/}
+                                                                        <h5>{lpDetails.cant_empleados}</h5>
+                                                                    </div>
+                                                                    <div className='col-4 general-info-brs'>
+                                                                        <h6>Valoraciones realizadas</h6>
+                                                                        <h5>{courseDetails.cant_valoraciones}</h5>
+                                                                    </div>
+                                                                    <div className='col-4 general-info'>
+                                                                        <h6>Valoración promedio</h6>
+                                                                        {/*<h5>{courseDetails.cant_empleados === 0 ? ("-") : (courseDetails.suma_valoraciones/courseDetails.cant_empleados)}</h5>*/}
+                                                                        <h5>{lpDetails.cant_empleados === 0 ? ("-") : (courseDetails.suma_valoraciones/lpDetails.cant_empleados)}</h5>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                {
-                                                    reviewLPDetails.length > 0 ?
-                                                    (
-                                                        reviewLPDetails.map((reviewLP, indexRLP) => {
-                                                            return (
-                                                                <div className='col' key={indexRLP} style={{ paddingBottom: "1rem"}}>
-                                                                    <div className="card h-100" style={{display: "flex", flexDirection: "row"}}>
-                                                                        <div className="card-body">
-                                                                            <div className="d-flex justify-content-between align-items-baseline">
-                                                                                <h6 style={{fontSize: "12px"}}>Valoración:</h6>
-                                                                                <Rate rate={reviewLP.valoracion}/>
+                                                        {
+                                                            reviewCourseDetails.length > 0 ?
+                                                            (
+                                                                reviewCourseDetails.map((reviewCourse, indexRC) => {
+                                                                    return (
+                                                                        <div className='col' key={indexRC} style={{ paddingBottom: "1rem"}}>
+                                                                            <div className="card h-100" style={{display: "flex", flexDirection: "row"}}>
+                                                                                <div className="card-body">
+                                                                                    <div className="d-flex justify-content-between align-items-baseline">
+                                                                                        <h6>Valoración:</h6>
+                                                                                        <Rate rate={reviewCourse.valoracion}/>
+                                                                                    </div>
+                                                                                    <h6>Comentario: {reviewCourse.comentario}</h6>
+                                                                                </div>
                                                                             </div>
-                                                                            <h6 style={{fontSize: "12px"}}>Comentario: {reviewLP.comentario_valoracion}</h6>
+                                                                        </div>
+                                                                    )
+                                                                })
+                                                            )
+                                                            :
+                                                            (
+                                                                <div className='col'>
+                                                                    <div className='card'>
+                                                                        <div className='card-body'>
+                                                                            <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                                                <div className='vertical-align-child'>
+                                                                                    <h5 className='opacity-50 text-center'>Todavía no cuenta con valoraciones</h5>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             )
-                                                        })
-                                                    )
-                                                    :
-                                                    (
-                                                        <div className='col'>
-                                                            <div className='card'>
-                                                                <div className='card-body'>
-                                                                    <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                                        <div className='vertical-align-child'>
-                                                                            <h5 className='opacity-50 text-center'>Todavía no cuenta con valorizaciones</h5>
-                                                                        </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+                                        :
+                                        (
+                                            <div style={{ width: "66%" , borderLeftStyle: "groove"}}>
+                                                <div style={{ fontWeight: "bold" }}>Valoraciones de la ruta de aprendizaje</div>
+                                                <div style={{ display: "flex", flexDirection: "column", paddingTop: "0.75rem" }}>
+                                                    <div className='align-items-stretch g-3 px-0 mx-0'>
+                                                        <div className='col' style={{ paddingBottom: "1rem" }}>
+                                                            <div className="card h-100" style={{ display: "flex", flexDirection: "row" }}>
+                                                                <div className="card-body card-body-gi">
+                                                                    <div className='col-4 general-info-brs'>
+                                                                        <h6>Empleados asignados</h6>
+                                                                        <h5>{lpDetails.cant_empleados}</h5>
+                                                                    </div>
+                                                                    <div className='col-4 general-info-brs'>
+                                                                        <h6>Valoraciones realizadas</h6>
+                                                                        <h5>{lpDetails.cant_valoraciones}</h5>
+                                                                    </div>
+                                                                    <div className='col-4 general-info'>
+                                                                        <h6>Valoración promedio</h6>
+                                                                        <h5>{lpDetails.cant_empleados === 0 ? ("-") : (lpDetails.suma_valoraciones/lpDetails.cant_empleados)}</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    )
-                                                }
+                                                        {
+                                                            reviewLPDetails.length > 0 ?
+                                                            (
+                                                                reviewLPDetails.map((reviewLP, indexRLP) => {
+                                                                    return (
+                                                                        <div className='col' key={indexRLP} style={{ paddingBottom: "1rem"}}>
+                                                                            <div className="card h-100" style={{display: "flex", flexDirection: "row"}}>
+                                                                                <div className="card-body">
+                                                                                    <div className="d-flex justify-content-between align-items-baseline">
+                                                                                        <h6 style={{fontSize: "12px"}}>Valoración:</h6>
+                                                                                        <Rate rate={reviewLP.valoracion}/>
+                                                                                    </div>
+                                                                                    <h6 style={{fontSize: "12px"}}>Comentario: {reviewLP.comentario_valoracion}</h6>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    )
+                                                                })
+                                                            )
+                                                            :
+                                                            (
+                                                                <div className='col'>
+                                                                    <div className='card'>
+                                                                        <div className='card-body'>
+                                                                            <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                                                <div className='vertical-align-child'>
+                                                                                    <h5 className='opacity-50 text-center'>Todavía no cuenta con valoraciones</h5>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        }
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                )
+                                        )
+                                    }
+                                </>
                             }
-
 
                         </div>
 

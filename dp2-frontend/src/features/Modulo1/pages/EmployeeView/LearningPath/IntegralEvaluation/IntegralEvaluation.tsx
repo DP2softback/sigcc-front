@@ -7,8 +7,8 @@ import './integral-evaluation.css'
 import lpdata from './IntegralEvaluation.json'
 import FileZipUpload from '@features/Modulo1/components/FileZipUpload';
 import { Spinner } from 'react-bootstrap';
-import RubricView from '@features/Modulo1/components/Rubric/RubricView';
 import RateValue from '@features/Modulo1/components/Rate/RateValue';
+import RubricGrade from '@features/Modulo1/components/Rubric/RubricGrade';
 
 const DATA = lpdata
 
@@ -25,8 +25,6 @@ const DATAVACIA = {
 
 const dataEvaluation: EvaluationObj = {
     descripcion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sollicitudin eget dui nec vulputate. Cras pharetra varius viverra. Quisque nec maximus libero. In quis mollis erat. Aenean ac dapibus diam, id feugiat leo. Ut tristique lobortis erat, non consequat ligula mattis eget. Sed ac fermentum urna. Donec nec mi vehicula, aliquam tortor a, fermentum eros. Ut ex tortor, tincidunt eu ligula vitae, sodales fringilla sem. Aliquam lacinia, eros et maximus porta, leo est ornare eros, et gravida sem lectus non elit. In congue magna eget nisi varius, sed varius mauris convallis. Pellentesque vel vulputate nunc, ac ultricies tellus. Cras ac dui est. In ut lorem euismod, auctor augue maximus, tristique lectus. Ut tempus pellentesque urna a lobortis. Phasellus tempus laoreet mollis. ",
-    documento_base: "url1",
-    documento_empleado: "url2",
 }
 
 let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
@@ -48,9 +46,6 @@ type LPObj = {
 
 type EvaluationObj = {
     descripcion: string;
-    documento_base: string;
-    documento_empleado: string;
-    rubrica?: any;
 }
 
 const IntegralEvaluation = () => {
@@ -79,25 +74,18 @@ const IntegralEvaluation = () => {
                 if(response.data.archivo_emp === null){
                     setFileUploaded(false)
                 }
+                else{
+                    setFileURL(response.data.archivo_emp[0].url_documento)
+                    const url = response.data.archivo_emp[0].url_documento
+                    const parts_url = url.split("/");
+                    setFileName(parts_url[4])
+                }
                 setLoading(false);
             })
             .catch(function (error) {
                 console.log(error);
                 setLoading(false);
             });
-        /*
-                axiosInt.get(`algo/${learningPathId}/`)
-                    .then(function (response) {
-                        console.log(response.data)
-                        setLPDetails(response.data)
-                        // VERIFICAR SI EL URL DEL FILE ES NULL, CASO CONTRARIO setFileUploaded TRUE
-                        setLoading(false);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                        setLoading(false);
-                    });
-        */
     }
 
     useEffect(() => {
@@ -111,10 +99,14 @@ const IntegralEvaluation = () => {
         //setLoading(true)
 
         const data = {
-            url_file: refLPFile.current.getUrl(),
+            learning_path: parseInt(learningPathId),
+            empleado: 1,    // CAMBIAR
+            archivo_emp: refLPFile.current.getUrl(),
         }
-        /*
-        axiosInt.post(`algo`, data)
+
+        console.log(data)
+        
+        axiosInt.post(`capacitaciones/learning_path/evaluacion/`, data)
             .then(function (response) {
                 console.log(response.data)
                 setLoading(false)
@@ -123,12 +115,10 @@ const IntegralEvaluation = () => {
                 console.log(error);
                 setLoading(false)
             })
-        */
     }
 
     const saveRate = () => {
         const data = {
-            learning_path: learningPathId,
             empleado: 1,    // CAMBIAR
             valoracion: refLPRate.current?.refValueSelected,
             comentario: refLPComment.current?.value
@@ -221,7 +211,7 @@ const IntegralEvaluation = () => {
                                                     <h5 className='card-title mt-3'>Rúbrica de evaluación:</h5>
                                                     <div className='row mt-3'>
                                                         <div className='col'>
-                                                            <RubricView />
+                                                            <RubricGrade criterias={lpDetails.rubrica} disabled={true}/>
                                                         </div>
                                                     </div>
 

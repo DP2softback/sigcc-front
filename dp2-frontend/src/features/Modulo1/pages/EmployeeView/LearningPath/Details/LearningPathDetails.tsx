@@ -129,7 +129,6 @@ function LearningPathDetails(props: any) {
         //setLoading(true)
 
         const data = {
-            curso: courseID,
             empleado: 1,    //CAMBIAR CUANDO SE TENGA LA INFO DEL EMPLEADO
             valoracion: refCourseRate.current?.refValueSelected,
             comentario: refCourseComment.current?.value
@@ -138,7 +137,7 @@ function LearningPathDetails(props: any) {
         console.log(data)
         refCourseComment.current.value = ""
 
-        axiosInt.post('capacitaciones/valorar_curso/', data)
+        axiosInt.post(`capacitaciones/valorar_curso/${courseID}/`, data)
             .then(function (response) {
                 console.log(response.data)
                 //setLoading(false)

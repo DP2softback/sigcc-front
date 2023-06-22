@@ -4,12 +4,11 @@ export type THearder = {
 }
 
 export type TBodyEmployee = {
-    id: number;
-    nombre: string;
-    estado: number;
-    nota: number;
-    intento: number;
-    fecha_completado?: string;
+    id?: number;
+    first_name: string;
+    last_name: string;
+    estado: string;
+    fecha_completado: string;
 }
 
 export type Props = {

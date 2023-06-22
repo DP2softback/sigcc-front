@@ -24,7 +24,7 @@ function TableDataEmployees(Props: Props) {
         
                             if(headerItems.value.includes('.')){
                                 const itemSplit = headerItems.value.split('.')
-                                return <td key={indexH}>{obj[itemSplit[0]][itemSplit[1]]}</td>
+                                return <td key={indexH}>{obj[itemSplit[0]][itemSplit[1]][itemSplit[2]]}</td>
                             }
                             else if(headerItems.value === "num"){
                                 return <td key={indexH}>{indexR+1}</td>
@@ -36,19 +36,19 @@ function TableDataEmployees(Props: Props) {
                                 return <td className='text-center' key={indexH}><ArrowRightCircleFill onClick={() => {obj && Props.action(obj.id)}}/></td>
                             }
                             else if(headerItems.value === "estado"){
-                                if(obj[`${headerItems.value}`] === 0){
+                                if(obj[`${headerItems.value}`] === "0"){
                                     return <td key={indexH}>{"Sin iniciar"}</td>
                                 }
-                                else if(obj[`${headerItems.value}`] === 1){
+                                else if(obj[`${headerItems.value}`] === "1"){
                                     return <td key={indexH}>{"En progreso"}</td>
                                 }
-                                else if(obj[`${headerItems.value}`] === 2){
+                                else if(obj[`${headerItems.value}`] === "2"){
                                     return <td key={indexH}>{"Sin evaluar"}</td>
                                 }
-                                else if(obj[`${headerItems.value}`] === 3){
+                                else if(obj[`${headerItems.value}`] === "3"){
                                     return <td key={indexH}>{"Evaluado"}</td>
                                 }
-                                else if(obj[`${headerItems.value}`] === 4){
+                                else if(obj[`${headerItems.value}`] === "4"){
                                     return <td key={indexH}>{"Desaprobado"}</td>
                                 }
                                 
