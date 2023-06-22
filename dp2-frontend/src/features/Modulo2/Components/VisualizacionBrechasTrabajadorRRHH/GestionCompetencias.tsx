@@ -12,8 +12,8 @@ const GestionCompetencia = (state) => {
   const location = useLocation();
   const { usuario } = location.state;
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
-    const [nombreEmpleado, setNombreEmpleado] = useState(usuario.user__first_name + ' '+ usuario.user__last_name);
-    const [cargoEmpleado, setCargoEmpleado] = useState(usuario.position__name);
+    const [nombreEmpleado, setNombreEmpleado] = useState(usuario.user__first_name + ' '+ usuario.user__last_name); //usuario.user__first_name + ' '+ usuario.user__last_name
+    const [cargoEmpleado, setCargoEmpleado] = useState(usuario.position__name); //usuario.position__name
     const [tipoOrden, setTipoOrden] = useState('ascendente');
     const [competenciasData, setCompetenciasData] = useState<CompetenciaTrabajador[]>([]);
 
@@ -25,7 +25,7 @@ const GestionCompetencia = (state) => {
             palabraClave: "",		//poner la palabra clave del buscador, si es nada pon ""
             idTipoCompetencia: 0,		//el idTipoCompetencia del buscador, si es todos pon 0
             activo: 2,			//el estado 0 o 1 (inactivo o activo), si es todos pon 2
-            idEmpleado: usuario.id			//ponerle el idEmpleado
+            idEmpleado: usuario.id			//ponerle el idEmpleado usuario.id
           };
   
           const response = await fetch(
@@ -43,6 +43,7 @@ const GestionCompetencia = (state) => {
           if (response.ok) {
             const data = await response.json();
             setCompetenciasData(data);
+            console.log(data)
           } else {
             console.log('Error al obtener los datos de competencias');
           }
@@ -66,21 +67,21 @@ const GestionCompetencia = (state) => {
       const datosFiltradosYOrdenados = () => {
         let datosOrdenados = [];
         switch (campoOrdenamiento) {
-          case 'competence__code':
+          case 'capacity__code':
             datosOrdenados = competenciasData.sort((a, b) =>
               tipoOrden === 'ascendente'
-                ? a.competence__code.localeCompare(b.competence__code)
-                : b.competence__code.localeCompare(a.competence__code)
+                ? a.capacity_id.localeCompare(b.capacity_id)
+                : b.capacity_id.localeCompare(a.capacity_id)
             );
             break;
-          case 'competence__name':
+          case 'capacity__name':
             datosOrdenados = competenciasData.sort((a, b) =>
               tipoOrden === 'ascendente'
-                ? a.competence__name.localeCompare(b.competence__name)
-                : b.competence__name.localeCompare(a.competence__name)
+                ? a.capacity_name.localeCompare(b.capacity_name)
+                : b.capacity_name.localeCompare(a.capacity_name)
             );
             break;
-          case 'competence__type__name':
+          case 'capacity__type__name':
             datosOrdenados = competenciasData.sort((a, b) =>
               tipoOrden === 'ascendente'
                 ? a.competence__type__name.localeCompare(b.competence__type__name)
@@ -100,21 +101,16 @@ const GestionCompetencia = (state) => {
             <Table striped bordered>
             <thead>
                 <tr>
-                    <th onClick={() => handleOrdenarPorCampo('competence__code')}>
-                    Código
-                    {campoOrdenamiento === 'competence__code' && (
-                        <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
-                    )}
-                    </th>
-                    <th onClick={() => handleOrdenarPorCampo('competence__name')}>
+
+                    <th onClick={() => handleOrdenarPorCampo('capacity__name')}>
                     Nombre
-                    {campoOrdenamiento === 'competence__name' && (
+                    {campoOrdenamiento === 'capacity__name' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
-                    <th onClick={() => handleOrdenarPorCampo('competence__type__name')}>
+                    <th onClick={() => handleOrdenarPorCampo('capacity__type__name')}>
                     Tipo de competencia
-                    {campoOrdenamiento === 'competence__type__name' && (
+                    {campoOrdenamiento === 'capacity__type__name' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
@@ -151,9 +147,8 @@ const GestionCompetencia = (state) => {
 
             return (
               <tr key={index}>
-                <td>{item.competence__code}</td>
-                <td>{item.competence__name}</td>
-                <td>{item.competence__type__name}</td>
+                <td>{item.capacity__name}</td>
+                <td>{item.capacity__type__name}</td>
                 <td>{item.levelCurrent}</td>
                 <td>{item.levelRequired}</td>
                 <td>{item.likeness + ' %'}</td>
