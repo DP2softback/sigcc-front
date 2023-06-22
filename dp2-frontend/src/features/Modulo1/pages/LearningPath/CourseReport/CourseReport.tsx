@@ -43,6 +43,7 @@ const CourseReport = () => {
     const [optionCourse, setOptionCourse] = useState('Avance')
     const [statesLP, setStatesLP] = useState<any[]>([])
     const [statesCourse, setStatesCourse] = useState<any>([])
+    const [orderSelected, setOrderSelected] = useState<number>(null)
 
     const navigate = useNavigate();
     const goBack = () => {
@@ -54,9 +55,10 @@ const CourseReport = () => {
     }
 
 
-    const handleCourseReporte = (course: any) => {
+    const handleCourseReporte = (course: any, id: any) => {
         setCourseSelected(course);
         loadStatesCourse(course.id);
+        setOrderSelected(id);
     }
 
 
@@ -78,8 +80,8 @@ const CourseReport = () => {
         setLoading1(true);
         axiosInt.get(`capacitaciones/learning_path_from_template/${learningPathId}/`)
             .then(function (response) {
-                console.log(response.data[1])
-                setCourses(response.data[1]);
+                console.log(response.data)
+                setCourses(response.data.cursos);
 
                 axiosInt.get(`capacitaciones/learning_path/empleados_progress/${learningPathId}/`)
                     .then(function (response) {
@@ -130,6 +132,7 @@ const CourseReport = () => {
 
     useEffect(() => {
         loadCourses();
+        setCourseSelected([]);
     }, []);
 
     useEffect(() => {
@@ -206,9 +209,9 @@ const CourseReport = () => {
                                             <div style={{ display: "flex", flexDirection: "column", paddingTop: "0.75rem" }}>
                                                 <div className='align-items-stretch g-3 px-0 mx-0'>
                                                     {
-                                                        courses.map((course) => {
+                                                        courses.map((course, indexC) => {
                                                             return (
-                                                                <div className='col mouseHover' key={course.id} style={{ paddingBottom: "1rem" }} onClick={() => handleCourseReporte(course)}>
+                                                                <div className='col mouseHover' key={course.id} style={{ paddingBottom: "1rem" }} onClick={() => handleCourseReporte(course, indexC)}>
                                                                     <div className="card h-100" style={{ display: "flex", flexDirection: "row" }}>
                                                                         <img
                                                                             src={course.tipo_curso == 'U' ? course.course_udemy_detail.image_480x270 == null ? url_foto_default : course.course_udemy_detail.image_480x270 : course.url_foto}
@@ -216,7 +219,7 @@ const CourseReport = () => {
                                                                             alt="Card"
                                                                             style={{ width: "50%" }}
                                                                         />
-                                                                        <div className="card-body" style={{ display: "flex", alignItems: "center" }}>
+                                                                        <div className="card-body" style={{display: "flex", alignItems: "center", backgroundColor: orderSelected === indexC ? "rgb(0 123 255 / 20%)" : ""}}>
                                                                             <h6 style={{ fontSize: "12px" }}>{course.nombre}</h6>
                                                                         </div>
                                                                     </div>
@@ -257,8 +260,13 @@ const CourseReport = () => {
                                                                                 <div className="h-100" style={{ display: "flex", flexDirection: "row" }}>
                                                                                     <div className="card-body" style={{ display: "flex", flexDirection: "column" }}>
                                                                                         <h6 style={{ fontSize: "12px" }}>{employee.empleado.usuario.first_name + " " + employee.empleado.usuario.last_name}</h6>
-                                                                                        <h6 style={{ fontSize: "12px" }}>Estado: {employee.estado}</h6>
-                                                                                        <h6 style={{ fontSize: "12px" }}>Progreso: {employee.porcentaje_progreso}</h6>
+                                                                                        {(employee.estado + 1) == 1 &&
+                                                                                            <h6 style={{ fontSize: "12px" }}>Estado: Iniciado</h6>
+                                                                                        }
+                                                                                        {(learningPathId == '10') &&
+                                                                                            <h6 style={{ fontSize: "12px" }}>Progreso: 16.6%</h6>
+                                                                                        }
+
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -318,8 +326,29 @@ const CourseReport = () => {
                                                                                             <div className="h-100" style={{ display: "flex", flexDirection: "row" }}>
                                                                                                 <div className="card-body" style={{ display: "flex", flexDirection: "column" }}>
                                                                                                     <h6 style={{ fontSize: "12px" }}>{employee.empleado.usuario.first_name + " " + employee.empleado.usuario.last_name}</h6>
-                                                                                                    <h6 style={{ fontSize: "12px" }}>Estado: {employee.estado}</h6>
-                                                                                                    <h6 style={{ fontSize: "12px" }}>Progreso: {employee.porcentaje_progreso}</h6>
+                                                                                                    {(employee.estado) == 4 ?
+                                                                                                        <>
+                                                                                                            <h6 style={{ fontSize: "12px" }}>Estado: Completado</h6>
+                                                                                                            <h6 style={{ fontSize: "12px" }}>Progreso: 100%</h6>
+                                                                                                        </>
+                                                                                                        :
+                                                                                                        <>
+                                                                                                            {(employee.estado) == 2 ?
+                                                                                                                <>
+                                                                                                                    <h6 style={{ fontSize: "12px" }}>Estado: Finalizado Sin Evaluar</h6>
+                                                                                                                    <h6 style={{ fontSize: "12px" }}>Progreso: 100%</h6>
+                                                                                                                </>
+                                                                                                                :
+                                                                                                                <>
+                                                                                                                    <h6 style={{ fontSize: "12px" }}>Estado: {employee.estado}</h6>
+                                                                                                                    <h6 style={{ fontSize: "12px" }}>Progreso: {employee.porcentaje_progreso}</h6>
+                                                                                                                </>
+                                                                                                            }
+
+                                                                                                        </>
+                                                                                                    }
+
+
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>

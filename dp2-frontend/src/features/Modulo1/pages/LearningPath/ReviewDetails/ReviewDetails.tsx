@@ -43,8 +43,8 @@ function ReviewDetails() {
 
                 axiosInt.get(`capacitaciones/learning_path_from_template/${learningPathId}/`)
                     .then(function (response) {
-                        console.log(response.data[1])
-                        setCourses(response.data[1]);
+                        console.log(response.data.cursos)
+                        setCourses(response.data.cursos);
                         setLoading(false);
                     })
                     .catch(function (error) {
@@ -60,6 +60,7 @@ function ReviewDetails() {
 
     useEffect(() => {
         loadReviewsLP();
+        setCourseSelected(null);
     }, []);
 
     const selectCourse = (courseIndex: number) => {
@@ -127,7 +128,7 @@ function ReviewDetails() {
                                         {
                                             courses.map((course, indexC) => {
                                                 return (
-                                                    <div className='col' key={course.id} style={{ paddingBottom: "1rem"}}>
+                                                    <div className='col mouseHover' key={course.id} style={{ paddingBottom: "1rem"}}>
                                                         <div className="card h-100" style={{display: "flex", flexDirection: "row"}} onClick={() => selectCourse(indexC)}>
                                                             <img
                                                                 src={course.tipo_curso == 'U' ? course.course_udemy_detail.image_480x270 == null ? url_foto_default : course.course_udemy_detail.image_480x270 : course.url_foto}
