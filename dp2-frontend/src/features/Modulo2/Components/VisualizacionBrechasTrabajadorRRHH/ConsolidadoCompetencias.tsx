@@ -42,6 +42,8 @@ const PieChart = ({ title, labels, datasets }) => {
       const [tipoCompetencia, setTipoCompetencia] = useState<tipoCompetencia>(null);
       const [areasActivas, setAreasActivas] = useState<AreaActiva[]>([]);
       const [name, setname] = useState('');
+      const [area, setAre] = useState<tipoCompetencia>(null);
+      
       useEffect(() => {    
 
         const fetchTipoCompetencias = async () => {
@@ -170,9 +172,9 @@ const PieChart = ({ title, labels, datasets }) => {
 
       const handleCompetenciaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {    
         const tipo  = tipoCompetencias.find((tipo) => tipo.id.toString() === event.target.value)
+        setAre(tipo)
         setTipoCompetencia(tipoCompetencias[0]);
-        console.log(tipoCompetencia)
-        setname(tipo.name)
+        setname(area.name)
         setData1(data1);
         setData2(data2);
       }
@@ -195,7 +197,7 @@ const PieChart = ({ title, labels, datasets }) => {
           
           <div className="row">
             <div className="col-md-6">
-              <label className="subtitle" htmlFor="competencia-select">Competencias por area:</label>
+              <label className="subtitle" htmlFor="competencia-select">Areas de la empresa:</label>
               <select
                 id="competencia-select"
                 className="form-control"

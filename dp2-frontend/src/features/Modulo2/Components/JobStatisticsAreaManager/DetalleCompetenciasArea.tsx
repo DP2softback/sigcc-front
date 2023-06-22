@@ -33,7 +33,7 @@ const DetalleCompetenciasArea = () => {
               'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
             },
             body: JSON.stringify({ 
-              area: 1,
+              area: 2,
               posicion:  2,
             }),
           };
@@ -155,12 +155,6 @@ const DetalleCompetenciasArea = () => {
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
-                    <th onClick={() => handleOrdenarPorCampo('position__name')}>
-                    Porcentaje de adecuación
-                    {campoOrdenamiento === 'position__name' && (
-                        <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
-                    )}
-                    </th>
                     <th onClick={() => handleOrdenarPorCampo('user__email')}>
                     Correo
                     {campoOrdenamiento === 'user__email' && (
@@ -182,7 +176,7 @@ const DetalleCompetenciasArea = () => {
                 <tr key={index}>
                 <td>{competencia.user__first_name}</td>
                 <td>{competencia.user__last_name}</td>
-                <td>{competencia.position__name}</td>
+                <td>{competencia.user__email}</td>
                 <td>{competencia.user__is_active? 'Activo': 'Inactivo'}</td>
                 <td>
                     <Button variant="link" size="sm" onClick={
@@ -202,7 +196,7 @@ const DetalleCompetenciasArea = () => {
     <div className="pantalla">
       <div className='titles'>
       <h2 className='Head'>Empleados del puesto de asistente</h2>
-      <p className="text-muted subtitle">Consultar competencias de los empleados.</p>
+      <p className="text-muted subtitle">Consultar capacidades de los empleados.</p>
       </div>
 
       <Form className="FormComp">
@@ -210,8 +204,8 @@ const DetalleCompetenciasArea = () => {
           <div className='row primera'>
               <InputGroup className="col basicSearch">
               <FormControl
-                placeholder="Ingrese palabras clave, código o nombre de las competencias"
-                aria-label="Buscar competencias"
+                placeholder="Ingrese palabras clave, código o nombre de las capacidades"
+                aria-label="Buscar capacidades"
                 aria-describedby="buscar-icono"
                 value={palabrasClave}
                 onChange={(e) => setPalabrasClave(e.target.value)}

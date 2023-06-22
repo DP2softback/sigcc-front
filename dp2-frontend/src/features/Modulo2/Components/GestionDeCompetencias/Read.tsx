@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Form, Button, Modal } from 'react-bootstrap';
-import { ArrowRightCircleFill, Download, Pencil, Trash, Upload } from 'react-bootstrap-icons';
+import { ArrowRightCircleFill, Pencil, Trash, Upload } from 'react-bootstrap-icons';
 import AgregarCompetencia from './Create';
 import ActualizarCompetencia from './Update';
 import BorrarCompetencia from './Delete';
+import Info from './Info';
 import {Competencia,tipoCompetencia} from './Tipos'
 import './Read.css';
 
@@ -21,7 +22,9 @@ const CompetenciasRead: React.FC = () => {
   const [competencias, setCompetencias] = useState<Competencia[]>([]);
   const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
   const [competenciaSeleccionada, setCompetenciaSeleccionada] = useState(null);
-
+  const [mostrarPopUpInfo,setmostrarPopUpInfo] = useState(null)
+  const [tipo,setTipo] = useState('')  
+  const [name,setName] = useState('')
   useEffect(() => {
     // Función para obtener los datos de competencias desde la API
     const fetchCompetencias = async () => {
@@ -156,9 +159,27 @@ const CompetenciasRead: React.FC = () => {
   const handleCerrarPopUpCrear = () => {
     setmostrarPopUpCrear(false);
   };
+
+  const handleMostrarPopUpInfo  = (competencia) => {
+    setCompetenciaSeleccionada(competencia);
+    setTipo(tipoCompetencias.find((tipo) => tipo.id == competencia.type)?.name)
+    setName(competencia.name);
+    setmostrarPopUpInfo(true);
+  };
+
+
+
+  const handleCerrarPopUpInfo = () => {
+    setmostrarPopUpInfo(false);
+  };
+
+
+
   
   const handleMostrarPopUpActualizar = (competencia) => {
     setCompetenciaSeleccionada(competencia);
+    setTipo(tipoCompetencias.find((tipo) => tipo.id == competencia.type)?.name)
+    setName(competencia.name);
     setmostrarPopUpActualizar(true);
   };
 
@@ -202,6 +223,7 @@ const actualizarCompetencia = async (competenciaActualizada) => {
       }
       setCompetencias(tablaAux);
       setCompetenciaSeleccionada(null);
+      setName('');
       handleCerrarPopUpActualizar();
     } else {
       throw new Error('Error al actualizar la competencia');
@@ -217,6 +239,7 @@ const actualizarCompetencia = async (competenciaActualizada) => {
 
   const handleMostrarPopUpBorrar  = (competencia) => {     
     setCompetenciaSeleccionada(competencia);
+    setName(competencia.name);
     setmostrarPopUpBorrar(true);
   };
 
@@ -245,6 +268,7 @@ const borrarCompetencia = async (id) => {
       const updatedCompetencias = competencias.filter((competencia) => competencia.id !== id);
       setCompetencias(updatedCompetencias);
       setCompetenciaSeleccionada(null);
+      setName('');
       handleCerrarPopUpBorrar();
     } else {
       console.error('Error al borrar la competencia');
@@ -290,7 +314,6 @@ const borrarCompetencia = async (id) => {
         <tr>
             <th onClick={() => handleOrdenarPorCampo('code')}>Código {campoOrdenamiento === 'code' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th onClick={() => handleOrdenarPorCampo('name')}>Nombre {campoOrdenamiento === 'name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-            <th onClick={() => handleOrdenarPorCampo('description')}>Descripción {campoOrdenamiento === 'description' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th onClick={() => handleOrdenarPorCampo('type')}>Tipo de Capacidad {campoOrdenamiento === 'type' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th onClick={() => handleOrdenarPorCampo('active')}>Estado {campoOrdenamiento === 'active' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th>Acciones</th>        
@@ -301,12 +324,10 @@ const borrarCompetencia = async (id) => {
           <tr key={competencia.id}>
             <td>{competencia.code}</td>
             <td>{competencia.name}</td>
-            <td>{competencia.description}</td>
             <td>{tipoCompetencias.find((tipo) => tipo.id == competencia.type)?.name}</td>
             <td>{competencia.active ? 'Activo' : 'Inactivo'}</td>
                   <td>
-      
-                    <Button variant="link" size="sm">
+                    <Button variant="link" size="sm" onClick={() => handleMostrarPopUpInfo(competencia)}>
                     <ArrowRightCircleFill color='gray'></ArrowRightCircleFill>
                       <i className="bi bi-box-arrow-in-right"></i>
                     </Button>
@@ -364,23 +385,6 @@ const borrarCompetencia = async (id) => {
             </div>
          </div>
             <div className='row'>
-
-
-            <div className="col-sm-3 botones">
-                    <Button variant="outline-primary" className="me-2">
-                    <Download></Download>
-                      <i className="bi bi-upload"></i> Importar lista
-                    </Button>
-                    <p className="text-muted">Maximum file size 2MB</p>
-              </div>
-              <div className="col-sm-3 botones">
-                    <Button variant="outline-primary">
-                    <Upload></Upload>
-                      <i className="bi bi-download"></i> Exportar lista
-                    </Button>
-                    <p className="text-muted">Maximum file size 2MB</p>
-              </div>
-
               <div className="col-sm-3 botones2 justify-content-center">
                 <Button variant="outline-secondary" className='Search' onClick={handleLimpiarFiltros}>
                   Limpiar filtros
@@ -389,7 +393,6 @@ const borrarCompetencia = async (id) => {
                   Buscar
                 </Button>{' '}
               </div>
-        
               <div className="col-sm-3 botones2 justify-content-center">          
                 <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
                   Agregar capacidad
@@ -397,7 +400,6 @@ const borrarCompetencia = async (id) => {
               </div>  
           </div>
         </div>  
-  
 
       <Modal show={mostrarPopUpCrear} onHide={handleCerrarPopUpCrear}>
         <Modal.Header closeButton>
@@ -412,6 +414,20 @@ const borrarCompetencia = async (id) => {
           </div>
         </Modal.Body>
       </Modal>
+
+      <Modal show={mostrarPopUpInfo} onHide={handleCerrarPopUpInfo}>
+        <Modal.Header closeButton>
+          <Modal.Title>{'Informacion de Capacidad: ' + ' ' + name}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Info competencia ={competenciaSeleccionada} tipo = {tipo}/>
+          <div className='botonCerrar'>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+
+
 
       <Modal show={mostrarPopUpActualizar} onHide={handleCerrarPopUpActualizar}>
         <Modal.Header closeButton>
