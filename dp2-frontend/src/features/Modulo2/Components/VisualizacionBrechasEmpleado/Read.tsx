@@ -29,7 +29,7 @@ const Read = () => {
         .then(function (response){
             let temp = {
                 id: -1,
-                name: "Tipos de competencia"
+                name: "Tipos de capacidad"
             }
             let temp2 = {
                 id: 0,
@@ -90,7 +90,7 @@ const Read = () => {
         setPalabrasClave('');
         setTipoCompetenciaSelected({
             id: -1,
-            name: "Tipos de competencia"
+            name: "Tipos de capacidades"
         });
         setTipoCompetenciaString('');
     };
@@ -135,14 +135,14 @@ const Read = () => {
     return (
         <>
             <div className='row'>
-                <h2>Mis brechas de competencias</h2>
-                <p className="text-muted">Visualización de estadísticas de los niveles requeridos por competencias</p>
+                <h2>Mis brechas de capacidades</h2>
+                <p className="text-muted">Visualización de estadísticas de los niveles requeridos por capacidades</p>
                 {isLoading ? <></> : 
                 <Form className="row align-items-center mb-4">
                     <Form.Group className="col-6">
                         <FormControl
-                            placeholder="Ingrese palabras clave, código o nombre de las competencias"
-                            aria-label="Buscar competencias"
+                            placeholder="Ingrese palabras clave, código o nombre de las capacidades"
+                            aria-label="Buscar capacidades"
                             aria-describedby="buscar-icono"
                             value={palabrasClave}
                             onChange={(e) => setPalabrasClave(e.target.value)}

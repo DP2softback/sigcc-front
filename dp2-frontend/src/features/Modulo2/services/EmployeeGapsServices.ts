@@ -2,13 +2,14 @@
 
 import axios from "axios";
 
+import {TOKEN_SERVICE} from '@features/Modulo2/services/ServicesApis'
 const baseUrl = "https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1";
 
 const axiosEmployeeGaps = axios.create({
   baseURL: baseUrl,
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+    'Authorization': TOKEN_SERVICE,
   }
 });
 
