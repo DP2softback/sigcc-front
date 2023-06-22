@@ -39,6 +39,7 @@ const CourseReport = () => {
     const [courseSelected, setCourseSelected] = useState<any>([])
     const { learningPathId } = useParams();
     const [optionCourse, setOptionCourse] = useState('Avance')
+    const [statesLP, setStatesLP] = useState<any[]>([])
 
     const navigate = useNavigate();
     const goBack = () => {
@@ -47,6 +48,11 @@ const CourseReport = () => {
 
     const handleOptionCourse = (e: string) => {
         setOptionCourse(e)
+    }
+
+
+    const handleCourseReporte = (course: any) => {
+        setCourseSelected(course)
     }
 
 
@@ -70,7 +76,18 @@ const CourseReport = () => {
             .then(function (response) {
                 console.log(response.data[1])
                 setCourses(response.data[1]);
-                setLoading1(false);
+
+                axiosInt.get(`capacitaciones/learning_path/empleados_progress/${learningPathId}/`)
+                    .then(function (response) {
+                        console.log(response.data)
+                        setStatesLP(response.data)
+                        setLoading1(false);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        setLoading1(false);
+                    });
+
             })
             .catch(function (error) {
                 console.log(error);
@@ -92,7 +109,6 @@ const CourseReport = () => {
         //     });
         setLoading2(false);
     }
-
 
     useEffect(() => {
         loadCourses();
@@ -121,7 +137,7 @@ const CourseReport = () => {
                     </>
                     :
                     <>
-                        <div className='row'  style={{ paddingBottom: "2rem" }}>
+                        <div className='row' style={{ paddingBottom: "2rem" }}>
                             <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
                                 <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
                                     <ArrowLeftCircleFill className='mouseHover' onClick={goBack} style={{ height: "32px", width: "32px", color: "black" }} />
@@ -175,7 +191,7 @@ const CourseReport = () => {
                                                     {
                                                         courses.map((course) => {
                                                             return (
-                                                                <div className='col' key={course.id} style={{ paddingBottom: "1rem" }}>
+                                                                <div className='col mouseHover' key={course.id} style={{ paddingBottom: "1rem" }} onClick={() => handleCourseReporte(course)}>
                                                                     <div className="card h-100" style={{ display: "flex", flexDirection: "row" }}>
                                                                         <img
                                                                             src={course.tipo_curso == 'U' ? course.course_udemy_detail.image_480x270 == null ? url_foto_default : course.course_udemy_detail.image_480x270 : course.url_foto}
@@ -196,9 +212,55 @@ const CourseReport = () => {
                                         </div>
 
 
-                                        {courseSelected.length == 0 &&
+                                        {courseSelected.length == 0 ?
                                             <div style={{ width: "66%" }}>
-                                                <div style={{ fontWeight: "bold" }}>Cursos 2</div>
+                                                <div style={{ fontWeight: "bold", color: "#F8F8F9" }}>LP</div>
+                                                <div style={{ display: "flex", flexDirection: "column", paddingTop: "0.75rem" }}>
+                                                    <div className='align-items-stretch g-3 px-0 mx-0'>
+                                                        <div className="card h-100" style={{ display: "flex", padding: "1rem" }}>
+
+                                                            <div style={{ display: "flex", alignItems: "center", paddingBottom: "1rem" }}>
+                                                                <div style={{ paddingRight: "1rem" }}>
+                                                                    {
+                                                                        lp.url_foto === null ?
+                                                                            (<img src={url_foto_default} style={{ borderRadius: "100%", width: "3rem", height: "3rem" }}></img>)
+                                                                            :
+                                                                            (<img src={lp.url_foto} style={{ borderRadius: "100%", width: "3rem", height: "3rem" }}></img>)
+                                                                    }
+                                                                </div>
+                                                                <div>
+                                                                    <h1 className='screenTitle' style={{ fontSize: "20px" }}>Avance {lp.nombre}</h1>
+                                                                </div>
+                                                            </div>
+
+                                                            <div>
+                                                                {
+                                                                    statesLP.map((employee) => {
+                                                                        return (
+                                                                            <div className='col' key={employee.id} style={{ paddingBottom: "1rem" }}>
+                                                                                <div className="h-100" style={{ display: "flex", flexDirection: "row" }}>
+                                                                                    <div className="card-body" style={{ display: "flex", flexDirection: "column" }}>
+                                                                                        <h6 style={{ fontSize: "12px" }}>{employee.empleado.usuario.first_name + " " + employee.empleado.usuario.last_name}</h6>
+                                                                                        <h6 style={{ fontSize: "12px" }}>{employee.estado}</h6>
+                                                                                        <h6 style={{ fontSize: "12px" }}>{employee.porcentaje_progreso}</h6>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            :
+
+                                            <div style={{ width: "66%" }}>
+                                                <div style={{ fontWeight: "bold", color: "#F8F8F9" }}>CURSO</div>
                                                 <div style={{ display: "flex", flexDirection: "column", paddingTop: "0.75rem" }}>
                                                     <div className='align-items-stretch g-3 px-0 mx-0'>
                                                         {
@@ -222,6 +284,7 @@ const CourseReport = () => {
                                                     </div>
                                                 </div>
                                             </div>
+
                                         }
 
 
