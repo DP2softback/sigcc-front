@@ -1,7 +1,6 @@
 import axiosInt from '@config/axios';
 import FileDropzone from '@features/Modulo1/components/FileDropzone';
 import RubricCriterias from '@features/Modulo1/components/Rubric/RubricCriterias';
-import RubricCriteriasView from '@features/Modulo1/components/Rubric/RubricCriteriasView';
 import React, { Component, Fragment, createRef } from 'react';
 
 interface Props
@@ -44,17 +43,15 @@ class LearningPathComprehensiveEvaluation extends Component<Props, State>
     {
         let a = {
             descripcion_evaluacion: this.refDescription.current.value,
-            rubrica: this.refRubricCriterias.current ? this.refRubricCriterias.current.generate() : this.props.data.rubrica,
+            rubrica: this.refRubricCriterias.current ? this.refRubricCriterias.current.get() : this.state.data.rubrica,
             documentos: this.refFileDropzone.current.getFiles()
         }
         axiosInt.post(`capacitaciones/learning_path/${this.props.learningPathId}/evaluation/`, a)
             .then((response) =>
             {
-                console.log(response.data);
                 this.refCloseModal.current.click();
                 window.location.reload();
             });
-        console.log(a);
     }
 
     handleCanSend (value)
@@ -69,7 +66,6 @@ class LearningPathComprehensiveEvaluation extends Component<Props, State>
         axiosInt.get(`capacitaciones/learning_path/${this.props.learningPathId}/evaluation/`)
             .then((response) =>
             {
-                console.log(response.data.documentos);
                 this.setState({ data: response.data });
             })
             .catch(function (error)
@@ -81,7 +77,6 @@ class LearningPathComprehensiveEvaluation extends Component<Props, State>
     componentDidMount ()
     {
         this.loadsEvaluation();
-        console.log(this.props.data);
     }
 
     render ()
@@ -105,15 +100,7 @@ class LearningPathComprehensiveEvaluation extends Component<Props, State>
                                 <div className='row mb-4'>
                                     <div className='col'>
                                         <h5>Rúbrica de evaluación</h5>
-                                        {
-                                            !this.state.data.rubrica ?
-                                                <>
-                                                    <RubricCriterias ref={this.refRubricCriterias} />
-                                                </> :
-                                                <>
-                                                    <RubricCriteriasView rubric={this.state.data.rubrica} />
-                                                </>
-                                        }
+                                        <RubricCriterias ref={this.refRubricCriterias} criterias={this.state.data.rubrica} />
                                     </div>
                                 </div>
                                 <div className='row'>

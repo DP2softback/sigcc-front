@@ -1,25 +1,21 @@
+export type Criteria = {
+    id: number,
+}
 export type PropsRubricCriterias = {
-    placeholder: string,
-    disabled: boolean,
+    criterias: Array<Criteria>,
 }
 
 export type StateRubricCriterias = {
-    options: Array<number>,
-    errorNoOptions: boolean,
-    label: string,
+    criterias: Array<{
+        id: number,
+    }>
 }
 
 export type PropsChoiceBase = {
-    max?: number,
-    placeholder: string,
-    disabled: boolean,
-    value: number,
-    removeOption: () => {};
-    resetValidator: () => {};
+    choice: Criteria,
+    onChange: any,
+    onDelete: any,
 }
 
 export type StateChoiceBase = {
-    label: string,
-    errorEmptyLabel: boolean,
-    errorEmptyScore: boolean,
 }

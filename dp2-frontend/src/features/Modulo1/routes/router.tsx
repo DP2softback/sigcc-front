@@ -83,6 +83,10 @@ const GSettings = Loader(
 	lazy(() => import("@features/Modulo1/pages/LearningPath/ComprehensiveEvaluation"))
 );
 
+const AngelSamples = Loader(
+	lazy(() => import("@features/Modulo1/pages/AngelSamples"))
+);
+
 export const routes: RouteObject[] = [
 	{
 		path: TRAINING_MANAGMENT_MODULE,
@@ -327,6 +331,19 @@ export const routes: RouteObject[] = [
 						)
 					}
 				]
+			},
+			{
+				path: 'test',
+				element:  (
+					<AppLayout
+						allowedRoles={[
+							Roles.HR_ADMIN,
+							Roles.HR_MANAGER,
+							Roles.HEAD_OF_AREA
+						]}>
+						<AngelSamples />
+					</AppLayout>
+				)
 			},
 			{
 				path: "*",
