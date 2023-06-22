@@ -7,7 +7,6 @@ export  type Competencia = {
     active: boolean;
   };
 
-
 export  type tipoCompetencia = {
     id: number,
     abbreviation: string;
@@ -23,8 +22,7 @@ export type CompetenciaTrabajador = {
   competence__type__name: string,
   levelCurrent: number,
   levelRequired: number,
-  levelGap: number,
-  description: string
+  likeness: number
 }
   
 export type EmpleadoDeArea = {

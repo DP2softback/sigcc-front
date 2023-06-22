@@ -8,6 +8,7 @@ import { set } from "lodash";
 import './ConsolidadoCompetencias.css';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_ORG, GAPS_EMPLOYEES_ORG_DETAIL } from '@features/Modulo2/routes/path';
 
+import {TOKEN_SERVICE} from '@features/Modulo2/Services/ServicesApis'
 
 const PieChart = ({ title, labels, datasets }) => {
     ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -42,6 +43,8 @@ const PieChart = ({ title, labels, datasets }) => {
       const [tipoCompetencia, setTipoCompetencia] = useState<tipoCompetencia>(null);
       const [areasActivas, setAreasActivas] = useState<AreaActiva[]>([]);
       const [name, setname] = useState('');
+      const [area, setAre] = useState<tipoCompetencia>(null);
+      
       useEffect(() => {    
 
         const fetchTipoCompetencias = async () => {
@@ -86,7 +89,7 @@ const PieChart = ({ title, labels, datasets }) => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+              'Authorization': TOKEN_SERVICE,
             },
             body: JSON.stringify({
               idArea: 0,
@@ -170,9 +173,9 @@ const PieChart = ({ title, labels, datasets }) => {
 
       const handleCompetenciaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {    
         const tipo  = tipoCompetencias.find((tipo) => tipo.id.toString() === event.target.value)
+        setAre(tipo)
         setTipoCompetencia(tipoCompetencias[0]);
-        console.log(tipoCompetencia)
-        setname(tipo.name)
+        setname(area.name)
         setData1(data1);
         setData2(data2);
       }
@@ -195,7 +198,7 @@ const PieChart = ({ title, labels, datasets }) => {
           
           <div className="row">
             <div className="col-md-6">
-              <label className="subtitle" htmlFor="competencia-select">Competencias por area:</label>
+              <label className="subtitle" htmlFor="competencia-select">Areas de la empresa:</label>
               <select
                 id="competencia-select"
                 className="form-control"

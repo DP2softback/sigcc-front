@@ -3,11 +3,10 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { useEffect, useState } from "react";
 import { useLocation,  useNavigate  } from 'react-router-dom';
 import { Competencia, tipoCompetencia,AreaActiva } from "../GestionDeCompetencias/Tipos";
-import DetalleCompetenciasArea from "./DetalleCompetenciasArea";
-import { set } from "lodash";
 import './ConsolidadoCompetencias.css';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL } from '@features/Modulo2/routes/path';
 
+import {TOKEN_SERVICE} from '@features/Modulo2/Services/ServicesApis'
 
 const PieChart = ({ title, labels, datasets }) => {
     ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -36,7 +35,6 @@ const PieChart = ({ title, labels, datasets }) => {
 
   const ConsolidadoCompetenciasAM = () => {
     const navigate = useNavigate();
-    const location = useLocation();
       const [data1, setData1] = useState(null);
       const [data2, setData2] = useState(null);
       const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
@@ -73,7 +71,7 @@ const PieChart = ({ title, labels, datasets }) => {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+              'Authorization': TOKEN_SERVICE,
             }
           }
           try {
@@ -93,7 +91,7 @@ const PieChart = ({ title, labels, datasets }) => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+              'Authorization': TOKEN_SERVICE,
             },
             // Poner 2 si es cualquiera, poner 0 o 1 si es inactivo o activo
             // Poner 0 para toda la empresa, poner el <id> si es por área
@@ -200,11 +198,11 @@ const PieChart = ({ title, labels, datasets }) => {
       
       return (
         <div className="container">
-          <h2 className="Head">Consolidado de competencias de área de TI</h2>
+          <h2 className="Head">Consolidado de capacidades de área de TI</h2>
           
           <div className="row">
             <div className="col-md-6">
-              <label className="subtitle" htmlFor="competencia-select">Competencias por puesto:</label>
+              <label className="subtitle" htmlFor="competencia-select">Capacidades por puesto:</label>
               <select
                 id="competencia-select"
                 className="form-control"
@@ -226,7 +224,7 @@ const PieChart = ({ title, labels, datasets }) => {
               <div className="col-md-6">
                 <div className="card">
                   <div className="card-body">
-                    <h3 className="card-title">Adecuación a competencias del area</h3>
+                    <h3 className="card-title">Adecuación a capacidades del area</h3>
                     <PieChart title='' labels= ''datasets={data1} />
                     <div className="chart-legend"> 
                       {/* Agregar aquí la leyenda del gráfico 1 */}
@@ -239,7 +237,7 @@ const PieChart = ({ title, labels, datasets }) => {
               <div className="col-md-6">
                <div className="card">
                  <div className="card-body">
-                   <h3 className="card-title">Adecuación a competencias de  {abbreviation}</h3>
+                   <h3 className="card-title">Adecuación a capacidades de  {abbreviation}</h3>
                    <PieChart title='' labels= {labels} datasets={data2} />
                    <div className="chart-legend">
                      {/* Agregar aquí la leyenda del gráfico 2 */}

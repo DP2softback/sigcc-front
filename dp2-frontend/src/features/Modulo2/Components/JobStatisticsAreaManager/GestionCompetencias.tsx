@@ -4,40 +4,19 @@ import {tipoCompetencia,CompetenciaTrabajador } from '../GestionDeCompetencias/T
 import { useLocation,  useNavigate  } from 'react-router-dom';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE } from '@features/Modulo2/routes/path';
 
-const GestionCompetenciaAM = () => {
+const GestionCompetenciaAM = (state) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { usuario } = location.state;
   console.log(location.state)
   //const { usuario } = location.state;
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
-    const [nombreEmpleado, setNombreEmpleado] = useState('Ángela Quispe Ramírez');
-    const [cargoEmpleado, setCargoEmpleado] = useState('Supervisor - Ärea de TI');
+    const [nombreEmpleado, setNombreEmpleado] = useState(usuario.user__first_name + ' '+ usuario.user__last_name);
+    const [cargoEmpleado, setCargoEmpleado] = useState(usuario.position__name);
     const [tipoOrden, setTipoOrden] = useState('ascendente');
-    const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
     const [competenciasData, setCompetenciasData] = useState<CompetenciaTrabajador[]>([]);
 
-    useEffect(() => {        
-      const fetchTipoCompetencias = async () => {
-        try {
-  
-          const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceTypes', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
-            },
-          });
-  
-          if (response.ok) {
-            const data = await response.json();
-            setTipoCompetencias(data);
-          } else {
-            console.log('Error al obtener los datos de competencias');
-          }
-        } catch (error) {
-          console.log('Error al obtener los datos de competencias:', error);
-        }
-      };
+    useEffect(() => {     
 
       const fetchCompetencias = async () => {
         try {
@@ -46,7 +25,7 @@ const GestionCompetenciaAM = () => {
             "palabraClave": "",		//poner la palabra clave del buscador, si es nada pon ""
             "idTipoCompetencia": 0,		//el idTipoCompetencia del buscador, si es todos pon 0
             "activo": 2,			//el estado 0 o 1 (inactivo o activo), si es todos pon 2
-            "idEmpleado": 1			//ponerle el idEmpleado
+            "idEmpleado": usuario.id			//ponerle el idEmpleado
     };
   
           const response = await fetch(
@@ -72,7 +51,6 @@ const GestionCompetenciaAM = () => {
         }
       };
       fetchCompetencias();
-      fetchTipoCompetencias();
     }, []);
 
     const handleOrdenarPorCampo = (campo) => {
@@ -129,7 +107,7 @@ const GestionCompetenciaAM = () => {
                     )}
                     </th>
                     <th onClick={() => handleOrdenarPorCampo('competence__type__name')}>
-                    Tipo de competencia
+                    Tipo de capacidad
                     {campoOrdenamiento === 'competence__type__name' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
@@ -163,16 +141,15 @@ const GestionCompetenciaAM = () => {
         <tbody>
           {datosOrdenados.map((item, index) => {
             const brecha = item.levelCurrent < item.levelRequired ? 'Si' : 'No';
-            //const observacion = item.levelCurrent < item.levelRequired ? 'Necesidad de curso de capacitación' : 'Nivel requerido es alcanzado';
-
+            const observacion = item.levelCurrent < item.levelRequired ? 'Necesidad de curso de capacitación' : 'Nivel requerido es alcanzado';
             return (
               <tr key={index}>
                 <td>{item.competence__name}</td>
                 <td>{item.competence__type__name}</td>
                 <td>{item.levelCurrent}</td>
                 <td>{item.levelRequired}</td>
-                <td>{brecha}</td>
-                <td>{item.observacion}</td>
+                <td>{item.likeness + ' %'}</td>
+                <td>{observacion}</td>
               </tr>
             );
           })}
@@ -183,8 +160,8 @@ const GestionCompetenciaAM = () => {
   return (
     <div className="pantalla">
       <div className='titles'>
-      <h2>Competencias de empleado</h2>
-      <p className="text-muted">Competencias por empleado.</p>
+      <h2>Capacidades de empleado</h2>
+      <p className="text-muted">Capacidades por empleado.</p>
       </div>
       
     <div className='container-fluid'>

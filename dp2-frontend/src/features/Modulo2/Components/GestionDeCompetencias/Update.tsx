@@ -21,8 +21,7 @@ const ActualizarCompetencia: React.FC<Props> = ({ actualizarCompetencia, compete
     }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     if (competenciaActualizada) {
       actualizarCompetencia(competenciaActualizada);
     }
@@ -106,7 +105,7 @@ const ActualizarCompetencia: React.FC<Props> = ({ actualizarCompetencia, compete
       </div>
       
         <div className='espacio'>
-              <button type="submit" className="btn btn-primary">Guardar</button>
+              <button type="submit" onClick={handleSubmit} className="btn btn-primary">Guardar</button>
         </div>
       </div>
     </form>
