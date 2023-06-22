@@ -5,14 +5,18 @@ export const navigateTo = (url: string, params?: any) => {
       .join('&');
 
     const targetURL = `${url}?${queryString}`;
-    window.location.assign(targetURL);
+    window.location.href = targetURL;
   } else {
-    window.location.assign(url);
+    window.location.href = url;
   }
 };
 
 export const navigateBack = () => {
   history.back();
+}
+
+export const formatNumberWithTwoDecimals = (num: number): string => {
+  return num.toFixed(2);
 }
 
 export const formatDate = (dateString: string) => {
@@ -28,6 +32,34 @@ export function formatNumber(number: number): string {
   const paddedNumber = number.toString().padStart(8, '0');
   return paddedNumber;
 }
+
+export const sortEvaluationsByDate = (evaluations: any[]): any[] => {
+  const sortedEvaluations = [...evaluations];
+
+  sortedEvaluations.sort((a, b) => {
+    const dateA = new Date(a.evaluationDate);
+    const dateB = new Date(b.evaluationDate);
+    return dateB.getTime() - dateA.getTime();
+  });
+
+  return sortedEvaluations;
+};
+
+export const sortEvaluationsByTimeSinceLastEvaluation = (evaluations: any[]): any[] => {
+  const sortedEvaluations = [...evaluations];
+
+  sortedEvaluations.sort((a, b) => {
+    if (a.time_since_last_evaluation === null) {
+      return -1;
+    } else if (b.time_since_last_evaluation === null) {
+      return 1;
+    } else {
+      return b.time_since_last_evaluation - a.time_since_last_evaluation;
+    }
+  });
+
+  return sortedEvaluations;
+};
 
 export function formatDashboardJson(jsonData: any[]): any {
   if (!jsonData || jsonData.length < 0) return { months: [], data: [] };

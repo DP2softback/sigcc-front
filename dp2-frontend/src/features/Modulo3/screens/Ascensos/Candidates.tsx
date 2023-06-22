@@ -5,7 +5,6 @@ import ComparatorColum from '@features/Modulo3/components/Comparator/ComparatorC
 import CandidatesList from '@features/Modulo3/jsons/CandidatesList';
 import { Button } from 'react-bootstrap';
 import './Ascensos.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Candidates = ({promotionPosition}) => {
 

@@ -34,6 +34,7 @@ type TrainingObj = {
     fecha_primera_sesion: string;
     cantidad_empleados: number;
     tipo: string;
+    porcentaje_asistencia_aprobacion: number;
 }
 
 let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
@@ -48,6 +49,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "06/05/2023",
         "cantidad_empleados": 10,
         "tipo": "Presencial",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 2,
@@ -58,6 +60,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "10/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Sincrono",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 3,
@@ -68,6 +71,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "11/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Asincrono",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 4,
@@ -78,6 +82,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "12/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Presencial",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 5,
@@ -88,6 +93,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "06/05/2023",
         "cantidad_empleados": 10,
         "tipo": "Presencial",
+        "porcentaje_asistencia_aprobacion": 80
 
     },
     {
@@ -99,6 +105,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "10/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Sincrono",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 7,
@@ -109,6 +116,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "11/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Asincrono",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 8,
@@ -119,6 +127,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "12/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Presencial",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 9,
@@ -129,6 +138,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "06/05/2023",
         "cantidad_empleados": 10,
         "tipo": "Presencial",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 10,
@@ -139,6 +149,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "10/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Sincrono",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 11,
@@ -149,6 +160,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "11/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Asincrono",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 12,
@@ -159,6 +171,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "12/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Presencial",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 13,
@@ -169,6 +182,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "06/05/2023",
         "cantidad_empleados": 10,
         "tipo": "Presencial",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 14,
@@ -179,6 +193,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "10/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Sincrono",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 15,
@@ -189,6 +204,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "11/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Asincrono",
+        "porcentaje_asistencia_aprobacion": 80
     },
     {
         "id": 16,
@@ -199,6 +215,7 @@ const datos: TrainingObj[] = [
         "fecha_primera_sesion": "12/05/2023",
         "cantidad_empleados": 15,
         "tipo": "Presencial",
+        "porcentaje_asistencia_aprobacion": 80
     },
 ]
 
@@ -261,7 +278,7 @@ const Training = () => {
 
     const today = new Date();
     const now = formatDate(new Date());
-    var now7 = formatDate(new Date(today.setDate(today.getDate() + 7)));
+    var now7 = formatDate(new Date(today.setDate(today.getDate() + 30)));
 
     const [trainingFilter, setTrainingFilter] = useState<TrainingObj[]>([])
     const [training, setTraining] = useState<TrainingObj[]>([])
@@ -304,6 +321,7 @@ const Training = () => {
     const refTrTypes = useRef<HTMLSelectElement>(null);
     const refTrFree = useRef<any>(null);
     const refTrPhoto = useRef(null);
+    const refTrAttendance = useRef<HTMLInputElement>(null);
     /* TRAINING DETAIL INPUTS */
 
     /* TRAINING FILTERS */
@@ -373,6 +391,7 @@ const Training = () => {
             tipo: tipo,
             es_libre: !refTrFree.current,
             url_foto: refTrPhoto.current.getUrl(),
+            porcentaje_asistencia_aprobacion: parseInt(refTrAttendance.current?.value),
         }
 
         console.log(data)
@@ -400,7 +419,7 @@ const Training = () => {
                 setUpcomingCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, now7, 1)))
                 setCurrentCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_ultima_sesion).format("DD-MM-YYYY")), 2)))
                 setLoading(false);
-                setFinishedCourse(response.data.filter((item: any) => compararFechas(item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, '', 3)))
+                setFinishedCourse(response.data.filter((item: any) => compararFechas(item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_ultima_sesion).format("DD-MM-YYYY")), now, '', 3)))
             })
             .catch(function (error) {
                 setLoading(false);
@@ -414,378 +433,379 @@ const Training = () => {
     return (
         <>
             {/* <Layout title="Grupo 1 App" content="container"> */}
-                {/* <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'> */}
-                {
-                    loading ?
-                        (
-                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)', display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                <div className='vertical-align-child'>
-                                    <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
-                                        <span className="visually-hidden">Loading...</span>
+            {/* <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'> */}
+            {
+                loading ?
+                    (
+                        <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)', display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <div className='vertical-align-child'>
+                                <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                    <span className="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                    :
+                    (<>
+                        <div className='row'>
+                            <div className='col'>
+                                <h1 className='screenTitle'>Curso Empresa</h1>
+                                <p><small className='subtitle'>Lista de cursos empresa creados para que los empleados pueden asistir para adquirir habilidades y competencias específicas.</small></p>
+                            </div>
+                            <div style={{ flex: '0 0 15rem' }} className='col text-end'>
+                                {/* Button trigger modal */}
+                                <button type='button' className='btn' style={{ backgroundColor: "rgb(8, 66, 152)", color: "white" }} data-bs-target='#createTrainingModal' data-bs-toggle='modal'>
+                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                        <span className='me-3'>Crear curso</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                        </svg>
                                     </div>
-                                </div>
+                                </button>
                             </div>
-                        )
-                        :
-                        (<>
-                            <div className='row'>
-                                <div className='col'>
-                                    <h1 className='screenTitle'>Curso Empresa</h1>
-                                    <p><small className='subtitle'>Lista de cursos empresa creados que los empleados pueden asistir para adquirir habilidades y competencias específicas.</small></p>
-                                </div>
-                                <div style={{ flex: '0 0 15rem' }} className='col text-end'>
-                                    {/* Button trigger modal */}
-                                    <button type='button' className='btn' style={{ backgroundColor: "rgb(8, 66, 152)", color: "white" }} data-bs-target='#createTrainingModal' data-bs-toggle='modal'>
-                                        <div style={{ display: "flex", alignItems: "center" }}>
-                                            <span className='me-3'>Crear curso</span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
-                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                                            </svg>
-                                        </div>
-                                    </button>
-                                </div>
-                            </div>
+                        </div>
 
-                            {/* FILTERS AND SEARCH BAR */}
-                            <div className='row row-search'>
-                                <div className='col-5'>
-                                    <input className='form-control' type='text' placeholder='Buscar curso' onChange={handleFilter} />
-                                </div>
-                                <div className='col'>
-                                    <select className="form-select" aria-label=".form-select-sm example" onChange={handleChangeType}>
-                                        <option hidden>Tipo</option>
-                                        {typeTra.map((t) => {
-                                            return (
-                                                <option key={t.id} value={t.type}>{t.type}</option>
-                                            )
-                                        })}
-                                    </select>
-                                </div>
-                                <div className='col'>
-                                    <input className='form-control' type='date' id='start_date' onChange={handleChangeStartDate} />
-                                </div>
-                                <div className='col'>
-                                    <input className='form-control' type='date' id='end_date' onChange={handleChangeEndDate} />
-                                </div>
-                                <div className='col text-end'>
-                                    <button className='btn btn-primary' type='button' onClick={search}>Buscar</button>
-                                </div>
+                        {/* FILTERS AND SEARCH BAR */}
+                        <div className='row row-search'>
+                            <div className='col-5'>
+                                <input className='form-control' type='text' placeholder='Buscar curso' onChange={handleFilter} />
                             </div>
+                            <div className='col'>
+                                <select className="form-select" aria-label=".form-select-sm example" onChange={handleChangeType}>
+                                    <option hidden>Tipo</option>
+                                    {typeTra.map((t) => {
+                                        return (
+                                            <option key={t.id} value={t.type}>{t.type}</option>
+                                        )
+                                    })}
+                                </select>
+                            </div>
+                            <div className='col'>
+                                <input className='form-control' type='date' id='start_date' onChange={handleChangeStartDate} />
+                            </div>
+                            <div className='col'>
+                                <input className='form-control' type='date' id='end_date' onChange={handleChangeEndDate} />
+                            </div>
+                            <div className='col text-end'>
+                                <button className='btn btn-primary' type='button' onClick={search}>Buscar</button>
+                            </div>
+                        </div>
 
 
-                            {/* SHOW TRAINING DATA */}
-                            <div className='row'>
-                                {trainingFilter == training ?
+                        {/* SHOW TRAINING DATA */}
+                        <div className='row'>
+                            {trainingFilter == training ?
+                                <div>
                                     <div>
-                                        <div>
-                                            <div className='pb-3'>
-                                                <h5>
-                                                    Cursos vigentes
-                                                </h5>
-                                            </div>
-
-                                            {currentCourse.length > 0 ?
-                                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                                    <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
-                                                        {
-                                                            currentCourseShow.map((tr) => {
-                                                                return (
-                                                                    <div className='col-md-4'>
-                                                                        <TrainingCard key={tr.id}
-                                                                            id={tr.id}
-                                                                            name={tr.nombre}
-                                                                            photoURL={tr.url_foto === null ? (url_foto_default) : (tr.url_foto)}
-                                                                            description={tr.descripcion}
-                                                                            creationDate={moment(tr.fecha_creacion).format("DD-MM-YYYY")}
-                                                                            eventDate={tr.fecha_primera_sesion === null ? (moment(tr.fecha_creacion).format("DD-MM-YYYY")) : (moment(tr.fecha_primera_sesion).format("DD-MM-YYYY"))}
-                                                                            employees={tr.cantidad_empleados}
-                                                                        />
-                                                                    </div>
-                                                                )
-                                                            })
-                                                        }
-                                                    </div>
-
-                                                    {currentCourse.length > mostrar &&
-                                                        <div>
-                                                            <div>
-                                                                <Pagination
-                                                                    page={pageC}
-                                                                    totalPages={totalPagesC}
-                                                                    handlePagination={setPageC}
-                                                                    setPosition={setPositionC}
-                                                                    position={positionC}
-                                                                    mostrar={mostrar}
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    }
-
-                                                </div>
-                                                :
-                                                (
-                                                    <div className='row align-items-stretch g-3 py-3'>
-                                                        <div className='col'>
-                                                            <div className='card'>
-                                                                <div className='card-body'>
-                                                                    <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                                        <div className='vertical-align-child'>
-                                                                            <h5 className='opacity-50 text-center'>No hay cursos vigentes</h5>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            }
-
+                                        <div className='pb-3'>
+                                            <h5>
+                                                Cursos vigentes
+                                            </h5>
                                         </div>
 
-
-                                        <div className='pt-4'>
-                                            <div className='pt-3 pb-3'>
-                                                <h5>
-                                                    Próximos a iniciar
-                                                </h5>
-                                            </div>
-
-                                            {upcomingCourse.length > 0 ?
-                                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                                    <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
-                                                        {
-                                                            upcomingCourseShow.map((tr) => {
-                                                                return (
-                                                                    <div className='col-md-4'>
-                                                                        <TrainingCard key={tr.id}
-                                                                            id={tr.id}
-                                                                            name={tr.nombre}
-                                                                            photoURL={tr.url_foto === null ? (url_foto_default) : (tr.url_foto)}
-                                                                            description={tr.descripcion}
-                                                                            creationDate={moment(tr.fecha_creacion).format("DD-MM-YYYY")}
-                                                                            eventDate={tr.fecha_primera_sesion === null ? (moment(tr.fecha_creacion).format("DD-MM-YYYY")) : (moment(tr.fecha_primera_sesion).format("DD-MM-YYYY"))}
-                                                                            employees={tr.cantidad_empleados}
-                                                                        />
-                                                                    </div>
-                                                                )
-                                                            })
-                                                        }
-                                                    </div>
-
-                                                    {upcomingCourse.length > mostrar &&
-                                                        <div>
-                                                            <div>
-                                                                <Pagination
-                                                                    page={pageU}
-                                                                    totalPages={totalPagesU}
-                                                                    handlePagination={setPageU}
-                                                                    setPosition={setPositionU}
-                                                                    position={positionU}
-                                                                    mostrar={mostrar}
-                                                                />
-                                                            </div>
-                                                        </div>
+                                        {currentCourse.length > 0 ?
+                                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                                <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
+                                                    {
+                                                        currentCourseShow.map((tr) => {
+                                                            return (
+                                                                <div className='col-md-4'>
+                                                                    <TrainingCard key={tr.id}
+                                                                        id={tr.id}
+                                                                        name={tr.nombre}
+                                                                        photoURL={tr.url_foto === null ? (url_foto_default) : (tr.url_foto)}
+                                                                        description={tr.descripcion}
+                                                                        creationDate={moment(tr.fecha_creacion).format("DD-MM-YYYY")}
+                                                                        eventDate={tr.fecha_primera_sesion === null ? (moment(tr.fecha_creacion).format("DD-MM-YYYY")) : (moment(tr.fecha_primera_sesion).format("DD-MM-YYYY"))}
+                                                                        employees={tr.cantidad_empleados}
+                                                                    />
+                                                                </div>
+                                                            )
+                                                        })
                                                     }
-
                                                 </div>
-                                                :
+
+                                                {currentCourse.length > mostrar &&
+                                                    <div>
+                                                        <div>
+                                                            <Pagination
+                                                                page={pageC}
+                                                                totalPages={totalPagesC}
+                                                                handlePagination={setPageC}
+                                                                setPosition={setPositionC}
+                                                                position={positionC}
+                                                                mostrar={mostrar}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                            :
+                                            (
                                                 <div className='row align-items-stretch g-3 py-3'>
                                                     <div className='col'>
                                                         <div className='card'>
                                                             <div className='card-body'>
                                                                 <div className='vertical-align-parent' style={{ height: '10rem' }}>
                                                                     <div className='vertical-align-child'>
-                                                                        <h5 className='opacity-50 text-center'>No hay proximos cursos</h5>
+                                                                        <h5 className='opacity-50 text-center'>No hay cursos vigentes</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            }
-                                        </div>
+                                            )
+                                        }
 
-
-
-                                        <div className='pt-4'>
-                                            <div className='pt-3 pb-3'>
-                                                <h5>
-                                                    Cursos finalizados
-                                                </h5>
-                                            </div>
-
-                                            {finishedCourse.length > 0 ?
-                                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                                    <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
-                                                        {
-                                                            finishedCourseShow.map((tr) => {
-                                                                return (
-                                                                    <div className='col-md-4'>
-                                                                        <TrainingCard key={tr.id}
-                                                                            id={tr.id}
-                                                                            name={tr.nombre}
-                                                                            photoURL={tr.url_foto === null ? (url_foto_default) : (tr.url_foto)}
-                                                                            description={tr.descripcion}
-                                                                            creationDate={moment(tr.fecha_creacion).format("DD-MM-YYYY")}
-                                                                            eventDate={tr.fecha_primera_sesion === null ? (moment(tr.fecha_creacion).format("DD-MM-YYYY")) : (moment(tr.fecha_primera_sesion).format("DD-MM-YYYY"))}
-                                                                            employees={tr.cantidad_empleados}
-                                                                        />
-                                                                    </div>
-                                                                )
-                                                            })
-
-                                                        }
-
-                                                    </div>
-
-                                                    {finishedCourse.length > mostrar &&
-                                                        <div>
-                                                            <div>
-                                                                <Pagination
-                                                                    page={pageF}
-                                                                    totalPages={totalPagesF}
-                                                                    handlePagination={setPageF}
-                                                                    setPosition={setPositionF}
-                                                                    position={positionF}
-                                                                    mostrar={mostrar}
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    }
-
-                                                </div>
-                                                :
-                                                (
-                                                    <div className='row align-items-stretch g-3 py-3'>
-                                                        <div className='col'>
-                                                            <div className='card'>
-                                                                <div className='card-body'>
-                                                                    <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                                        <div className='vertical-align-child'>
-                                                                            <h5 className='opacity-50 text-center'>No hay cursos finalizados</h5>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            }
-                                        </div>
                                     </div>
-                                    :
-                                    <div>
-                                        <div>
-                                            <div className='pt-3 pb-3'>
-                                                <h5>
-                                                    Cursos creados
-                                                </h5>
-                                            </div>
-
-                                            {trainingFilter.length > 0 ?
-                                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                                    <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
-                                                        {
-                                                            filterCourseShow.map((tr) => {
-                                                                return (
-                                                                    <div className='col-md-4'>
-                                                                        <TrainingCard key={tr.id}
-                                                                            id={tr.id}
-                                                                            name={tr.nombre}
-                                                                            photoURL={tr.url_foto === null ? (url_foto_default) : (tr.url_foto)}
-                                                                            description={tr.descripcion}
-                                                                            creationDate={moment(tr.fecha_creacion).format("DD-MM-YYYY")}
-                                                                            eventDate={tr.fecha_primera_sesion === null ? (moment(tr.fecha_creacion).format("DD-MM-YYYY")) : (moment(tr.fecha_primera_sesion).format("DD-MM-YYYY"))}
-                                                                            employees={tr.cantidad_empleados}
-                                                                        />
-                                                                    </div>
-                                                                )
-                                                            })
-                                                        }
-                                                    </div>
-
-                                                    {trainingFilter.length > mostrarF &&
-                                                        <div>
-                                                            <div>
-                                                                <Pagination
-                                                                    page={pageFi}
-                                                                    totalPages={totalPagesFi}
-                                                                    handlePagination={setPageFi}
-                                                                    setPosition={setPositionFi}
-                                                                    position={positionFi}
-                                                                    mostrar={mostrarF}
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    }
 
 
-                                                </div>
-                                                :
-                                                (
-                                                    <div className='row align-items-stretch g-3 py-3'>
-                                                        <div className='col'>
-                                                            <div className='card'>
-                                                                <div className='card-body'>
-                                                                    <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                                        <div className='vertical-align-child'>
-                                                                            <h5 className='opacity-50 text-center'>No hay cursos creados para la búsqueda realizada</h5>
-                                                                        </div>
-                                                                    </div>
+                                    <div className='pt-4'>
+                                        <div className='pt-3 pb-3'>
+                                            <h5>
+                                                Próximos a iniciar
+                                            </h5>
+                                        </div>
+
+                                        {upcomingCourse.length > 0 ?
+                                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                                <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
+                                                    {
+                                                        upcomingCourseShow.map((tr) => {
+                                                            return (
+                                                                <div className='col-md-4'>
+                                                                    <TrainingCard key={tr.id}
+                                                                        id={tr.id}
+                                                                        name={tr.nombre}
+                                                                        photoURL={tr.url_foto === null ? (url_foto_default) : (tr.url_foto)}
+                                                                        description={tr.descripcion}
+                                                                        creationDate={moment(tr.fecha_creacion).format("DD-MM-YYYY")}
+                                                                        eventDate={tr.fecha_primera_sesion === null ? (moment(tr.fecha_creacion).format("DD-MM-YYYY")) : (moment(tr.fecha_primera_sesion).format("DD-MM-YYYY"))}
+                                                                        employees={tr.cantidad_empleados}
+                                                                    />
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            }
-                                        </div>
-                                    </div>
-                                }
-
-                                {
-                                    datos.length === 0 && <>
-                                        <div className='row align-items-stretch g-3 py-3'>
-                                            <div className='col'>
-                                                <div className='card'>
-                                                    <div className='card-body'>
-                                                        <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                            <div className='vertical-align-child'>
-                                                                <h5 className='opacity-50 text-center'>Crea un curso para empezar</h5>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                            )
+                                                        })
+                                                    }
                                                 </div>
+
+                                                {upcomingCourse.length > mostrar &&
+                                                    <div>
+                                                        <div>
+                                                            <Pagination
+                                                                page={pageU}
+                                                                totalPages={totalPagesU}
+                                                                handlePagination={setPageU}
+                                                                setPosition={setPositionU}
+                                                                position={positionU}
+                                                                mostrar={mostrar}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                }
+
                                             </div>
-                                        </div>
-                                    </>
-                                }
-                            </div>
-
-                            {/* CREATE TRAINING MODAL */}
-                            <div className="modal fade" id="createTrainingModal" aria-hidden="true" aria-labelledby="createTrainingModal" tabIndex={-1}>
-                                <div className="modal-dialog modal-dialog-centered">
-                                    <div className="modal-content">
-                                        <div className="modal-header">
-                                            <h1 className="modal-title fs-5" id="createTrainingModal">Crear nuevo curso</h1>
-                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div className="modal-body">
-                                            <div className='row mb-3'>
-                                                <div className='col' style={{ flex: '0 0 8rem' }}>
-                                                    <PictureUpload ref={refTrPhoto} />
-                                                </div>
+                                            :
+                                            <div className='row align-items-stretch g-3 py-3'>
                                                 <div className='col'>
-                                                    <div className="mb-3">
-                                                        <label className="form-label">Nombre</label>
-                                                        <input ref={refTrName} type="text" className="form-control" />
-                                                    </div>
-                                                    <div >
-                                                        <label className="form-label">Descripción</label>
-                                                        <textarea ref={refTrDescription} className="form-control" />
+                                                    <div className='card'>
+                                                        <div className='card-body'>
+                                                            <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                                <div className='vertical-align-child'>
+                                                                    <h5 className='opacity-50 text-center'>No hay proximos cursos</h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                        }
+                                    </div>
+
+
+
+                                    <div className='pt-4'>
+                                        <div className='pt-3 pb-3'>
+                                            <h5>
+                                                Cursos finalizados
+                                            </h5>
+                                        </div>
+
+                                        {finishedCourse.length > 0 ?
+                                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                                <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
+                                                    {
+                                                        finishedCourseShow.map((tr) => {
+                                                            return (
+                                                                <div className='col-md-4'>
+                                                                    <TrainingCard key={tr.id}
+                                                                        id={tr.id}
+                                                                        name={tr.nombre}
+                                                                        photoURL={tr.url_foto === null ? (url_foto_default) : (tr.url_foto)}
+                                                                        description={tr.descripcion}
+                                                                        creationDate={moment(tr.fecha_creacion).format("DD-MM-YYYY")}
+                                                                        eventDate={tr.fecha_primera_sesion === null ? (moment(tr.fecha_creacion).format("DD-MM-YYYY")) : (moment(tr.fecha_primera_sesion).format("DD-MM-YYYY"))}
+                                                                        employees={tr.cantidad_empleados}
+                                                                    />
+                                                                </div>
+                                                            )
+                                                        })
+
+                                                    }
+
+                                                </div>
+
+                                                {finishedCourse.length > mostrar &&
+                                                    <div>
+                                                        <div>
+                                                            <Pagination
+                                                                page={pageF}
+                                                                totalPages={totalPagesF}
+                                                                handlePagination={setPageF}
+                                                                setPosition={setPositionF}
+                                                                position={positionF}
+                                                                mostrar={mostrar}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                            :
+                                            (
+                                                <div className='row align-items-stretch g-3 py-3'>
+                                                    <div className='col'>
+                                                        <div className='card'>
+                                                            <div className='card-body'>
+                                                                <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                                    <div className='vertical-align-child'>
+                                                                        <h5 className='opacity-50 text-center'>No hay cursos finalizados</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                                :
+                                <div>
+                                    <div>
+                                        <div className='pt-3 pb-3'>
+                                            <h5>
+                                                Cursos creados
+                                            </h5>
+                                        </div>
+
+                                        {trainingFilter.length > 0 ?
+                                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                                <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
+                                                    {
+                                                        filterCourseShow.map((tr) => {
+                                                            return (
+                                                                <div className='col-md-4'>
+                                                                    <TrainingCard key={tr.id}
+                                                                        id={tr.id}
+                                                                        name={tr.nombre}
+                                                                        photoURL={tr.url_foto === null ? (url_foto_default) : (tr.url_foto)}
+                                                                        description={tr.descripcion}
+                                                                        creationDate={moment(tr.fecha_creacion).format("DD-MM-YYYY")}
+                                                                        eventDate={tr.fecha_primera_sesion === null ? (moment(tr.fecha_creacion).format("DD-MM-YYYY")) : (moment(tr.fecha_primera_sesion).format("DD-MM-YYYY"))}
+                                                                        employees={tr.cantidad_empleados}
+                                                                    />
+                                                                </div>
+                                                            )
+                                                        })
+                                                    }
+                                                </div>
+
+                                                {trainingFilter.length > mostrarF &&
+                                                    <div>
+                                                        <div>
+                                                            <Pagination
+                                                                page={pageFi}
+                                                                totalPages={totalPagesFi}
+                                                                handlePagination={setPageFi}
+                                                                setPosition={setPositionFi}
+                                                                position={positionFi}
+                                                                mostrar={mostrarF}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                }
+
+
+                                            </div>
+                                            :
+                                            (
+                                                <div className='row align-items-stretch g-3 py-3'>
+                                                    <div className='col'>
+                                                        <div className='card'>
+                                                            <div className='card-body'>
+                                                                <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                                    <div className='vertical-align-child'>
+                                                                        <h5 className='opacity-50 text-center'>No hay cursos creados para la búsqueda realizada</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                            {
+                                datos.length === 0 && <>
+                                    <div className='row align-items-stretch g-3 py-3'>
+                                        <div className='col'>
+                                            <div className='card'>
+                                                <div className='card-body'>
+                                                    <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                        <div className='vertical-align-child'>
+                                                            <h5 className='opacity-50 text-center'>Crea un curso para empezar</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            }
+                        </div>
+
+                        {/* CREATE TRAINING MODAL */}
+                        <div className="modal fade" id="createTrainingModal" aria-hidden="true" aria-labelledby="createTrainingModal" tabIndex={-1}>
+                            <div className="modal-dialog modal-dialog-centered">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h1 className="modal-title fs-5" id="createTrainingModal">Crear nuevo curso</h1>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <div className='row mb-3'>
+                                            <div className='col' style={{ flex: '0 0 8rem' }}>
+                                                <PictureUpload ref={refTrPhoto} />
+                                            </div>
+                                            <div className='col'>
+                                                <div className="mb-3">
+                                                    <label className="form-label">Nombre</label>
+                                                    <input ref={refTrName} type="text" className="form-control" />
+                                                </div>
+                                                <div>
+                                                    <label className="form-label">Descripción</label>
+                                                    <textarea ref={refTrDescription} className="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
                                             <div className='row'>
                                                 <div className='col'>
                                                     <div className="mb-3">
@@ -799,6 +819,15 @@ const Training = () => {
                                                             })}
                                                         </select>
                                                     </div>
+
+                                                </div>
+                                            </div>
+                                            <div className='row'>
+                                                <div className='col'>
+                                                    <div className='mb-3'>
+                                                        <label className="form-label">Porcentaje de asistencia obligatoria</label>
+                                                        <input type="number" className="form-control" ref={refTrAttendance} min={0} max={100} />
+                                                    </div>
                                                     <div className="form-check form-switch">
                                                         <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={switchRefTr} ref={refTrFree} />
                                                         <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Libre disponibilidad</label>
@@ -806,17 +835,19 @@ const Training = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="modal-footer">
-                                            <button className="btn btn-primary" data-bs-dismiss="modal" onClick={createTraining}>Crear</button>
-                                        </div>
+
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button className="btn btn-primary" data-bs-dismiss="modal" onClick={createTraining}>Crear</button>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                        </>)
-                }
+                    </>)
+            }
 
-                {/* </Sidebar > */}
+            {/* </Sidebar > */}
             {/* </Layout> */}
         </>
     )

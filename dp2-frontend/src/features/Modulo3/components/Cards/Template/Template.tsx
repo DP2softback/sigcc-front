@@ -21,7 +21,7 @@ const Template = ({ image, imageStyle, name,onClick}: TemplateProps) => {
     }
     
     return (
-        <div className='template-container' onClick={onClick}>
+        <div className='template-container cursor-pointer' onClick={onClick}>
             <div className='template-header'>
             <div className="template-headerLine">
                     <div className='template-imageContainer'>{imageComp}</div>

@@ -7,7 +7,8 @@ import { People, ArrowLeftCircle, ArrowLeftCircleFill, ArrowRightCircle } from '
 import EmployeeCard from '@features/Modulo1/components/EmployeeCard/EmployeeCard';
 import '../../../../basic.css';
 import '../trainingE.css';
-import SessionAccordionEmployee from '@features/Modulo1/components/SessionAccordion/SessionAccordionEmployee';
+import SessionAccordion from '@features/Modulo1/components/SessionAccordion/SessionAccordionEmployee';
+import { CalendarCheck, JournalBookmarkFill } from 'react-bootstrap-icons'
 import Layout from "@layout/default/index";
 
 let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
@@ -222,83 +223,122 @@ const TrainingDetails = () => {
     return (
         <>
             {/* <Layout title="Grupo 1 App" content="container"> */}
-                {/* <Sidebar items={sidebarItems} active='/modulo1/empleado/cursoempresa'> */}
-                {
-                    loading ?
-                        (
-                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)', display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                <div className='vertical-align-child'>
-                                    <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
-                                        <span className="visually-hidden">Loading...</span>
-                                    </div>
+            {/* <Sidebar items={sidebarItems} active='/modulo1/empleado/cursoempresa'> */}
+            {
+                loading ?
+                    (
+                        <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)', display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <div className='vertical-align-child'>
+                                <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                    <span className="visually-hidden">Loading...</span>
                                 </div>
                             </div>
-                        )
-                        :
-                        (<>
-                            <div className='row'>
-                                {/* TRAINING DATA */}
-                                <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
-                                    <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
-                                        <Link to={`/modulo1/empleado/cursoempresa`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
-                                    </div>
+                        </div>
+                    )
+                    :
+                    (<>
+                        <div className='row'>
+                            {/* TRAINING DATA */}
+                            <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
+                                <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
+                                    <Link to={`/modulo1/empleado/cursoempresa`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
+                                </div>
 
-                                    <div style={{ display: "flex", alignItems: "center" }}>
-                                        <div style={{ paddingRight: "2rem" }}>
-                                            {
-                                                training.url_foto === null ?
-                                                    (<img src={url_foto_default} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>)
+                                <div style={{ display: "flex", alignItems: "center" }}>
+                                    <div style={{ paddingRight: "2rem" }}>
+                                        {
+                                            training.url_foto === null ?
+                                                (<img src={url_foto_default} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>)
+                                                :
+                                                (<img src={training.url_foto} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>)
+                                        }
+                                    </div>
+                                    <div>
+                                        <h1 className='screenTitle'>{training.nombre}</h1>
+                                        <p><small className='subtitle'>{training.descripcion}.</small></p>
+                                        {
+                                            training.tipo === "A" ?
+                                                (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Virtual Asincrono</small><People style={{ opacity: "50%" }} /></p>)
+                                                :
+                                                (training.tipo === "P" ?
+                                                    (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Presencial</small><People style={{ opacity: "50%" }} /></p>)
                                                     :
-                                                    (<img src={training.url_foto} style={{ borderRadius: "10rem", width: "10rem", height: "10rem" }}></img>)
-                                            }
-                                        </div>
-                                        <div>
-                                            <h1 className='screenTitle'>{training.nombre}</h1>
-                                            <p><small className='subtitle'>{training.descripcion}.</small></p>
-                                            {
-                                                training.tipo === "A" ?
-                                                    (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Virtual Asincrono</small><People style={{ opacity: "50%" }} /></p>)
-                                                    :
-                                                    (training.tipo === "P" ?
-                                                        (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Presencial</small><People style={{ opacity: "50%" }} /></p>)
-                                                        :
-                                                        (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Virtual Sincrono</small><People style={{ opacity: "50%" }} /></p>)
-                                                    )
-                                            }
-                                        </div>
+                                                    (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Virtual Sincrono</small><People style={{ opacity: "50%" }} /></p>)
+                                                )
+                                        }
                                     </div>
                                 </div>
                             </div>
-                            <div className='row'>
-                                <div className='col' style={{ marginLeft: "60px" }}>
-                                    <div className="row mb-3 ">
-                                        <h4 className='mt-4 mb-3 subarea'>Sesiones</h4>
-                                        {classSessions.length > 0 ?
-                                            (<SessionAccordionEmployee trainingType={training.tipo} sessions={training.sesiones} mode={"detailEmp"} />)
-                                            :
-                                            (
-                                                <div className='row align-items-stretch g-3 py-3'>
-                                                    <div className='col'>
-                                                        <div className='card'>
-                                                            <div className='card-body'>
-                                                                <div className='vertical-align-parent' style={{ height: '10rem' }}>
-                                                                    <div className='vertical-align-child'>
-                                                                        <h5 className='opacity-50 text-center'>No cuenta con sesiones creadas</h5>
-                                                                    </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col' style={{ marginLeft: "60px" }}>
+                                <div className="row mb-3 ">
+                                    <h4 className='mt-4 mb-3 subarea'>Sesiones</h4>
+                                    {classSessions.length > 0 ?
+                                        (<SessionAccordion trainingType={training.tipo} sessions={training.sesiones} mode={"detailEmp"} />)
+                                        :
+                                        (
+                                            <div className='row align-items-stretch g-3 py-3'>
+                                                <div className='col'>
+                                                    <div className='card'>
+                                                        <div className='card-body'>
+                                                            <div className='vertical-align-parent' style={{ height: '10rem' }}>
+                                                                <div className='vertical-align-child'>
+                                                                    <h5 className='opacity-50 text-center'>No cuenta con sesiones creadas</h5>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            )
-                                        }
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        {training.tipo == 'A' &&
+                            <div className='row' style={{marginTop: "1rem"}}>
+                                <div className="accordion-footer">
+                                    <div style={{ flex: '0 0 15rem' }} className='col text-end'>
+                                        <button type='button' className='btn' data-bs-target='#confirmModalCourse' data-bs-toggle='modal' style={{backgroundColor: "#198754", color: "white", border: "none"}}>
+                                            <div style={{ display: "flex", alignItems: "center" }}>
+                                                <span className='me-3'>Finalizar curso</span>
+                                                <JournalBookmarkFill />
+                                            </div>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                        </>
-                        )
-                }
-                {/* </Sidebar> */}
+                        }
+
+                        {/* CONFIRM MODAL */}
+                        <div className="modal fade" id="confirmModalCourse" aria-hidden="true" aria-labelledby="confirmModalCourse" tabIndex={-1}>
+                            <div className="modal-dialog modal-dialog-centered">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h1 className="modal-title fs-5" id="createTrainingModal">Confirmación</h1>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <div>
+                                            <label className="form-label confirm">¿Desea marcar como finalizado el curso?</label>
+                                        </div>
+                                    </div>
+                                    <div className="modal-footer confirm-footer">
+                                        <button className="btn btn-primary" data-bs-dismiss="modal">Si</button>
+                                        <button className="btn btn-danger" data-bs-dismiss="modal">No</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </>
+                    )
+
+
+            }
+            {/* </Sidebar> */}
             {/* </Layout> */}
         </>
     )

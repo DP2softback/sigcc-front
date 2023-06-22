@@ -1,2 +1,2 @@
-import LearningPathAssignment from "./Assignment"
-export default LearningPathAssignment;
+    import LearningPathAssignment from "./Assignment"
+    export default LearningPathAssignment;

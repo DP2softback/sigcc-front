@@ -1,12 +1,9 @@
 import React from "react";
-import { BsTrash } from "react-icons/bs";
 import Dropdown from "react-bootstrap/Dropdown";
 
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
 import {
 	ButtonGroup,
 	FormGroup,
@@ -17,61 +14,147 @@ import {
 } from "react-bootstrap";
 import { Table, Button, Modal } from "react-bootstrap";
 import "./ConfigProcesoSeleccion.css";
-import Overlay from "react-bootstrap/Overlay";
 
-import { Link, useNavigate } from "react-router-dom";
-import axiosInt from "@config/axios";
 import { Fragment, ChangeEvent, useEffect, useRef, useState } from "react";
-import Sidebar from "@components/Sidebar";
-import sidebarItems from "../../utils/sidebarItems";
-import PhotoCard from "@features/Modulo4/components/PhotoCard";
 import SearchInput from "./SearchInputProcesoSeleccion/SearchInput";
-import SearchInputResponsables from "./SearchInputProcesoSeleccion/SearchInput";
-import CustomInput from "@features/Modulo4/components/CustomInput";
-import { TextCenter } from "react-bootstrap-icons";
+import { ajax } from "@features/Modulo4/tools/ajax";
+import moment from "moment";
+import SearchInputResponsablesNuevo from "./SearchInputResponsablesNuevo/SearchInputResponsablesNuevo";
+import {
+	SAMPLE_TOKEN,
+	LOCAL_CONNECTION,
+	CREATE_PROCESO_SELECCION,
+	GET_TIPO_ETAPAS_PROCESO_SELECCION
+} from "@features/Modulo4/utils/constants";
 
-//idPuesto: idPuesto,
+/*
+{
+    "position": 1,
+    "available_positions_quantity": "1",
+    "name": "Proceso en Nombre de prueba",
+    "process_stages": [
+        {
+            "stage_type": 1,
+            "order": 1,
+            "start_date": "2023-06-12",
+            "end_date": "2023-06-12",
+            "name": "asdf",
+            "description": "asdf"
+        },
+        {
+            "stage_type": 1,
+            "order": 2,
+            "start_date": "2023-06-12",
+            "end_date": "2023-06-12",
+            "name": "df",
+            "description": "dsfds"
+        }
+    ],
+    "employees": [
+        {
+            "employee": 3
+        },
+        {
+            "employee": 1
+        }
+    ]
+}
+
+*/
 
 function ConfigProcesoSeleccion(props: any) {
-	const createPS = () => {
-		const data = {
-			idPuestoLaboral: selectedIdPuestoLaboral,
-			nombrePuesto: selectedPuestoLaboral,
-			cantVacantes: cantVacantes,
-			etapasProceso: rows,
-			responsables: null
-		};
-		console.log(data);
-		console.log(rows);
-
-		/*
-		axiosInt
-			.post("capacitaciones/learning_path/", data)
-			.then(function (response) {
-				navigate(`/modulo1/rutadeaprendizaje/detalle/${response.data.id}`);
-			})
-			.catch(function (error) {
-				console.log(error);
-			});
-			*/
-	};
-
-	const loadLPs = () => {
-		/*
-        axiosInt
-            .get("capacitaciones/learning_path/")
-            .then(function (response) {
-                setLps(response.data);
-                setLpsFiltered(response.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });*/
-	};
-
+	/*
 	useEffect(() => {
-		loadLPs();
+		setSelectedIdPuestoLaboral(1);
+		setCantVacantes(1);
+		setSelectedPuestoLaboral("Proceso en Nombre de prueb!!!a");
+		setRows([
+			{
+				id: 1,
+				idTipoEtapa: 1,
+				nombreTipoEtapa: "dsf",
+				nombreEtapa: "df",
+				descripcionEtapa: "",
+				fechaInicio: new Date(),
+				fechaFin: new Date(),
+				estado: ""
+			}
+		]);
+		setArrResponsables([
+			{
+				id: 1,
+				user: {
+					id: 2,
+					password:
+						"pbkdf2_sha256$216000$smhYwuNQNpRV$2loGVwY2W3TSeowjsPSdk08goKrYn70j0s5I/aVkX0Q=",
+					last_login: null,
+					is_superuser: false,
+					username: "Joseson",
+					first_name: "Jose",
+					last_name: "Joseson",
+					is_staff: false,
+					is_active: true,
+					date_joined: "2023-05-25T13:35:51-05:00",
+					created: "2023-05-25T13:35:51.109000-05:00",
+					modified: "2023-06-01T10:31:41.234000-05:00",
+					deleted: null,
+					email: "Jose@joseson.com",
+					second_name: "",
+					maiden_name: "",
+					recovery_code: null,
+					groups: [],
+					user_permissions: [],
+					roles: [2]
+				}
+			}
+		]);
 	}, []);
+	*/
+
+	const createPS = async () => {
+		//console.log(rows);
+		const listaEtapas = rows.map(
+			({
+				idTipoEtapa,
+				id,
+				fechaInicio,
+				fechaFin,
+				nombreEtapa,
+				descripcionEtapa
+			}) => ({
+				stage_type: idTipoEtapa,
+				order: id,
+				start_date: moment(fechaInicio).format("YYYY-MM-DD"),
+				end_date: moment(fechaFin).format("YYYY-MM-DD"),
+				name: nombreEtapa,
+				description: descripcionEtapa
+			})
+		);
+
+		const listaIdResponsables = arrResponsables.map(({ id }) => ({
+			employee: id
+		}));
+
+		const dataPost = {
+			position: selectedIdPuestoLaboral,
+			available_positions_quantity: cantVacantes,
+			name: selectedPuestoLaboral,
+			process_stages: listaEtapas,
+			employees: listaIdResponsables
+		};
+
+		const optionsRequest = {
+			method: "POST",
+			url: LOCAL_CONNECTION + CREATE_PROCESO_SELECCION,
+			headers: {
+				Authorization: `Token ${SAMPLE_TOKEN}`
+			},
+			data: dataPost
+		};
+		console.log("guardado");
+		console.log(dataPost);
+		return await ajax(optionsRequest);
+	};
 
 	// VALIDA INFORMACION
 	const [validated, setValidated] = useState(false);
@@ -97,7 +180,7 @@ function ConfigProcesoSeleccion(props: any) {
 	const [selectedPuestoLaboralFijo, setSelectedPuestoLaboralFijo] =
 		useState("");
 	const [selectedPuestoLaboral, setSelectedPuestoLaboral] = useState("");
-	const [cantVacantes, setCantVacantes] = useState("");
+	const [cantVacantes, setCantVacantes] = useState(0);
 	const [isSelectedNombreOfertaValid, setIsSelectedNombreOfertaValid] =
 		useState(true);
 
@@ -108,38 +191,50 @@ function ConfigProcesoSeleccion(props: any) {
 		setSelectedPuestoLaboral(optionValue);
 	};
 
-	useEffect(() => {
-		console.log(selectedPuestoLaboral);
-	}, [selectedPuestoLaboral]);
-
-	/*
-	useEffect(() => {
-		console.log(isSelectedNombreOfertaValid);
-	}, [isSelectedNombreOfertaValid]);
-	*/
-
 	const handlecantVacantes = (event: any) => {
 		const optionValue = event.target.value;
 		setCantVacantes(optionValue);
 	};
 
-	// TABLA DE ETAPAS DEL PROCESO DE SELECCIÓN
+	// CREAR TIPO ETAPA SELECCION
 	const [selectedTipoEtapaSelec, setSelectedTipoEtapaSelec] = useState(null);
-	const optionsTipoEtapaSelec = [
-		{ value: "opcion1Entrevista", label: "Entrevista personal" },
-		{ value: "opcion2Formulario", label: "Formulario general" },
-		{ value: "opcion3Formulario", label: "Formulario personalizado" }
-	];
+	const [optionsTipoEtapaSelec, setOptionsTipoEtapaSelec] = useState<any[]>([]);
 
-	const handleOptionsTipoEtapaSelec = (label: any) => {
-		setSelectedTipoEtapaSelec(label);
-		newRow.tipoEtapa = label;
-		//selectedRow.tipoEtapa = label;
+	const getTiposEtapas = async () => {
+		const optionsRequest = {
+			method: "GET",
+			url: LOCAL_CONNECTION + GET_TIPO_ETAPAS_PROCESO_SELECCION,
+			headers: {
+				Authorization: `Token ${SAMPLE_TOKEN}`
+			}
+		};
+		return await ajax(optionsRequest);
 	};
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const tiposEtapas = await getTiposEtapas();
+			setOptionsTipoEtapaSelec(tiposEtapas);
+		};
+
+		fetchData();
+	}, []);
+
+	// TABLA DE ETAPAS DEL PROCESO DE SELECCIÓN
+	const handleOptionsTipoEtapaSelec = (option: any) => {
+		setSelectedTipoEtapaSelec(option.name);
+		newRow.idTipoEtapa = option.id;
+		newRow.nombreTipoEtapa = option.name;
+	};
+
+	useEffect(() => {
+		console.log(rows), [rows];
+	});
 
 	interface TableRow {
 		id: number;
-		tipoEtapa: string;
+		idTipoEtapa: number;
+		nombreTipoEtapa: string;
 		nombreEtapa: string;
 		descripcionEtapa: string;
 		fechaInicio: Date | string;
@@ -149,7 +244,8 @@ function ConfigProcesoSeleccion(props: any) {
 	const [rows, setRows] = useState<TableRow[]>([]);
 	const [newRow, setNewRow] = useState<TableRow>({
 		id: 0,
-		tipoEtapa: "",
+		idTipoEtapa: 0,
+		nombreTipoEtapa: "",
 		nombreEtapa: "",
 		descripcionEtapa: "",
 		fechaInicio: new Date(),
@@ -169,7 +265,7 @@ function ConfigProcesoSeleccion(props: any) {
 	};
 
 	const [idCounter, setIdCounter] = useState(0); // Contador para el ID
-	const handleAddRow = () => {
+	const handleAddRowEtapa = () => {
 		if (selectedRow === null) {
 			// Agregar nueva fila
 			// Usar el valor actual del contador más 1 como nuevo ID
@@ -191,7 +287,8 @@ function ConfigProcesoSeleccion(props: any) {
 
 		setNewRow({
 			id: 0,
-			tipoEtapa: "",
+			idTipoEtapa: 0,
+			nombreTipoEtapa: "",
 			nombreEtapa: "",
 			descripcionEtapa: "",
 			fechaInicio: new Date(),
@@ -202,10 +299,6 @@ function ConfigProcesoSeleccion(props: any) {
 		setShowModal(false);
 		setIdCounter((prevCounter) => prevCounter + 1); // Incrementar el contador en 1
 	};
-
-	useEffect(() => {
-		console.log(rows);
-	}, [rows]);
 
 	const handleDeleteRow = (id: number) => {
 		setRows((prevRows) => prevRows.filter((row) => row.id !== id));
@@ -228,27 +321,32 @@ function ConfigProcesoSeleccion(props: any) {
 	};
 	const handleOptionSelectBuscador = (selectedOptionPuesto) => {
 		setSelectedIdPuestoLaboral(selectedOptionPuesto.id);
-		setSelectedPuestoLaboral(
-			selectedOptionPuesto.nombre + "- Proceso de selección"
-		);
-		setSelectedPuestoLaboralFijo(selectedOptionPuesto.nombre);
+		setSelectedPuestoLaboralFijo(selectedOptionPuesto.name);
+		setSelectedPuestoLaboral("Proceso en " + selectedOptionPuesto.name);
 	};
 
 	// MODAL DE RESPONSABLE BUSCADOR, ABRE Y RETORNA LOS VALORES
+	const [arrResponsables, setArrResponsables] = useState([]);
+	const [cantResponsables, setCantResponsables] = useState(0);
+
+	useEffect(() => {
+		setCantResponsables(arrResponsables.length);
+	}, [arrResponsables]);
+
 	const [showModalBuscadorResponsable, setShowModalBuscadorResponsable] =
 		useState(false);
 	const handleShowBuscadorResponsableFromButtom = () => {
-		setShowModalBuscador(true);
+		setShowModalBuscadorResponsable(true);
 	};
 	const handleCloseBuscadorResponsableFromButtom = () => {
-		setShowModalBuscador(false);
+		setShowModalBuscadorResponsable(false);
 	};
-	const handleOptionSelectBuscadorResponsable = (selectedOptionPuesto) => {
-		setSelectedIdPuestoLaboral(selectedOptionPuesto.id);
-		setSelectedPuestoLaboral(selectedOptionPuesto.nombre);
+	const handleOptionSelectBuscadorResponsable = (responsables) => {
+		setArrResponsables(responsables);
+		setCantResponsables(responsables.length);
 	};
 
-	// ESTOS MODAL SE USARAN EN LOS BOTONES DE ELIMINAR Y GUARDAR TODO EL PROCECSO
+	// ESTOS MODAL BOTONES DE ELIMINAR Y GUARDAR TODO EL PROCECSO
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [showSaveModal, setShowSaveModal] = useState(false);
 	const handleDelete = () => {
@@ -260,157 +358,182 @@ function ConfigProcesoSeleccion(props: any) {
 	};
 
 	return (
-			<div
-				style={{
-					paddingLeft: "2rem",
-					paddingRight: "4rem"
-				}}>
-				<div className="row">
-					<div className="col">
-						<h1>Configurar proceso de selección</h1>
-						<p>
-							<small className="opacity-50" style={{ marginBottom: "10rem" }}>
-								Portal que presenta la configuración disponible para el proceso
-								de selección de una posición.
-							</small>
-						</p>
-					</div>
+		<div
+			style={{
+				paddingLeft: "2rem",
+				paddingRight: "4rem"
+			}}>
+			<div className="row">
+				<div className="col">
+					<h1>Configurar proceso de selección</h1>
+					<p>
+						<small className="opacity-50" style={{ marginBottom: "10rem" }}>
+							Portal que presenta la configuración disponible para el proceso de
+							selección de una posición.
+						</small>
+					</p>
 				</div>
+			</div>
 
-				<div className="row">
-					<Form noValidate validated={validated} onSubmit={handleSubmit}>
-						<Form.Group className="mb-2" as={Row}>
-							<Col>
+			<div className="row" style={{ paddingTop: "1rem" }}>
+				<Form noValidate validated={validated} onSubmit={handleSubmit}>
+					<Form.Group as={Row} className="mb-3">
+						<Form.Group as={Row}>
+							<Form.Label style={{ fontSize: "15px" }}>
+								Puesto de trabajo: (*)
+							</Form.Label>
+						</Form.Group>
+						<Form.Group xs={10} as={Col}>
+							<Form.Control
+								as="textarea"
+								type="text"
+								placeholder="Seleccionar el nombre del puesto para el proceso de selección."
+								value={selectedPuestoLaboralFijo}
+								rows={2}
+								readOnly={true}
+								disabled={true}
+							/>
+						</Form.Group>{" "}
+						<Form.Group xs={2} as={Col}>
+							<Button
+								style={{
+									width: "10rem",
+									maxWidth: "10rem",
+									minHeight: "100%"
+								}}
+								onClick={handleShowBuscadorFromButtom}>
+								Buscar puesto de trabajo
+							</Button>
+						</Form.Group>
+					</Form.Group>
+					<Form.Group className="mb-2" as={Row}>
+						<Col>
+							<Row>
 								<Form.Label sm="2" style={{ fontSize: "15px" }}>
-									Nombre del proceso de selección para un puesto:
+									Nombre del proceso de selección para un puesto: (*)
 								</Form.Label>
+							</Row>
+							<Row>
+								<Form.Group xs={12} as={Col}>
+									<Form.Control
+										type="text"
+										placeholder="Especificar el puesto laboral para el proceso de selección."
+										value={selectedPuestoLaboral}
+										onChange={handleNombrePuestoSeleccionado}
+										disabled={selectedPuestoLaboral == "" ? true : false}
+										required
+										className={!isSelectedNombreOfertaValid ? "is-invalid" : ""}
+									/>
+									<Form.Control.Feedback></Form.Control.Feedback>
+								</Form.Group>
+							</Row>
+						</Col>
+					</Form.Group>
+					<Form.Group className="mb-2" as={Row}>
+						<Form.Group className="mb-2" as={Col}>
+							<Form.Group className="mb-2" as={Row}>
+								<Form.Label
+									column
+									style={{
+										alignItems: "center",
+										justifyContent: "center",
+										height: "2rem",
+										fontSize: "15px"
+									}}>
+									Cantidad de vacantes: (*)
+								</Form.Label>
+							</Form.Group>
+							<Form.Control
+								style={{ width: "15rem", maxWidth: "15rem" }}
+								type="text"
+								placeholder="Número de vacantes"
+								value={cantVacantes}
+								onChange={handlecantVacantes}
+								required
+							/>
+							<Form.Control.Feedback></Form.Control.Feedback>
+						</Form.Group>
+						<Form.Group className="mb-2" as={Col}>
+							<Col>
 								<Row>
-									<Col xs="8">
-										<Form.Control
-											as="textarea"
-											type="text"
-											placeholder="Especificar el nombre del proceso de selección"
-											value={selectedPuestoLaboral}
-											onChange={handleNombrePuestoSeleccionado}
-											rows={2}
-											disabled={selectedPuestoLaboral == "" ? true : false}
-											required
-											className={
-												!isSelectedNombreOfertaValid ? "is-invalid" : ""
-											}
-										/>
-										<Form.Control.Feedback></Form.Control.Feedback>
-									</Col>
-									<Col xs="2">
-										<Form.Control
-											as="textarea"
-											type="text"
-											placeholder="Nombre del puesto"
-											value={selectedPuestoLaboralFijo}
-											rows={2}
-											readOnly={true}
-											disabled={true}></Form.Control>
-									</Col>
-									<Col>
-										<Button
-											style={{ width: "12rem", maxWidth: "12rem" }}
-											onClick={handleShowBuscadorFromButtom}>
-											Buscar puesto de trabajo
-										</Button>
-									</Col>
+									<Form.Label
+										column
+										style={{
+											alignItems: "center",
+											justifyContent: "center",
+											fontSize: "15px"
+										}}>
+										Responsables del proceso:
+									</Form.Label>
 								</Row>
 							</Col>
-						</Form.Group>
-
-						<Form.Group className="mb-2" as={Row}>
-							<Form.Label
-								column
-								sm="2"
-								style={{
-									alignItems: "center",
-									justifyContent: "center",
-									height: "2rem",
-									fontSize: "15px"
-								}}>
-								Cantidad de vacantes:
-							</Form.Label>
-							<Col md={{ span: 2 }}>
-								<Form.Control
-									type="text"
-									placeholder="Número de vacantes"
-									value={cantVacantes}
-									onChange={handlecantVacantes}
-									required
-								/>
-								<Form.Control.Feedback></Form.Control.Feedback>
-							</Col>
-						</Form.Group>
-
-						<Form.Group className="mb-2" as={Row}>
-							<Form.Label
-								column
-								sm="2"
-								style={{
-									alignItems: "center",
-									justifyContent: "center",
-									height: "2rem",
-									fontSize: "15px"
-								}}>
-								Responsables del proceso:
-							</Form.Label>
-							<Col md={{ span: 2 }}>
-								<Form.Control
-									type="text"
-									placeholder="Cantidad responsables"
-									value={cantVacantes}
-									onChange={handlecantVacantes}
-									required
-								/>
-								<Form.Control.Feedback></Form.Control.Feedback>
-							</Col>
-							<Col md={{ span: 2 }}>
-								<Button
-									variant="primary"
-									style={{ width: "5rem", maxWidth: "12rem" }}
-									className="ml-auto custom"
-									onClick={handleShowBuscadorResponsableFromButtom}>
-									Gestionar responsables
-								</Button>
-							</Col>
-						</Form.Group>
-
-						<br />
-
-						<Form.Group className="mb-2">
 							<Row>
-								<Col
-									md={{
-										span: 3
-									}}>
-									<h5>
-										<small
-											className="opacity-90"
-											style={{ marginTop: "100px" }}>
-											Etapas del proceso de selección.
-										</small>
-									</h5>
+								<Col>
+									<Form.Control
+										type="text"
+										placeholder="Cantidad responsables"
+										value={cantResponsables + " responsable(s) seleccionado(s)"}
+										required
+										disabled
+										readOnly={true}
+										style={{ width: "18rem", maxWidth: "18rem" }}
+									/>
+									<Form.Control.Feedback></Form.Control.Feedback>
 								</Col>
-								<Col
-									md={{
-										span: 1,
-										offset: 7
-									}}>
-									<Button
-										variant="primary"
-										onClick={() => openModal(null)}
-										style={{ width: "5rem", maxWidth: "12rem" }}
-										className="ml-auto custom">
-										Agregar etapa
-									</Button>
+								<Col>
+									<div style={{ paddingLeft: "3.5rem" }}>
+										<Button
+											variant="primary"
+											style={{
+												width: "10rem",
+												maxWidth: "10rem"
+											}}
+											className="ml-auto custom"
+											onClick={handleShowBuscadorResponsableFromButtom}>
+											Ver responsables
+										</Button>
+									</div>
 								</Col>
 							</Row>
 						</Form.Group>
-
+					</Form.Group>
+					<br />
+					<Form.Group className="mb-2">
+						<Row>
+							<Col
+								md={{
+									span: 4
+								}}>
+								<h1>
+									<small
+										className="opacity-90"
+										style={{
+											marginTop: "100px",
+											fontSize: "17px",
+											verticalAlign: "bottom"
+										}}>
+										Etapas del proceso de selección:
+									</small>
+								</h1>
+							</Col>
+							<Col
+								md={{
+									span: 1,
+									offset: 6
+								}}>
+								<Button
+									variant="primary"
+									onClick={() => openModal(null)}
+									style={{ width: "10rem", maxWidth: "10rem" }}
+									className="ml-auto custom">
+									Agregar etapa
+								</Button>
+							</Col>
+						</Row>
+					</Form.Group>
+					{/*---------------------------------------------------------------------------- */}
+					{/* AQUI EMPIEZA LA TABLA*/}
+					<div style={{ paddingLeft: "1%", maxWidth: "99%" }}>
 						<Form.Group
 							className="mb-1"
 							as={Row}
@@ -424,9 +547,6 @@ function ConfigProcesoSeleccion(props: any) {
 								marginBottom: "18rem",
 								height: "500px"
 							}}>
-							{/*---------------------------------------------------------------------------- */}
-							{/* AQUI EMPIEZA TODA LA TABLA*/}
-
 							<Table striped={true} bordered>
 								<thead
 									style={{
@@ -449,7 +569,7 @@ function ConfigProcesoSeleccion(props: any) {
 									{rows.map((row) => (
 										<tr key={row.id}>
 											<td>{row.id}</td>
-											<td>{row.tipoEtapa}</td>
+											<td>{row.nombreTipoEtapa}</td>
 											<td>{row.nombreEtapa}</td>
 											<td>
 												{row.fechaInicio instanceof Date
@@ -520,11 +640,17 @@ function ConfigProcesoSeleccion(props: any) {
 									))}
 								</tbody>
 							</Table>
+							{/*---------------------------------------------------------------------------- */}
+
+							{/*----------------------------------------------------------------------------
+							MODAL PARA CREAR ETAPA*/}
 
 							<Modal show={showModal} onHide={closeModal}>
 								<Modal.Header closeButton>
 									<Modal.Title>
-										{selectedRow ? "Editar Información" : "Agregar Información"}
+										{selectedRow
+											? "Editar Información de la etapa"
+											: "Agregar Información de la etapa"}
 									</Modal.Title>
 								</Modal.Header>
 								<Modal.Body>
@@ -538,33 +664,35 @@ function ConfigProcesoSeleccion(props: any) {
 												<Dropdown.Toggle
 													variant="secondary"
 													id="dropdown-basic"
-													style={{ width: "100%", textAlign: "left" }}>
+													style={{ width: "100%", textAlign: "center" }}>
 													{
 														"Seleccionar el tipo de etapa del proceso de selección:"
 													}
 												</Dropdown.Toggle>
 
-												<Dropdown.Menu style={{ width: "100%" }}>
+												<Dropdown.Menu
+													style={{ width: "100%", textAlign: "center" }}>
 													{optionsTipoEtapaSelec.map((optionRow) => (
 														<Dropdown.Item
-															key={optionRow.value}
+															key={optionRow.id}
 															onClick={() =>
-																handleOptionsTipoEtapaSelec(optionRow.label)
+																handleOptionsTipoEtapaSelec(optionRow)
 															}>
-															{optionRow.label}
+															{optionRow.name}
 														</Dropdown.Item>
 													))}
 												</Dropdown.Menu>
 											</Dropdown>
 											<Form.Control
 												type="text"
-												name="tipoEtapa"
-												value={
-													selectedRow ? selectedRow.tipoEtapa : newRow.tipoEtapa
-												}
+												name="nombreTipoEtapa"
+												value={newRow.nombreTipoEtapa}
 												placeholder="Tipo de etapa"
-												onChange={handleInputChange}
-												style={{ maxHeight: "8rem" }}
+												//onChange={handleInputChange}
+												style={{
+													maxHeight: "8rem",
+													textAlign: "center"
+												}}
 												readOnly={true}
 												className="readonly-text"
 											/>
@@ -572,10 +700,10 @@ function ConfigProcesoSeleccion(props: any) {
 												id="passwordHelpBlock"
 												muted
 												style={{ fontSize: "0.8rem", maxHeight: "2rem" }}>
-												* Una vez creado no se puede modificar el tipo de etapa.
+												* Una vez seleccionado no se puede modificar el tipo de
+												etapa.
 											</Form.Label>
 										</Form.Group>
-										<hr /> {/* Línea de separación */}
 										<Form.Group>
 											<Form.Label>Nombre de la etapa:</Form.Label>
 											<Form.Control
@@ -586,7 +714,7 @@ function ConfigProcesoSeleccion(props: any) {
 														? selectedRow.nombreEtapa
 														: newRow.nombreEtapa
 												}
-												placeholder="Aquí va el nombre de la etapa"
+												placeholder="Escribir el nombre de la etapa."
 												onChange={handleInputChange}
 												style={stylesSelect}
 											/>
@@ -603,7 +731,7 @@ function ConfigProcesoSeleccion(props: any) {
 														? selectedRow.descripcionEtapa
 														: newRow.descripcionEtapa
 												}
-												placeholder="Aquí va la descripción de la etapa del proceso de selección"
+												placeholder="Escribir la descripción de la etapa del proceso de selección."
 												onChange={handleInputChange}
 												style={stylesSelect}
 											/>
@@ -647,117 +775,122 @@ function ConfigProcesoSeleccion(props: any) {
 									</Form>
 								</Modal.Body>
 								<Modal.Footer>
-									<Button variant="secondary" onClick={closeModal}>
+									<Button
+										style={{ width: "8rem", maxWidth: "8rem" }}
+										variant="secondary"
+										onClick={closeModal}>
 										Cancelar
 									</Button>
-									<Button variant="primary" onClick={handleAddRow}>
-										{selectedRow ? "Guardar Cambios" : "Agregar"}
+									<Button
+										style={{ width: "8rem", maxWidth: "8rem" }}
+										variant="primary"
+										onClick={handleAddRowEtapa}>
+										{selectedRow ? "Guardar Cambios" : "Agregar etapa"}
 									</Button>
 								</Modal.Footer>
 							</Modal>
 						</Form.Group>
-						{/* AQUI termina LA TABLA*/}
-						{/*---------------------------------------------------------------------------- */}
-
-						<Row style={{ position: "static", borderTop: "10rem" }}>
-							<p></p>
-							<p></p>
-							<Form.Group>
-								<Row>
-									<Col
-										md={{
-											span: 2
+					</div>
+					{/* AQUI termina LA TABLA*/}
+					{/*---------------------------------------------------------------------------- */}
+					<Row style={{ position: "static", borderTop: "10rem" }}>
+						<p></p>
+						<p></p>
+						<Form.Group>
+							<Row>
+								<Col
+									md={{
+										span: 2
+									}}>
+									<Button
+										variant="danger"
+										style={{ width: "10rem", maxWidth: "10rem" }}
+										onClick={() => setShowDeleteModal(true)}>
+										Eliminar proceso
+									</Button>
+								</Col>
+								<Col
+									md={{
+										span: 2,
+										offset: 8
+									}}>
+									<Button
+										type="submit"
+										variant="primary"
+										style={{ width: "10rem", maxWidth: "10rem" }}
+										onClick={() => {
+											if (
+												selectedPuestoLaboral != "" &&
+												typeof +cantVacantes == "number" &&
+												+cantVacantes != 0
+											) {
+												setShowSaveModal(true);
+											} else {
+												setIsSelectedNombreOfertaValid(false);
+											}
 										}}>
-										<Button
-											variant="danger"
-											style={{ width: "11rem", maxWidth: "11rem" }}
-											onClick={() => setShowDeleteModal(true)}>
-											Eliminar proceso
-										</Button>
-									</Col>
-									<Col
-										md={{
-											span: 2,
-											offset: 8
-										}}>
-										<Button
-											type="submit"
-											variant="primary"
-											style={{ width: "11rem", maxWidth: "11rem" }}
-											onClick={() => {
-												if (
-													selectedPuestoLaboral != "" &&
-													typeof +cantVacantes == "number" &&
-													+cantVacantes != 0
-												) {
-													setShowSaveModal(true);
-												} else {
-													setIsSelectedNombreOfertaValid(false);
-												}
-											}}>
-											Guardar Cambios
-										</Button>
-									</Col>
-								</Row>
-							</Form.Group>
-						</Row>
-					</Form>
-				</div>
-
-				{/* Modal para crear asignar personal */}
-
-				{/* Modal para Eliminar */}
-				<Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
-					<Modal.Header closeButton>
-						<Modal.Title>Confirmar Eliminación</Modal.Title>
-					</Modal.Header>
-					<Modal.Body>
-						¿Estás seguro de que deseas eliminar esta oferta laboral?
-					</Modal.Body>
-					<Modal.Footer>
-						<Button
-							variant="secondary"
-							onClick={() => setShowDeleteModal(false)}>
-							Cancelar
-						</Button>
-						<Button variant="danger" onClick={handleDelete}>
-							Eliminar
-						</Button>
-					</Modal.Footer>
-				</Modal>
-
-				{/* Modal para Guardar Cambios */}
-				<Modal show={showSaveModal} onHide={() => setShowSaveModal(false)}>
-					<Modal.Header closeButton>
-						<Modal.Title>Guardar Cambios</Modal.Title>
-					</Modal.Header>
-					<Modal.Body>
-						¿Deseas guardar los cambios realizados en la oferta laboral?
-					</Modal.Body>
-					<Modal.Footer>
-						<Button variant="secondary" onClick={() => setShowSaveModal(false)}>
-							Cancelar
-						</Button>
-						<Button variant="primary" onClick={handleSaveChanges}>
-							Guardar
-						</Button>
-					</Modal.Footer>
-				</Modal>
-
-				{showModalBuscador && (
-					<SearchInput
-						onClose={handleCloseBuscadorFromButtom}
-						onSelect={handleOptionSelectBuscador}
-					/>
-				)}
-
-				{showModalBuscadorResponsable && (
-					<SearchInputResponsables
-						onClose={handleCloseBuscadorResponsableFromButtom}
-						onSelect={handleOptionSelectBuscadorResponsable}
-					/>
-				)}
+										Guardar Cambios
+									</Button>
+								</Col>
+							</Row>
+						</Form.Group>
+					</Row>
+				</Form>
 			</div>
+
+			{/* Modal para crear asignar personal */}
+
+			{/* Modal para Eliminar */}
+			<Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+				<Modal.Header closeButton>
+					<Modal.Title>Confirmar Eliminación</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					¿Estás seguro de que deseas eliminar esta oferta laboral?
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+						Cancelar
+					</Button>
+					<Button variant="danger" onClick={handleDelete}>
+						Eliminar
+					</Button>
+				</Modal.Footer>
+			</Modal>
+
+			{/* Modal para Guardar Cambios */}
+			<Modal show={showSaveModal} onHide={() => setShowSaveModal(false)}>
+				<Modal.Header closeButton>
+					<Modal.Title>Guardar Cambios</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					¿Deseas guardar los cambios realizados en la oferta laboral?
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant="secondary" onClick={() => setShowSaveModal(false)}>
+						Cancelar
+					</Button>
+					<Button variant="primary" onClick={handleSaveChanges}>
+						Guardar
+					</Button>
+				</Modal.Footer>
+			</Modal>
+
+			{showModalBuscador && (
+				<SearchInput
+					onClose={handleCloseBuscadorFromButtom}
+					onSelect={handleOptionSelectBuscador}
+				/>
+			)}
+
+			{showModalBuscadorResponsable && (
+				<SearchInputResponsablesNuevo
+					arrResponsables={arrResponsables}
+					onClose={handleCloseBuscadorResponsableFromButtom}
+					onSelect={handleOptionSelectBuscadorResponsable}
+				/>
+			)}
+		</div>
 	);
 }
 

@@ -12,7 +12,9 @@ import { getCategories,getPlantilla,getPlantillasEditar,guardarEditar } from '@f
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 import { PERFORMANCE_EVALUATION_TYPE,CONTINUOS_EVALUATION_TYPE } from '../../utils/constants';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
-import { Toast } from 'react-bootstrap';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
+import { delay } from 'lodash';
 
 const dataIni ={
   categoriaNombre: "",
@@ -20,6 +22,9 @@ const dataIni ={
 }
 
 const Edit = () => {
+
+  const urlParams = new URLSearchParams(window.location.search);
+
   const [show,setShow]=useState(false);
   const [showAC,setShowAC]=useState(false);
   const [categorias,setCategorias]= useState([]);
@@ -32,17 +37,22 @@ const Edit = () => {
   const [showNotification, setShowNotification] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [plantillaName, setPlantillaName] = useState('');
+  const [idPlantilla,setIdPlantilla]=useState(parseInt(urlParams.get('id')));
+  const [typePlantilla,setTypePlantilla]=useState(urlParams.get('type'));
+
 
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-      const response = await getPlantillasEditar(5,CONTINUOS_EVALUATION_TYPE);
+      console.log("typePlantilla",typePlantilla);
+
+      const response = await getPlantillasEditar(idPlantilla,typePlantilla);
       console.log("Categories",response);
       if (response && response.Categories) {
         setCategorias(response.Categories);
         setEditar(response);
       }
-      const response2 = await getPlantilla(5,CONTINUOS_EVALUATION_TYPE);
+      const response2 = await getPlantilla(idPlantilla,typePlantilla);
       console.log("Plantilla",response2);
 
       if(response2) setPlantilla(response2);
@@ -59,8 +69,15 @@ const Edit = () => {
       setIsLoading(false);
     })();
   }, []);
-  const closeNotification = () => {
+
+  function delay(ms: number): Promise<void> {
+    return new Promise<void>((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }
+  const closeNotification = async () => {
     setShowNotification(false);
+    await delay(4000);
     window.location.reload();
   };
   
@@ -73,15 +90,12 @@ const Edit = () => {
       ...editar,
       "plantilla-nombre": plantillaName,
     };
-    
-    console.log("aux",aux);
-    console.log("plantillaName",plantillaName)
-    console.log(categorias);
     (async () => { 
-      console.log("entro");
       const response = await guardarEditar(aux, categorias);
       if (response){
         setShowNotification(true); 
+        toast.success("Se ha editado correctamente la plantilla");
+        closeNotification();
       }
     })();
   };
@@ -251,7 +265,7 @@ const Edit = () => {
     <>
     {categorias && categorias.length >0 ? (
       <>
-       {accordion}
+        {accordion}
       </>
     ):(<NoDataFound/>)}
    
@@ -260,28 +274,29 @@ const Edit = () => {
          
           navigateBack();
         }}>
-        Dejar de editar
+        Volver
       </Button>
       <Button onClick={handleGuardarEditar}>
         Guardar
       </Button>
     </div>
-    <Toast show={showNotification} onClose={closeNotification} className="notification">
-      <Toast.Header>
-        <strong className="me-auto">Notificación</strong>
-      </Toast.Header>
-      <Toast.Body>Se ha editado con éxito.</Toast.Body>
-    </Toast>
+    
+
+    
     </>
   )
 
   const body = (
-    <Section title={null} content={content} filters={filters} filtersStyle={{width:'100%'}}/>
+    <>
+    <Section title={null} content={filters}/>
+    <Section title={null} content={content}/>
+    </> 
   );
   return (
     <div>
       {plantilla && plantilla.length >0 ?(
         <>
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />  
         <ModalAddCategorie showAC={showAC} setShowAC={setShowAC} categorias={categorias} setCategorias={setCategorias}></ModalAddCategorie>
         <Layout
         title={'Plantilla - '+plantilla[0].name }

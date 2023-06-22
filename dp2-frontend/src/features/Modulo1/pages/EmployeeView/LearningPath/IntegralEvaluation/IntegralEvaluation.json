@@ -1,0 +1,26 @@
+{
+    "id": 10,
+    "nombre": "Ruta de Aprendizaje 2.0",
+    "descripcion": "Ruta de Aprendizaje 2.0 es una prueba pa ver si se cae o no",
+    "estado": "0",
+    "horas_duracion": "0.0",
+    "suma_valoraciones": 0,
+    "url_foto": "https://dp2-bucket-dev.s3.amazonaws.com/capacitaciones/SPRING_270984ba-e147-4aee-b515-a646febbcb84",
+    "cant_empleados": 0,
+    "cant_intentos_cursos_max": 3,
+    "cant_intentos_evaluacion_integral_max": 3,
+    "cant_valoraciones": 0,
+    "cantidad_cursos": 0,
+    "cursos": [
+        {
+            "id": 40,
+            "nombre": "Dive in and learn React.js from scratch! Learn Reactjs, Hooks, Redux, React Router 6.4 Next.js and way more!",
+            "nro_orden": 1
+        },
+        {
+            "id": 59,
+            "nombre": "Java and Spring Framework for Beginners with Spring Boot",
+            "nro_orden": 2
+        }
+    ]
+}

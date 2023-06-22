@@ -148,10 +148,15 @@ const SessionAccordion = (Props: Props) => {
                                                     )
                                             }
 
-                                            {Props.mode == "detailEmp" &&
+                                            {Props.trainingType == "A" &&
                                                 <div className="accordion-footer">
                                                     <div style={{ flex: '0 0 15rem' }} className='col text-end'>
-                                                        {compareDates(dateNow, moment(session.fecha_inicio).format("DD/MM/YYYY"), session.id)}
+                                                        <button type='button' className='btn btn-danger' data-bs-target='#confirmModal' data-bs-toggle='modal'>
+                                                            <div style={{ display: "flex", alignItems: "center" }}>
+                                                                <span className='me-3'>Finalizar sesión</span>
+                                                                <CalendarCheck />
+                                                            </div>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             }
@@ -178,7 +183,7 @@ const SessionAccordion = (Props: Props) => {
                         <div className="modal-body">
                             <div>
                                 <label className="form-label confirm">¿Desea marcar como finalizada esta sesión?</label>
-                            </div>                            
+                            </div>
                         </div>
                         <div className="modal-footer confirm-footer">
                             <button className="btn btn-primary" data-bs-dismiss="modal">Si</button>

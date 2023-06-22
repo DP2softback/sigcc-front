@@ -1,10 +1,10 @@
 import {  Table } from 'react-bootstrap';
-import { formatDate, navigateTo } from '@features/Modulo3/utils/functions';
-import './TableHistoryContinua.css';
+import { formatDate, formatNumberWithTwoDecimals, navigateTo } from '@features/Modulo3/utils/functions';
+import './TableHistory.css';
 import { ArrowRightCircleFill } from 'react-bootstrap-icons';
 import { CONTINUOS_EVALUATION_DETAIL } from '@features/Modulo3/routes/path';
 
-export default function TableHistoryContinua({ rows, isReadOnly = false }) {
+export default function TableHistoryContinua({ rows, employee = null, isReadOnly = false }) {
   function getBackgroundColor(categoryIndex: number) {
     return isReadOnly
       ? categoryIndex % 2 == 0
@@ -16,13 +16,13 @@ export default function TableHistoryContinua({ rows, isReadOnly = false }) {
   }
 
   return (
-    <Table striped className='TableHistoryContinua'>
+    <Table striped className='TableHistory'>
       <thead className={`bg-white${isReadOnly ? 'ReadOnly' : ''}`}>
         <tr>
-          <th>Categoría</th>
-          <th className='text-center'>Calificación</th>
-          <th className='text-center'>Fecha de registro</th>
-          <th className='text-center'>Detalle</th>
+          <th className='align-middle'>Categoría</th>
+          <th className='text-center align-middle'>Calificación</th>
+          <th className='text-center align-middle'>Fecha de registro</th>
+          <th className='text-center align-middle'>Detalle</th>
         </tr>
       </thead>
       <tbody>
@@ -31,14 +31,16 @@ export default function TableHistoryContinua({ rows, isReadOnly = false }) {
           return (
             <tr key={row.EvaluationId} className={rowStyle}>
               <td>{row.CategoryName}</td>
-              <td className='text-center'>{row.score}</td>
+              <td className='text-center'>{formatNumberWithTwoDecimals(row.score)}</td>
               <td className='text-center'>{formatDate(row.evaluationDate)}</td>
               <td className='text-center'>
                 <ArrowRightCircleFill
                   className='cursor-pointer'
                   onClick={() => {
                     navigateTo(CONTINUOS_EVALUATION_DETAIL, {
-                      id: row.EvaluationId,
+                      id: employee.id,
+                      name: employee.name,
+                      evaluationId: row.EvaluationId
                     });
                   }}
                 />

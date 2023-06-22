@@ -23,7 +23,7 @@ class BasicCard2 extends Component<Props>
                 <img src={this.props.image}
                     alt={`Imagen de ${this.props.title}`}
                     className="basicCard-image"
-                    style={{ borderRadius: this.props.imageStyle }}
+                    // style={{ borderRadius: this.props.imageStyle }}
                 />
             );
         }
@@ -101,19 +101,13 @@ class BasicCard2 extends Component<Props>
         return (
             <>
                 <div className='basicCard-container'>
-                    <div className='basicCard-header'>
+                    <div className='basicCard-imageContainer'>{imageComp}</div>
+                    <div className='basicCard-header'>                        
                         <div className="basicCard-headerLine">
-                            <div className='basicCard-imageContainer'>{imageComp}</div>
                             <div className='basicCard-headerInfo'>
                                 <div className='basicCard-title'>{this.props.title}</div>
-                                {/* {this.props.subtitle != null &&
-                                    <>
-                                        <div className='basicCard-subtitle'>{this.props.subtitle}</div>
-                                    </>
-                                } */}
                             </div>
                             {this.props.options == 'SI' &&
-                                // <ThreeDots className='basicCard-dots' />
                                 <div>
                                     <div className="dropdown">
                                         <button className="btn basicCard-dots" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -130,12 +124,9 @@ class BasicCard2 extends Component<Props>
                         </div>
                     </div>
                     <div className='basicCard-body'>
-                        {/* {this.props.subtitle != null && */}
-                            <>
-                                <div className='basicCard-subtitle'>{this.props.subtitle}</div>
-                            </>
-                        {/* } */}
-
+                        <>
+                            <div className='basicCard-subtitle'>{this.props.subtitle}</div>
+                        </>
 
                         {(this.props.items != null) &&
                             this.props.items.map((item, index) => {

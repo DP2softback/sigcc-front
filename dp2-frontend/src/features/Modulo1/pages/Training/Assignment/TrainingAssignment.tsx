@@ -8,6 +8,7 @@ import EmployeeCard2 from '@features/Modulo1/components/EmployeeCard2/EmployeeCa
 import Pagination from '@features/Modulo1/components/Pagination';
 import '../../../basic.css';
 import '../training.css';
+import moment from 'moment-timezone';
 
 type Employee = {
     id: string;
@@ -220,18 +221,19 @@ const TrainingAssignment = () => {
         }
     }
 
-    const assignEmployees = () => {
-        console.log(training);
-        console.log(trainingID);
-        console.log(addedEmployeesId);
+    const assignEmployees = () => {       
+        let fecha_limite
+        
+        if (training.tipo == "A")
+            fecha_limite = moment.tz(refTrDateStart.current?.value, 'America/Lima').format('YYYY-MM-DDTHH:mm:ssZ');
+        else    
+            fecha_limite = moment.tz(training.fecha_ultima_sesion, 'America/Lima').format('YYYY-MM-DDTHH:mm:ssZ');
 
-        let fecha_limite = new Date(refTrDateStart.current?.value).toISOString()
-
-        axiosInt.post(`capacitaciones/curso_empresa_empleados/`, {
+            axiosInt.post(`capacitaciones/curso_empresa_empleados/`, {
             "id_curso": trainingID,
             "empleados": addedEmployeesId,
             "porcentaje_asistencia_aprobacion": 70,
-            "fecha_limite": `${training.tipo == "A" ? fecha_limite : training.fecha_ultima_sesion}`
+            "fecha_limite": fecha_limite
         })
             .then(function (response) {
                 setEmployees(response.data)

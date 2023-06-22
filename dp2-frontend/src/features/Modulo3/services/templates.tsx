@@ -1,12 +1,12 @@
 import { ajax } from '../tools/ajax';
-import { PERFORMANCE_EVALUATION_TYPE,CONTINUOS_EVALUATION_TYPE, BACKEND_URL, SAMPLE_TOKEN } from '../utils/constants';
+import { PERFORMANCE_EVALUATION_TYPE,CONTINUOS_EVALUATION_TYPE, BACKEND_URL, TOKEN } from '../utils/constants';
 
 export const getCategories = async() =>{
     const optionsRequest = {
         method: 'POST',
         url: BACKEND_URL + 'VistaCategoriasSubCategorias',
         headers:{
-            Authorization: `Token ${SAMPLE_TOKEN}`
+            Authorization: `Token ${TOKEN}`
           },
         data: 
           {
@@ -22,7 +22,7 @@ export const getPlantillas = async() =>{
       method: 'POST',
       url: BACKEND_URL + 'PlantillasPorGrupo',
       headers:{
-          Authorization: `Token ${SAMPLE_TOKEN}`
+          Authorization: `Token ${TOKEN}`
         },
       data: 
         {
@@ -38,7 +38,7 @@ export const getPlantilla = async(idPlantilla,type) =>{
         method: 'POST',
         url: BACKEND_URL + 'Plantilla',
         headers:{
-            Authorization: `Token ${SAMPLE_TOKEN}`
+            Authorization: `Token ${TOKEN}`
           },
           data: {
             id:idPlantilla,
@@ -48,15 +48,15 @@ export const getPlantilla = async(idPlantilla,type) =>{
         return await ajax(optionsRequest);
 }
 
-export const getCategoriesSubs = async() =>{
+export const getCategoriesSubs = async(type) =>{
   const optionsRequest = {
       method: 'POST',
       url: BACKEND_URL + 'VistaCategoriasSubCategorias',
       headers:{
-        Authorization: `Token ${SAMPLE_TOKEN}`
+        Authorization: `Token ${TOKEN}`
       },
       data: {      
-        evaluationType: PERFORMANCE_EVALUATION_TYPE,
+        evaluationType: type,
       }
   }
   return await ajax(optionsRequest);
@@ -67,7 +67,7 @@ export const getPlantillasEditar = async(idPlantilla,type) =>{
       method: 'POST',
       url: BACKEND_URL + 'PlantillaEditarVista',
       headers:{
-          Authorization: `Token ${SAMPLE_TOKEN}`
+          Authorization: `Token ${TOKEN}`
         },
       data: 
         {
@@ -84,7 +84,7 @@ export const guardarEditar = async(plantilla,categorias) =>{
       method: 'POST',
       url: BACKEND_URL + 'PlantillaEditar',
       headers:{
-          Authorization: `Token ${SAMPLE_TOKEN}`
+          Authorization: `Token ${TOKEN}`
         },
       data: 
         {
@@ -95,4 +95,21 @@ export const guardarEditar = async(plantilla,categorias) =>{
         
       }
       return await ajax(optionsRequest);
+}
+
+export const guardarPlantilla = async(plantilla) =>{
+  const optionsRequest = {
+      method: 'POST',
+      url: BACKEND_URL + 'PlantillaCrear',
+      headers:{
+          Authorization: `Token ${TOKEN}`
+        },
+      data:{
+        "evaluationType": plantilla["evaluationType"], 
+        "nombre": plantilla["nombre"],
+        "subCategories":plantilla["subCategories"]     
+      }
+      // data: {...plantilla}  
+    }
+    return await ajax(optionsRequest);
 }

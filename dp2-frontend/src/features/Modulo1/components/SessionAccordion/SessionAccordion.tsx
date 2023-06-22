@@ -63,13 +63,13 @@ const SessionAccordion = (Props: Props) => {
                             <div className="accordion-item">
                                 <h2 className="accordion-header">
                                     <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#collapseSession${index+1}`} aria-expanded="false" aria-controls={`collapseSession${index+1}`}>
-                                        <div className='col'>
+                                        <div className='col-6'>
                                             <strong>{session.nombre}</strong>
                                         </div>
                                         {
                                             Props.trainingType !== "A" ?
-                                            (<div style={{ flex: '0 0 15rem', paddingRight: "1rem" }} className='col text-end'>
-                                                <Calendar2Event /><strong style={{ paddingLeft: "0.5rem" }}>Fecha:</strong> {moment(session.fecha_inicio).format("DD/MM/YYYY")}
+                                            (<div style={{ paddingRight: "1rem" }} className='col-6 text-end'>
+                                                <Calendar2Event /><strong style={{ paddingLeft: "0.5rem" }}>Fecha y hora:</strong> {moment(session.fecha_inicio).format("DD/MM/YYYY - HH:mm")}
                                             </div>)
                                             :
                                             (<></>)
@@ -105,7 +105,7 @@ const SessionAccordion = (Props: Props) => {
                                                             <p><JournalBookmarkFill /><b style={{ paddingLeft: "0.5rem" }}>Temas de la sesión</b></p>
                                                         </div>
                                                         {
-                                                            Props.mode === ("create" || "detailEmp") ? 
+                                                            (Props.mode === "create" || Props.mode == "detailEmp") ? 
                                                             (<></>) 
                                                             : 
                                                             (

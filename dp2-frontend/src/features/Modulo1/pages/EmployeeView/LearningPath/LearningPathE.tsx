@@ -158,14 +158,14 @@ function LearningPath(props: any) {
                                                             <CalendarDate className='align-self-center me-3' />
                                                             <div className='w-100 d-flex justify-content-between'>
                                                                 <span>Fecha asignación: </span>
-                                                                <small className='fw-bold'>{(moment(lp.fecha_asignacion, "DD/MM/YYYY HH:mm:ss").format("DD-MM-YYYY")) }</small>
+                                                                <small className='fw-bold'>{(moment(lp.fecha_asignacion).format("DD-MM-YYYY")) }</small>
                                                             </div>
                                                         </div>
                                                         <div className='d-flex mb-3'>
                                                             <CalendarDate className='align-self-center me-3' />
                                                             <div className='w-100 d-flex justify-content-between'>
                                                                 <span>Fecha límite: </span>
-                                                                <small className='fw-bold'>{(moment(lp.fecha_limite, "DD/MM/YYYY HH:mm:ss").format("DD-MM-YYYY")) }</small>
+                                                                <small className='fw-bold'>{(moment(lp.fecha_limite).format("DD-MM-YYYY")) }</small>
                                                             </div>
                                                         </div>
                                                         <div className="d-flex gap-2 w-100 justify-content-between pt-3">

@@ -36,3 +36,9 @@
     background-color: #0D6EFD;
     margin: 0 3rem;
 }
+
+.completado{
+    background-color: #069124;
+    border: 1px solid #069124;
+    color: white;
+}

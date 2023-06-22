@@ -79,7 +79,7 @@ const TableAttendance = (Props: Props) => {
 
     return (
     <>
-        <div className='container'>
+        <div>
             <div className='row'>
             <Table striped bordered hover>
                 <thead>
@@ -122,7 +122,7 @@ const TableAttendance = (Props: Props) => {
                                     obj[`${headerItems.value}`] === null ?
                                     (<td key={indexH}>No registrado</td>)
                                     :
-                                    (<td key={indexH}>{obj[`${headerItems.value}`]}</td>)
+                                    (<td key={indexH}>{obj[`${headerItems.value}`] === true ? ("Asistió") : ("No asistió")}</td>)
                                 )
                             )
                         }
@@ -180,6 +180,18 @@ const TableAttendance = (Props: Props) => {
             </div>
             </div>
         </div>
+
+        {/* TOAST CONFIRMATION */}
+        {/*
+        <div style={{marginTop: "4rem"}} className="toast show align-items-center text-bg-primary position-fixed top-0 end-0 border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div className="d-flex">
+                <div className="toast-body">
+
+                </div>
+                <button type="button" className="btn-close btn-close-white me-3 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+        */}
     </>
     );
 }

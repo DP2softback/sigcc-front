@@ -1,0 +1,16 @@
+.card-body-gi {
+    display: flex;
+    align-items: baseline;
+    padding: 0;
+}
+
+.general-info {
+    padding: 1rem;
+    margin: 0;
+}
+
+.general-info-brs {
+    border-right-style: groove;
+    padding: 1rem;
+    margin: 0;
+}

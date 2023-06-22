@@ -257,7 +257,7 @@ const TrainingCreate = () => {
     const refTrLocationLink = useRef<HTMLInputElement>(null);
     const refTrTopics = useRef<HTMLInputElement>(null);
     const refTrDateStart = useRef<HTMLInputElement>(null);
-    //const refTrDateEnd = useRef<HTMLInputElement>(null);
+    const refTrHourStart = useRef<HTMLInputElement>(null);
     const refTrCapacity = useRef<HTMLInputElement>(null);
     const refTrVideo = useRef(null);
     /* TRAINING SESSION DETAIL INPUTS */
@@ -329,7 +329,8 @@ const TrainingCreate = () => {
             }
         }
         else {
-            let fecha_ini = moment.tz(refTrDateStart.current?.value, 'America/Lima').format('YYYY-MM-DDTHH:mm:ssZ');
+            //let formato_fecha = refTrDateStart.current?.value + "T" + refTrHourStart.current?.value + ":00"
+            let fecha_ini = moment.tz(refTrDateStart.current?.value + "T" + refTrHourStart.current?.value + ":00", 'America/Lima').format('YYYY-MM-DDTHH:mm:ssZ');
 
             console.log(fecha_ini);
 
@@ -383,6 +384,7 @@ const TrainingCreate = () => {
         }
         else {
             refTrDateStart.current.value = "";
+            refTrHourStart.current.value = "";
             refTrCapacity.current.value = "";
 
             if (training.tipo === "P") {
@@ -708,27 +710,34 @@ const TrainingCreate = () => {
                                                             <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
                                                         </div>
                                                         <div className='col'>
+                                                            <label className="form-label">Hora de la sesión</label>
+                                                            <input className='form-control' type='time' id='start_date_creation' ref={refTrHourStart} />
+                                                        </div>
+                                                    </div>
+                                                    <div className='row mb-3'>
+                                                        <div className='col'>
+                                                            <label className="form-label">Ubicación</label>
+                                                            {
+                                                                training.tipo === 'P' ?
+                                                                    (<>
+                                                                        <select className="form-select" ref={refTrLocation}>
+                                                                            <option hidden>Seleccionar</option>
+                                                                            {locationOptions.map((lo) => {
+                                                                                return (
+                                                                                    <option key={lo.id} value={lo.type}>{lo.type}</option>
+                                                                                )
+                                                                            })}
+                                                                        </select>
+                                                                    </>)
+                                                                    :
+                                                                    (<input ref={refTrLocationLink} type="text" className="form-control" />)
+                                                            }
+                                                        </div>
+                                                        <div className='col'>
                                                             <label className="form-label">Aforo máximo</label>
                                                             <input type="number" className="form-control" ref={refTrCapacity} min={'0'} />
                                                         </div>
-                                                    </div>
-                                                    <div className='mb-3'>
-                                                        <label className="form-label">Ubicación</label>
-                                                        {
-                                                            training.tipo === 'P' ?
-                                                                (<>
-                                                                    <select className="form-select" ref={refTrLocation}>
-                                                                        <option hidden>Seleccionar</option>
-                                                                        {locationOptions.map((lo) => {
-                                                                            return (
-                                                                                <option key={lo.id} value={lo.type}>{lo.type}</option>
-                                                                            )
-                                                                        })}
-                                                                    </select>
-                                                                </>)
-                                                                :
-                                                                (<input ref={refTrLocationLink} type="text" className="form-control" />)
-                                                        }
+                                                        
                                                     </div>
                                                 </>)
                                         }

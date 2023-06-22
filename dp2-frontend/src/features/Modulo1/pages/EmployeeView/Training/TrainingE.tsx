@@ -9,13 +9,15 @@ import './trainingE.css';
 import axiosInt from '@config/axios';
 import moment from 'moment';
 import Layout from "@layout/default/index";
+import { parseISO, format } from 'date-fns';
 
 const typeTra = [
     { id: 1, type: "Todos" },
     { id: 2, type: "Presencial" },
-    { id: 3, type: "Sincrono" },
-    { id: 4, type: "Asincrono" },
+    { id: 3, type: "Virtual Sincrono" },
+    { id: 4, type: "Virtual Asincrono" },
 ]
+
 
 const typeCreation = [
     { id: 1, type: "Presencial" },
@@ -334,7 +336,12 @@ const TrainingE = () => {
     }
 
     const handleChangeType = (e: any) => {
-        setTypeTraining(e.target.value)
+        switch (e.target.value) {
+            case "Todos": setTypeTraining(e.target.value); break;
+            case "Presencial": setTypeTraining("P"); break;
+            case "Virtual Sincrono": setTypeTraining("S"); break;
+            case "Virtual Asincrono": setTypeTraining("A");
+        }
     }
 
     const handleOptionCourse = (e: string) => {
@@ -363,8 +370,8 @@ const TrainingE = () => {
     const loadTrainings = () => {
         setLoading(true);
         axiosInt.get('capacitaciones/course_company_course_not_free/1')
-            .then(function (response) {
-                console.log(response.data)
+            .then(function (response) {    
+                console.log(response.data)            
                 setTraining(response.data)
                 setTrainingFilter(response.data);
                 setUpcomingCourse(response.data.filter((item: any) => compararFechas(item.cursoEmpresa.fecha_primera_sesion === null ? (moment(item.cursoEmpresa.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.cursoEmpresa.fecha_primera_sesion).format("DD-MM-YYYY")), now, now7, 1)))
@@ -383,10 +390,11 @@ const TrainingE = () => {
         setLoading1(true);
         axiosInt.get('capacitaciones/course_company_course_free/1')
             .then(function (response) {
+                console.log(response.data)
                 setTraining(response.data)
                 setTrainingFilter(response.data);
-                setUpcomingCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, now7, 1)))
-                setCurrentCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_ultima_sesion).format("DD-MM-YYYY")), 2)))
+                setUpcomingCourse(response.data.filter((item: any) => compararFechas(item.cursoEmpresa.fecha_primera_sesion === null ? (moment(item.cursoEmpresa.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.cursoEmpresa.fecha_primera_sesion).format("DD-MM-YYYY")), now, now7, 1)))
+                setCurrentCourse(response.data.filter((item: any) => compararFechas(item.cursoEmpresa.fecha_primera_sesion === null ? (moment(item.cursoEmpresa.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.cursoEmpresa.fecha_primera_sesion).format("DD-MM-YYYY")), now, item.cursoEmpresa.fecha_ultima_sesion === null ? (moment(item.cursoEmpresa.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.cursoEmpresa.fecha_ultima_sesion).format("DD-MM-YYYY")), 2)))
 
                 axiosInt.get('capacitaciones/course_company_course_frees_all/')
                     .then(function (response) {
@@ -400,13 +408,9 @@ const TrainingE = () => {
                     })
                     .catch(function (error) {
                         setLoading1(false);
-                        // setTrainingFilter(datos);
-                        // console.log(error);
                     });
-
-
                 setLoading1(false);
-                setFinishedCourse(response.data.filter((item: any) => compararFechas(item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_ultima_sesion).format("DD-MM-YYYY")), now, '', 3)))
+                setFinishedCourse(response.data.filter((item: any) => compararFechas(item.cursoEmpresa.fecha_ultima_sesion === null ? (moment(item.cursoEmpresa.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.cursoEmpresa.fecha_ultima_sesion).format("DD-MM-YYYY")), now, '', 3)))
             })
             .catch(function (error) {
                 setLoading1(false);
@@ -497,8 +501,8 @@ const TrainingE = () => {
                                                         <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
                                                             {
                                                                 currentCourseShow.map((tr) => {
-                                                                    const partes = tr.fechaAsignacion.split("/");
-                                                                    const fechaFormateada = `${partes[0]}-${partes[1]}-${partes[2].substr(0, 4)}`;
+                                                                    const fechaObjeto = parseISO(tr.fechaAsignacion);
+                                                                    const fechaFormateada = format(fechaObjeto, 'dd-MM-yyyy');
                                                                     return (
                                                                         <div className='col-md-4'>
                                                                             <TrainingCardE key={tr.id}
@@ -564,12 +568,12 @@ const TrainingE = () => {
                                                         <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
                                                             {
                                                                 upcomingCourseShow.map((tr) => {
-                                                                    const partes = tr.fechaAsignacion.split("/");
-                                                                    const fechaFormateada = `${partes[0]}-${partes[1]}-${partes[2].substr(0, 4)}`;
+                                                                    const fechaObjeto = parseISO(tr.fechaAsignacion);
+                                                                    const fechaFormateada = format(fechaObjeto, 'dd-MM-yyyy');
                                                                     return (
                                                                         <div className='col-md-4'>
                                                                             <TrainingCardE key={tr.id}
-                                                                                id={tr.id}
+                                                                                id={tr.cursoEmpresa.id}
                                                                                 name={tr.cursoEmpresa.nombre}
                                                                                 photoURL={tr.cursoEmpresa.url_foto === null ? (url_foto_default) : (tr.cursoEmpresa.url_foto)}
                                                                                 description={tr.cursoEmpresa.descripcion}
@@ -628,12 +632,12 @@ const TrainingE = () => {
                                                         <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
                                                             {
                                                                 finishedCourseShow.map((tr) => {
-                                                                    const partes = tr.fechaAsignacion.split("/");
-                                                                    const fechaFormateada = `${partes[0]}-${partes[1]}-${partes[2].substr(0, 4)}`;
+                                                                    const fechaObjeto = parseISO(tr.fechaAsignacion);
+                                                                    const fechaFormateada = format(fechaObjeto, 'dd-MM-yyyy');
                                                                     return (
                                                                         <div className='col-md-4'>
                                                                             <TrainingCardE key={tr.id}
-                                                                                id={tr.id}
+                                                                                id={tr.cursoEmpresa.id}
                                                                                 name={tr.cursoEmpresa.nombre}
                                                                                 photoURL={tr.cursoEmpresa.url_foto === null ? (url_foto_default) : (tr.cursoEmpresa.url_foto)}
                                                                                 description={tr.cursoEmpresa.descripcion}
@@ -692,12 +696,12 @@ const TrainingE = () => {
                                                         <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
                                                             {
                                                                 filterCourseShow.map((tr) => {
-                                                                    const partes = tr.fechaAsignacion.split("/");
-                                                                    const fechaFormateada = `${partes[0]}-${partes[1]}-${partes[2].substr(0, 4)}`;
+                                                                    const fechaObjeto = parseISO(tr.fechaAsignacion);
+                                                                    const fechaFormateada = format(fechaObjeto, 'dd-MM-yyyy');
                                                                     return (
                                                                         <div className='col-md-4'>
                                                                             <TrainingCardE key={tr.id}
-                                                                                id={tr.id}
+                                                                                id={tr.cursoEmpresa.id}
                                                                                 name={tr.cursoEmpresa.nombre}
                                                                                 photoURL={tr.cursoEmpresa.url_foto === null ? (url_foto_default) : (tr.cursoEmpresa.url_foto)}
                                                                                 description={tr.cursoEmpresa.descripcion}
@@ -798,12 +802,12 @@ const TrainingE = () => {
                                                         <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
                                                             {
                                                                 currentCourseShow.map((tr) => {
-                                                                    const partes = tr.fechaAsignacion.split("/");
-                                                                    const fechaFormateada = `${partes[0]}-${partes[1]}-${partes[2].substr(0, 4)}`;
+                                                                    const fechaObjeto = parseISO(tr.fechaAsignacion);
+                                                                    const fechaFormateada = format(fechaObjeto, 'dd-MM-yyyy');
                                                                     return (
                                                                         <div className='col-md-4'>
                                                                             <TrainingCardE key={tr.id}
-                                                                                id={tr.id}
+                                                                                id={tr.cursoEmpresa.id}
                                                                                 name={tr.cursoEmpresa.nombre}
                                                                                 photoURL={tr.cursoEmpresa.url_foto === null ? (url_foto_default) : (tr.cursoEmpresa.url_foto)}
                                                                                 description={tr.cursoEmpresa.descripcion}
@@ -865,12 +869,12 @@ const TrainingE = () => {
                                                         <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
                                                             {
                                                                 upcomingCourseShow.map((tr) => {
-                                                                    const partes = tr.fechaAsignacion.split("/");
-                                                                    const fechaFormateada = `${partes[0]}-${partes[1]}-${partes[2].substr(0, 4)}`;
+                                                                    const fechaObjeto = parseISO(tr.fechaAsignacion);
+                                                                    const fechaFormateada = format(fechaObjeto, 'dd-MM-yyyy');
                                                                     return (
                                                                         <div className='col-md-4'>
                                                                             <TrainingCardE key={tr.id}
-                                                                                id={tr.id}
+                                                                                id={tr.cursoEmpresa.id}
                                                                                 name={tr.cursoEmpresa.nombre}
                                                                                 photoURL={tr.cursoEmpresa.url_foto === null ? (url_foto_default) : (tr.cursoEmpresa.url_foto)}
                                                                                 description={tr.cursoEmpresa.descripcion}
@@ -930,12 +934,12 @@ const TrainingE = () => {
                                                         <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
                                                             {
                                                                 freeCourseShow.map((tr) => {
-                                                                    const partes = tr.fechaAsignacion.split("/");
-                                                                    const fechaFormateada = `${partes[0]}-${partes[1]}-${partes[2].substr(0, 4)}`;
+                                                                    const fechaObjeto = parseISO(tr.fechaAsignacion);
+                                                                    const fechaFormateada = format(fechaObjeto, 'dd-MM-yyyy');
                                                                     return (
                                                                         <div className='col-md-4'>
                                                                             <TrainingCardE key={tr.id}
-                                                                                id={tr.id}
+                                                                                id={tr.cursoEmpresa.id}
                                                                                 name={tr.cursoEmpresa.nombre}
                                                                                 photoURL={tr.cursoEmpresa.url_foto === null ? (url_foto_default) : (tr.cursoEmpresa.url_foto)}
                                                                                 description={tr.cursoEmpresa.descripcion}
@@ -994,12 +998,12 @@ const TrainingE = () => {
                                                         <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
                                                             {
                                                                 finishedCourseShow.map((tr) => {
-                                                                    const partes = tr.fechaAsignacion.split("/");
-                                                                    const fechaFormateada = `${partes[0]}-${partes[1]}-${partes[2].substr(0, 4)}`;
+                                                                    const fechaObjeto = parseISO(tr.fechaAsignacion);
+                                                                    const fechaFormateada = format(fechaObjeto, 'dd-MM-yyyy');
                                                                     return (
                                                                         <div className='col-md-4'>
                                                                             <TrainingCardE key={tr.id}
-                                                                                id={tr.id}
+                                                                                id={tr.cursoEmpresa.id}
                                                                                 name={tr.cursoEmpresa.nombre}
                                                                                 photoURL={tr.cursoEmpresa.url_foto === null ? (url_foto_default) : (tr.cursoEmpresa.url_foto)}
                                                                                 description={tr.cursoEmpresa.descripcion}
@@ -1058,12 +1062,12 @@ const TrainingE = () => {
                                                         <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0'>
                                                             {
                                                                 filterCourseShow.map((tr) => {
-                                                                    const partes = tr.fechaAsignacion.split("/");
-                                                                    const fechaFormateada = `${partes[0]}-${partes[1]}-${partes[2].substr(0, 4)}`;
+                                                                    const fechaObjeto = parseISO(tr.fechaAsignacion);
+                                                                    const fechaFormateada = format(fechaObjeto, 'dd-MM-yyyy');
                                                                     return (
                                                                         <div className='col-md-4'>
                                                                             <TrainingCardE key={tr.id}
-                                                                                id={tr.id}
+                                                                                id={tr.cursoEmpresa.id}
                                                                                 name={tr.cursoEmpresa.nombre}
                                                                                 photoURL={tr.cursoEmpresa.url_foto === null ? (url_foto_default) : (tr.cursoEmpresa.url_foto)}
                                                                                 description={tr.cursoEmpresa.descripcion}

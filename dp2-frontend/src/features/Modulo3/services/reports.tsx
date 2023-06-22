@@ -4,14 +4,14 @@ import {
   REPORT_CONTINUOS_EVALUATION,
   REPORT_PERFORMANCE_EVALUATION,
   BACKEND_URL,
-  SAMPLE_TOKEN,
+  TOKEN,
 } from "../utils/constants";
 import axios from "axios";
 
 export const getAreas = () => {
   return axios
     .get(`${BACKEND_URL}areas`, {
-      headers: { Authorization: `Token ${SAMPLE_TOKEN}` },
+      headers: { Authorization: `Token ${TOKEN}` },
     })
     .then((response) => response.data)
     .catch((error) => {
@@ -22,7 +22,7 @@ export const getAreas = () => {
 export const getCategoriasContinua = () => {
   return axios
     .get(`${BACKEND_URL}categorias/continuas`, {
-      headers: { Authorization: `Token ${SAMPLE_TOKEN}` },
+      headers: { Authorization: `Token ${TOKEN}` },
     })
     .then((response) => response.data)
     .catch((error) => {
@@ -32,7 +32,7 @@ export const getCategoriasContinua = () => {
 export const getCategoriasDesempenio = () => {
   return axios
     .get(`${BACKEND_URL}categorias/desempenio`, {
-      headers: { Authorization: `Token ${SAMPLE_TOKEN}` },
+      headers: { Authorization: `Token ${TOKEN}` },
     })
     .then((response) => response.data)
     .catch((error) => {
@@ -89,7 +89,7 @@ export const getEmployeesEvaluationDashboard = async (bossId) => {
       evaluationType: CONTINUOS_EVALUATION_TYPE,
     }, {
       headers: {
-        Authorization: `Token ${SAMPLE_TOKEN}`
+        Authorization: `Token ${TOKEN}`
       }
     });
     return response.data;
@@ -109,7 +109,7 @@ export const getPostAreas = async () => {
     const response = await axios.post(`${BACKEND_URL}areas`, 
     bodyParameters, 
       {
-        headers: { Authorization: `Token ${SAMPLE_TOKEN}` },
+        headers: { Authorization: `Token ${TOKEN}` },
       }
     );
     return response.data;
@@ -127,7 +127,7 @@ export const getPostCategoriasContinua = async () => {
     const response = await axios.post(`${BACKEND_URL}categoriasContinua`, 
       bodyParameters, 
       {
-      headers: { Authorization: `Token ${SAMPLE_TOKEN}` },
+      headers: { Authorization: `Token ${TOKEN}` },
       }
     );
     return response.data;
@@ -145,7 +145,7 @@ export const getPostCategoriasDesempenio = async () => {
     const response = await axios.post(`${BACKEND_URL}categoriasDesempenio`, 
       bodyParameters, 
       {
-      headers: { Authorization: `Token ${SAMPLE_TOKEN}` },
+      headers: { Authorization: `Token ${TOKEN}` },
       }
     );
     return response.data;
@@ -187,24 +187,26 @@ export const getPostReportDesempenioLineChart = async (areaid, categoriaid, date
 // EL POST DEL REPORTE PARA EVALUACION CONTINUA Y DESEMPEÑO
 export const postReportLineChart = async (areaid, categoriaid, dateFechaInicio, dateFechaFin, evaluationType) => {
   const body ={
-    "category-id": areaid,
-    "area-id": categoriaid,
     "evaluationType": evaluationType,
-    // "fecha_inicio": dateFechaInicio,
-    // "fecha_fin": dateFechaFin
+    "fecha_inicio": dateFechaInicio,
+    "fecha_fin": dateFechaFin
   }
-  
+  if(areaid!==0){
+    body["area-id"]=areaid
+  }
+  if(categoriaid!==0){
+    body["category-id"]=categoriaid
+  }
   try {
     const response = await axios.post(`${BACKEND_URL}LineChartEvaluacionesReporte`,
       body,
       {
         headers:{
-          "Authorization": `Token ${SAMPLE_TOKEN}`,
+          "Authorization": `Token ${TOKEN}`,
           "Content-Type": 'application/json'
         }
       }
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log("Hubo un error con la solicitud:", error);

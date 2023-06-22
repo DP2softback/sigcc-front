@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./EvaluacionContinua.css";
 import { CONTINUOS_EVALUATION_HISTORY, CONTINUOS_EVALUATION_INDEX } from "@features/Modulo3/routes/path";
 import Layout from "@features/Modulo3/components/Layout/Content/Content";
@@ -24,13 +23,16 @@ type BaseFormProps = {
 const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, setIsLoading, isReadOnly}: BaseFormProps) => {
 	const aditionTitleStyle = { marginBottom: "20px" };
   const [selectedCategory, setSelectedCategory] = useState(null);
-
-	const evaluationCategory = (
+	
+	const evaluationCategory = isReadOnly ? (
+		evaluation &&
+		evaluation.categoryName && (
+			<Form.Control type="text" disabled value={evaluation.categoryName[0]} />
+		)
+	) : (
 		<Form.Select
-			disabled={isReadOnly}
 			value={evaluation && evaluation.categoryId}
-			onChange={onCategoryChange()}
-		>
+			onChange={onCategoryChange()}>
 			<option hidden>Seleccionar</option>
 			{categories.map((category) => {
 				return (
@@ -47,22 +49,33 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 			type="text"
 			placeholder="Ingrese el proyecto asocidado"
 			value={evaluation && evaluation.associatedProject}
+			disabled={isReadOnly}
 			onChange={onProjectChange()}
 		></Form.Control>
 	);
 
-	const evaluationMatrix = (
-		evaluation && evaluation.categoryId != null ? (
+	const evaluationMatrix = isReadOnly ? (
+		evaluation && evaluation.subcategories ? (
 			<Matrix
-				header={["Muy mala","Mala","Regular","Buena","Muy buena"]}
-				rows={selectedCategory.subcategories}
+				header={["Muy mala", "Mala", "Regular", "Buena", "Muy buena"]}
+				rows={evaluation.subcategories}
 				evaluation={evaluation}
 				setEvaluation={setEvaluation}
 				isReadOnly={isReadOnly}
 			/>
 		) : (
-			<div>Seleccione una categoría a evaluar</div>
+			<></>
 		)
+	) : evaluation && evaluation.categoryId ? (
+		<Matrix
+			header={["Muy mala", "Mala", "Regular", "Buena", "Muy buena"]}
+			rows={selectedCategory.subcategories}
+			evaluation={evaluation}
+			setEvaluation={setEvaluation}
+			isReadOnly={isReadOnly}
+		/>
+	) : (
+		<div>Seleccione una categoría a evaluar</div>
 	);
 
 	const additionalComments = (
@@ -91,10 +104,7 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 	);
 
 	const saveButton = !isReadOnly && (
-		<Button
-			onClick={() => {
-				handleSave();
-			}}
+		<Button onClick={() => handleSave()}
 		>
 			Guardar evaluación
 		</Button>
@@ -115,21 +125,21 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 			<div className="row">
 				<div className="col-md-4">
 					<Section
-						title={"Categoría de evaluación"}
+						title={"Categoría de evaluación *"}
 						content={evaluationCategory}
 						titleStyle={aditionTitleStyle}
 					/>
 				</div>
 				<div className="col-md-4">
 					<Section
-						title={"Proyecto asociado"}
+						title={"Proyecto asociado *"}
 						content={asociatedProject}
 						titleStyle={aditionTitleStyle}
 					/>
 				</div>
 			</div>
 			<Section
-				title={"Evaluación"}
+				title={"Evaluación *"}
 				content={evaluationMatrix}
 				titleStyle={aditionTitleStyle}
 			/>
@@ -137,6 +147,7 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 				title={"Comentarios adicionales"}
 				content={additionalCommentsAndSave}
 				titleStyle={aditionTitleStyle}
+				sectionStyle={{marginBottom: 0}}
 			/>
 		</>
 	);
@@ -194,6 +205,7 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 		<div>
 			<Layout
 				title={`Evaluación continua - ${employee.name}`}
+				subtitle="Los campos con (*) son obligatorios."
 				body={isLoading ? <LoadingScreen/> : body}
 				route={CONTINUOS_EVALUATION_INDEX}
 			/>

@@ -11,8 +11,7 @@ import QuizGenerator from '../QuizGenerator/QuizGenerator';
 import LearningPathComprehensiveEvaluation from '../ComprehensiveEvaluation';
 
 
-function LearningPathDetails (props: any)
-{
+function LearningPathDetails(props: any) {
     const { learningPathId } = useParams();
     const [loading, setLoading] = useState(null);
     const [lpName, setLPName] = useState<any>("");
@@ -27,74 +26,74 @@ function LearningPathDetails (props: any)
 
     const navigate = useNavigate();
 
-    const goBack = () =>
-    {
+    const goBack = () => {
         navigate(-1);
     };
 
-    const loadsCourses = () =>
-    {
+    let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
+
+
+    const loadsCourses = () => {
         setLoading(true);
         axiosInt.get(`capacitaciones/learning_path/${learningPathId}/course/`)
-            .then(function (response)
-            {
+            .then(function (response) {
+                console.log(response.data)
                 setLPName(response.data.nombre);
                 setLPDescription(response.data.descripcion);
                 setLPPhoto(response.data.url_foto);
                 setLPParticipants(response.data.cant_empleados);
                 setLPRate(response.data.suma_valoraciones);
-                setCourses(response.data.curso_x_learning_path);
-                setLoading(false);
+
+                axiosInt.get(`capacitaciones/learning_path_from_template/${learningPathId}/`)
+                    .then(function (response) {
+                        console.log(response.data.cursos)
+                        setCourses(response.data.cursos);
+                        setLoading(false);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        setLoading(false);
+                    });
+
+
+
             })
-            .catch(function (error)
-            {
+            .catch(function (error) {
                 console.log(error);
                 setLoading(false);
             });
     }
 
-    const loadEmployees = () =>
-    {
+    const loadEmployees = () => {
         axiosInt.get(`capacitaciones/learning_path/${learningPathId}/employees/`)
-            .then(function (response)
-            {
+            .then(function (response) {
+                console.log(response.data)
                 setEmployees(response.data);
             })
-            .catch(function (error)
-            {
+            .catch(function (error) {
                 console.log(error);
             });
     }
 
-    useEffect(() =>
-    {
+    useEffect(() => {
         loadsCourses();
         loadEmployees();
     }, []);
 
-    useEffect(() =>
-    {
+    useEffect(() => {
         if (coursesQuizStatuses.length)
             return;
         const coursesQuizStat = courses.map(object => parseInt(object.estado));
-        courses.map((item: any, index: any) =>
-        {
-            if (parseInt(item.estado) === 0)
-            {
+        courses.map((item: any, index: any) => {
+            if (parseInt(item.estado) === 0) {
                 let quizStatusinterval;
-                const handleGetStatus = (event) =>
-                {
+                const handleGetStatus = (event) => {
                     axiosInt.get(`capacitaciones/udemy_course/check_status/${item.id}/`)
-                        .then((response) =>
-                        {
-                            if (parseInt(response.data.estado) === 1)
-                            {
-                                setCoursesQuizStatuses(prevState =>
-                                {
-                                    return prevState.map((element, i) =>
-                                    {
-                                        if (i === index)
-                                        {
+                        .then((response) => {
+                            if (parseInt(response.data.estado) === 1) {
+                                setCoursesQuizStatuses(prevState => {
+                                    return prevState.map((element, i) => {
+                                        if (i === index) {
                                             return parseInt(response.data.estado);
                                         }
                                         return element;
@@ -106,13 +105,11 @@ function LearningPathDetails (props: any)
                 };
 
                 window.addEventListener('get-status', handleGetStatus);
-                quizStatusinterval = setInterval(() =>
-                {
+                quizStatusinterval = setInterval(() => {
                     window.dispatchEvent(new Event('get-status'));
                 }, 5000);
 
-                return () =>
-                {
+                return () => {
                     window.removeEventListener('get-status', handleGetStatus);
                     clearInterval(quizStatusinterval);
                 };
@@ -121,33 +118,28 @@ function LearningPathDetails (props: any)
         setCoursesQuizStatuses(coursesQuizStat);
     }, [courses]);
 
-    const handleRemoveCard = (e: any, id: number) =>
-    {
+    const handleRemoveCard = (e: any, id: number) => {
         e.target.disabled = true;
         e.target.getElementsByTagName("span")[0].classList.remove('hidden');
         axiosInt.delete(`capacitaciones/learning_path/${learningPathId}/course/detail/${id}`)
-            .then(function (response)
-            {
+            .then(function (response) {
                 e.target.disabled = false;
                 e.target.getElementsByTagName("span")[0].classList.add('hidden');
                 const updatedCourses = courses.filter((course: any) => course.id !== id);
                 setCourses(updatedCourses);
             })
-            .catch(function (error)
-            {
+            .catch(function (error) {
                 e.target.disabled = false;
                 e.target.getElementsByTagName("span")[0].classList.add('hidden');
                 console.log(error);
             });
     };
 
-    const handleAssignEmployees = (employees: Array<any>, closeFunction: any) =>
-    {
+    const handleAssignEmployees = (employees: Array<any>, closeFunction: any) => {
         axiosInt.post('capacitaciones/learning_path/enroll_employess/', {
             "id_lp": learningPathId,
             "empleados": employees
-        }).then((res) =>
-        {
+        }).then((res) => {
             console.log(res.data);
             window.location.reload();
         })
@@ -171,7 +163,7 @@ function LearningPathDetails (props: any)
                         <div className='d-flex border-bottom'>
                             <h1><ArrowLeftCircleFill onClick={goBack} className='me-3' /></h1>
                             <div className='row w-100'>
-                                <div className='col-xs-12 col-md-6 col-xl-8'>
+                                <div className='col-xs-12 col-md-4 col-xl-6'>
                                     <div>
                                         <h1><span className='align-middle'>{lpName}</span></h1>
                                     </div>
@@ -179,7 +171,7 @@ function LearningPathDetails (props: any)
                                         <p><small className='opacity-50'>{lpDescription}.</small></p>
                                     </div>
                                 </div>
-                                <div className='col-xs-12 col-md-6 col-xl-4'>
+                                <div className='col-xs-12 col-md-4 col-xl-4'>
                                     <div className='d-flex mb-3'>
                                         <img className="rounded-circle lp-thumb me-3" src={lpPhoto} alt="..." />
                                         <div className='w-100 align-self-center'>
@@ -200,6 +192,12 @@ function LearningPathDetails (props: any)
                                         </div>
                                     </div>
                                 </div>
+                                <div className='col-xs-12 col-md-4 col-xl-2'>
+                                    <div className='d-grid gap-2 mx-auto mb-3'>
+                                        <Link to={`evaluacionintegral`} className='btn btn-sm btn-primary'>Ver evaluaciones</Link>
+                                        <Link to={`reporte`} className='btn btn-sm btn-primary'>Ver reportes</Link>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div className='pt-3'>
@@ -214,49 +212,59 @@ function LearningPathDetails (props: any)
                                 </button>
                                 <ul className="dropdown-menu">
                                     <li><Link to={`/modulo1/curso/agregar/${learningPathId}`} className="dropdown-item">Curso de Udemy</Link></li>
-                                    <li><Link to={`/modulo1/curso/agregar/ce/${learningPathId}`} className="dropdown-item">Curso específico</Link></li>
+                                    <li><Link to={`/modulo1/curso/agregar/ce/${learningPathId}`} className="dropdown-item">Curso Empresa</Link></li>
                                 </ul>
                             </div>
                         </div>
                         <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 align-items-stretch g-3 py-3">
                             {
                                 courses.map((course: any, index: number) => (
-                                    <div className='col' key={course.course_udemy_detail.id}>
+                                    <div className='col' key={course.id}>
                                         <div className="card h-100">
                                             <img
-                                                src={course.course_udemy_detail.image_480x270}
+                                                src={course.tipo_curso == 'U' ? course.course_udemy_detail.image_480x270 == null ? url_foto_default : course.course_udemy_detail.image_480x270 : course.url_foto}
                                                 className="card-img-top lp-card-img"
                                                 alt="Card"
                                             />
                                             <div className="card-body">
-                                                <h6 className="card-title">{course.course_udemy_detail.title}</h6>
-                                                <p className='mb-0'><small className="opacity-50">{course.course_udemy_detail.headline}</small></p>
+                                                <h6 className="card-title">{course.nombre}</h6>
+                                                <p className='mb-0'><small className="opacity-50">{course.descripcion}</small></p>
                                             </div>
-                                            <div className="card-footer pb-3 lpd-footer">
-                                                {
-                                                    coursesQuizStatuses[index] == 0 ?
-                                                        <>
-                                                            <div className="d-flex justify-content-center">
-                                                                <div className="spinner-border spinner-border-sm me-1" role="status">
-                                                                    <span className="visually-hidden">Cargando...</span>
+                                            {course.tipo_curso == 'U' ?
+                                                <div className="card-footer pb-3 lpd-footer">
+                                                    {
+                                                        coursesQuizStatuses[index] == 0 ?
+                                                            <>
+                                                                <div className="d-flex justify-content-center">
+                                                                    <div className="spinner-border spinner-border-sm me-1" role="status">
+                                                                        <span className="visually-hidden">Cargando...</span>
+                                                                    </div>
+                                                                    <div>
+                                                                        <p style={{ marginTop: '-0.25rem' }}>
+                                                                            <small>Generando evaluación</small>
+                                                                        </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div>
-                                                                    <p style={{ marginTop: '-0.25rem' }}>
-                                                                        <small>Generando evaluación</small>
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </> :
-                                                        <>
-                                                            <button type="button" className="btn btn-primary w-100 mb-3" data-bs-toggle="modal" data-bs-target={`#quizGeneratorModal${course.id}`}>Validar cuestionario</button>
-                                                            <QuizGenerator title={course.title} quizId={course.id} />
-                                                        </>
-                                                }
-                                                <button className="btn btn-danger w-100" onClick={(e) => handleRemoveCard(e, course.id)}>
-                                                    <span className="spinner-border spinner-border-sm hidden me-3" role="status" aria-hidden="true"></span>
-                                                    Eliminar curso
-                                                </button>
-                                            </div>
+                                                            </> :
+                                                            <>
+                                                                <button type="button" className="btn btn-primary w-100 mb-3" data-bs-toggle="modal" data-bs-target={`#quizGeneratorModal${course.id}`}>Validar cuestionario</button>
+                                                                <QuizGenerator title={course.nombre} quizId={course.id} />
+                                                            </>
+                                                    }
+                                                    <button className="btn btn-danger w-100" onClick={(e) => handleRemoveCard(e, course.id)}>
+                                                        <span className="spinner-border spinner-border-sm hidden me-3" role="status" aria-hidden="true"></span>
+                                                        Eliminar curso
+                                                    </button>
+                                                </div>
+                                                :
+                                                <div className="card-footer pb-3 lpd-footer">
+                                                    <button className="btn btn-danger w-100" onClick={(e) => handleRemoveCard(e, course.id)}>
+                                                        <span className="spinner-border spinner-border-sm hidden me-3" role="status" aria-hidden="true"></span>
+                                                        Eliminar curso
+                                                    </button>
+                                                </div>
+                                            }
+
 
                                         </div>
                                     </div>
@@ -317,11 +325,13 @@ function LearningPathDetails (props: any)
                     </>
             }
             {/* </Sidebar> */}
+
+
             <LearningPathAssignment assignFunction={handleAssignEmployees} />
             {
                 coursesQuizStatuses.includes(0) ?
                     <>
-                        <div className="toast show align-items-center text-bg-primary position-fixed top-0 end-0 m-3 border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div style={{ marginTop: "4rem" }} className="toast show align-items-center text-bg-primary position-fixed top-0 end-0 border-0" role="alert" aria-live="assertive" aria-atomic="true">
                             <div className="d-flex">
                                 <div className="toast-body">
                                     Se está generando la evaluación para el curso en segundo plano.
@@ -332,6 +342,7 @@ function LearningPathDetails (props: any)
                     </> :
                     <></>
             }
+
             <LearningPathComprehensiveEvaluation learningPathId={learningPathId} data={evaluation} />
         </>
     );

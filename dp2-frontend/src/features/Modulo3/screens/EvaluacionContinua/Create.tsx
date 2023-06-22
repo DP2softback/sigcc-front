@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './EvaluacionContinua.css';
 import BaseForm from './BaseForm';
 import { getPlantilla } from '@features/Modulo3/services/templates';
@@ -18,7 +17,8 @@ const Create = () => {
     evaluatedId: employee.id,
     evaluatorId: USER_ID,
     associatedProject: '',
-    additionalComments: ''
+    additionalComments: '',
+    evaluationType: CONTINUOS_EVALUATION_TYPE
   });
   const [isLoading, setIsLoading] = useState(true);
 

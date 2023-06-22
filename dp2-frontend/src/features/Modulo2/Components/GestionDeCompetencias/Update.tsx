@@ -1,52 +1,115 @@
-import { useState } from 'react';
-import { Form } from 'react-bootstrap';
-type Competencia = {
-  id: number;
-  abreviatura: string;
-  nombre: string;
-  descripcion: string;
-  activo: boolean;
-};
-type Props = {
-  competencia: Competencia;
-  actualizarCompetencia: Function;
-};
-const ActualizarCompetencia = ({ actualizarCompetencia, competencia }) => {
-  const [abreviatura, setAbreviatura] = useState(competencia.abreviatura);
-  const [nombre, setNombre] = useState(competencia.nombre);
-  const [descripcion, setDescripcion] = useState(competencia.descripcion);
-  const [activo, setActivo] = useState(competencia.activo);
+import React, { useState } from 'react';
+import {Competencia,tipoCompetencia} from './Tipos'
+import './Update.css';
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    competencia = { id: competencia.id, nombre: nombre, abreviatura: abreviatura, descripcion:descripcion, activo: activo }
-    console.log(competencia);
-    actualizarCompetencia(competencia);
-    setNombre('');
-    setDescripcion('');
+type Props = {
+  actualizarCompetencia: (competenciaActualizada: Competencia) => void;
+  competencia: Competencia | null;
+  tipoCompetencias: tipoCompetencia[];
+};
+
+const ActualizarCompetencia: React.FC<Props> = ({ actualizarCompetencia, competencia, tipoCompetencias  }) => {
+  const [competenciaActualizada, setCompetenciaActualizada] = useState(competencia);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    const newValue = type === 'checkbox' ? checked : value;
+  
+    setCompetenciaActualizada((prevCompetencia) => ({
+      ...prevCompetencia,
+      [name]: newValue,
+    }));
   };
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (competenciaActualizada) {
+      actualizarCompetencia(competenciaActualizada);
+    }
+  };
+  
+  const handleTipoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedTipoId = parseInt(e.target.value);
+    const selectedTipoCompetencia = tipoCompetencias.find((tipo) => tipo.id === selectedTipoId);
+    setCompetenciaActualizada((prevCompetencia) => ({
+      ...prevCompetencia,
+      type: selectedTipoCompetencia?.id || 0,
+    }));
+  };
+  
+  
 
   return (
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formAbreviatura">
-            <Form.Label>Abreviatura</Form.Label>
-            <Form.Control type="text" value={abreviatura} onChange={(event) => setAbreviatura(event.target.value)} />
-          </Form.Group>
-          <Form.Group controlId="formNombre">
-            <Form.Label>Nombre</Form.Label>
-            <Form.Control type="text" value={nombre} onChange={(event) => setNombre(event.target.value)} />
-          </Form.Group>
-          <Form.Group controlId="formDescripcion">
-            <Form.Label>Descripción</Form.Label>
-            <Form.Control as="textarea" rows={3} value={descripcion} onChange={(event) => setDescripcion(event.target.value)} />
-          </Form.Group>
-          <Form.Group controlId="formActivo">
-            <Form.Check type="checkbox" label="Activo" checked={activo} onChange={(event) => setActivo(event.target.checked)} />
-          </Form.Group>
-          <button type="submit" className="btn btn-primary">
-            Actualizar
-          </button>
-        </Form>
+    <form onSubmit={handleSubmit}>
+      <div className='container-fluid'>
+      <div className="form-group">
+        <label htmlFor="codigo">Código:</label>
+        <input
+          type="text"
+          className="form-control"
+          id="codigo"
+          name="code"
+          value={competenciaActualizada?.code || ''}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="nombre">Nombre:</label>
+        <input
+          type="text"
+          className="form-control"
+          id="nombre"
+          name="name"
+          value={competenciaActualizada?.name || ''}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="descripcion">Descripción:</label>
+        <input
+          type="text"
+          className="form-control"
+          id="descripcion"
+          name="description"
+          value={competenciaActualizada?.description || ''}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="activo">Activo:</label>
+        <input
+          type="checkbox"
+          className="form-check-input"
+          id="activo"
+          name="active"
+          checked={competenciaActualizada?.active || false}
+          onChange={handleChange}
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="tipo">Tipo de Competencia:</label>
+        <select
+          className="form-control"
+          id="tipo"
+          name="type"
+          value={competenciaActualizada?.type || ''}
+          onChange={handleTipoChange}
+        >
+          <option value="">Seleccionar tipo de competencia</option>
+          {tipoCompetencias.map((tipo) => (
+            <option key={tipo.id} value={tipo.id}>
+              {tipo.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      
+        <div className='espacio'>
+              <button type="submit" className="btn btn-primary">Guardar</button>
+        </div>
+      </div>
+    </form>
   );
 };
 
