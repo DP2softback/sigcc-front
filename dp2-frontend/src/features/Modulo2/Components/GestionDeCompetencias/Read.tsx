@@ -7,7 +7,7 @@ import BorrarCompetencia from './Delete';
 import Info from './Info';
 import {Competencia,tipoCompetencia} from './Tipos'
 import './Read.css';
-import {TOKEN_SERVICE} from '@features/Modulo2/services/ServicesApis'
+import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
 
 const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
 
@@ -38,7 +38,7 @@ const CompetenciasRead: React.FC = () => {
           idEmpleado: 0,
         };
 
-        const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceSearch', {
+        const response = await fetch(URL_SERVICE + '/gaps/competenceSearch', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const CompetenciasRead: React.FC = () => {
     const fetchTipoCompetencias = async () => {
       try {
 
-        const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceTypes', {
+        const response = await fetch(URL_SERVICE + '/gaps/competenceTypes', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -144,7 +144,7 @@ const CompetenciasRead: React.FC = () => {
       })
     };
   
-    fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competences', requestOptions)
+    fetch(URL_SERVICE + '/gaps/competences', requestOptions)
       .then(response => response.json())
       .then(data => {
         console.log('Competencia agregada:', data);
@@ -202,7 +202,7 @@ const actualizarCompetencia = async (competenciaActualizada) => {
   console.log(competenciaActualizada)
   try {
     const response = await fetch(
-      'https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competences',
+      URL_SERVICE + '/gaps/competences',
       {
         method: 'PUT',
         headers: {

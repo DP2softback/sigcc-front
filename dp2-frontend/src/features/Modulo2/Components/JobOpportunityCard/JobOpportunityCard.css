@@ -2,20 +2,26 @@
     background-color: #FFFFFF;
     padding: 10px;
     border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .image-job-opp{
     border-radius: 12px;
-    width: 80px;
+    width: 70px;
 }
 
 .title-job-opp{
     font-weight: 500;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .availability-job-opp{
     opacity: 0.6;
+    font-size: 14px;
+}
+
+.line-card{
+    margin: 10px 0px;
 }
 
 .lbl-job-opp{
@@ -37,6 +43,10 @@
 
 .desc-job-opp{
     font-size: 13px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 .btn{

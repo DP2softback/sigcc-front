@@ -4,6 +4,9 @@ import './GestionCompetencias.css'
 import {tipoCompetencia,CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos';
+import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
+const examplePhoto = 'https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg?b=1&s=170667a&w=0&k=20&c=0aBawAGIMPymGUppOgw1HmV8MNXB1536B3sX_PP9_SQ='
+
 const GestionCompetencia = (state) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,12 +29,12 @@ const GestionCompetencia = (state) => {
           };
   
           const response = await fetch(
-            'https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceSearch',
+            URL_SERVICE + '/gaps/competenceSearch',
             {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+                'Authorization': TOKEN_SERVICE,
               },
               body: JSON.stringify(body),
             }
@@ -170,7 +173,7 @@ const GestionCompetencia = (state) => {
       </div>
       
     <div className='container-fluid'>
-    <img alt='Foto de perfil del empleado' src=''></img>
+    <img alt='Foto de perfil del empleado' src={examplePhoto} style={{width: '80px',height: '80px', borderRadius:'50%',objectFit:'cover'}}></img>
     <div>{nombreEmpleado}</div>
     <div>{cargoEmpleado}</div>
     </div>
