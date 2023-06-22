@@ -2,53 +2,31 @@ import { useEffect, useState } from 'react';
 import { Button, Table} from 'react-bootstrap';
 import './GestionCompetencias.css'
 import {tipoCompetencia,CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
-import { useLocation } from 'react-router-dom';
-
-const GestionCompetencia = () => {
+import { useLocation, useNavigate } from 'react-router-dom';
+import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos';
+const GestionCompetencia = (state) => {
+  const navigate = useNavigate();
   const location = useLocation();
-  //const { usuario } = location.state;
-  console.log(location.state)
+  const { usuario } = location.state;
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
-    const [nombreEmpleado, setNombreEmpleado] = useState('Ángela Quispe Ramírez');
-    const [cargoEmpleado, setCargoEmpleado] = useState('Supervisor - Ärea de TI');
+    const [nombreEmpleado, setNombreEmpleado] = useState(usuario.user__first_name + ' '+ usuario.user__last_name);
+    const [cargoEmpleado, setCargoEmpleado] = useState(usuario.position__name);
     const [tipoOrden, setTipoOrden] = useState('ascendente');
-    const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
     const [competenciasData, setCompetenciasData] = useState<CompetenciaTrabajador[]>([]);
 
-    useEffect(() => {        
-      const fetchTipoCompetencias = async () => {
-        try {
-  
-          const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceTypes', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
-            },
-          });
-  
-          if (response.ok) {
-            const data = await response.json();
-            setTipoCompetencias(data);
-          } else {
-            console.log('Error al obtener los datos de competencias');
-          }
-        } catch (error) {
-          console.log('Error al obtener los datos de competencias:', error);
-        }
-      };
-
+    useEffect(() => {     
       const fetchCompetencias = async () => {
         try {
           const body = {
-            estado: 0, //dejarlo así - luego se podrá poner 1,2,3
-            tipo: 0, //dejarlo así - luego se podrá poner 1,2,3
-            activo: 2, //dejarlo así - luego se podrá poner 0,1,2
-            idEmpleado: 1, // Poner el idEmpleado
+            idCompetencia: 0,		//dejarlo así
+            palabraClave: "",		//poner la palabra clave del buscador, si es nada pon ""
+            idTipoCompetencia: 0,		//el idTipoCompetencia del buscador, si es todos pon 0
+            activo: 2,			//el estado 0 o 1 (inactivo o activo), si es todos pon 2
+            idEmpleado: usuario.id			//ponerle el idEmpleado
           };
   
           const response = await fetch(
-            'https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/trainingNeedSearch',
+            'https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceSearch',
             {
               method: 'POST',
               headers: {
@@ -70,7 +48,6 @@ const GestionCompetencia = () => {
         }
       };
       fetchCompetencias();
-      fetchTipoCompetencias();
     }, []);
 
     const handleOrdenarPorCampo = (campo) => {
@@ -150,9 +127,9 @@ const GestionCompetencia = () => {
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
-                    <th onClick={() => handleOrdenarPorCampo('levelGap')}>
-                    ¿Existe brecha?
-                    {campoOrdenamiento === 'levelGap' && (
+                    <th onClick={() => handleOrdenarPorCampo('likeness')}>
+                    Porcentaje de adecuacion
+                    {campoOrdenamiento === 'likeness' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
@@ -167,7 +144,7 @@ const GestionCompetencia = () => {
         <tbody>
           {datosOrdenados.map((item, index) => {
             const brecha = item.levelCurrent < item.levelRequired ? 'Si' : 'No';
-            //const observacion = item.levelCurrent < item.levelRequired ? 'Necesidad de curso de capacitación' : 'Nivel requerido es alcanzado';
+            const observacion = item.levelCurrent < item.levelRequired ? 'Necesidad de curso de capacitación' : 'Nivel requerido es alcanzado';
 
             return (
               <tr key={index}>
@@ -176,8 +153,8 @@ const GestionCompetencia = () => {
                 <td>{item.competence__type__name}</td>
                 <td>{item.levelCurrent}</td>
                 <td>{item.levelRequired}</td>
-                <td>{brecha}</td>
-                <td>{item.description}</td>
+                <td>{item.likeness + ' %'}</td>
+                <td>{observacion}</td>
               </tr>
             );
           })}
@@ -188,8 +165,8 @@ const GestionCompetencia = () => {
   return (
     <div className="pantalla">
       <div className='titles'>
-      <h2>Competencias de empleado del área de TI</h2>
-      <p className="text-muted">Competencias por empleado.</p>
+      <h2 className='Head'>Capacidades de empleado del área de TI</h2>
+      <p className="text-muted subtitle">Capacidades por empleado.</p>
       </div>
       
     <div className='container-fluid'>
@@ -203,13 +180,8 @@ const GestionCompetencia = () => {
          {renderTablaCompetencias()}
       </div>
       <div className="col-sm-3 botones">
-        <Button variant="outline-primary" className="me-2" onClick={()=>{}}>
+        <Button variant="outline-primary" className="me-2" onClick={()=>{navigate(-1)}}>
           Regresar
-          </Button>
-      </div>
-      <div className="col-sm-3 botones">
-        <Button variant="outline-primary" className="me-2" onClick={()=>{}}>
-          Ver necesidades de capacitación
           </Button>
       </div>
     </div>

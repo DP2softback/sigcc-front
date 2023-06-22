@@ -2,8 +2,8 @@
 LOCALHOST: 9af549d853112bea2e447a0c442cf52c8af3c056
 DEPLOY: 5ad77c64f19039ef87cca20c2308ddbbaf3014bf
 */
-//export const SAMPLE_TOKEN = "9af549d853112bea2e447a0c442cf52c8af3c056";
-export const SAMPLE_TOKEN = "5ad77c64f19039ef87cca20c2308ddbbaf3014bf";
+//export const SAMPLE_TOKEN = "0b13ea4764ec483c318f031f90b2b0d35ba14ddd";
+export const SAMPLE_TOKEN = "06ef101f0752dd28182b9e8535add969ca6aa35d";
 
 /* CONNECTION
 LOCALHOST: http://localhost:8000/api/v1

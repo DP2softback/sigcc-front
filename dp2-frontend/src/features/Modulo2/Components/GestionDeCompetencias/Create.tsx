@@ -51,17 +51,6 @@ const AgregarCompetencia: React.FC<Props> = ({ agregarCompetencia, tipoCompetenc
     <form onSubmit={handleSubmit}>
         <div className='container-fluid'>
         <div className="form-group">
-          <label htmlFor="codigo">Código:</label>
-          <input
-            type="text"
-            className="form-control"
-            id="codigo"
-            name="code"
-            value={nuevaCompetencia?.code || ''}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
           <label htmlFor="nombre">Nombre:</label>
           <input
             type="text"
