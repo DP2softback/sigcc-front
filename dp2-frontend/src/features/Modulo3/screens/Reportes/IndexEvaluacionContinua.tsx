@@ -307,7 +307,7 @@ const IndexEvaluacionContinua = () => {
     doc.setFontSize(12);
     
     // Agrega un título 
-    const title = 'Reporte de Evaluación de Desempeño';
+    const title = 'Reporte de Evaluación Continua';
     const titleFontSize = 22;
     doc.setFontSize(titleFontSize);
     const titleWidth = doc.getStringUnitWidth(title) * titleFontSize / doc.internal.scaleFactor;
