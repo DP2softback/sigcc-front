@@ -7,97 +7,12 @@ import { Form, Button, Dropdown} from 'react-bootstrap';
 import { jsPDF } from 'jspdf';
 import domtoimage from 'dom-to-image';
 import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
-import { getAreas, getCategoriasContinua, getCategoriasDesempenio,postReportLineChart, getEmployeesEvaluationDashboard,} from '@features/Modulo3/services/reports';
-import { formatDashboardJson } from '@features/Modulo3/utils/functions';
+import { getAreas, getCategoriasContinua, getCategoriasDesempenio,postReportLineChart, postReportLineChartAll,} from '@features/Modulo3/services/reports';
+import { formatDashboardJson, formatDashboardJsonAreasCategorias,formatDashboardJsonAreas, formatDashboardJsonCategorias } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import { toast, ToastContainer } from 'react-toastify';  // Import react-toastify
 import 'react-toastify/dist/ReactToastify.css'; 
 import logoUrl from '../../assets/images/LogoHCM.png';
-
-const dataAreas =     [
-  {
-    id: 1,
-    name: "Infraestructura"
-  },
-  {
-    id: 2,
-    name: "Seguridad"
-  },
-  {
-    id: 3,
-    name: "Desarrollo"
-  },
-  {
-    id: 4,
-    name: "Soporte"
-  }
-];
-
-const dataCategoriasEvaluacion = [
-  {
-    id: 1,
-    name: "Calidad del Trabajo"
-  },
-  {
-    id: 2,
-    name: "Habilidades Blandas"
-  },
-  {
-    id: 3,
-    name: "Conocimientos"
-  },
-  {
-    id: 4,
-    name: "Productividad"
-  },
-  {
-    id: 5,
-    name: "Creatividad y Iniciativa"
-  }
-];
-
-const dataCategoriasDesempenio =  [
-  {
-    id: 1,
-    name: "Calidad del Trabajo"
-  },
-  {
-    id: 2,
-    name: "Productividad"
-  },
-  {
-    id: 3,
-    name: "Comportamiento y actitud"
-  },
-  {
-    id: 4,
-    name: "Habilidades técnicas"
-  },
-  {
-    id: 5,
-    name: "Comunicación"
-  },
-  {
-    id: 6,
-    name: "Colaboración y trabajo en equipo"
-  },
-  {
-    id: 7,
-    name: "Habilidades de liderazgo"
-  },
-  {
-    id: 8,
-    name: "Iniciativa y creatividad"
-  },
-  {
-    id: 9,
-    name: "Cumplimiento de objetivos y metas"
-  },
-  {
-    id: 10,
-    name: "Desarrollo profesional y personal"
-  }
-]
 
 type DataLineChart = {
   year: string;
@@ -124,6 +39,8 @@ const IndexEvaluacionContinua = () => {
   const [areas, setAreas] = useState([]); // Cuando tengamos las apis dejarlo como array vacío
   const [categoriasContinua, setCategoriasContinua] = useState([]); // Cuando tengamos las apis dejarlo como array vacío
   const [categoriasDesempenio, setCategoriasDesempenio] = useState([]); // Cuando tengamos las apis dejarlo como array vacío
+  const [dataAllAreasByAreas, setDataAllAreasByAreas] = useState([]);
+  const [dataAllAreasByCategories, setDataAllAreasByCategories] = useState([]);
 
   const [dashboard, setDashboard] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -155,22 +72,28 @@ const IndexEvaluacionContinua = () => {
         const dataCategoriasDesempenio = await getCategoriasDesempenio();
         setAreas([{id:0 , name:"Todas las áreas"},...dataAreas]);          
         setCategoriasContinua([{id:0 , name:"Todas las categorias"},...dataCategoriasContinua]);
-        setCategoriasDesempenio([{id:0 , name:"Todas las categorias"},...dataCategoriasDesempenio]);
+        
+        const dateInicio = new Date(); 
+        const dateFin = new Date();
+        dateInicio.setMonth(dateInicio.getMonth() - 6); 
+        console.log("Fecha inicio: ", dateInicio.toISOString().split('T')[0]);
+        console.log("Fecha fin: ", dateFin.toISOString().split('T')[0]);
+        // const reportData = await postReportLineChartAll(0, 0,dateInicio.toISOString().split('T')[0] , dateFin.toISOString().split('T')[0], "Evaluación Continua");
+        // const reportData = await postReportLineChartAll(0, 0,"2023-01-01" , "2023-06-21", "Evaluación Continua");
+        
+        // if(reportData){
+        //   console.log("Report data: ", reportData);
+        //   let dataSorted:DataLineChart = reportData;
+        //   dataSorted = sortMonths(dataSorted);
+        //   setDashboard(formatDashboardJsonAreasCategorias(dataSorted));
+        // }
+        // else{
+        //   console.log("Error en report data: ", reportData);
+        // }
       } catch (error){
         console.error("Error fetching data: ", error)
+        setDashboard(defaultDashboard);
       }
-
-      // const data = await getEmployeesEvaluationDashboard(5);
-      // if(data){
-      //     setDashboard(formatDashboardJson(data));
-      //     console.log("Data: ", data);
-      //     console.log("Dashboard: ", dashboard);
-      //   }
-      //   else{
-      //       console.log("Error: ", data);
-      //     }
-
-      setDashboard(defaultDashboard);
       setIsLoading(false);
     };
 
@@ -197,9 +120,40 @@ const IndexEvaluacionContinua = () => {
     </div>
   );
   
+  const chartsAreas = dataAllAreasByAreas.map((areaData, index) => (
+    <div
+      key={index}  // Se añade un key para elementos en una lista
+      id="chart-container"
+      className="col-md-12 mb-32px"
+      style={{ paddingBottom: '12px', marginBottom: '32px', marginTop: '20px' }}
+    >
+      <Linechart
+        title={`Evaluaciones de Desempeño - Area: ${areaData.area} - Categoria: ${searchParams.categoria.name}`}
+        dataInfoprops={areaData.data}
+        labelsX={areaData.months}
+      />
+    </div>
+  ));
+
+  const chartsCategorias = dataAllAreasByCategories.map((categoriaData, index) => (
+    <div
+      key={index}  // Se añade un key para elementos en una lista
+      id="chart-container"
+      className="col-md-12 mb-32px"
+      style={{ paddingBottom: '12px', marginBottom: '32px', marginTop: '20px' }}
+    >
+      <Linechart
+        title={`Evaluaciones de Desempeño - Area: ${searchParams.area.name} - Categoria: ${categoriaData.categoria}`}
+        dataInfoprops={categoriaData.data}
+        labelsX={categoriaData.months}
+      />
+    </div>
+  ));
+
   const content = (
     <>
-    {chart}
+      {dataAllAreasByAreas.length===0 && dataAllAreasByCategories.length===0? chart :
+      dataAllAreasByAreas.length!==0 && dataAllAreasByCategories.length===0? chartsAreas : chartsCategorias}
     </>
   )
 
@@ -236,16 +190,10 @@ const IndexEvaluacionContinua = () => {
     }));
   };
 
-  const handleButtonModeClick = () => {
-    setActiveRepContinua(!activeRepContinua);
-    setSearchParams(prevState => ({
-      ...prevState,
-      area: {id:0 , name:"Todas las áreas"},
-      categoria: {id:0, name:"Todas las categorías"},
-    }));
-  };
-
   const handleSearchClick = () => {
+    setDataAllAreasByAreas([]);
+    setDataAllAreasByCategories([]);
+    setDashboard(null);
     if(searchParams.fechaInicio === null || searchParams.fechaFin === null) {
       toast.warn("Debe seleccionar un rango de fechas");
       return;
@@ -254,34 +202,60 @@ const IndexEvaluacionContinua = () => {
       toast.warn("La fecha de inicio no puede ser mayor a la fecha de fin");
       return;
     }
-    // if(searchParams.area.id === 0) {
-    //   alert("Debe seleccionar un área");
-    //   return;
-    // }
-    // if(searchParams.categoria.id === 0) {
-    //   alert("Debe seleccionar una categoría");
-    //   return;
-    // }
 
     //Upate searchParams.fechaInicio and searchParams.fechaFin to ISOString
     const searchParamsCopy = {...searchParams};
     searchParamsCopy.fechaInicio = searchParams.fechaInicio.toISOString().split('T')[0];
     searchParamsCopy.fechaFin = searchParams.fechaFin.toISOString().split('T')[0];
-
-    if(activeRepContinua) {
+    
+    if(searchParamsCopy.area.id === 0 && searchParamsCopy.categoria.id === 0) {
+      console.log("Area y categoria: ", searchParamsCopy.area.id, searchParamsCopy.categoria.id);
+      // const fetchData = async () => {
+      //   setIsLoading(true);
+      //   const reportData = await postReportLineChartAll(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
+      //   if(reportData){
+      //     console.log("Report data: ", reportData);
+      //     let dataSorted:DataLineChart = reportData;
+      //     dataSorted = sortMonths(dataSorted);
+      //     setDashboard(formatDashboardJsonAreasCategorias(dataSorted));
+      //   }
+      //   else{
+      //     console.log("Error en report data: ", reportData);
+      //   }
+      //   setIsLoading(false);
+      // };
+      // fetchData();
+    }
+    else if(searchParamsCopy.area.id !== 0 && searchParamsCopy.categoria.id === 0) {
       const fetchData = async () => {
         setIsLoading(true);
-        const data = await postReportLineChart(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
-        if(data){
-          let dataSorted:DataLineChart = data;
-          dataSorted = sortMonths(dataSorted);
-          setDashboard(formatDashboardJson(dataSorted));
+        const reportData = await postReportLineChartAll(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
+        if(reportData){
+          console.log("Report data: ", reportData);
+          const transformedData = formatDashboardJsonCategorias(reportData);
+          console.log("Formatted data: ", transformedData);
+          setDataAllAreasByCategories(transformedData);
         }
         else{
-          console.log("Error C: ", data);
-          console.log("Params: ", searchParamsCopy);
+          console.log("Error en report data: ", reportData);
         }
-        // console.log("Data del POST: ", data);
+        setIsLoading(false);
+      };
+      fetchData();
+    }
+    else if(searchParamsCopy.area.id === 0 && searchParamsCopy.categoria.id !== 0) {
+      const fetchData = async () => {
+        setIsLoading(true);
+        const reportData = await postReportLineChartAll(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
+        if(reportData){
+          console.log("Report data: ", reportData);
+          const transformedData = formatDashboardJsonAreas(reportData);
+          console.log("Formatted data: ", transformedData);
+          setDataAllAreasByAreas(transformedData);
+        }
+        else{
+          console.log("Error en report data: ", reportData);
+        }
         setIsLoading(false);
       };
       fetchData();
@@ -293,6 +267,7 @@ const IndexEvaluacionContinua = () => {
         if(data){
           let dataSorted:DataLineChart = data;
           dataSorted = sortMonths(dataSorted);
+          console.log("Data formatted: ", formatDashboardJson(dataSorted));
           setDashboard(formatDashboardJson(dataSorted));
         }
         else{
@@ -301,7 +276,7 @@ const IndexEvaluacionContinua = () => {
         setIsLoading(false);
       };
       fetchData();
-    }        
+    }
   };
 
   const handleButtonExportClick = async () => {
@@ -313,23 +288,26 @@ const IndexEvaluacionContinua = () => {
       toast.warn("La fecha de inicio no puede ser mayor a la fecha de fin");
       return;
     }
+    printPdf();
+  };
 
+  const printPdf = async () => {
     const chartElement = document.getElementById('chart-container');
-
+    
     // Captura el contenido del componente como una imagen utilizando dom-to-image
     const imageDataUrl = await domtoimage.toPng(chartElement);
-
+    
     // Crea un nuevo objeto PDF
     const doc = new jsPDF();
-
+    
     // Añade el logotipo
     await doc.addImage(logoUrl, 'PNG', 160, 5, 30, 10);
-
+    
     // Añade el nombre de la empresa
     doc.setFontSize(12);
-
+    
     // Agrega un título 
-    const title = 'Reporte de Evaluación Continua';
+    const title = 'Reporte de Evaluación de Desempeño';
     const titleFontSize = 22;
     doc.setFontSize(titleFontSize);
     const titleWidth = doc.getStringUnitWidth(title) * titleFontSize / doc.internal.scaleFactor;
@@ -351,8 +329,23 @@ const IndexEvaluacionContinua = () => {
     // Agrega la imagen al documento PDF
     doc.addImage(imageDataUrl, 'PNG', 10, 50, pdfWidth - 20, pdfHeight - 20);
 
+    // Agrega la fecha de hoy en la parte inferior derecha
+    const date = new Date();
+    const dateString = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth()+1).padStart(2, '0')}-${date.getFullYear()}`;
+    const dateFontSize = 12;
+    doc.setFontSize(dateFontSize);
+    doc.text(dateString, 10, doc.internal.pageSize.getHeight() - 10); // 10 es el margen en x, doc.internal.pageSize.getHeight() - 10 es la posición en y
+    
+    // Añade el número de hoja
+    const pageFontSize = 12;
+    doc.setFontSize(pageFontSize);
+    const numberPage = 1;
+    const pageNumberString = `Página: ${numberPage}`;
+    const pageNumberWidth = doc.getStringUnitWidth(pageNumberString) * pageFontSize / doc.internal.scaleFactor;
+    doc.text(pageNumberString, doc.internal.pageSize.getWidth() - pageNumberWidth - 10, doc.internal.pageSize.getHeight() - 10);
+
     // Descarga el archivo PDF
-    doc.save('Reporte Evaluacion Continua.pdf');
+    doc.save('Reporte Evaluacion de Desempeno.pdf');
   };
   
   const sortMonths = (data: DataLineChart) => {

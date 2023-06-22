@@ -151,9 +151,8 @@ const IndexEvaluacionDesempenho = () => {
   
   const content = (
     <>
-    {dataAllAreasByAreas.length===0 && dataAllAreasByCategories.length===0? chart :
+      {dataAllAreasByAreas.length===0 && dataAllAreasByCategories.length===0? chart :
       dataAllAreasByAreas.length!==0 && dataAllAreasByCategories.length===0? chartsAreas : chartsCategorias}
-      {/* {dataAllAreasByCategories.length===0 ? chart : chartsCategorias} */}
     </>
   )
 
