@@ -19,10 +19,8 @@ const JobOpportunitySelected = () => {
         navigate("/selection-offers-and-positions/job-offers/register");
     }
 
-
-
     return (
-        <div className='container'>
+        <>
             <div className='row'>
             <div
 				style={{
@@ -117,7 +115,7 @@ const JobOpportunitySelected = () => {
                 Regresar
             </button>
             </div>
-        </div>
+        </>
     )
 }
 

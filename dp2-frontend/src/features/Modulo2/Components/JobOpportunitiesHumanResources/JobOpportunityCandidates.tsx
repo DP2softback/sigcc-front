@@ -86,7 +86,7 @@ const JobOpportunityCandidates = () => {
     ]
 
     return (
-        <div className='container'>
+        <>
             <div className='row'>
                 <h2>Posibles candidatos afines a UX/UI Designer</h2>
                 <p className="text-muted">Necesidades de capacitación del empleado</p>
@@ -148,7 +148,7 @@ const JobOpportunityCandidates = () => {
                 }
                 <button className='btn btn-outline-primary col-1 ms-3 btn-sm' onClick={() => navigate(-1)}>Regresar</button>
             </div>
-        </div>
+        </>
     )
 }
 
