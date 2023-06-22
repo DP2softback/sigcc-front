@@ -14,7 +14,7 @@ export interface Question
 export interface QuizComponentProps
 {
     questions: Question[];
-    courseId: number;
+    courseId?: number;
 }
 
 export interface QuizComponentState

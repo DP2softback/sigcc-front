@@ -219,6 +219,34 @@ const datos: TrainingObj[] = [
     },
 ]
 
+type typeHabI = {
+    id: number,
+    habilidad: string
+}
+
+const typeHa: typeHabI[] = [
+    { id: 1, habilidad: "Programación" },
+    { id: 2, habilidad: "Desarrollo de software" },
+    { id: 3, habilidad: "Diseño de interfaces de usuario" },
+    { id: 4, habilidad: "Gestión de bases de datos" },
+    { id: 5, habilidad: "Administración de sistemas" },
+    { id: 6, habilidad: "Seguridad informática" },
+    { id: 7, habilidad: "Análisis de datos" },
+    { id: 8, habilidad: "Arquitectura de software" },
+    { id: 9, habilidad: "Networking y administración de redes" },
+    { id: 10, habilidad: "Desarrollo web" },
+    { id: 11, habilidad: "Virtualización y contenedores" },
+    { id: 12, habilidad: "Computación en la nube" },
+    { id: 13, habilidad: "Machine Learning" },
+    { id: 14, habilidad: "Internet de las cosas" },
+    { id: 15, habilidad: "Desarrollo de aplicaciones móviles" },
+    { id: 16, habilidad: "Automatización de procesos" },
+    { id: 17, habilidad: "Gestión de proyectos de tecnología" },
+    { id: 18, habilidad: "Big Data" },
+    { id: 19, habilidad: "Ciberseguridad" },
+    { id: 20, habilidad: "DevOps" },
+]
+
 function padTo2Digits(num: number) {
     return num.toString().padStart(2, '0');
 }
@@ -292,6 +320,7 @@ const Training = () => {
     var filtered;
     var mostrar = 6;
     var mostrarF = 6;
+    var mostrarHa = 10;
 
     const [pageF, setPageF] = useState(1)
     const totalPagesF = Math.ceil(finishedCourse.length / mostrar);
@@ -313,6 +342,14 @@ const Training = () => {
     const [positionFi, setPositionFi] = useState(0);
     const filterCourseShow = trainingFilter.slice(positionFi, positionFi + mostrarF);
 
+    const [habilities, setHabilities] = useState<any[]>(typeHa)
+    const [checked, setChecked] = useState([]);
+    const [habilitiesS, setHabilitiesS] = useState([]);
+    const [pageHa, setPageHa] = useState(1)
+    const totalPagesHa = Math.ceil(habilities.length / mostrarHa);
+    const [positionHa, setPositionHa] = useState(0);
+    const filterHabilitiesShow = habilities.slice(positionHa, positionHa + mostrarHa);
+
     const navigate = useNavigate();
 
     /* TRAINING DETAIL INPUTS */
@@ -323,6 +360,29 @@ const Training = () => {
     const refTrPhoto = useRef(null);
     const refTrAttendance = useRef<HTMLInputElement>(null);
     /* TRAINING DETAIL INPUTS */
+
+    const handleReset = () => {
+        setHabilitiesS([])
+        setChecked([])
+    }
+
+    const handleCheck = (item: typeHabI, event) => {
+
+        async function updateArray() {
+            var updatedList = [...checked];
+            var updatedList2 = [...habilitiesS];
+            if (event.target.checked) {
+                updatedList = [...checked, item.id];
+                updatedList2 = [...habilitiesS, item.habilidad];
+            } else {
+                updatedList.splice(checked.indexOf(item.id), 1);
+                updatedList2.splice(habilitiesS.indexOf(item.habilidad), 1);
+            }
+            setChecked(updatedList);
+            setHabilitiesS(updatedList2);
+        }
+        updateArray()
+    };
 
     /* TRAINING FILTERS */
     const handleFilter = (e: any) => {
@@ -409,6 +469,12 @@ const Training = () => {
 
     }
 
+    const checkedItems = habilitiesS.length
+        ? habilitiesS.reduce((total, item) => {
+            return total + ", " + item;
+        })
+        : "";
+
     const loadTrainings = () => {
         setLoading(true);
         axiosInt.get('capacitaciones/course_company_course/')
@@ -417,8 +483,8 @@ const Training = () => {
                 setTraining(response.data)
                 setTrainingFilter(response.data);
                 setUpcomingCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, now7, 1)))
-                setCurrentCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_ultima_sesion).format("DD-MM-YYYY")), 2)))
                 setLoading(false);
+                setCurrentCourse(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now, item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_ultima_sesion).format("DD-MM-YYYY")), 2)))
                 setFinishedCourse(response.data.filter((item: any) => compararFechas(item.fecha_ultima_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_ultima_sesion).format("DD-MM-YYYY")), now, '', 3)))
             })
             .catch(function (error) {
@@ -454,7 +520,7 @@ const Training = () => {
                             </div>
                             <div style={{ flex: '0 0 15rem' }} className='col text-end'>
                                 {/* Button trigger modal */}
-                                <button type='button' className='btn' style={{ backgroundColor: "rgb(8, 66, 152)", color: "white" }} data-bs-target='#createTrainingModal' data-bs-toggle='modal'>
+                                <button type='button' className='btn' style={{ backgroundColor: "rgb(8, 66, 152)", color: "white" }} data-bs-target='#createTrainingModal' data-bs-toggle='modal' onClick={handleReset}>
                                     <div style={{ display: "flex", alignItems: "center" }}>
                                         <span className='me-3'>Crear curso</span>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -805,7 +871,7 @@ const Training = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div>
+                                        <div style={{ display: "flex", justifyContent: "space-between" }}>
                                             <div className='row'>
                                                 <div className='col'>
                                                     <div className="mb-3">
@@ -828,11 +894,66 @@ const Training = () => {
                                                         <label className="form-label">Porcentaje de asistencia obligatoria</label>
                                                         <input type="number" className="form-control" ref={refTrAttendance} min={0} max={100} />
                                                     </div>
-                                                    <div className="form-check form-switch">
-                                                        <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={switchRefTr} ref={refTrFree} />
-                                                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Libre disponibilidad</label>
-                                                    </div>
                                                 </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div className='row'>
+                                            <div className='col'>
+                                                <div className="form-check form-switch">
+                                                    <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={switchRefTr} ref={refTrFree} />
+                                                    <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Libre disponibilidad</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button className="btn btn-primary" data-bs-dismiss="modal" data-bs-target='#assignCapModal' data-bs-toggle='modal'>Asignar capacidades</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* ASSIGN CAP */}
+                        <div className="modal fade" id="assignCapModal" aria-hidden="true" aria-labelledby="assignCapModal" tabIndex={-1}>
+                            <div className="modal-dialog modal-dialog-centered">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h1 className="modal-title fs-5" id="createTrainingModal">Asignar capacidades</h1>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div className="modal-body">
+
+                                        <div className='row' style={{ display: "flex", justifyContent: "flex-end"}}>
+
+                                            <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", fontSize: "12px" }}>
+                                                {filterHabilitiesShow.map((item) => {
+                                                    return (
+                                                        <label key={item.id}>
+                                                            <input value={item} type="checkbox" onChange={() => handleCheck(item, event)} style={{ marginRight: "0.5rem", fontSize: "12px" }} />
+                                                            <span >{item.habilidad}</span>
+                                                        </label>
+                                                    )
+                                                })}  
+                                            </div>
+                                            {habilities.length > mostrarHa &&
+                                                    <div>
+                                                        <div>
+                                                            <Pagination
+                                                                page={pageHa}
+                                                                totalPages={totalPagesHa}
+                                                                handlePagination={setPageHa}
+                                                                setPosition={setPositionHa}
+                                                                position={positionHa}
+                                                                mostrar={mostrarHa}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                }
+                                            <div style={{fontSize: "10px" }}>
+                                                {`Capacidades seleccionadas: ${checkedItems}`}
                                             </div>
                                         </div>
 
