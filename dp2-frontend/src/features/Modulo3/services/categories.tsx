@@ -73,3 +73,16 @@ export const listAllCategorias = async(type) =>{
         }
         return await ajax(optionsRequest);
   }
+
+  export const agregarCategoria = async(data) =>{
+    const optionsRequest = {
+        method: 'POST',
+        url: BACKEND_URL +'category',
+        headers:{
+            Authorization: `Token ${TOKEN}`
+          },
+          data: data
+          
+        }
+        return await ajax(optionsRequest);
+  }

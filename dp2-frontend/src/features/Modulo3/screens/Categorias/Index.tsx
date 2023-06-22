@@ -11,10 +11,17 @@ import { listAllCategorias } from '@features/Modulo3/services/categories';
 import { CATEGORIES_CREATE, CATEGORIES_INDEX } from '@features/Modulo3/routes/path';
 import '../EvaluacionContinua/EvaluacionContinua.css';
 import { CONTINUOS_EVALUATION_TYPE } from '@features/Modulo3/utils/constants';
+import ModalAddCategorie from '@features/Modulo3/components/Modals/ModalAddCategorie';
+import { toast, ToastContainer } from 'react-toastify';
+import ModalConfirmacion from '@features/Modulo3/components/Modals/ModalConfirmacion';
+
+
 const Index = () => {
 
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [show,setShow] = useState(false);
+	const [showAS,setShowAS] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -55,10 +62,7 @@ const Index = () => {
 				<NoDataFound />
 			)}
 			<div className="text-end">
-				<Button
-					onClick={() => {
-						navigateTo(CATEGORIES_CREATE);
-					}}>
+				<Button onClick={()=>setShowAS(true)}>
 					Agregar nueva categoría
 				</Button>
 			</div>
@@ -74,13 +78,15 @@ const Index = () => {
   );
 
   return (
-    <Layout
+    <div>
+      <ModalAddCategorie show={showAS} setShow={setShowAS}></ModalAddCategorie>
+      <Layout
         title={`Gestión de Categorías`}
-		body={body}
-		route={CATEGORIES_INDEX}
-		subtitle={``}
-			/>
-		
+        body={body}
+        route={CATEGORIES_INDEX}
+        subtitle={``}
+        />
+		</div>
 	);
 };
 
