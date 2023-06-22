@@ -7,6 +7,7 @@ import BorrarCompetencia from './Delete';
 import Info from './Info';
 import {Competencia,tipoCompetencia} from './Tipos'
 import './Read.css';
+import {TOKEN_SERVICE} from '@features/Modulo2/Services/ServicesApis'
 
 const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
 
@@ -41,7 +42,7 @@ const CompetenciasRead: React.FC = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+            'Authorization': TOKEN_SERVICE,
           },
           body: JSON.stringify(body),
         });
@@ -63,7 +64,7 @@ const CompetenciasRead: React.FC = () => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+            'Authorization': TOKEN_SERVICE,
           },
         });
 
@@ -133,7 +134,7 @@ const CompetenciasRead: React.FC = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d'
+        'Authorization': TOKEN_SERVICE
       },
       body: JSON.stringify({
         name: nuevaCompetencia.name,
@@ -206,7 +207,7 @@ const actualizarCompetencia = async (competenciaActualizada) => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+          'Authorization': TOKEN_SERVICE,
         },
         body: JSON.stringify(competenciaActualizada),
       }
@@ -256,14 +257,15 @@ const actualizarCompetencia = async (competenciaActualizada) => {
 */
 
 const borrarCompetencia = async (id) => {
+  console.log(id)
   try {
-    const response = await fetch(`https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competences?id=${id}`, {
+    const response = await fetch(`https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competences/${id}`, {
       method: 'DELETE',
       headers: {
-        'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d'
+        'Authorization': TOKEN_SERVICE
       }
     });
-
+    console.log(response)
     if (response.ok) {
       const updatedCompetencias = competencias.filter((competencia) => competencia.id !== id);
       setCompetencias(updatedCompetencias);

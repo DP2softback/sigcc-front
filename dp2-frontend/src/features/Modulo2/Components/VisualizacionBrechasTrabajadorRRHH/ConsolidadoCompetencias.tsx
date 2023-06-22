@@ -8,6 +8,7 @@ import { set } from "lodash";
 import './ConsolidadoCompetencias.css';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_ORG, GAPS_EMPLOYEES_ORG_DETAIL } from '@features/Modulo2/routes/path';
 
+import {TOKEN_SERVICE} from '@features/Modulo2/Services/ServicesApis'
 
 const PieChart = ({ title, labels, datasets }) => {
     ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -88,7 +89,7 @@ const PieChart = ({ title, labels, datasets }) => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+              'Authorization': TOKEN_SERVICE,
             },
             body: JSON.stringify({
               idArea: 0,

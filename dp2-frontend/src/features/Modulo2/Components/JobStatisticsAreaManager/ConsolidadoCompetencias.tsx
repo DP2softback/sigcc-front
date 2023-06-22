@@ -6,6 +6,7 @@ import { Competencia, tipoCompetencia,AreaActiva } from "../GestionDeCompetencia
 import './ConsolidadoCompetencias.css';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL } from '@features/Modulo2/routes/path';
 
+import {TOKEN_SERVICE} from '@features/Modulo2/Services/ServicesApis'
 
 const PieChart = ({ title, labels, datasets }) => {
     ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -70,7 +71,7 @@ const PieChart = ({ title, labels, datasets }) => {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+              'Authorization': TOKEN_SERVICE,
             }
           }
           try {
@@ -90,7 +91,7 @@ const PieChart = ({ title, labels, datasets }) => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+              'Authorization': TOKEN_SERVICE,
             },
             // Poner 2 si es cualquiera, poner 0 o 1 si es inactivo o activo
             // Poner 0 para toda la empresa, poner el <id> si es por área

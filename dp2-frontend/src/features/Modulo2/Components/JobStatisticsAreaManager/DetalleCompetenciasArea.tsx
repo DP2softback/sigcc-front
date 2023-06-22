@@ -8,6 +8,7 @@ import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias
 import './DetalleCompetenciasArea.css';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE } from '@features/Modulo2/routes/path';
 
+import {TOKEN_SERVICE} from '@features/Modulo2/Services/ServicesApis'
 const DetalleCompetenciasArea = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,7 +31,7 @@ const DetalleCompetenciasArea = () => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+              'Authorization': TOKEN_SERVICE,
             },
             body: JSON.stringify({ 
               area: 2,
