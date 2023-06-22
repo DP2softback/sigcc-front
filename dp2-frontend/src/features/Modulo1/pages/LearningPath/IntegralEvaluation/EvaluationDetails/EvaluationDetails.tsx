@@ -17,50 +17,38 @@ const employeesData: EmployeeObj[] = [
         nombre: "John Doe",
         estado: 2,
         fecha_completado: "02/06/2023",
-        nota: null,
-        intento: null,
     },
     {
         id: 234,
         nombre: "Jane Smith",
         estado: 0,
         fecha_completado: null,
-        nota: null,
-        intento: null,
     },
     {
         id: 345,
         nombre: "Bob Johnson",
         estado: 2,
         fecha_completado: "03/06/2023",
-        nota: null,
-        intento: null,
     },
     {
         id: 456,
         nombre: "Sarah Lee",
         estado: 3,
         fecha_completado: "01/06/2023",
-        nota: 18,
-        intento: 1,
     },
     {
         id: 567,
         nombre: "Tom Jackson",
         estado: 4,
         fecha_completado: "02/06/2023",
-        nota: 10,
-        intento: 1,
     }
 ];
 
 const evalStatus = [
     { id: 1, type: "Todos" },
     { id: 2, type: "Sin iniciar" },
-    { id: 3, type: "En progreso" },
-    { id: 4, type: "Sin evaluar" },
-    { id: 5, type: "Evaluado" },
-    { id: 6, type: "Desaprobado" },
+    { id: 3, type: "Sin evaluar" },
+    { id: 4, type: "Evaluado" },
 ]
 
 const headerTable = [
@@ -74,7 +62,11 @@ const headerTable = [
     },
     {
         heading: "Nombre",
-        value: "nombre"
+        value: "empleado.usuario.first_name"
+    },
+    {
+        heading: "Apellido",
+        value: "empleado.usuario.last_name"
     },
     {
         heading: "Estado",
@@ -83,14 +75,6 @@ const headerTable = [
     {
         heading: "Fecha Completado",
         value: "fecha_completado"
-    },
-    {
-        heading: "Nota",
-        value: "nota"
-    },
-    {
-        heading: "Intento",
-        value: "intento"
     },
     {
         heading: "Acciones",
@@ -102,25 +86,38 @@ type EmployeeObj = {
     id: number;
     nombre: string;
     estado: number;
-    nota: number;
-    intento: number;
     fecha_completado?: string;
+}
+
+type EmployeeDetailsObj = {
+    id?: number;
+    first_name: string;
+    last_name: string;
+    estado: string;
+    fecha_completado: string;
 }
 
 function EvaluationDetails() {
     const { learningPathId } = useParams()
     const [loading, setLoading] = useState<boolean>(false);
-    const [employees, setEmployees] = useState<EmployeeObj[]>(employeesData)
-    const [employeesFilter, setEmployeesFilter] = useState<EmployeeObj[]>(employeesData)
+    //const [employees, setEmployees] = useState<EmployeeObj[]>(employeesData)
+    //const [employeesFilter, setEmployeesFilter] = useState<EmployeeObj[]>(employeesData)
+
+    const [employees, setEmployees] = useState<EmployeeDetailsObj[]>([])
+    const [employeesFilter, setEmployeesFilter] = useState<EmployeeDetailsObj[]>([])
+
     const [lpName, setLPName] = useState<string>(dataHard.nombre)
     const [lpDescription, setLPDescription] = useState<string>(dataHard.descripcion)
     const [evaluationStatus, setEvaluationStatus] = useState<string>("Todos")
 
     const loadEvaluationDetails = () => {
         setLoading(true);
-        axiosInt.get(`capacitaciones/learning_path/empleados/${learningPathId}/`)
+        
+        axiosInt.get(`capacitaciones/learning_path/empleados_progress/${learningPathId}/`)
             .then(function (response) {
                 console.log(response.data)
+                setEmployees(response.data)
+                setEmployeesFilter(response.data)
                 setLoading(false);
             })
             .catch(function (error) {
@@ -142,7 +139,7 @@ function EvaluationDetails() {
     
     const evaluationReview = (employeeID: any) => {
         console.log(employeeID)
-        navigate(`revision/${employeeID}`)
+        navigate(`revision/1`)
     }
 
     /* TRAINING FILTERS */
@@ -165,10 +162,8 @@ function EvaluationDetails() {
         switch (e.target.value) {
             case "Todos": setEvaluationStatus(e.target.value); break;
             case "Sin iniciar": setEvaluationStatus("0"); break;
-            case "En progreso": setEvaluationStatus("1"); break;
             case "Sin evaluar": setEvaluationStatus("2"); break;
             case "Evaluado": setEvaluationStatus("3"); break;
-            case "Desaprobado": setEvaluationStatus("4");
         }
     }
 
