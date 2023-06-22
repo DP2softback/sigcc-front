@@ -155,4 +155,179 @@ export function formatDashboardJson(jsonData: any[]): any {
     months: months,
     data: data,
   };
-};
+}
+
+function getMonthName(monthNumber: string): string {
+  const months: string[] = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
+  ];
+
+  const index = parseInt(monthNumber) - 1;
+  return months[index];
+}
+
+export function formatDashboardJsonAreasCategorias(jsonData: any[]): any {
+  if (!jsonData || jsonData.length < 0) return { months: [], data: [] };
+
+  const months: string[] = [];
+  const data: any[] = [];
+
+  jsonData.forEach((item) => {
+    const year = item.year;
+    item.month.forEach((monthItem) => {
+      const month = getMonthName(monthItem.month);
+      const categoryScores = monthItem.category_scores;
+
+      categoryScores.forEach((scoreItem, index) => {
+        const area = scoreItem.Area;
+        const scoreAverage = scoreItem.ScoreAverage;
+
+        const existingData = data.find((d) => d.description === area);
+
+        if (existingData) {
+          existingData.values.push(scoreAverage);
+        } else {
+          const values = Array(months.length).fill(null);
+          values.push(scoreAverage);
+
+          data.push({
+            description: area,
+            values: values,
+          });
+        }
+      });
+
+      months.push(`${year} ${month}`);
+    });
+  });
+
+  return {
+    months: months,
+    data: data,
+  };
+}
+
+type TransformedDataTypeArea = {
+  area: string,
+  data: {
+    description: string;
+    values: number[];
+  }[];
+  months: string[];
+};  
+
+export function formatDashboardJsonAreas(data: any[]): TransformedDataTypeArea[] {
+  const transformedData: TransformedDataTypeArea[] = [];
+
+  sortDataByAreaYear(data).forEach(item => {
+    let existingData = transformedData.find(d => d.area === item.Area);
+
+    if (!existingData) {
+      existingData = {
+        area: item.Area,
+        data: [],
+        months: [],
+      };
+      transformedData.push(existingData);
+    }
+
+    item.Month.forEach(monthItem => {
+      const month = getMonthName(monthItem.month);
+      existingData.months.push(`${item.Year} ${month}`);
+
+      monthItem.subCategory_scores.forEach(score => {
+        let existingSubCategoryData = existingData.data.find(d => d.description === score.SubCategory);
+
+        if (!existingSubCategoryData) {
+          existingSubCategoryData = {
+            description: score.SubCategory,
+            values: [],
+          };
+          existingData.data.push(existingSubCategoryData);
+        }
+
+        existingSubCategoryData.values.push(score.ScoreAverage);
+      });
+    });
+  });
+
+  return transformedData;
+}
+
+function sortDataByAreaYear(data: any[]): any[] {
+  return data.sort((a, b) => {
+    if (a.Area < b.Area) return -1;
+    if (a.Area > b.Area) return 1;
+    if (parseInt(a.Year) < parseInt(b.Year)) return -1;
+    if (parseInt(a.Year) > parseInt(b.Year)) return 1;
+    return 0;
+  });
+}
+
+type TransformedDataTypeCategoria = {
+  categoria: string,
+  data: {
+    description: string;
+    values: number[];
+  }[];
+  months: string[];
+};  
+
+export function formatDashboardJsonCategorias(data: any[]): TransformedDataTypeCategoria[] {
+  const transformedData: TransformedDataTypeCategoria[] = [];
+
+  sortDataByCategoriaYear(data).forEach(item => {
+    let existingData = transformedData.find(d => d.categoria === item.Category);
+
+    if (!existingData) {
+      existingData = {
+        categoria: item.Category,
+        data: [],
+        months: [],
+      };
+      transformedData.push(existingData);
+    }
+
+    item.Month.forEach(monthItem => {
+      const month = getMonthName(monthItem.month);
+      existingData.months.push(`${item.Year} ${month}`);
+
+      monthItem.subCategory_scores.forEach(score => {
+        let existingSubCategoryData = existingData.data.find(d => d.description === score.SubCategory);
+
+        if (!existingSubCategoryData) {
+          existingSubCategoryData = {
+            description: score.SubCategory,
+            values: [],
+          };
+          existingData.data.push(existingSubCategoryData);
+        }
+
+        existingSubCategoryData.values.push(score.ScoreAverage);
+      });
+    });
+  });
+
+  return transformedData;
+}
+
+function sortDataByCategoriaYear(data: any[]): any[] {
+  return data.sort((a, b) => {
+    if (a.Area < b.Area) return -1;
+    if (a.Area > b.Area) return 1;
+    if (parseInt(a.Year) < parseInt(b.Year)) return -1;
+    if (parseInt(a.Year) > parseInt(b.Year)) return 1;
+    return 0;
+  });
+}
