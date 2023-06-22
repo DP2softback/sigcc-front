@@ -73,7 +73,7 @@ const TrainingNeeds = () => {
     console.log(tipoCompetenciaSelected.id);
     const obj = {
       estado: 0,
-      tipo: 0, // tipoCompetenciaSelected.id
+      tipo: tipoCompetenciaSelected.id,
       activo: 2,
       idEmpleado: 1 // Cambiar idEmpleado logeado
     }
@@ -102,7 +102,7 @@ const TrainingNeeds = () => {
   }
 
   return (
-    <div className='container'>
+    <>
       <div className='row'>
         <h2>Necesidades de capacitación</h2>
         <p className="text-muted">Necesidades de capacitación del empleado</p>
@@ -209,7 +209,7 @@ const TrainingNeeds = () => {
           </button>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
