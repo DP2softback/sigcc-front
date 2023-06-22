@@ -1,122 +1,91 @@
 import ReactDOM from 'react-dom';
 import React, { Fragment, createRef } from 'react';
-import { PropsRubricCriterias, StateRubricCriterias, PropsChoiceBase, StateChoiceBase } from './RubricCriterias.types';
+import { PropsRubricCriterias, StateRubricCriterias, PropsChoiceBase, StateChoiceBase, Criteria } from './RubricCriterias.types';
 import { v4 as uuid } from 'uuid';
+import proficiencies from './proficiencies.json';
 
 export default class RubricCriterias extends React.Component<PropsRubricCriterias, StateRubricCriterias>
 {
     static defaultProps = {
-        placeholder: "Título de la pregunta de selección única",
-        disabled: false,
+        criterias: [],
     }
 
     constructor(props)
     {
         super(props);
         this.state = {
-            label: "",
-            options: [0],
-            errorNoOptions: false,
+            criterias: props.criterias,
         }
     }
 
-    references = [];
-
-    componentDidMount ()
+    handleCriteriaChange = (criteriaIndex, criteriaState) =>
     {
-        // ReactDOM.findDOMNode(this).scrollIntoView({
-        //     behavior: 'smooth',
-        // })
-    }
-
-    addNewOption ()
-    {
-        let newOption = this.state.options[this.state.options.length - 1] + 1
-        if (!this.state.options.length)
-            newOption = 0;
-        this.setState({
-            options: [...this.state.options, newOption]
-        })
-    }
-
-    generate ()
-    {
-        this.setState({ errorNoOptions: false });
-        let error = false;
-        let a = {};
-        let o = [];
-        let index = 1;
-        this.references.forEach((ref, i) =>
+        this.setState(prevState =>
         {
-            if (ref.current)
-            {
-                let criteria = ref.current.getCriteria();
-                !criteria && (error = true);
-                criteria && (criteria["id"] = index);
-                criteria && (index += 1);
-                criteria && o.push(criteria);
+            const criterias = [...prevState.criterias];
+            criterias[criteriaIndex] = criteriaState;
+            return { criterias };
+        }, () => console.log(this.state.criterias));
+    };
 
-            }
-        })
-        if (!o.length)
-        {
-            this.setState({ errorNoOptions: true });
-            error = true;
-        }
-        if (error === true) return null;
-        a["criterias"] = o;
-        return a;
-    }
-
-    removeOption (value)
+    addCriteria = () =>
     {
-        var array = this.state.options;
-        var index = array.indexOf(value);
-        if (index !== -1)
+        const { criterias } = this.state;
+        this.setState({ criterias: [...criterias, JSON.parse(JSON.stringify(proficiencies[0]))] });
+    };
+
+    removeCriteria = (criteriaIndex) =>
+    {
+        if (this.state.criterias.length)
         {
-            array.splice(index, 1);
+            let criterias = this.state.criterias;
+            criterias.splice(criteriaIndex, 1);
             this.setState({
-                options: array
+                criterias: criterias,
             });
         }
+    };
+
+    get()
+    {
+        return this.state.criterias;
     }
 
-    resetValidator ()
+    componentDidUpdate (prevProps: Readonly<PropsRubricCriterias>)
     {
-        this.setState({
-            errorNoOptions: false,
-        })
+        if (this.props.criterias && prevProps.criterias !== this.props.criterias)
+        {
+            this.setState({
+                criterias: this.props.criterias,
+            })
+        }
     }
 
     render ()
     {
         return (
             <Fragment>
-                <div className='alert alert-danger mb-3' hidden={!this.state.errorNoOptions}>
-                    La pregunta debe tener al menos un criterio de calificación.
-                </div>
                 <div>
                     <div className="row mb-2">
                         <div className="col pe-2">
                             <p className="form-label mb-0">Criterio de calificación</p>
                         </div>
-                        <div className="col ps-2 pe-2" style={{ flex: '0 0 6rem' }}>
-                        <p className="form-label mb-0">Puntaje</p>
-                            <b></b>
-                        </div>
                         <div className="col ps-2" style={{ flex: '0 0 4rem' }}>
                         </div>
                     </div>
                 </div>
-                    {this.state.options.map((element) =>
+                {
+                    this.state.criterias.map((criteria: Criteria, criteriaIndex) =>
                     {
-                        const ref = createRef<ChoiceBase>();
-                        this.references.push(ref);
-                        return (<ChoiceBase disabled={this.props.disabled} resetValidator={this.resetValidator.bind(this)} type="select" ref={ref} key={element} removeOption={this.removeOption.bind(this)} value={element} />)
-                    })}
+                        return (<ChoiceBase key={criteriaIndex} choice={criteria}
+                            onChange={criteriaState => this.handleCriteriaChange(criteriaIndex, criteriaState)}
+                            onDelete={() => this.removeCriteria(criteriaIndex)}
+                        />)
+                    })
+                }
                 <div className="row">
                     <div className="col">
-                        <button className="btn btn-primary btn-sm" onClick={() => { this.addNewOption(); this.setState({ errorNoOptions: false }) }}>Agregar criterio</button>
+                        <button className="btn btn-primary btn-sm" onClick={this.addCriteria.bind(this)}>Agregar criterio</button>
                     </div>
                 </div>
             </Fragment>
@@ -127,70 +96,44 @@ export default class RubricCriterias extends React.Component<PropsRubricCriteria
 class ChoiceBase extends React.Component<PropsChoiceBase, StateChoiceBase>
 {
     static defaultProps = {
-        placeholder: "Describe un criterio de calificación",
-        type: "select",
-        disabled: false,
+        choice: proficiencies[0],
     }
 
-    constructor(props)
+    handleSelectChange (e)
     {
-        super(props);
-        this.state = {
-            label: "",
-            errorEmptyLabel: false,
-            errorEmptyScore: false,
-        }
+        const selected = proficiencies.find(obj => obj.id === parseInt(e.target.value));
+        this.props.onChange(selected);
     }
 
-    componentDidMount ()
+    handleDelete ()
     {
-        // ReactDOM.findDOMNode(this).scrollIntoView({
-        //     behavior: 'smooth',
-        // })
-    }
-
-    scoreRef = React.createRef<HTMLInputElement>();
-
-    getCriteria ()
-    {
-        let error = false;
-        if (!this.state.label.length)
-        {
-            this.setState({ errorEmptyLabel: true })
-            error = true;
-        }
-        if (!this.scoreRef.current.value.length)
-        {
-            this.setState({ errorEmptyScore: true })
-            error = true;
-        }
-        if (error) return null;
-        let c = {};
-        c["label"] = this.state.label;
-        c["score"] = parseInt(this.scoreRef.current.value);
-        return c;
+        this.props.onDelete();
     }
 
     render ()
     {
-        var removeOption: any = this.props.removeOption;
         return (
             <Fragment>
                 <div className="row mb-3">
-                    <div className="col pe-1">
-                        <textarea className='form-control' rows={2} placeholder={this.props.placeholder} onChange={event => { this.setState({ label: event.target.value, errorEmptyLabel: false }); this.props.resetValidator() }} />
-                        <label hidden={!this.state.errorEmptyLabel} className="text-muted text-error">
-                            Este campo es obligatorio
-                        </label>
-                    </div>
-                    <div className="col ps-1 pe-1" style={{ flex: '0 0 6rem' }}>
-                        <input type="number" className='form-control' disabled={this.props.disabled} min={1} max={this.props.max ? this.props.max : 20} defaultValue={1} ref={this.scoreRef} onChange={() => this.setState({ errorEmptyScore: false })} />
-                        <label hidden={!this.state.errorEmptyScore} className="text-muted text-error">
-                            *
-                        </label>
+                    <div className='col pe-1'>
+                        <select className="form-select" value={this.props.choice.id} onChange={this.handleSelectChange.bind(this)}>
+                            {
+                                proficiencies.map((item: {
+                                    id: number,
+                                    name: string,
+                                }, index) =>
+                                {
+                                    return (
+                                        <Fragment key={index}>
+                                            <option value={item.id}>{item.name}</option>
+                                        </Fragment>
+                                    )
+                                })
+                            }
+                        </select>
                     </div>
                     <div className="col ps-1" style={{ flex: '0 0 4rem' }}>
-                        <button className='btn btn-danger w-100' value={this.props.value} onClick={() => removeOption(this.props.value)}>
+                        <button className='btn btn-danger h-100 w-100' onClick={this.handleDelete.bind(this)}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3" viewBox="0 0 16 16">
                                 <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
                             </svg>

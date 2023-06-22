@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "name": "Capacidad para crear aplicaciones y sitios web utilizando tecnologías como HTML, CSS, JavaScript, y frameworks populares como React, Angular o Vue.js."
+    },
+    {
+        "id": 2,
+        "name": "Habilidad para desarrollar programas y aplicaciones utilizando el lenguaje de programación Python, aprovechando su amplio conjunto de librerías y su versatilidad en diferentes áreas."
+    },
+    {
+        "id": 3,
+        "name": "Conocimiento en diseño, administración y optimización de bases de datos relacionales o no relacionales, así como en el uso de lenguajes de consulta como SQL."
+    },
+    {
+        "id": 4,
+        "name": "Conciencia y habilidades para proteger sistemas y redes de amenazas, implementar medidas de seguridad, detectar vulnerabilidades y responder a incidentes de seguridad."
+    }
+]
