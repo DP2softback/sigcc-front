@@ -80,7 +80,8 @@ function LearningPath (props: any)
         axiosInt.get(`capacitaciones/learning_path_from_template/${id}/`)
             .then(function (response)
             {
-                window.location.reload();
+                setSelectedLP(response.data);
+                setSelectedLPID(id);
             })
             .catch(function (error)
             {
@@ -92,7 +93,7 @@ function LearningPath (props: any)
         axiosInt.post(`capacitaciones/learning_path_from_template/${selectedLPID}/`, refLPFT.current.get())
             .then(function (response)
             {
-                navigate(`/modulo1/rutadeaprendizaje/detalle/${response.data.id}`);
+                window.location.reload();
             })
             .catch(function (error)
             {
