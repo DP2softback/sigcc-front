@@ -1,7 +1,9 @@
 export type Criteria = {
     id: number,
     name: string,
+    limit?: number,
 }
+
 export type PropsRubricCriterias = {
     criterias: Array<Criteria>,
 }

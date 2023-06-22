@@ -61,11 +61,13 @@ export default class RubricGrade extends React.Component<PropsRubricCriterias, S
                             this.state.criterias.map((criteria: Criteria, criteriaIndex) =>
                             {
                                 return (
-                                    <tr key={criteriaIndex}>
-                                        <ChoiceBase disabled={this.props.disabled} key={criteriaIndex} name={criteria.name} choice={criteria.level}
-                                            onChange={criteriaState => this.handleCriteriaChange(criteriaIndex, criteriaState)}
-                                        />
-                                    </tr>
+                                    <Fragment key={criteriaIndex}>
+                                        <tr>
+                                            <ChoiceBase disabled={this.props.disabled} key={criteriaIndex} name={criteria.name} choice={criteria.level} limit={criteria.limit}
+                                                onChange={criteriaState => this.handleCriteriaChange(criteriaIndex, criteriaState)}
+                                            />
+                                        </tr>
+                                    </Fragment>
                                 )
                             })
                         }
@@ -111,7 +113,12 @@ class ChoiceBase extends React.Component<PropsChoiceBase, StateChoiceBase>
                                         {
                                             return (
                                                 <Fragment key={index}>
-                                                    <option value={item.id}>{item.name}</option>
+                                                    {
+                                                        (item.id <= this.props.limit) ? <>
+                                                            <option value={item.id}>{item.name}</option>
+
+                                                        </> : <></>
+                                                    }
                                                 </Fragment>
                                             )
                                         })

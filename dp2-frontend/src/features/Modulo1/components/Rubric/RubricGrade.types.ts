@@ -1,11 +1,12 @@
 export type Level = {
-    id: number,
-    name: string,
+    id?: number,
+    name?: string,
 }
 
 export type Criteria = {
     id: number,
     name: string,
+    limit: number,
     level: Level,
 }
 
@@ -23,6 +24,7 @@ export type PropsChoiceBase = {
     choice: Level,
     onChange: any,
     disabled: boolean,
+    limit: number,
 }
 
 export type StateChoiceBase = {
