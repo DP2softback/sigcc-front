@@ -54,13 +54,14 @@ const PieChart = ({ title, labels, datasets }) => {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+                Authorization: TOKEN_SERVICE,
               },
             });
     
             if (response.ok) {
               const data = await response.json();
               setTipoCompetencias(data);
+              setAreasActivas(data);
               console.log(data);
             } else {
               console.log('Error al obtener los datos de competencias');
@@ -160,6 +161,7 @@ const PieChart = ({ title, labels, datasets }) => {
         const tipo  = tipoCompetencias.find((tipo) => tipo.id.toString() === event.target.value)
         setAre(tipo)
         setTipoCompetencia(tipoCompetencias[0]);
+        console.log(tipoCompetencias)
         setname(area.name)
         setData1(data1);
         setData2(data2);

@@ -1,0 +1,16 @@
+.card-job{
+    background-color: #FFF;
+}
+
+.job-title{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.job-area{
+    opacity: 0.8;
+}
+
+.job-text{
+    font-size: 14px;
+}
