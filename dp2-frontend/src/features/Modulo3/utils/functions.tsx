@@ -163,7 +163,7 @@ export function formatDashboardJsonAreasCategorias(jsonData: any[]): any {
   };
 }
 
-type TransformedDataType = {
+type TransformedDataTypeArea = {
   area: string,
   data: {
     description: string;
@@ -172,8 +172,8 @@ type TransformedDataType = {
   months: string[];
 };  
 
-export function formatDashboardJsonAreas(data: any[]): TransformedDataType[] {
-  const transformedData: TransformedDataType[] = [];
+export function formatDashboardJsonAreas(data: any[]): TransformedDataTypeArea[] {
+  const transformedData: TransformedDataTypeArea[] = [];
 
   sortDataByAreaYear(data).forEach(item => {
     let existingData = transformedData.find(d => d.area === item.Area);
@@ -220,15 +220,24 @@ function sortDataByAreaYear(data: any[]): any[] {
   });
 }
 
-export function formatDashboardJsonCategorias(data: any[]): TransformedDataType[] {
-  const transformedData: TransformedDataType[] = [];
+type TransformedDataTypeCategoria = {
+  categoria: string,
+  data: {
+    description: string;
+    values: number[];
+  }[];
+  months: string[];
+};  
 
-  sortDataByAreaYear(data).forEach(item => {
-    let existingData = transformedData.find(d => d.area === item.Area);
+export function formatDashboardJsonCategorias(data: any[]): TransformedDataTypeCategoria[] {
+  const transformedData: TransformedDataTypeCategoria[] = [];
+
+  sortDataByCategoriaYear(data).forEach(item => {
+    let existingData = transformedData.find(d => d.categoria === item.Category);
 
     if (!existingData) {
       existingData = {
-        area: item.Area,
+        categoria: item.Category,
         data: [],
         months: [],
       };

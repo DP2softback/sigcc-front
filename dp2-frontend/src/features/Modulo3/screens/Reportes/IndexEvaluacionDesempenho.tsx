@@ -13,7 +13,6 @@ import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/Loa
 import { toast, ToastContainer } from 'react-toastify';  // Import react-toastify
 import 'react-toastify/dist/ReactToastify.css'; 
 import logoUrl from '../../assets/images/LogoHCM.png';
-import index from '@components/Input';
 
 type DataLineChart = {
   year: string;
@@ -78,18 +77,18 @@ const IndexEvaluacionDesempenho = () => {
         dateInicio.setMonth(dateInicio.getMonth() - 6); 
         console.log("Fecha inicio: ", dateInicio.toISOString().split('T')[0]);
         console.log("Fecha fin: ", dateFin.toISOString().split('T')[0]);
-        const reportData = await postReportLineChartAll(0, 0,dateInicio.toISOString().split('T')[0] , dateFin.toISOString().split('T')[0], "Evaluación de Desempeño");
+        // const reportData = await postReportLineChartAll(0, 0,dateInicio.toISOString().split('T')[0] , dateFin.toISOString().split('T')[0], "Evaluación de Desempeño");
         // const reportData = await postReportLineChartAll(0, 0,"2023-01-01" , "2023-06-21", "Evaluación de Desempeño");
         
-        if(reportData){
-          console.log("Report data: ", reportData);
-          let dataSorted:DataLineChart = reportData;
-          dataSorted = sortMonths(dataSorted);
-          setDashboard(formatDashboardJsonAreasCategorias(dataSorted));
-        }
-        else{
-          console.log("Error en report data: ", reportData);
-        }
+        // if(reportData){
+        //   console.log("Report data: ", reportData);
+        //   let dataSorted:DataLineChart = reportData;
+        //   dataSorted = sortMonths(dataSorted);
+        //   setDashboard(formatDashboardJsonAreasCategorias(dataSorted));
+        // }
+        // else{
+        //   console.log("Error en report data: ", reportData);
+        // }
       } catch (error){
         console.error("Error fetching data: ", error)
         setDashboard(defaultDashboard);
@@ -120,7 +119,7 @@ const IndexEvaluacionDesempenho = () => {
     </div>
   );
 
-  const charts = dataAllAreasByAreas.map((areaData, index) => (
+  const chartsAreas = dataAllAreasByAreas.map((areaData, index) => (
     <div
       key={index}  // Se añade un key para elementos en una lista
       id="chart-container"
@@ -134,10 +133,27 @@ const IndexEvaluacionDesempenho = () => {
       />
     </div>
   ));
+
+  const chartsCategorias = dataAllAreasByCategories.map((categoriaData, index) => (
+    <div
+      key={index}  // Se añade un key para elementos en una lista
+      id="chart-container"
+      className="col-md-12 mb-32px"
+      style={{ paddingBottom: '12px', marginBottom: '32px', marginTop: '20px' }}
+    >
+      <Linechart
+        title={`Evaluaciones de Desempeño - Area: ${searchParams.area.name} - Categoria: ${categoriaData.categoria}`}
+        dataInfoprops={categoriaData.data}
+        labelsX={categoriaData.months}
+      />
+    </div>
+  ));
   
   const content = (
     <>
-    {dataAllAreasByAreas.length===0?chart:charts}
+    {dataAllAreasByAreas.length===0 && dataAllAreasByCategories.length===0? chart :
+      dataAllAreasByAreas.length!==0 && dataAllAreasByCategories.length===0? chartsAreas : chartsCategorias}
+      {/* {dataAllAreasByCategories.length===0 ? chart : chartsCategorias} */}
     </>
   )
 
@@ -183,6 +199,9 @@ const IndexEvaluacionDesempenho = () => {
   };  
 
   const handleSearchClick = () => {
+    setDataAllAreasByAreas([]);
+    setDataAllAreasByCategories([]);
+    setDashboard(null);
     if(searchParams.fechaInicio === null || searchParams.fechaFin === null) {
       toast.warn("Debe seleccionar un rango de fechas");
       return;
@@ -216,7 +235,21 @@ const IndexEvaluacionDesempenho = () => {
       // fetchData();
     }
     else if(searchParamsCopy.area.id !== 0 && searchParamsCopy.categoria.id === 0) {
-
+      const fetchData = async () => {
+        setIsLoading(true);
+        const reportData = await postReportLineChartAll(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
+        if(reportData){
+          console.log("Report data: ", reportData);
+          const transformedData = formatDashboardJsonCategorias(reportData);
+          console.log("Formatted data: ", transformedData);
+          setDataAllAreasByCategories(transformedData);
+        }
+        else{
+          console.log("Error en report data: ", reportData);
+        }
+        setIsLoading(false);
+      };
+      fetchData();
     }
     else if(searchParamsCopy.area.id === 0 && searchParamsCopy.categoria.id !== 0) {
       const fetchData = async () => {
@@ -227,7 +260,6 @@ const IndexEvaluacionDesempenho = () => {
           const transformedData = formatDashboardJsonAreas(reportData);
           console.log("Formatted data: ", transformedData);
           setDataAllAreasByAreas(transformedData);
-          // setDashboard(formatDashboardJsonAreasCategorias(dataSorted));
         }
         else{
           console.log("Error en report data: ", reportData);
