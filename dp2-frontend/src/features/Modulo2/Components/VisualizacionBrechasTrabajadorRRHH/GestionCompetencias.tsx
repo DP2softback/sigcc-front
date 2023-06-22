@@ -4,6 +4,7 @@ import './GestionCompetencias.css'
 import {tipoCompetencia,CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos';
+import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/Services/ServicesApis'
 const GestionCompetencia = (state) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,12 +27,12 @@ const GestionCompetencia = (state) => {
           };
   
           const response = await fetch(
-            'https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceSearch',
+            URL_SERVICE + '/gaps/competenceSearch',
             {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+                'Authorization': TOKEN_SERVICE,
               },
               body: JSON.stringify(body),
             }

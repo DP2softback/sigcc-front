@@ -6,7 +6,7 @@ import { Competencia, tipoCompetencia,AreaActiva } from "../GestionDeCompetencia
 import './ConsolidadoCompetencias.css';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL } from '@features/Modulo2/routes/path';
 
-import {TOKEN_SERVICE} from '@features/Modulo2/Services/ServicesApis'
+import {TOKEN_SERVICE, URL_SERVICE} from '@features/Modulo2/Services/ServicesApis'
 
 const PieChart = ({ title, labels, datasets }) => {
     ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -47,7 +47,7 @@ const PieChart = ({ title, labels, datasets }) => {
         const fetchTipoCompetencias = async () => {
           try {
     
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceTypes', {
+            const response = await fetch(URL_SERVICE + '/gaps/competenceTypes', {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ const PieChart = ({ title, labels, datasets }) => {
             }
           }
           try {
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/positions', requestOptions);
+            const response = await fetch(URL_SERVICE + '/positions', requestOptions);
             if (response.ok) {
               const data = await response.json();
               setAreasActivas(data);
@@ -103,7 +103,7 @@ const PieChart = ({ title, labels, datasets }) => {
           };
       
           try {
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceConsolidateSearch', requestOptions);
+            const response = await fetch(URL_SERVICE + '/gaps/competenceConsolidateSearch', requestOptions);
       
             if (response.ok) {
               const data = await response.json();

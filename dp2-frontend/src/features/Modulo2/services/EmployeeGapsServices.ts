@@ -2,7 +2,7 @@
 
 import axios from "axios";
 
-import {TOKEN_SERVICE} from '@features/Modulo2/Services/ServicesApis'
+import {TOKEN_SERVICE, URL_SERVICE} from '@features/Modulo2/Services/ServicesApis'
 const baseUrl = "https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1";
 
 const axiosEmployeeGaps = axios.create({
