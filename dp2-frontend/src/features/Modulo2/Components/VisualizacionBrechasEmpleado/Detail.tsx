@@ -106,7 +106,7 @@ const TrainingNeeds = () => {
       <div className='row'>
         <h2>Necesidades de capacitación</h2>
         <p className="text-muted">Necesidades de capacitación del empleado</p>
-        {isLoading ? <></> : 
+        {/* {isLoading ? <></> : 
         <Form className="row align-items-center mb-4">
           <Form.Group className="col-6">
             <FormControl
@@ -137,7 +137,7 @@ const TrainingNeeds = () => {
             <Button variant="primary" onClick={handleSearch}>Buscar</Button>
           </div>
         </Form>
-        }
+        } */}
 
         {isLoading ? <LoadingScreen/> :     
         <div className='row align-items-start'>
@@ -153,12 +153,12 @@ const TrainingNeeds = () => {
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                       )}
                     </th>
-                    <th onClick={() => handleOrdenarPorCampo('competence__type__name')}>
+                    {/* <th onClick={() => handleOrdenarPorCampo('competence__type__name')}>
                       Tipo de capacidad
                       {campoOrdenamiento === 'competence__type__name' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                       )}
-                    </th>
+                    </th> */}
                     <th onClick={() => handleOrdenarPorCampo('levelCurrent')}>
                       Nivel actual
                       {campoOrdenamiento === 'levelCurrent' && (
@@ -189,7 +189,7 @@ const TrainingNeeds = () => {
                   {trainingNeed && trainingNeed.map((competence, index) => (
                     <tr key={index} className={index % 0 === 0 ? "evenRow" : "oddRow"}>
                       <td>{competence.capacity__name}</td>
-                      <td>{competence.capacity__type__name}</td>
+                      {/* <td>{competence.capacity__type__name}</td> */}
                       <td>{returnLevel(competence.levelCurrent)}</td>
                       <td>{returnLevel(competence.levelRequired)}</td>
                       <td>{competence.levelGap}</td>
