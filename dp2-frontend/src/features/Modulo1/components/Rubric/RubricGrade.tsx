@@ -44,6 +44,10 @@ export default class RubricGrade extends React.Component<PropsRubricCriterias, S
         }
     }
 
+    generate() {
+        console.log(this.props.criterias)
+    }
+
     render ()
     {
         return (
@@ -73,6 +77,16 @@ export default class RubricGrade extends React.Component<PropsRubricCriterias, S
                         }
                     </tbody>
                 </table>
+                {
+                    this.props.disabled === false ? 
+                    (
+                        <div className='text-end'>
+                            <button className='btn btn-primary' onClick={() => this.generate()}>Guardar</button>
+                        </div>
+                    )
+                    :
+                    (<></>)
+                }
             </Fragment>
         )
     }
