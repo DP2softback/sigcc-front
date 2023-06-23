@@ -94,11 +94,11 @@ const TrainingNeeds = () => {
   };
 
   const returnLevel = (number) => {
-    if (number === 1) return "Muy bajo";
-    if (number === 2) return "Bajo";
-    if (number === 3) return "Medio";
-    if (number === 4) return "Alto";
-    return "Muy alto"
+    if (number === 'A') return "Alto";
+    if (number === 'M') return "Medio";
+    if (number === 'B') return "Bajo";
+    //if (number === 4) return "Alto";
+    return " "
   }
 
   return (
@@ -188,8 +188,8 @@ const TrainingNeeds = () => {
                 <tbody className='table-need'>
                   {trainingNeed && trainingNeed.map((competence, index) => (
                     <tr key={index} className={index % 0 === 0 ? "evenRow" : "oddRow"}>
-                      <td>{competence.competence__name}</td>
-                      <td>{competence.competence__type__name}</td>
+                      <td>{competence.capacity__name}</td>
+                      <td>{competence.capacity__type__name}</td>
                       <td>{returnLevel(competence.levelCurrent)}</td>
                       <td>{returnLevel(competence.levelRequired)}</td>
                       <td>{competence.levelGap}</td>

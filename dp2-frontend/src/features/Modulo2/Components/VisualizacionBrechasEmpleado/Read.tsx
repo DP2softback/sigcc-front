@@ -125,11 +125,11 @@ const Read = () => {
     }
 
     const returnLevel = (number) => {
-        if(number === 1)return "Muy bajo";
-        if(number === 2)return "Bajo";
-        if(number === 3)return "Medio";
-        if(number === 4)return "Alto";
-        return "Muy alto"
+        if (number === 'A') return "Alto";
+    if (number === 'M') return "Medio";
+    if (number === 'B') return "Bajo";
+    //if (number === 4) return "Alto";
+    return " "
     }
 
     return (
@@ -179,15 +179,15 @@ const Read = () => {
                         <Table striped bordered className='tableGapsEmployees'>
                             <thead>
                                 <tr>
-                                    <th onClick={() => handleOrdenarPorCampo('competence__name')}>
+                                    <th onClick={() => handleOrdenarPorCampo('capacity__name')}>
                                         Nombre
-                                        {campoOrdenamiento === 'competence__name' && (
+                                        {campoOrdenamiento === 'capacity__name' && (
                                             <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                                         )}
                                     </th>
-                                    <th onClick={() => handleOrdenarPorCampo('competence__type__name')}>
+                                    <th onClick={() => handleOrdenarPorCampo('capacity__type__name')}>
                                         Tipo
-                                        {campoOrdenamiento === 'competence__type__name' && (
+                                        {campoOrdenamiento === 'capacity__type__name' && (
                                             <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                                         )}
                                     </th>
@@ -214,8 +214,8 @@ const Read = () => {
                             <tbody>
                                 {employeeCompetences && employeeCompetences.map((competence, index) => (
                                     <tr key={index} className={index % 0 === 0 ? "evenRow" : "oddRow"}>
-                                        <td>{competence.competence__name}</td>
-                                        <td>{competence.competence__type__name}</td>
+                                        <td>{competence.capacity__name}</td>
+                                        <td>{competence.capacity__type__name}</td>
                                         <td>{returnLevel(competence.levelCurrent)}</td>
                                         <td>{returnLevel(competence.levelRequired)}</td>
                                         <td>{Math.round(competence.likeness) + "%"}</td>
