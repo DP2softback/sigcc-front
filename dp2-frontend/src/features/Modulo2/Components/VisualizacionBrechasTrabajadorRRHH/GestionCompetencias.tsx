@@ -94,6 +94,13 @@ const GestionCompetencia = (state) => {
     
         return datosOrdenados;
       };  
+      const returnLevel = (number) => {
+        if (number === 'A') return "Alto";
+        if (number === 'M') return "Medio";
+        if (number === 'B') return "Bajo";
+        //if (number === 4) return "Alto";
+        return " "
+      }
   
     const renderTablaCompetencias = () => {
       const datosOrdenados = datosFiltradosYOrdenados();
@@ -149,8 +156,8 @@ const GestionCompetencia = (state) => {
               <tr key={index}>
                 <td>{item.capacity__name}</td>
                 <td>{item.capacity__type__name}</td>
-                <td>{item.levelCurrent}</td>
-                <td>{item.levelRequired}</td>
+                <td>{returnLevel(item.levelCurrent)}</td>
+                <td>{returnLevel(item.levelRequired)}</td>
                 <td>{item.likeness + ' %'}</td>
                 <td>{observacion}</td>
               </tr>
