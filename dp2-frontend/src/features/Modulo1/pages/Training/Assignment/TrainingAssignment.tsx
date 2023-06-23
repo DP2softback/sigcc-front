@@ -2,13 +2,14 @@ import axiosInt from '@config/axios';
 import Sidebar from '@components/Sidebar'
 import sidebarItems from '@utils/sidebarItems'
 import React, { useEffect, useState, useRef } from 'react'
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { GeoFill, JournalBookmarkFill, InfoCircleFill, PeopleFill, DoorClosedFill, Calendar2EventFill, Calendar, Calendar2Event, People, ArrowLeftCircle, ArrowLeftCircleFill, ArrowRightCircle } from 'react-bootstrap-icons'
 import EmployeeCard2 from '@features/Modulo1/components/EmployeeCard2/EmployeeCard2';
 import Pagination from '@features/Modulo1/components/Pagination';
 import '../../../basic.css';
 import '../training.css';
 import moment from 'moment-timezone';
+
 
 type Employee = {
     id: string;
@@ -151,6 +152,7 @@ type EmployeeId = number[]
 
 const TrainingAssignment = () => {
     const trainingID = valor;
+    const navigate = useNavigate();
     const [training, setTraining] = useState<any>();
 
     const [loading, setLoading] = useState(false);
@@ -228,7 +230,7 @@ const TrainingAssignment = () => {
             fecha_limite = moment.tz(refTrDateStart.current?.value, 'America/Lima').format('YYYY-MM-DDTHH:mm:ssZ');
         else    
             fecha_limite = moment.tz(training.fecha_ultima_sesion, 'America/Lima').format('YYYY-MM-DDTHH:mm:ssZ');
-
+            console.log(fecha_limite)
             axiosInt.post(`capacitaciones/curso_empresa_empleados/`, {
             "id_curso": trainingID,
             "empleados": addedEmployeesId,
@@ -237,6 +239,7 @@ const TrainingAssignment = () => {
         })
             .then(function (response) {
                 setEmployees(response.data)
+                navigate(-1);
             })
             .catch(function (error) {
                 // console.log(error);
