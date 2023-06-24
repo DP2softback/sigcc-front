@@ -23,6 +23,7 @@ const ActualizarCompetencia: React.FC<Props> = ({ actualizarCompetencia, compete
   
   const handleSubmit = () => {
     if (competenciaActualizada) {
+      console.log(competenciaActualizada)
       actualizarCompetencia(competenciaActualizada);
     }
   };

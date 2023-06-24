@@ -17,7 +17,10 @@ import {
 	GAPS_EMPLOYEES_AREA_DETAIL,
 	GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE,
 	INDEX,
-	MY_JOB_OPPORTUNITIES_DETAIL
+	MY_JOB_OPPORTUNITIES_DETAIL,
+	EMPLOYEES_JOB_STATISTICS,
+	DEMAND_COMPANY_COURSES,
+	DEMAND_COMPANY_COURSES_LIST
 } from "./path";
 
 const Loader = (Component) => (props) =>
@@ -51,6 +54,10 @@ const JobOpportunitiesHRCandidates = Loader(
 	lazy(() => import("@features/Modulo2/Components/JobOpportunitiesHumanResources/JobOpportunityCandidates"))
 );
 
+const JobOpportunitiesHRStats = Loader(
+	lazy(() => import("@features/Modulo2/Components/JobOpportunitiesHumanResources/JobOpportunityStats"))
+);
+
 const VisualizacionBrechasEmpleado = Loader(
 	lazy(() => import("@features/Modulo2/Components/VisualizacionBrechasEmpleado/Read"))
 );
@@ -81,6 +88,14 @@ const GestionCompetenciaEmpleadoAM = Loader(
 
 const GestionCompetenciaEmpleado = Loader(
 	lazy(() => import("@features/Modulo2/Components/VisualizacionBrechasTrabajadorRRHH/GestionCompetencias"))
+);
+
+const CoursesDemandCompany = Loader(
+	lazy(() => import("@features/Modulo2/Components/CoursesDemandCompany/AreaEmpDemandCourses"))
+);
+
+const CoursesDemandCompanyList = Loader(
+	lazy(() => import("@features/Modulo2/Components/CoursesDemandCompany/SelectDemandCourses"))
 );
 
 //ConsolidadoCompetenciasAM
@@ -225,6 +240,19 @@ export const routes: RouteObject[] = [
 								<JobOpportunitiesHRCandidates />
 							</AppLayout>
 						)
+					},
+					{
+						path: EMPLOYEES_JOB_STATISTICS,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
+									Roles.HR_WORKER
+								]}>
+								<JobOpportunitiesHRStats />
+							</AppLayout>
+						)
 					}
 				]
 			},
@@ -271,16 +299,7 @@ export const routes: RouteObject[] = [
 			{
 				path: MY_JOB_OPPORTUNITIES,
 				children: [
-					{
-						path: INDEX,
-						element: (
-					<AppLayout
-						allowedRoles={[
-							Roles.HR_WORKER,
-						]}>
-						<JobOpportunitiesRelatedToSkills />
-					</AppLayout>)
-					},
+
 					{
 						path: MY_JOB_OPPORTUNITIES_DETAIL,
 						element: (
@@ -295,6 +314,38 @@ export const routes: RouteObject[] = [
 					}
 				]
 			},	
+			{
+				path: DEMAND_COMPANY_COURSES,
+				children: [
+					{
+						path: INDEX,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
+									Roles.HR_WORKER
+								]}>
+								<CoursesDemandCompany/>
+							</AppLayout>
+						)
+					},
+					{
+						path: DEMAND_COMPANY_COURSES_LIST,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
+									Roles.HR_WORKER
+								]}>
+								<CoursesDemandCompanyList />
+							</AppLayout>
+						)
+					},
+
+				]
+			},
 			{
 				path: "*",
 				element: <Navigate to={`/${GAPS_ANALYSIS_MODULE}/${COMPETENCES}/${INDEX}`} 
