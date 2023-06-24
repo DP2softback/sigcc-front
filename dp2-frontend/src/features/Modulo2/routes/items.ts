@@ -1,6 +1,6 @@
 import { TSidebarItemGroup } from "@routes/types/sidebarItem";
 import { Roles } from "@routes/types/roles";
-import { People, Person, Table } from "react-bootstrap-icons";
+import { People, Person, Table, JournalCheck } from "react-bootstrap-icons";
 import {
 	GAPS_ANALYSIS_MODULE,
 	COMPETENCES,
@@ -9,7 +9,8 @@ import {
 	EMPLOYEES_JOB_OPPORTUNITIES,
 	MY_JOB_OPPORTUNITIES,
 	INDEX,
-	GAPS_EMPLOYEES_AREA
+	GAPS_EMPLOYEES_AREA,
+	DEMAND_COMPANY_COURSES
 } from "./path";
 
 export const sideBarItemsGroup2: TSidebarItemGroup[] = [
@@ -64,6 +65,19 @@ export const sideBarItemsGroup2: TSidebarItemGroup[] = [
 				roles: [Roles.WORKER],
 				hasChildren: false,
 				route: `/${GAPS_ANALYSIS_MODULE}/${MY_JOB_OPPORTUNITIES}/${INDEX}`
+			}
+		]
+	},
+	{
+		groupName: "Demanda de cursos",
+		roles: [Roles.HR_ADMIN, Roles.HR_MANAGER],
+		children: [
+			{
+				name: "Generar demanda",
+				icon: JournalCheck,
+				roles: [Roles.HR_ADMIN, Roles.HR_WORKER],
+				hasChildren: false,
+				route: `/${GAPS_ANALYSIS_MODULE}/${DEMAND_COMPANY_COURSES}/${INDEX}`
 			}
 		]
 	}

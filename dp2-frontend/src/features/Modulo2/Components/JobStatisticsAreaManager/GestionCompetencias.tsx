@@ -44,6 +44,7 @@ const GestionCompetenciaAM = (state) => {
   
           if (response.ok) {
             const data = await response.json();
+            console.log(data)
             setCompetenciasData(data);
           } else {
             console.log('Error al obtener los datos de competencias');
