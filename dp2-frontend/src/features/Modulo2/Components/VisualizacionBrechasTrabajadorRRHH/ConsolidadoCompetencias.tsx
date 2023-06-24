@@ -212,7 +212,7 @@ const PieChart = ({ title, labels, datasets }) => {
                     <div className="chart-legend"> 
                       {/* Agregar aquí la leyenda del gráfico 1 */}
                     </div>
-                    <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
+
                   </div>
                 </div>
               </div>
@@ -225,7 +225,7 @@ const PieChart = ({ title, labels, datasets }) => {
                    <div className="chart-legend">
                      {/* Agregar aquí la leyenda del gráfico 2 */}
                    </div>
-                   <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
+
                    <button className="btn btn-secondary" onClick={handleClick}>Ver detalle del área</button>
                    </div>
                </div>
