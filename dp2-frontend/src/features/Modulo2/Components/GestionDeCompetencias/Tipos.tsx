@@ -17,8 +17,8 @@ export  type tipoCompetencia = {
   }
 
 export type CompetenciaTrabajador = {
-  competence__code: string,
-  competence__name: string,
+  capacity_id: string,
+  capacity_name: string,
   competence__type__name: string,
   levelCurrent: number,
   levelRequired: number,

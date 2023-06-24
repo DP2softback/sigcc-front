@@ -202,7 +202,7 @@ const actualizarCompetencia = async (competenciaActualizada) => {
   console.log(competenciaActualizada)
   try {
     const response = await fetch(
-      URL_SERVICE + '/gaps/competences',
+      URL_SERVICE + `https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competences/`,
       {
         method: 'PUT',
         headers: {
