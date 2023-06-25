@@ -127,7 +127,7 @@ const IndexEvaluacionDesempenho = () => {
       style={{ paddingBottom: '12px', marginBottom: '32px', marginTop: '20px' }}
     >
       <Linechart
-        title={`Evaluaciones de Desempeño - Area: ${areaData.area} - Categoria: ${searchParams.categoria.name}`}
+        title={`Evaluaciones de Desempeño - Area: ${areaData.area} - Categoría: ${searchParams.categoria.name}`}
         dataInfoprops={areaData.data}
         labelsX={areaData.months}
       />
@@ -142,7 +142,7 @@ const IndexEvaluacionDesempenho = () => {
       style={{ paddingBottom: '12px', marginBottom: '32px', marginTop: '20px' }}
     >
       <Linechart
-        title={`Evaluaciones de Desempeño - Area: ${searchParams.area.name} - Categoria: ${categoriaData.categoria}`}
+        title={`Evaluaciones de Desempeño - Area: ${searchParams.area.name} - Categoría: ${categoriaData.categoria}`}
         dataInfoprops={categoriaData.data}
         labelsX={categoriaData.months}
       />

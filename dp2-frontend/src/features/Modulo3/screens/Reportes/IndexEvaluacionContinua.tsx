@@ -76,8 +76,8 @@ const IndexEvaluacionContinua = () => {
         const dateInicio = new Date(); 
         const dateFin = new Date();
         dateInicio.setMonth(dateInicio.getMonth() - 6); 
-        console.log("Fecha inicio: ", dateInicio.toISOString().split('T')[0]);
-        console.log("Fecha fin: ", dateFin.toISOString().split('T')[0]);
+        // console.log("Fecha inicio: ", dateInicio.toISOString().split('T')[0]);
+        // console.log("Fecha fin: ", dateFin.toISOString().split('T')[0]);
         // const reportData = await postReportLineChartAll(0, 0,dateInicio.toISOString().split('T')[0] , dateFin.toISOString().split('T')[0], "Evaluación Continua");
         // const reportData = await postReportLineChartAll(0, 0,"2023-01-01" , "2023-06-21", "Evaluación Continua");
         
@@ -120,35 +120,39 @@ const IndexEvaluacionContinua = () => {
     </div>
   );
   
-  const chartsAreas = dataAllAreasByAreas.map((areaData, index) => (
-    <div
-      key={index}  // Se añade un key para elementos en una lista
-      id="chart-container"
-      className="col-md-12 mb-32px"
-      style={{ paddingBottom: '12px', marginBottom: '32px', marginTop: '20px' }}
-    >
-      <Linechart
-        title={`Evaluaciones de Desempeño - Area: ${areaData.area} - Categoria: ${searchParams.categoria.name}`}
-        dataInfoprops={areaData.data}
-        labelsX={areaData.months}
-      />
-    </div>
-  ));
+  const chartsAreas = dataAllAreasByAreas.map((areaData, index) => {
+    return (
+      <div
+        key={index}  // Se añade un key para elementos en una lista
+        id="chart-container"
+        className="col-md-12 mb-32px"
+        style={{ paddingBottom: '12px', marginBottom: '32px', marginTop: '20px' }}
+      >
+        <Linechart
+          title={`Evaluación Continua  - Area: ${areaData.area} - Categoría: ${searchParams.categoria.name}`}
+          dataInfoprops={areaData.data}
+          labelsX={areaData.months}
+        />
+      </div>
+    );
+  });
 
-  const chartsCategorias = dataAllAreasByCategories.map((categoriaData, index) => (
-    <div
-      key={index}  // Se añade un key para elementos en una lista
-      id="chart-container"
-      className="col-md-12 mb-32px"
-      style={{ paddingBottom: '12px', marginBottom: '32px', marginTop: '20px' }}
-    >
-      <Linechart
-        title={`Evaluaciones de Desempeño - Area: ${searchParams.area.name} - Categoria: ${categoriaData.categoria}`}
-        dataInfoprops={categoriaData.data}
-        labelsX={categoriaData.months}
-      />
-    </div>
-  ));
+  const chartsCategorias = dataAllAreasByCategories.map((categoriaData, index) => {
+    return (
+      <div
+        key={index}  // Se añade un key para elementos en una lista
+        id="chart-container"
+        className="col-md-12 mb-32px"
+        style={{ paddingBottom: '12px', marginBottom: '32px', marginTop: '20px' }}
+      >
+        <Linechart
+          title={`Evaluación Continua - Area: ${searchParams.area.name} - Categoría: ${categoriaData.categoria}`}
+          dataInfoprops={categoriaData.data}
+          labelsX={categoriaData.months}
+        />
+      </div>
+    );
+  });
 
   const content = (
     <>
@@ -160,7 +164,7 @@ const IndexEvaluacionContinua = () => {
   const handleArea = (eventKey: string | null, event: React.SyntheticEvent<unknown>) => {
     const selected = areas.find(area => area.id === Number(eventKey));
 
-    console.log("Selected Area: ", selected);
+    // console.log("Selected Area: ", selected);
     setSearchParams(prevState => ({
       ...prevState,
       area: selected ? selected : {id:0 , name:"Todas las áreas"},
@@ -169,7 +173,7 @@ const IndexEvaluacionContinua = () => {
 
   const handleCategoria = (eventKey: string | null, event: React.SyntheticEvent<unknown>) => {
     const selected = (activeRepContinua ? categoriasContinua : categoriasDesempenio).find(categoria => categoria.id === Number(eventKey));
-    console.log("Selected Categoría: ", selected);
+    // console.log("Selected Categoría: ", selected);
     setSearchParams(prevState => ({
       ...prevState,
       categoria: selected ? selected : {id:0, name:"Todas las categorías"},
@@ -231,9 +235,9 @@ const IndexEvaluacionContinua = () => {
         setIsLoading(true);
         const reportData = await postReportLineChartAll(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(reportData){
-          console.log("Report data: ", reportData);
+          // console.log("Report data: ", reportData);
           const transformedData = formatDashboardJsonCategorias(reportData);
-          console.log("Formatted data: ", transformedData);
+          // console.log("Formatted data: ", transformedData);
           setDataAllAreasByCategories(transformedData);
         }
         else{
@@ -248,9 +252,9 @@ const IndexEvaluacionContinua = () => {
         setIsLoading(true);
         const reportData = await postReportLineChartAll(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(reportData){
-          console.log("Report data: ", reportData);
+          // console.log("Report data: ", reportData);
           const transformedData = formatDashboardJsonAreas(reportData);
-          console.log("Formatted data: ", transformedData);
+          // console.log("Formatted data: ", transformedData);
           setDataAllAreasByAreas(transformedData);
         }
         else{
@@ -350,13 +354,11 @@ const IndexEvaluacionContinua = () => {
   
   const sortMonths = (data: DataLineChart) => {
     const sortedData = JSON.parse(JSON.stringify(data)); // Deep copy
-
     sortedData.forEach((item) => {
       item.month.sort((a, b) => a.month.localeCompare(b.month));
     });
-
     return sortedData;
-  };  
+  };
 
   const filters = (
     <Form>

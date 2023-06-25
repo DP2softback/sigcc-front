@@ -261,8 +261,10 @@ export function formatDashboardJsonAreas(data: any[]): TransformedDataTypeArea[]
       });
     });
   });
-
-  return transformedData;
+  console.log("Area -> Antes: ", transformedData);
+  
+  console.log("Area -> Despues: ", sortDataAreaByMonth(transformedData));
+  return sortDataAreaByMonth(transformedData);
 }
 
 function sortDataByAreaYear(data: any[]): any[] {
@@ -318,8 +320,10 @@ export function formatDashboardJsonCategorias(data: any[]): TransformedDataTypeC
       });
     });
   });
-
-  return transformedData;
+  console.log("Antes -> Categorias: ", transformedData);
+  // const sortedData = sortDataCategoriaByMonth(transformedData);
+  console.log("Despues -> Categorias: ", sortDataCategoriaByMonth(transformedData));
+  return sortDataCategoriaByMonth(transformedData);
 }
 
 function sortDataByCategoriaYear(data: any[]): any[] {
@@ -330,4 +334,86 @@ function sortDataByCategoriaYear(data: any[]): any[] {
     if (parseInt(a.Year) > parseInt(b.Year)) return 1;
     return 0;
   });
+}
+
+function sortDataAreaByMonth(data: TransformedDataTypeArea[]): TransformedDataTypeArea[] {
+  // Creo una función de ayuda para convertir un mes de formato "2023 Enero" a un objeto Date.
+  const convertMonthToDate = (month: string) => {
+    const [year, monthName] = month.split(' ');
+    const monthMap = {
+      "Enero": 0,
+      "Febrero": 1,
+      "Marzo": 2,
+      "Abril": 3,
+      "Mayo": 4,
+      "Junio": 5,
+      "Julio": 6,
+      "Agosto": 7,
+      "Septiembre": 8,
+      "Octubre": 9,
+      "Noviembre": 10,
+      "Diciembre": 11,
+    };
+    const monthNumber = monthMap[monthName]; 
+    return new Date(parseInt(year), monthNumber);
+  };
+  
+  return data.map(areaData => {
+    // Creamos un array de indices ordenados por months
+    const sortedIndices = areaData.months
+      .map((month, index) => ({ index, month: convertMonthToDate(month) }))
+      .sort((a, b) => a.month.getTime() - b.month.getTime())
+      .map(({ index }) => index);
+
+    // Usamos los indices ordenados para ordenar months y values
+    return {
+      ...areaData,
+      months: sortedIndices.map(index => areaData.months[index]),
+      data: areaData.data.map(dataItem => ({
+        ...dataItem,
+        values: sortedIndices.map(index => dataItem.values[index]),
+      })),
+    };
+  });
+}
+
+function sortDataCategoriaByMonth(data: TransformedDataTypeCategoria[]): TransformedDataTypeCategoria[] {
+    // Creo una función de ayuda para convertir un mes de formato "2023 Enero" a un objeto Date.
+    const convertMonthToDate = (month: string) => {
+      const [year, monthName] = month.split(' ');
+      const monthMap = {
+        "Enero": 0,
+        "Febrero": 1,
+        "Marzo": 2,
+        "Abril": 3,
+        "Mayo": 4,
+        "Junio": 5,
+        "Julio": 6,
+        "Agosto": 7,
+        "Septiembre": 8,
+        "Octubre": 9,
+        "Noviembre": 10,
+        "Diciembre": 11,
+      };
+      const monthNumber = monthMap[monthName]; 
+      return new Date(parseInt(year), monthNumber);
+    };
+    
+    return data.map(categoriaData => {
+      // Creamos un array de indices ordenados por months
+      const sortedIndices = categoriaData.months
+        .map((month, index) => ({ index, month: convertMonthToDate(month) }))
+        .sort((a, b) => a.month.getTime() - b.month.getTime())
+        .map(({ index }) => index);
+  
+      // Usamos los indices ordenados para ordenar months y values
+      return {
+        ...categoriaData,
+        months: sortedIndices.map(index => categoriaData.months[index]),
+        data: categoriaData.data.map(dataItem => ({
+          ...dataItem,
+          values: sortedIndices.map(index => dataItem.values[index]),
+        })),
+      };
+    });
 }
