@@ -305,7 +305,9 @@ function ConfigOfertaLaboral(props: any) {
 								//readOnly // Hace que el input sea de solo lectura
 								className={!isSelectedNombreOfertaValid ? "is-invalid" : ""}
 							/>
-							<Form.Control.Feedback></Form.Control.Feedback>
+							<Form.Control.Feedback type="invalid">
+								Seleccionar el proceso de selección.
+							</Form.Control.Feedback>{" "}
 						</Form.Group>
 					</Row>
 
