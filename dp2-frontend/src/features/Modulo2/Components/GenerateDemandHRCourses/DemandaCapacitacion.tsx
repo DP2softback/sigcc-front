@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Form, Button, Modal } from 'react-bootstrap';
 import { ArrowRightCircleFill, Pencil, Trash, Upload } from 'react-bootstrap-icons';
-import {Competencia,tipoCompetencia, AreaActiva} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos'
+import {Competencia,tipoCompetencia} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos'
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
 
 const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
 
-const SelectDemandCourses: React.FC = () => {
+const CompetenciasRead: React.FC = () => {
   const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
   const [tipoOrden, setTipoOrden] = useState('ascendente');
   const [searchQuery, setSearchQuery] = useState('');
   const [tipoFiltro, setTipoFiltro] = useState(0);
   const [estadoFiltro, setEstadoFiltro] = useState(''); 
+  const [mostrarPopUpCrear , setmostrarPopUpCrear] = useState(false);
+  const [mostrarPopUpActualizar, setmostrarPopUpActualizar] = useState(false);
+  const [mostrarPopUpBorrar, setmostrarPopUpBorrar] = useState(false);
   const [competencias, setCompetencias] = useState<Competencia[]>([]);
   const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
   const [competenciaSeleccionada, setCompetenciaSeleccionada] = useState(null);
+  const [mostrarPopUpInfo,setmostrarPopUpInfo] = useState(null)
   const [tipo,setTipo] = useState('')  
   const [name,setName] = useState('')
   useEffect(() => {
@@ -116,6 +120,165 @@ const SelectDemandCourses: React.FC = () => {
     setEstadoFiltro('');
   };
 
+  const handleMostrarPopUpCrear  = () => {
+    setmostrarPopUpCrear(true);
+  };
+
+  const agregarCompetencia = (nuevaCompetencia) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': TOKEN_SERVICE
+      },
+      body: JSON.stringify({
+        name: nuevaCompetencia.name,
+        description: nuevaCompetencia.description,
+        active: nuevaCompetencia.active,
+        type: nuevaCompetencia.type
+      })
+    };
+  
+    fetch(URL_SERVICE + '/gaps/competences', requestOptions)
+      .then(response => response.json())
+      .then(data => {
+        console.log('Competencia agregada:', data);
+      })
+      .catch(error => {
+        console.error('Error al agregar competencia:', error);
+      });
+  
+    handleCerrarPopUpCrear();
+  };
+  
+
+  const handleCerrarPopUpCrear = () => {
+    setmostrarPopUpCrear(false);
+  };
+
+  const handleMostrarPopUpInfo  = (competencia) => {
+    setCompetenciaSeleccionada(competencia);
+    setTipo(tipoCompetencias.find((tipo) => tipo.id == competencia.type)?.name)
+    setName(competencia.name);
+    setmostrarPopUpInfo(true);
+  };
+
+
+
+  const handleCerrarPopUpInfo = () => {
+    setmostrarPopUpInfo(false);
+  };
+
+
+
+  
+  const handleMostrarPopUpActualizar = (competencia) => {
+    setCompetenciaSeleccionada(competencia);
+    setTipo(tipoCompetencias.find((tipo) => tipo.id == competencia.type)?.name)
+    setName(competencia.name);
+    setmostrarPopUpActualizar(true);
+  };
+
+/*
+//ACTUALIZADO LOCAL
+  
+  const actualizarCompetencia = (competenciaActualizada) => {
+    var tablaAux = competencias;
+    const indice = competencias.findIndex((competencia) => competencia.id=== competenciaActualizada.id);
+    if (indice !== -1) {
+      tablaAux[indice] = competenciaActualizada;
+    }
+    setCompetencias(tablaAux);
+    handleCerrarPopUpActualizar();
+  };
+*/
+
+const actualizarCompetencia = async (competenciaActualizada) => {
+  console.log(competenciaActualizada)
+  const body = {
+    id: competenciaActualizada.id,
+    name: competenciaActualizada.name,
+    description: competenciaActualizada.description,
+    active: competenciaActualizada.active,
+    type: competenciaActualizada.type
+}
+
+
+  try {
+    const response = await fetch(
+      URL_SERVICE + `/gaps/competences`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': TOKEN_SERVICE,
+        },
+        body: JSON.stringify(body)
+      }
+    );
+
+    if (response.ok) {
+      const updatedCompetencia = await response.json();
+      var tablaAux = competencias;
+      const indice = competencias.findIndex(
+        (competencia) => competencia.id === updatedCompetencia.id
+      );
+      if (indice !== -1) {
+        tablaAux[indice] = updatedCompetencia;
+      }
+      setCompetencias(tablaAux);
+      setCompetenciaSeleccionada(null);
+      setName('');
+      handleCerrarPopUpActualizar();
+    } else {
+      throw new Error('Error al actualizar la competencia');
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+  const handleCerrarPopUpActualizar = () => { 
+    setmostrarPopUpActualizar(false);
+  };
+
+  const handleMostrarPopUpBorrar  = (competencia) => {     
+    setCompetenciaSeleccionada(competencia);
+    setName(competencia.name);
+    setmostrarPopUpBorrar(true);
+  };
+
+const borrarCompetencia = async (id) => {
+  console.log(id)
+  try {
+    const response = await fetch(`https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competences/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': TOKEN_SERVICE
+      }
+    });
+    console.log(response)
+    if (response.ok) {
+      const updatedCompetencias = competencias.filter((competencia) => competencia.id !== id);
+      setCompetencias(updatedCompetencias);
+      setCompetenciaSeleccionada(null);
+      setName('');
+      handleCerrarPopUpBorrar();
+    } else {
+      console.error('Error al borrar la competencia');
+    }
+  } catch (error) {
+    console.error('Error al realizar la solicitud de borrado', error);
+  }
+};
+
+
+  const handleCerrarPopUpBorrar = () => {
+    setmostrarPopUpBorrar(false);
+  };
+
+
+
   const handleOrdenarPorCampo = (campo) => {
     // Si se hace clic en el mismo campo, cambia el tipo de orden
     if (campo === campoOrdenamiento) {
@@ -157,6 +320,15 @@ const SelectDemandCourses: React.FC = () => {
             <td>{competencia.name}</td>
             <td>{tipoCompetencias.find((tipo) => tipo.id == competencia.type)?.name}</td>
             <td>{competencia.active ? 'Activo' : 'Inactivo'}</td>
+                  <td>
+                    <Button variant="link" size="sm" onClick={() => handleMostrarPopUpInfo(competencia)}>
+                    <ArrowRightCircleFill color='gray'></ArrowRightCircleFill>
+                      <i className="bi bi-box-arrow-in-right"></i>
+                    </Button>
+                    <Button variant="secondary" size="sm" onClick={() => handleMostrarPopUpActualizar(competencia)}><Pencil /></Button>
+                    <Button variant="danger" size="sm" onClick={() => handleMostrarPopUpBorrar(competencia)}><Trash /></Button>
+                 
+                  </td>
           </tr>
         ))}
       </tbody>
@@ -215,6 +387,11 @@ const SelectDemandCourses: React.FC = () => {
                   Buscar
                 </Button>{' '}
               </div>
+              <div className="col-sm-3 botones2 justify-content-center">          
+                <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
+                  Agregar capacidad
+                </Button>
+              </div>  
           </div>
         </div>  
 
@@ -227,4 +404,4 @@ const SelectDemandCourses: React.FC = () => {
   );
 };
 
-export default SelectDemandCourses;
+export default CompetenciasRead;

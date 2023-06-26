@@ -98,6 +98,7 @@ const CoursesDemandCompanyList = Loader(
 	lazy(() => import("@features/Modulo2/Components/CoursesDemandCompany/SelectDemandCourses"))
 );
 
+
 //ConsolidadoCompetenciasAM
 //GestionCompetencia
 
