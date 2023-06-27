@@ -41,6 +41,8 @@ const IndexEvaluacionDesempenho = () => {
   const [categoriasDesempenio, setCategoriasDesempenio] = useState([]); // Cuando tengamos las apis dejarlo como array vacío
   const [dataAllAreasByAreas, setDataAllAreasByAreas] = useState([]);
   const [dataAllAreasByCategories, setDataAllAreasByCategories] = useState([]);
+  const [areaSelected, setAreaSelected] = useState({name:""});
+  const [categoriaSelected, setCategoriaSelected] = useState({name:""});
 
   const [dashboard, setDashboard] = useState(null);
 
@@ -125,7 +127,7 @@ const IndexEvaluacionDesempenho = () => {
       style={{ paddingBottom: '12px', marginBottom: '32px', marginTop: '20px' }}
     >
       <Linechart
-        title={`Evaluaciones de Desempeño - Area: ${areaData.area} - Categoría: ${searchParams.categoria.name}`}
+        title={`Evaluaciones de Desempeño - Area: ${areaData.area} - Categoría: ${categoriaSelected.name}`}
         dataInfoprops={areaData.data}
         labelsX={areaData.months}
       />
@@ -140,7 +142,7 @@ const IndexEvaluacionDesempenho = () => {
       style={{ paddingBottom: '12px', marginBottom: '32px', marginTop: '20px' }}
     >
       <Linechart
-        title={`Evaluaciones de Desempeño - Area: ${searchParams.area.name} - Categoría: ${categoriaData.categoria}`}
+        title={`Evaluaciones de Desempeño - Area: ${areaSelected.name} - Categoría: ${categoriaData.categoria}`}
         dataInfoprops={categoriaData.data}
         labelsX={categoriaData.months}
       />
@@ -197,6 +199,8 @@ const IndexEvaluacionDesempenho = () => {
     setDataAllAreasByAreas([]);
     setDataAllAreasByCategories([]);
     setDashboard(null);
+    setAreaSelected(searchParams.area);
+    setCategoriaSelected(searchParams.categoria);
     if(searchParams.fechaInicio === null || searchParams.fechaFin === null) {
       toast.warn("Debe seleccionar un rango de fechas");
       return;
@@ -287,61 +291,58 @@ const IndexEvaluacionDesempenho = () => {
     printPdf();
   };
 
-  const printPdf = async () => {
-    const chartElement = document.getElementById('chart-container');
-    
-    // Captura el contenido del componente como una imagen utilizando dom-to-image
-    const imageDataUrl = await domtoimage.toPng(chartElement);
-    
-    // Crea un nuevo objeto PDF
-    const doc = new jsPDF();
-    
-    // Añade el logotipo
-    await doc.addImage(logoUrl, 'PNG', 160, 5, 30, 10);
-    
-    // Añade el nombre de la empresa
-    doc.setFontSize(12);
-    
-    // Agrega un título 
-    const title = 'Reporte de Evaluación de Desempeño';
+  const addHeader = (doc, pageNumber) => {
+    doc.addImage(logoUrl, 'PNG', 160, 5, 30, 10); // Añade el logotipo
+    doc.setFontSize(12); // Añade el nombre de la empresa
+  
+    const title = 'Reporte de Evaluación de Desempeño'; // Agrega un título
     const titleFontSize = 22;
     doc.setFontSize(titleFontSize);
     const titleWidth = doc.getStringUnitWidth(title) * titleFontSize / doc.internal.scaleFactor;
     const titlePosition = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
     doc.text(title, titlePosition, 30); // 30 es la posición en y
-
-    // Agrega un subtítulo
-    const subtitle = `Periodo: ${searchParams.fechaInicio.toISOString().split('T')[0]} a ${searchParams.fechaFin.toISOString().split('T')[0]}`;
+  
+    const subtitle = `Periodo: ${searchParams.fechaInicio} a ${searchParams.fechaFin}`; // Agrega un subtítulo
     const subtitleFontSize = 16;
     doc.setFontSize(subtitleFontSize);
     const subtitleWidth = doc.getStringUnitWidth(subtitle) * subtitleFontSize / doc.internal.scaleFactor;
     const subtitlePosition = (doc.internal.pageSize.getWidth() - subtitleWidth) / 2;
     doc.text(subtitle, subtitlePosition, 45); 
-
-    // Calcula las dimensiones de la imagen en el documento PDF
-    const pdfWidth = doc.internal.pageSize.getWidth();
-    const pdfHeight = (chartElement.offsetHeight / chartElement.offsetWidth) * pdfWidth;
-
-    // Agrega la imagen al documento PDF
-    doc.addImage(imageDataUrl, 'PNG', 10, 50, pdfWidth - 20, pdfHeight - 20);
-
-    // Agrega la fecha de hoy en la parte inferior derecha
-    const date = new Date();
+  
+    const date = new Date(); // Agrega la fecha de hoy en la parte inferior derecha
     const dateString = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth()+1).padStart(2, '0')}-${date.getFullYear()}`;
     const dateFontSize = 12;
     doc.setFontSize(dateFontSize);
     doc.text(dateString, 10, doc.internal.pageSize.getHeight() - 10); // 10 es el margen en x, doc.internal.pageSize.getHeight() - 10 es la posición en y
-    
-    // Añade el número de hoja
-    const pageFontSize = 12;
+  
+    const pageFontSize = 12; // Añade el número de hoja
     doc.setFontSize(pageFontSize);
-    const numberPage = 1;
-    const pageNumberString = `Página: ${numberPage}`;
+    const pageNumberString = `Página: ${pageNumber}`;
     const pageNumberWidth = doc.getStringUnitWidth(pageNumberString) * pageFontSize / doc.internal.scaleFactor;
     doc.text(pageNumberString, doc.internal.pageSize.getWidth() - pageNumberWidth - 10, doc.internal.pageSize.getHeight() - 10);
-
-    // Descarga el archivo PDF
-    doc.save('Reporte Evaluacion de Desempeno.pdf');
+  };
+  
+  const printPdf = async () => {
+    const doc = new jsPDF(); // Crea un nuevo objeto PDF
+  
+    const chartContainers = document.querySelectorAll('#chart-container'); // Obtiene todos los contenedores de gráficos
+    for (let i = 0; i < chartContainers.length; i++) {
+      const chartElement = chartContainers[i] as HTMLElement;
+  
+      const imageDataUrl = await domtoimage.toPng(chartElement); // Captura el contenido del componente como una imagen utilizando dom-to-image
+      const pdfWidth = doc.internal.pageSize.getWidth();
+      const pdfHeight = (chartElement.offsetHeight / chartElement.offsetWidth) * pdfWidth;
+  
+      if (i !== 0) { // Si no es la primera página, añade una nueva página
+        doc.addPage();
+      }
+    
+      addHeader(doc, i + 1); // Llama a la función addHeader para cada página
+  
+      doc.addImage(imageDataUrl, 'PNG', 10, 50, pdfWidth - 20, pdfHeight - 20); // Agrega la imagen al documento PDF
+    }
+  
+    doc.save('Reporte Evaluacion de Desempeno.pdf'); // Descarga el archivo PDF
   };
   
   const sortMonths = (data: DataLineChart) => {
