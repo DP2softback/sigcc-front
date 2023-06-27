@@ -11,6 +11,7 @@ export const SELECTION_PROCESS = 'selection-process';
 export const CREATE_SELECTION_PROCESS = 'create';
 export const EDIT_SELECTION_PROCESS = 'edit';
 export const LIST_SELECTION_PROCESS = 'list';
+export const LIST_SELECTION_PROCESS_STEP = 'step';
 
 export const JOB_POSITIONS = 'job-positions';
 export const CREATE_JOB_POSITION = 'create';

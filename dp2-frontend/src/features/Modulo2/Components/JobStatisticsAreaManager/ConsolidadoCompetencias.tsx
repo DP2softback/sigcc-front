@@ -6,7 +6,7 @@ import { Competencia, tipoCompetencia,AreaActiva } from "../GestionDeCompetencia
 import './ConsolidadoCompetencias.css';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL } from '@features/Modulo2/routes/path';
 
-import {TOKEN_SERVICE} from '@features/Modulo2/services/ServicesApis'
+import {TOKEN_SERVICE, URL_SERVICE} from '@features/Modulo2/services/ServicesApis'
 
 const PieChart = ({ title, labels, datasets }) => {
     ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -41,13 +41,14 @@ const PieChart = ({ title, labels, datasets }) => {
       const [tipoCompetencia, setTipoCompetencia] = useState<tipoCompetencia>(null);
       const [areasActivas, setAreasActivas] = useState<AreaActiva[]>([]);
       const [abbreviation, setAbbreviation] = useState('');
+      const [hard, setHard] = useState(['Ingeniero de software', 'Desarrollador de aplicaciones', '	Arquitecto de software','Analista de sistemas', 'Asistente' ]);
       
       useEffect(() => {    
 
         const fetchTipoCompetencias = async () => {
           try {
     
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceTypes', {
+            const response = await fetch(URL_SERVICE + '/gaps/employeeArea', {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -75,7 +76,7 @@ const PieChart = ({ title, labels, datasets }) => {
             }
           }
           try {
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/positions', requestOptions);
+            const response = await fetch(URL_SERVICE + '/positions', requestOptions);
             if (response.ok) {
               const data = await response.json();
               setAreasActivas(data);
@@ -103,7 +104,7 @@ const PieChart = ({ title, labels, datasets }) => {
           };
       
           try {
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceConsolidateSearch', requestOptions);
+            const response = await fetch(URL_SERVICE + '/gaps/competenceConsolidateSearch', requestOptions);
       
             if (response.ok) {
               const data = await response.json();
@@ -179,7 +180,8 @@ const PieChart = ({ title, labels, datasets }) => {
         const tipo  = tipoCompetencias.find((tipo) => tipo.id.toString() === event.target.value)
         setTipoCompetencia(tipoCompetencias[0]);
         console.log(tipoCompetencia)
-        setAbbreviation(tipo.abbreviation)
+        setAbbreviation(event.target.value)
+        //setAbbreviation(tipo.abbreviation)
         setData1(data1);
         setData2(data2);
       }
@@ -209,8 +211,8 @@ const PieChart = ({ title, labels, datasets }) => {
                 value={abbreviation}
                 onChange={handleCompetenciaChange}
               ><option value="">Todas</option>
-                {areasActivas.map((area) => (
-                  <option key={area.id} value={area.id}>{area.name}</option>
+                {hard.map((hard) => (
+                  <option key={hard} value={hard}>{hard}</option>
                 ))}
               </select>
             </div>
@@ -229,7 +231,7 @@ const PieChart = ({ title, labels, datasets }) => {
                     <div className="chart-legend"> 
                       {/* Agregar aquí la leyenda del gráfico 1 */}
                     </div>
-                    <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
+
                   </div>
                 </div>
               </div>
@@ -242,7 +244,7 @@ const PieChart = ({ title, labels, datasets }) => {
                    <div className="chart-legend">
                      {/* Agregar aquí la leyenda del gráfico 2 */}
                    </div>
-                   <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
+
                    <button className="btn btn-secondary" onClick={handleClick}>Ver detalle del puesto</button>
                    </div>
                </div>
