@@ -7,7 +7,7 @@ import { Form, Button, Dropdown} from 'react-bootstrap';
 import { jsPDF } from 'jspdf';
 import domtoimage from 'dom-to-image';
 import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
-import { getAreas, getCategoriasDesempenio, postReportLineChart, postReportLineChartAll} from '@features/Modulo3/services/reports';
+import { getAreas, getCategoriasDesempenio, postReportLineChart, postReportLineChartAll, postReportLineChartAllAreasCategories} from '@features/Modulo3/services/reports';
 import { formatDashboardJson, formatDashboardJsonAreasCategorias,formatDashboardJsonAreas, formatDashboardJsonCategorias } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import { toast, ToastContainer } from 'react-toastify';  // Import react-toastify
@@ -75,20 +75,18 @@ const IndexEvaluacionDesempenho = () => {
         const dateInicio = new Date(); 
         const dateFin = new Date();
         dateInicio.setMonth(dateInicio.getMonth() - 6); 
-        console.log("Fecha inicio: ", dateInicio.toISOString().split('T')[0]);
-        console.log("Fecha fin: ", dateFin.toISOString().split('T')[0]);
-        // const reportData = await postReportLineChartAll(0, 0,dateInicio.toISOString().split('T')[0] , dateFin.toISOString().split('T')[0], "Evaluación de Desempeño");
-        // const reportData = await postReportLineChartAll(0, 0,"2023-01-01" , "2023-06-21", "Evaluación de Desempeño");
+        setSearchParams({...searchParams, fechaInicio: getFormattedDate(dateInicio), fechaFin: getFormattedDate(dateFin)});
+
+        const reportData = await postReportLineChartAllAreasCategories(dateInicio.toISOString().split('T')[0] , dateFin.toISOString().split('T')[0], "Evaluación de Desempeño");
         
-        // if(reportData){
-        //   console.log("Report data: ", reportData);
-        //   let dataSorted:DataLineChart = reportData;
-        //   dataSorted = sortMonths(dataSorted);
-        //   setDashboard(formatDashboardJsonAreasCategorias(dataSorted));
-        // }
-        // else{
-        //   console.log("Error en report data: ", reportData);
-        // }
+        if(reportData){
+          // let dataSorted:DataLineChart = reportData;
+          // dataSorted = sortMonths(dataSorted);
+          setDashboard(formatDashboardJsonAreasCategorias(reportData));
+        }
+        else{
+          console.log("Error en report data: ", reportData);
+        }
       } catch (error){
         console.error("Error fetching data: ", error)
         setDashboard(defaultDashboard);
@@ -127,7 +125,7 @@ const IndexEvaluacionDesempenho = () => {
       style={{ paddingBottom: '12px', marginBottom: '32px', marginTop: '20px' }}
     >
       <Linechart
-        title={`Evaluaciones de Desempeño - Area: ${areaData.area} - Categoria: ${searchParams.categoria.name}`}
+        title={`Evaluaciones de Desempeño - Area: ${areaData.area} - Categoría: ${searchParams.categoria.name}`}
         dataInfoprops={areaData.data}
         labelsX={areaData.months}
       />
@@ -142,7 +140,7 @@ const IndexEvaluacionDesempenho = () => {
       style={{ paddingBottom: '12px', marginBottom: '32px', marginTop: '20px' }}
     >
       <Linechart
-        title={`Evaluaciones de Desempeño - Area: ${searchParams.area.name} - Categoria: ${categoriaData.categoria}`}
+        title={`Evaluaciones de Desempeño - Area: ${searchParams.area.name} - Categoría: ${categoriaData.categoria}`}
         dataInfoprops={categoriaData.data}
         labelsX={categoriaData.months}
       />
@@ -158,7 +156,6 @@ const IndexEvaluacionDesempenho = () => {
 
   const handleArea = (eventKey: string | null, event: React.SyntheticEvent<unknown>) => {
     const selected = areas.find(area => area.id === Number(eventKey));
-    console.log("Selected Area: ", selected);
     setSearchParams(prevState => ({
       ...prevState,
       area: selected ? selected : {id:0 , name:"Todas las áreas"},
@@ -167,7 +164,6 @@ const IndexEvaluacionDesempenho = () => {
 
   const handleCategoria = (eventKey: string | null, event: React.SyntheticEvent<unknown>) => {
     const selected = (activeRepContinua ? categoriasContinua : categoriasDesempenio).find(categoria => categoria.id === Number(eventKey));
-    console.log("Selected Categoria: ", selected);
     setSearchParams(prevState => ({
       ...prevState,
       categoria: selected ? selected : {id:0, name:"Todas las categorías"},
@@ -212,35 +208,31 @@ const IndexEvaluacionDesempenho = () => {
 
     //Upate searchParams.fechaInicio and searchParams.fechaFin to ISOString
     const searchParamsCopy = {...searchParams};
-    searchParamsCopy.fechaInicio = searchParams.fechaInicio.toISOString().split('T')[0];
-    searchParamsCopy.fechaFin = searchParams.fechaFin.toISOString().split('T')[0];
+    searchParamsCopy.fechaInicio = searchParams.fechaInicio;//.toISOString().split('T')[0];
+    searchParamsCopy.fechaFin = searchParams.fechaFin;//.toISOString().split('T')[0];
 
     if(searchParamsCopy.area.id === 0 && searchParamsCopy.categoria.id === 0) {
-      console.log("Area y categoria: ", searchParamsCopy.area.id, searchParamsCopy.categoria.id);
-      // const fetchData = async () => {
-      //   setIsLoading(true);
-      //   const reportData = await postReportLineChartAll(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
-      //   if(reportData){
-      //     console.log("Report data: ", reportData);
-      //     let dataSorted:DataLineChart = reportData;
-      //     dataSorted = sortMonths(dataSorted);
-      //     setDashboard(formatDashboardJsonAreasCategorias(dataSorted));
-      //   }
-      //   else{
-      //     console.log("Error en report data: ", reportData);
-      //   }
-      //   setIsLoading(false);
-      // };
-      // fetchData();
+      const fetchData = async () => {
+        setIsLoading(true);
+        const reportData = await postReportLineChartAllAreasCategories(searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
+        if(reportData){
+          // let dataSorted:DataLineChart = reportData;
+          // dataSorted = sortMonths(dataSorted);
+          setDashboard(formatDashboardJsonAreasCategorias(reportData));
+        }
+        else{
+          console.log("Error en report data: ", reportData);
+        }
+        setIsLoading(false);
+      };
+      fetchData();
     }
     else if(searchParamsCopy.area.id !== 0 && searchParamsCopy.categoria.id === 0) {
       const fetchData = async () => {
         setIsLoading(true);
         const reportData = await postReportLineChartAll(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(reportData){
-          console.log("Report data: ", reportData);
           const transformedData = formatDashboardJsonCategorias(reportData);
-          console.log("Formatted data: ", transformedData);
           setDataAllAreasByCategories(transformedData);
         }
         else{
@@ -255,9 +247,7 @@ const IndexEvaluacionDesempenho = () => {
         setIsLoading(true);
         const reportData = await postReportLineChartAll(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(reportData){
-          console.log("Report data: ", reportData);
           const transformedData = formatDashboardJsonAreas(reportData);
-          console.log("Formatted data: ", transformedData);
           setDataAllAreasByAreas(transformedData);
         }
         else{
@@ -267,14 +257,13 @@ const IndexEvaluacionDesempenho = () => {
       };
       fetchData();
     }
-    else{
+    else if(searchParamsCopy.area.id !== 0 && searchParamsCopy.categoria.id !== 0) {
       const fetchData = async () => {
         setIsLoading(true);
         const data = await postReportLineChart(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(data){
           let dataSorted:DataLineChart = data;
           dataSorted = sortMonths(dataSorted);
-          console.log("Data formatted: ", formatDashboardJson(dataSorted));
           setDashboard(formatDashboardJson(dataSorted));
         }
         else{
@@ -283,8 +272,7 @@ const IndexEvaluacionDesempenho = () => {
         setIsLoading(false);
       };
       fetchData();
-    }
-           
+    }      
   };
 
   const handleButtonExportClick = async () => {
@@ -364,6 +352,18 @@ const IndexEvaluacionDesempenho = () => {
     return sortedData;
   };  
 
+  function getFormattedDate(date) {
+    var year = date.getFullYear();
+  
+    var month = (1 + date.getMonth()).toString();
+    month = month.length > 1 ? month : '0' + month;
+  
+    var day = date.getDate().toString();
+    day = day.length > 1 ? day : '0' + day;
+  
+    return year + '-' + month + '-' + day;
+  }
+
   const filters = (
     <Form>
       <Form.Group controlId='reportes' className='ec-indexFilters'>        
@@ -394,12 +394,14 @@ const IndexEvaluacionDesempenho = () => {
             type='date' 
             placeholder='Fecha inicio' 
             className='ec-indexFilterDate'
+            value={searchParams.fechaInicio}
             onChange={handleFechaInicio}
           />
           <Form.Control 
             type='date' 
             placeholder='Fecha fin' 
             className='ec-indexFilterDate'
+            value={searchParams.fechaFin}
             onChange={handleFechaFin}  
           />
         <Button variant='primary' className='ec-buttonBuscar' onClick={handleSearchClick}>Buscar</Button>        
