@@ -187,10 +187,10 @@ export function formatDashboardJsonAreasCategorias(jsonData: any[]): any {
     const year = item.year;
     item.month.forEach((monthItem) => {
       const month = getMonthName(monthItem.month);
-      const categoryScores = monthItem.category_scores;
+      const areaScores = monthItem.area_scores;
 
-      categoryScores.forEach((scoreItem, index) => {
-        const area = scoreItem.Area;
+      areaScores.forEach((scoreItem, index) => {
+        const area = scoreItem.AreaName;
         const scoreAverage = scoreItem.ScoreAverage;
 
         const existingData = data.find((d) => d.description === area);
@@ -261,9 +261,6 @@ export function formatDashboardJsonAreas(data: any[]): TransformedDataTypeArea[]
       });
     });
   });
-  console.log("Area -> Antes: ", transformedData);
-  
-  console.log("Area -> Despues: ", sortDataAreaByMonth(transformedData));
   return sortDataAreaByMonth(transformedData);
 }
 
@@ -320,9 +317,6 @@ export function formatDashboardJsonCategorias(data: any[]): TransformedDataTypeC
       });
     });
   });
-  console.log("Antes -> Categorias: ", transformedData);
-  // const sortedData = sortDataCategoriaByMonth(transformedData);
-  console.log("Despues -> Categorias: ", sortDataCategoriaByMonth(transformedData));
   return sortDataCategoriaByMonth(transformedData);
 }
 
