@@ -200,16 +200,25 @@ const CompetenciasRead: React.FC = () => {
 
 const actualizarCompetencia = async (competenciaActualizada) => {
   console.log(competenciaActualizada)
+  const body = {
+    id: competenciaActualizada.id,
+    name: competenciaActualizada.name,
+    description: competenciaActualizada.description,
+    active: competenciaActualizada.active,
+    type: competenciaActualizada.type
+}
+
+
   try {
     const response = await fetch(
-      URL_SERVICE + `https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competences/`,
+      URL_SERVICE + `/gaps/competences`,
       {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': TOKEN_SERVICE,
         },
-        body: JSON.stringify(competenciaActualizada),
+        body: JSON.stringify(body)
       }
     );
 
@@ -243,18 +252,6 @@ const actualizarCompetencia = async (competenciaActualizada) => {
     setName(competencia.name);
     setmostrarPopUpBorrar(true);
   };
-
-
-/*
-//BORRADO LOCAL
-  const borrarCompetencia = (id) => {
-    const updatedCompetencias = 
-    competencias.filter((competencia) => competencia.id !== id);
-    setCompetencias(updatedCompetencias);
-    setCompetenciaSeleccionada(null);
-    handleCerrarPopUpBorrar();
-  };
-*/
 
 const borrarCompetencia = async (id) => {
   console.log(id)

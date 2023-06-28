@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Form, Button, Modal } from 'react-bootstrap';
 import { ArrowRightCircleFill, Pencil, Trash, Upload } from 'react-bootstrap-icons';
-import {Competencia,tipoCompetencia, AreaActiva} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos'
+import {Competencia,tipoCompetencia} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos'
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
-import { useNavigate } from 'react-router-dom';
 
 const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
 
-const SelectDemandCourses: React.FC = () => {
-  const navigate = useNavigate();
+const CompetenciasRead: React.FC = () => {
   const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
   const [tipoOrden, setTipoOrden] = useState('ascendente');
   const [searchQuery, setSearchQuery] = useState('');
@@ -244,7 +242,43 @@ const actualizarCompetencia = async (competenciaActualizada) => {
     setmostrarPopUpActualizar(false);
   };
 
-  
+  const handleMostrarPopUpBorrar  = (competencia) => {     
+    setCompetenciaSeleccionada(competencia);
+    setName(competencia.name);
+    setmostrarPopUpBorrar(true);
+  };
+
+const borrarCompetencia = async (id) => {
+  console.log(id)
+  try {
+    const response = await fetch(`https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competences/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': TOKEN_SERVICE
+      }
+    });
+    console.log(response)
+    if (response.ok) {
+      const updatedCompetencias = competencias.filter((competencia) => competencia.id !== id);
+      setCompetencias(updatedCompetencias);
+      setCompetenciaSeleccionada(null);
+      setName('');
+      handleCerrarPopUpBorrar();
+    } else {
+      console.error('Error al borrar la competencia');
+    }
+  } catch (error) {
+    console.error('Error al realizar la solicitud de borrado', error);
+  }
+};
+
+
+  const handleCerrarPopUpBorrar = () => {
+    setmostrarPopUpBorrar(false);
+  };
+
+
+
   const handleOrdenarPorCampo = (campo) => {
     // Si se hace clic en el mismo campo, cambia el tipo de orden
     if (campo === campoOrdenamiento) {
@@ -265,19 +299,8 @@ const actualizarCompetencia = async (competenciaActualizada) => {
     return 0;
   });
 
-  const renderCards = () => {
-    return (
-      <div className="card-container">
-        {competencias.map((competencia) => (
-          <div key={competencia.id} className="card">
-            <h4>Competencia: {competencia.name}</h4>
-            <p>Demanda: 10 {/*competencia.demanda*/}</p>
-          </div>
-        ))}
-      </div>
-    );
-}
   const renderTablaCompetencias = () => {
+    
     
     return (
     <Table striped bordered hover>
@@ -303,6 +326,8 @@ const actualizarCompetencia = async (competenciaActualizada) => {
                       <i className="bi bi-box-arrow-in-right"></i>
                     </Button>
                     <Button variant="secondary" size="sm" onClick={() => handleMostrarPopUpActualizar(competencia)}><Pencil /></Button>
+                    <Button variant="danger" size="sm" onClick={() => handleMostrarPopUpBorrar(competencia)}><Trash /></Button>
+                 
                   </td>
           </tr>
         ))}
@@ -313,43 +338,70 @@ const actualizarCompetencia = async (competenciaActualizada) => {
   return (
     <div className='pantalla'>
       <div className='titles'>
-      <h2 className='Head'>Demanda de capacitación</h2>
-      <p className="text-muted subtitle">Generar la demanda de capacitación.</p>
+      <h2 className='Head'>Gestión de Capacidades</h2>
+      <p className="text-muted subtitle">Agrega, edita y desactiva capacidades.</p>
       </div>
 
-      <div className='container-fluid'>
-        <h2 className='Head'>Necesidades de competencias</h2>
-         {renderCards()}
-      </div>
-
-      <div className='container-fluid'>
-        <h2 className='Head'>Lista de cursos</h2>
-         {renderTablaCompetencias()}
-      </div>
-
-    
       <div className='container-fluid'>
         <div className='row'>
+          <div className='col-sm-3 basicSearch'>
+            <Form.Group controlId="search">
+              <Form.Control
+                type="text"
+                placeholder="Buscar capacidad..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </Form.Group>
+          </div>
+
+          <div className='col-sm-3 botones'>
+            <Form.Group className="mb-3" controlId="tipoFiltro">
+                <Form.Control as="select" value={tipoFiltro} onChange={(e) => setTipoFiltro(parseInt(e.target.value))}>
+                  <option value="">Todos los tipos</option>
+                  {tipoCompetencias.map((tipo) => (
+                    <option key={tipo.id} value={tipo.id}>
+                      {tipo.name}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+            </div>
+
+            <div className='col-sm-3 botones'>
+              <Form.Group controlId="estadoFiltro">
+                <Form.Control as="select" value={estadoFiltro} onChange={(e) =>{ setEstadoFiltro(e.target.value); console.log(e.target.value)}}>
+                  <option value="">Todos los estados</option>
+                  <option value="Activo">Activo</option>
+                  <option value="Inactivo">Inactivo</option>
+                </Form.Control>
+              </Form.Group>
+            </div>
          </div>
             <div className='row'>
               <div className="col-sm-3 botones2 justify-content-center">
-                <Button variant="outline-secondary" className='Search' onClick={()=>{navigate(-1)}}>
-                Regresar
+                <Button variant="outline-secondary" className='Search' onClick={handleLimpiarFiltros}>
+                  Limpiar filtros
                 </Button>{' '}
                 <Button variant="primary" className='Search' onClick={handleSearch}>
-                Generar lista
+                  Buscar
                 </Button>{' '}
               </div>
               <div className="col-sm-3 botones2 justify-content-center">          
                 <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
-                Guardar cursos
+                  Agregar capacidad
                 </Button>
               </div>  
           </div>
         </div>  
 
+      <div className='container-fluid'>
+         {renderTablaCompetencias()}
+      </div>
+
+
     </div>
   );
 };
 
-export default SelectDemandCourses;
+export default CompetenciasRead;
