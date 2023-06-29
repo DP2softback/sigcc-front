@@ -8,7 +8,7 @@ import { set } from "lodash";
 import './ConsolidadoCompetencias.css';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_ORG, GAPS_EMPLOYEES_ORG_DETAIL } from '@features/Modulo2/routes/path';
 
-import {TOKEN_SERVICE} from '@features/Modulo2/services/ServicesApis'
+import {TOKEN_SERVICE, URL_SERVICE} from '@features/Modulo2/services/ServicesApis'
 
 const PieChart = ({ title, labels, datasets }) => {
     ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -50,37 +50,24 @@ const PieChart = ({ title, labels, datasets }) => {
         const fetchTipoCompetencias = async () => {
           try {
     
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/employeeArea', {
+            const response = await fetch(URL_SERVICE + '/gaps/employeeArea', {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+                Authorization: TOKEN_SERVICE,
               },
             });
     
             if (response.ok) {
               const data = await response.json();
               setTipoCompetencias(data);
+              setAreasActivas(data);
               console.log(data);
             } else {
               console.log('Error al obtener los datos de competencias');
             }
           } catch (error) {
             console.log('Error al obtener los datos de competencias:', error);
-          }
-        };
-
-        const fetchAreasActivas = async () => {
-          try {
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/employeeArea', {
-              headers: {
-                Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d'
-              }
-            });
-            const data = await response.json();
-            setAreasActivas(data);
-          } catch (error) {
-            console.error('Error fetching competencias:', error);
           }
         };
 
@@ -99,7 +86,7 @@ const PieChart = ({ title, labels, datasets }) => {
           };
       
           try {
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceConsolidateSearch', requestOptions);
+            const response = await fetch(URL_SERVICE + '/gaps/competenceConsolidateSearch', requestOptions);
       
             if (response.ok) {
               const data = await response.json();
@@ -165,7 +152,6 @@ const PieChart = ({ title, labels, datasets }) => {
           }
         };
 
-        fetchAreasActivas();
         fetchData();
         fetchTipoCompetencias();
       }, []);
@@ -175,6 +161,7 @@ const PieChart = ({ title, labels, datasets }) => {
         const tipo  = tipoCompetencias.find((tipo) => tipo.id.toString() === event.target.value)
         setAre(tipo)
         setTipoCompetencia(tipoCompetencias[0]);
+        console.log(tipoCompetencias)
         setname(area.name)
         setData1(data1);
         setData2(data2);
@@ -225,7 +212,7 @@ const PieChart = ({ title, labels, datasets }) => {
                     <div className="chart-legend"> 
                       {/* Agregar aquí la leyenda del gráfico 1 */}
                     </div>
-                    <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
+
                   </div>
                 </div>
               </div>
@@ -238,7 +225,7 @@ const PieChart = ({ title, labels, datasets }) => {
                    <div className="chart-legend">
                      {/* Agregar aquí la leyenda del gráfico 2 */}
                    </div>
-                   <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
+
                    <button className="btn btn-secondary" onClick={handleClick}>Ver detalle del área</button>
                    </div>
                </div>

@@ -8,7 +8,7 @@ import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias
 import './DetalleCompetenciasArea.css';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE } from '@features/Modulo2/routes/path';
 
-import {TOKEN_SERVICE} from '@features/Modulo2/services/ServicesApis'
+import {TOKEN_SERVICE, URL_SERVICE} from '@features/Modulo2/services/ServicesApis'
 const DetalleCompetenciasArea = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -38,7 +38,7 @@ const DetalleCompetenciasArea = () => {
               posicion:  2,
             }),
           };
-          const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/employeeArea', requestOptions);
+          const response = await fetch(URL_SERVICE + '/gaps/employeeArea', requestOptions);
           const data = await response.json();
           setEmpleados(data);
         } catch (error) {

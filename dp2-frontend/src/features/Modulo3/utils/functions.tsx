@@ -411,3 +411,19 @@ function sortDataCategoriaByMonth(data: TransformedDataTypeCategoria[]): Transfo
       };
     });
 }
+
+export function checkIfAllNull(obj : any) : boolean {
+  if (obj === null) return true;
+
+  if (Object.keys(obj).length === 0)
+    return true;
+
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      if (obj[key] !== null) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
