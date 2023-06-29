@@ -68,9 +68,9 @@ function ConfigProcesoSeleccion(props: any) {
 
 	/*
 	useEffect(() => {
-		setSelectedIdPuestoLaboral(1);
+		setSelectedPosicionID(1);
 		setCantVacantes(1);
-		setSelectedPuestoLaboral("Proceso en Nombre de prueb!!!a");
+		setNombreProcesoSeleccion("Proceso en Nombre de prueb!!!a");
 		setRows([
 			{
 				id: 1,
@@ -139,9 +139,9 @@ function ConfigProcesoSeleccion(props: any) {
 		}));
 
 		const dataPost = {
-			position: selectedIdPuestoLaboral,
+			position: selectedPosicionID,
 			available_positions_quantity: cantVacantes,
-			name: selectedPuestoLaboral,
+			name: nombreProcesoSeleccion,
 			process_stages: listaEtapas,
 			employees: listaIdResponsables
 		};
@@ -182,18 +182,18 @@ function ConfigProcesoSeleccion(props: any) {
 	const handleSelectedPuestoLaboralFijo = (event: any) => {};
 
 	// PUESTO DE TRABAJO
-	const [selectedIdPuestoLaboral, setSelectedIdPuestoLaboral] = useState(null);
-	const [selectedPuestoLaboralFijo, setSelectedPuestoLaboralFijo] =
+	const [selectedPosicionID, setSelectedPosicionID] = useState(null);
+	const [selectedPosicionNombreFijo, setSelectedPosicionNombreFijo] =
 		useState("");
-	const [selectedPuestoLaboral, setSelectedPuestoLaboral] = useState("");
-	const [isSelectedNombreOfertaValid, setIsSelectedNombreOfertaValid] =
+	const [nombreProcesoSeleccion, setNombreProcesoSeleccion] = useState("");
+	const [nombreProcesoSeleccionValid, setNombreProcesoSeleccionValid] =
 		useState(true);
 
 	const handleNombrePuestoSeleccionado = (event: any) => {
 		const optionValue = event.target.value;
 		const isValid = optionValue.trim() !== "";
-		setIsSelectedNombreOfertaValid(isValid);
-		setSelectedPuestoLaboral(optionValue);
+		setNombreProcesoSeleccionValid(isValid);
+		setNombreProcesoSeleccion(optionValue);
 	};
 
 	// CANTIDAD DE VACANTES
@@ -409,9 +409,9 @@ function ConfigProcesoSeleccion(props: any) {
 			" " +
 			selectedOptionPuesto.position_detail.modalidadTrabajo;
 
-		setSelectedIdPuestoLaboral(selectedOptionPuesto.id);
-		setSelectedPuestoLaboralFijo(nombrePosicionFijo);
-		setSelectedPuestoLaboral(
+		setSelectedPosicionID(selectedOptionPuesto.id);
+		setSelectedPosicionNombreFijo(nombrePosicionFijo);
+		setNombreProcesoSeleccion(
 			"Proc. selección en " + selectedOptionPuesto.position_name
 		);
 	};
@@ -485,7 +485,7 @@ function ConfigProcesoSeleccion(props: any) {
 								as="textarea"
 								type="text"
 								placeholder="Seleccionar el nombre del puesto para el proceso de selección."
-								value={selectedPuestoLaboralFijo}
+								value={selectedPosicionNombreFijo}
 								onChange={handleSelectedPuestoLaboralFijo}
 								rows={2}
 								className="readonly-text"
@@ -515,11 +515,11 @@ function ConfigProcesoSeleccion(props: any) {
 									<Form.Control
 										type="text"
 										placeholder="Especificar el puesto de trabajo para el proceso de selección."
-										value={selectedPuestoLaboral}
+										value={nombreProcesoSeleccion}
 										onChange={handleNombrePuestoSeleccionado}
-										disabled={selectedPuestoLaboral == "" ? true : false}
+										disabled={nombreProcesoSeleccion == "" ? true : false}
 										required
-										className={!isSelectedNombreOfertaValid ? "is-invalid" : ""}
+										className={!nombreProcesoSeleccionValid ? "is-invalid" : ""}
 									/>
 									<Form.Control.Feedback type="invalid">
 										Seleccionar el puesto de trabajo para el proceso de
@@ -777,13 +777,13 @@ function ConfigProcesoSeleccion(props: any) {
 										style={{ width: "10rem", maxWidth: "10rem" }}
 										onClick={() => {
 											if (
-												selectedPuestoLaboral != "" &&
+												nombreProcesoSeleccion != "" &&
 												typeof +cantVacantes == "number" &&
 												+cantVacantes > 0
 											) {
 												setShowSaveModal(true);
 											} else {
-												setIsSelectedNombreOfertaValid(false);
+												setNombreProcesoSeleccionValid(false);
 											}
 										}}>
 										Guardar proceso

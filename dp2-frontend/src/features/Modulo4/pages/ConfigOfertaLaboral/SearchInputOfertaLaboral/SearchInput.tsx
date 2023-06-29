@@ -160,7 +160,7 @@ const SearchInput = ({ onClose, onSelect }) => {
 								}}>
 								<tr>
 									<th style={{ minWidth: "24rem" }}>Nombre del proceso</th>
-									<th style={{ minWidth: "5rem" }}>Postulantes</th>
+									<th style={{ minWidth: "5rem" }}>Vacantes</th>
 									<th style={{ minWidth: "12rem" }}>Fecha de modificación</th>
 								</tr>
 							</thead>
