@@ -173,9 +173,6 @@ const PieChart = ({ title, labels, datasets }) => {
       const handleClick = () => {        
       navigate(`/${GAPS_ANALYSIS_MODULE}/${GAPS_EMPLOYEES_ORG}/${GAPS_EMPLOYEES_ORG_DETAIL}`, { state: { tipoCompetencia } });
       };
-      const handleMostrarLineChartClick = () => {
-      };
-      
   
       const labels= ['80% - 100%', '60% - 79%', '40% - 59%', '20% - 39%', '0% - 19%'];
       
