@@ -4,9 +4,7 @@ import { ArrowRightCircleFill, Pencil, Trash, Upload } from 'react-bootstrap-ico
 import {Competencia,tipoCompetencia, AreaActiva} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos'
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
 import { useNavigate } from 'react-router-dom';
-
 const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
-
 const SelectDemandCourses: React.FC = () => {
   const navigate = useNavigate();
   const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
@@ -14,15 +12,41 @@ const SelectDemandCourses: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [tipoFiltro, setTipoFiltro] = useState(0);
   const [estadoFiltro, setEstadoFiltro] = useState(''); 
+  const [mostrarPopUpAsignar , setmostrarPopUpAsignar] = useState(false);
+  const [mostrarPopUpGenerar , setmostrarPopUpGenerar] = useState(false);
   const [mostrarPopUpCrear , setmostrarPopUpCrear] = useState(false);
-  const [mostrarPopUpActualizar, setmostrarPopUpActualizar] = useState(false);
   const [mostrarPopUpBorrar, setmostrarPopUpBorrar] = useState(false);
   const [competencias, setCompetencias] = useState<Competencia[]>([]);
   const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
   const [competenciaSeleccionada, setCompetenciaSeleccionada] = useState(null);
-  const [mostrarPopUpInfo,setmostrarPopUpInfo] = useState(null)
   const [tipo,setTipo] = useState('')  
   const [name,setName] = useState('')
+  const [lleno,setLleno] = useState(0)
+  const [competenciasLista, setCompetenciasLista] = useState([
+    { id: 1, nombre: 'Competencia 1', seleccionada: false },
+    { id: 2, nombre: 'Competencia 2', seleccionada: false },
+    { id: 3, nombre: 'Competencia 3', seleccionada: false },
+    // Agrega más competencias si es necesario
+  ]);
+  const hardcodeTable = [
+    { id: 1, code: '001', name: 'Java Avanzado', type: 'Java A', active: true },
+    { id: 2, code: '002', name: 'Python Básico', type: 'Python B', active: false },
+    { id: 3, code: '003', name: 'C# Avanzado', type: 'C# A', active: true },
+    { id: 4, code: '004', name: 'JavaScript Intermedio', type: 'JavaScript I', active: true },
+    { id: 5, code: '005', name: 'Ruby Básico', type: 'Ruby B', active: false },
+    { id: 6, code: '006', name: 'PHP Avanzado', type: 'PHP A', active: true },
+    { id: 7, code: '007', name: 'C++ Intermedio', type: 'C++ I', active: false },
+    { id: 8, code: '008', name: 'Swift Básico', type: 'Swift B', active: true },
+    { id: 9, code: '009', name: 'Go Avanzado', type: 'Go A', active: false },
+    { id: 10, code: '010', name: 'R Intermedio', type: 'R I', active: true },
+  ];
+  const hardcodeCards=[
+    { id: 1, name: "Java 'A'", demanda: 100 },
+    { id: 2, name: "Python 'B'", demanda: 50 },
+    { id: 3, name: "JavaScript 'C'", demanda: 80 },
+    { id: 4, name: "C# 'D'", demanda: 70 },
+    { id: 5, name: "Ruby 'E'", demanda: 40 }
+  ]
   useEffect(() => {
     // Función para obtener los datos de competencias desde la API
     const fetchCompetencias = async () => {
@@ -79,8 +103,6 @@ const SelectDemandCourses: React.FC = () => {
     fetchCompetencias();
     fetchTipoCompetencias();
   }, []);
-
-
   const filtrarCompetencias = () => {
     var competenciasFiltradas = competencias;
     if (tipoFiltro) {
@@ -102,7 +124,7 @@ const SelectDemandCourses: React.FC = () => {
         );
       }
     return competenciasFiltradas;
-};
+  };
   const filteredCompetencias = filtrarCompetencias().filter((competencia) => {
     const searchMatch =
       competencia.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -113,19 +135,12 @@ const SelectDemandCourses: React.FC = () => {
     return searchMatch && tipoMatch && estadoMatch;
   });
   const handleSearch = () => {
-    // Lógica para realizar la búsqueda
   };
-
-  const handleLimpiarFiltros = () => {
-    setSearchQuery('');
-    setTipoFiltro(0);
-    setEstadoFiltro('');
-  };
-
   const handleMostrarPopUpCrear  = () => {
     setmostrarPopUpCrear(true);
+    setLleno(lleno + 1)
+    console.log(lleno)
   };
-
   const agregarCompetencia = (nuevaCompetencia) => {
     const requestOptions = {
       method: 'POST',
@@ -152,99 +167,90 @@ const SelectDemandCourses: React.FC = () => {
   
     handleCerrarPopUpCrear();
   };
-  
-
   const handleCerrarPopUpCrear = () => {
     setmostrarPopUpCrear(false);
   };
-
-  const handleMostrarPopUpInfo  = (competencia) => {
+  const handleMostrarPopUpBorrar  = (competencia) => {     
     setCompetenciaSeleccionada(competencia);
-    setTipo(tipoCompetencias.find((tipo) => tipo.id == competencia.type)?.name)
     setName(competencia.name);
-    setmostrarPopUpInfo(true);
+    setmostrarPopUpBorrar(true);
   };
-
-
-
-  const handleCerrarPopUpInfo = () => {
-    setmostrarPopUpInfo(false);
-  };
-
-
-
-  
-  const handleMostrarPopUpActualizar = (competencia) => {
-    setCompetenciaSeleccionada(competencia);
-    setTipo(tipoCompetencias.find((tipo) => tipo.id == competencia.type)?.name)
-    setName(competencia.name);
-    setmostrarPopUpActualizar(true);
-  };
-
-/*
-//ACTUALIZADO LOCAL
-  
-  const actualizarCompetencia = (competenciaActualizada) => {
-    var tablaAux = competencias;
-    const indice = competencias.findIndex((competencia) => competencia.id=== competenciaActualizada.id);
-    if (indice !== -1) {
-      tablaAux[indice] = competenciaActualizada;
-    }
-    setCompetencias(tablaAux);
-    handleCerrarPopUpActualizar();
-  };
-*/
-
-const actualizarCompetencia = async (competenciaActualizada) => {
-  console.log(competenciaActualizada)
-  const body = {
-    id: competenciaActualizada.id,
-    name: competenciaActualizada.name,
-    description: competenciaActualizada.description,
-    active: competenciaActualizada.active,
-    type: competenciaActualizada.type
-}
-
-
+  const borrarCompetencia = async (id) => {
+  console.log(id)
   try {
-    const response = await fetch(
-      URL_SERVICE + `/gaps/competences`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': TOKEN_SERVICE,
-        },
-        body: JSON.stringify(body)
+    const response = await fetch(`https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competences/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': TOKEN_SERVICE
       }
-    );
-
+    });
+    console.log(response)
     if (response.ok) {
-      const updatedCompetencia = await response.json();
-      var tablaAux = competencias;
-      const indice = competencias.findIndex(
-        (competencia) => competencia.id === updatedCompetencia.id
-      );
-      if (indice !== -1) {
-        tablaAux[indice] = updatedCompetencia;
-      }
-      setCompetencias(tablaAux);
+      const updatedCompetencias = competencias.filter((competencia) => competencia.id !== id);
+      setCompetencias(updatedCompetencias);
       setCompetenciaSeleccionada(null);
       setName('');
-      handleCerrarPopUpActualizar();
+      handleCerrarPopUpBorrar();
     } else {
-      throw new Error('Error al actualizar la competencia');
+      console.error('Error al borrar la competencia');
     }
   } catch (error) {
-    console.error(error);
+    console.error('Error al realizar la solicitud de borrado', error);
   }
-};
-
-  const handleCerrarPopUpActualizar = () => { 
-    setmostrarPopUpActualizar(false);
   };
-
-  
+  const handleCerrarPopUpBorrar = () => {
+    setmostrarPopUpBorrar(false);
+  };
+  const handleMostrarPopUpAsignar  = (competencia) => {     
+    setCompetenciaSeleccionada(competencia);
+    setName(competencia.name);
+    setmostrarPopUpAsignar(true);
+  };
+  const asignarCompetencia = async (id) => {
+    const competenciasSeleccionadas = competenciasLista.filter(
+      (competencia) => competencia.seleccionada
+    );
+    console.log(competenciasSeleccionadas);
+    handleCerrarPopUpAsignar();
+  };
+  const handleSeleccionCompetencia = (competenciaId) => {
+    const competenciasActualizadas = competenciasLista.map((competencia) => {
+      if (competencia.id === competenciaId) {
+        return { ...competencia, seleccionada: !competencia.seleccionada };
+      }
+      return competencia;
+    });
+    setCompetenciasLista(competenciasActualizadas);
+  };
+  const handleCerrarPopUpAsignar = () => {
+    setmostrarPopUpAsignar(false);
+  };
+  const handleMostrarPopUpGenerar  = (competencia) => {     
+    setCompetenciaSeleccionada(competencia);
+    setName(competencia.name);
+    setLleno(lleno + 1)
+    console.log(lleno)
+    setmostrarPopUpGenerar(true);
+  };
+  const confirmarCompetencia = async (id) => {
+    const competenciasSeleccionadas = competenciasLista.filter(
+      (competencia) => competencia.seleccionada
+    );
+    console.log(competenciasSeleccionadas);
+    handleCerrarPopUpAsignar();
+  };
+  const handleConfirmar = (competenciaId) => {
+    const competenciasActualizadas = competenciasLista.map((competencia) => {
+      if (competencia.id === competenciaId) {
+        return { ...competencia, seleccionada: !competencia.seleccionada };
+      }
+      return competencia;
+    });
+    setCompetenciasLista(competenciasActualizadas);
+  };
+  const handleCerrarPopUpGenerar = () => {
+    setmostrarPopUpGenerar(false);
+  };
   const handleOrdenarPorCampo = (campo) => {
     // Si se hace clic en el mismo campo, cambia el tipo de orden
     if (campo === campoOrdenamiento) {
@@ -254,7 +260,6 @@ const actualizarCompetencia = async (competenciaActualizada) => {
       setTipoOrden('ascendente');
     }
   };
-
   const datosFiltradosYOrdenados = filteredCompetencias.sort((a, b) => {
     if (a[campoOrdenamiento] < b[campoOrdenamiento]) {
       return tipoOrden === 'ascendente' ? -1 : 1;
@@ -264,70 +269,106 @@ const actualizarCompetencia = async (competenciaActualizada) => {
     }
     return 0;
   });
-
   const renderCards = () => {
     return (
       <div className="card-container">
-        {competencias.map((competencia) => (
+        {hardcodeCards.map((competencia) => (
           <div key={competencia.id} className="card">
             <h4>Competencia: {competencia.name}</h4>
-            <p>Demanda: 10 {/*competencia.demanda*/}</p>
+            <p>Demanda: {competencia.name}</p>
           </div>
         ))}
       </div>
     );
-}
+  }
   const renderTablaCompetencias = () => {
-    
     return (
     <Table striped bordered hover>
       <thead>
         <tr>
-            <th onClick={() => handleOrdenarPorCampo('code')}>Código {campoOrdenamiento === 'code' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th onClick={() => handleOrdenarPorCampo('name')}>Nombre {campoOrdenamiento === 'name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-            <th onClick={() => handleOrdenarPorCampo('type')}>Tipo de Capacidad {campoOrdenamiento === 'type' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-            <th onClick={() => handleOrdenarPorCampo('active')}>Estado {campoOrdenamiento === 'active' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
+            <th onClick={() => handleOrdenarPorCampo('type')}>Competencias {campoOrdenamiento === 'type' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
+            <th onClick={() => handleOrdenarPorCampo('active')}>Para Demanda? {campoOrdenamiento === 'active' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th>Acciones</th>        
         </tr>
       </thead>
       <tbody>
-        {datosFiltradosYOrdenados.map((competencia) => (
+        {hardcodeTable.map((competencia) => (
           <tr key={competencia.id}>
-            <td>{competencia.code}</td>
             <td>{competencia.name}</td>
-            <td>{tipoCompetencias.find((tipo) => tipo.id == competencia.type)?.name}</td>
+            <td>{competencia.type}</td>
             <td>{competencia.active ? 'Activo' : 'Inactivo'}</td>
-                  <td>
-                    <Button variant="link" size="sm" onClick={() => handleMostrarPopUpInfo(competencia)}>
-                    <ArrowRightCircleFill color='gray'></ArrowRightCircleFill>
-                      <i className="bi bi-box-arrow-in-right"></i>
-                    </Button>
-                    <Button variant="secondary" size="sm" onClick={() => handleMostrarPopUpActualizar(competencia)}><Pencil /></Button>
-                  </td>
+            <td>
+              <Button variant="danger" size="sm" onClick={() => handleMostrarPopUpBorrar(competencia)}><Trash /></Button>
+              <Button variant="secondary" size="sm" onClick={() => handleMostrarPopUpAsignar(competencia)}><Pencil /></Button>
+            </td>
           </tr>
         ))}
       </tbody>
     </Table>)
   }
-
+  const renderConfirmacion = () => {
+    return (
+    <Modal show={mostrarPopUpGenerar} onHide={handleCerrarPopUpGenerar}>
+      <Modal.Header closeButton>
+        <Modal.Title>Mensaje de confirmación</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>      
+        <div className='container-fluid'>
+          <p>¿Seguro que desea asignar los cursos seleccionados?</p>           
+          <div className='espacio'>
+            <Button className="botones2" onClick={()=>{navigate(-1)}}>
+              Aceptar
+            </Button>
+          </div>
+        </div>
+        <div className='botonCerrar2'>
+        <Button variant="secondary" onClick={handleCerrarPopUpGenerar}>
+        Cancelar
+        </Button>
+        </div>
+      </Modal.Body>
+  </Modal>
+)
+  }
+  const renderAlerta = () => {
+    return (
+    <Modal show={mostrarPopUpGenerar} onHide={handleCerrarPopUpGenerar}>
+      <Modal.Header closeButton>
+        <Modal.Title>Mensaje de alerta</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>      
+        <div className='container-fluid'>
+          <p>¿Seguro que desea asignar los cursos seleccionados? No se estan cubriendo todas las capacidades</p>           
+          <div className='espacio'>
+            <Button className="botones2" onClick={()=>{}}>
+              Aceptar
+            </Button>
+          </div>
+        </div>
+        <div className='botonCerrar2'>
+        <Button variant="secondary" onClick={handleCerrarPopUpGenerar}>
+          Cancelar
+        </Button>
+        </div>
+      </Modal.Body>
+  </Modal> 
+)
+  }
   return (
     <div className='pantalla'>
       <div className='titles'>
-      <h2 className='Head'>Demanda de capacitación</h2>
-      <p className="text-muted subtitle">Generar la demanda de capacitación.</p>
+        <h2 className='Head'>Demanda de capacitación</h2>
+        <p className="text-muted subtitle">Generar la demanda de capacitación.</p>
       </div>
-
       <div className='container-fluid'>
         <h2 className='Head'>Necesidades de competencias</h2>
          {renderCards()}
       </div>
-
       <div className='container-fluid'>
         <h2 className='Head'>Lista de cursos</h2>
          {renderTablaCompetencias()}
       </div>
-
-    
       <div className='container-fluid'>
         <div className='row'>
          </div>
@@ -341,15 +382,46 @@ const actualizarCompetencia = async (competenciaActualizada) => {
                 </Button>{' '}
               </div>
               <div className="col-sm-3 botones2 justify-content-center">          
-                <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
-                Guardar cursos
+                <Button variant="primary" className='Search2' onClick={handleMostrarPopUpGenerar}>
+                Generar demanda
                 </Button>
               </div>  
           </div>
-        </div>  
-
+      </div>
+      <Modal show={mostrarPopUpAsignar} onHide={handleCerrarPopUpAsignar}>
+          <Modal.Header closeButton>
+            <Modal.Title>Asignar competencia</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>      
+            <div className='container-fluid'>
+              <p>Competencias que cubre el curso de Java Avanzado"{competenciaSeleccionada?.name}"?</p>
+              <ul>
+                {competenciasLista.map((competencia) => (
+                  <li key={competencia.id}>
+                    <input
+                      type="checkbox"
+                      checked={competencia.seleccionada}
+                      onChange={() => handleSeleccionCompetencia(competencia.id)}
+                    />
+                    {competencia.nombre}
+                  </li>
+                ))}
+              </ul>              
+              <div className='espacio'>
+                <Button className="botones2" onClick={asignarCompetencia}>
+                  Aceptar
+                </Button>
+              </div>
+            </div>
+            <div className='botonCerrar2'>
+            <Button variant="secondary" onClick={handleCerrarPopUpAsignar}>
+              Cerrar
+            </Button>
+            </div>
+          </Modal.Body>
+      </Modal> 
+      {lleno %2 === 0 ? renderConfirmacion() : renderAlerta()}
     </div>
   );
 };
-
 export default SelectDemandCourses;
