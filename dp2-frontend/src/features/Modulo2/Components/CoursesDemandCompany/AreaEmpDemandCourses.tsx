@@ -5,6 +5,7 @@ import {Competencia,tipoCompetencia, AreaActiva} from '@features/Modulo2/Compone
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
 import { useNavigate } from 'react-router-dom';
 import { DEMAND_COMPANY_COURSES, DEMAND_COMPANY_COURSES_LIST, GAPS_ANALYSIS_MODULE } from '@features/Modulo2/routes/path';
+import './AreaEmpDemandCourses.css'
 
 const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
 
@@ -219,7 +220,7 @@ const SelectDemandCourses: React.FC = () => {
         <div className='row'>
 
 
-          <div className='col-sm-3 botones'>
+          <div className='col-sm-3 selectores '>
             <Form.Group className="mb-3" controlId="tipoFiltro">
                 <Form.Control as="select" value={tipoFiltro} onChange={(e) => setTipoFiltro(parseInt(e.target.value))}>
                   <option value="">Área</option>
@@ -232,7 +233,7 @@ const SelectDemandCourses: React.FC = () => {
               </Form.Group>
             </div>
 
-            <div className='col-sm-3 botones'>
+            <div className='col-sm-3 selectores'>
               <Form.Group controlId="estadoFiltro">
                 <Form.Control as="select" value={estadoFiltro} onChange={(e) =>{ setEstadoFiltro(e.target.value); console.log(e.target.value)}}>
                   <option value="">Posición</option>
@@ -241,23 +242,27 @@ const SelectDemandCourses: React.FC = () => {
                 </Form.Control>
               </Form.Group>
             </div>
-         </div>
-            <div className='row'>
-              <div className="col-sm-3 botones2 justify-content-center">
+         
+        
+              <div className="col-sm-2 botones justify-content-center">
                 <Button variant="outline-secondary" className='Search' onClick={handleLimpiarFiltros}>
                   Limpiar filtros
                 </Button>{' '}
+              </div>
+
+
+              <div className="col-sm-1 botones justify-content-center">
                 <Button variant="primary" className='Search' onClick={handleSearch}>
                   Buscar
                 </Button>{' '}
               </div>
               
-              <div className="col-sm-3 botones2 justify-content-center">          
+              <div className="col-sm-2 botones justify-content-center">          
                 <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
                 Generar demanda
                 </Button>
               </div>  
-          </div>
+           </div>
         </div>  
 
       <div className='container-fluid'>
