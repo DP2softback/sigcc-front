@@ -299,7 +299,19 @@ export const routes: RouteObject[] = [
 			{
 				path: MY_JOB_OPPORTUNITIES,
 				children: [
-
+					{
+						path: INDEX,
+						element: (
+							<AppLayout
+						allowedRoles={[
+							Roles.HR_WORKER,
+						]}>
+						<JobOpportunitiesRelatedToSkills />
+					</AppLayout>
+							
+						)
+					}
+					,
 					{
 						path: MY_JOB_OPPORTUNITIES_DETAIL,
 						element: (

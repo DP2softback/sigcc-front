@@ -1,9 +1,11 @@
 import React from 'react'
 import JobOpportunityCard from '../JobOpportunityCard/JobOpportunityCard';
 import axiosEmployeeGaps from '@features/Modulo2/services/EmployeeGapsServices';
+import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 
 const JobOpportunitiesHumanResources = () => {
 
+    const [isLoading, setIsLoading] = React.useState(false);
     const [jobOpportunities, setJobOpportunities] = React.useState(null);
     const JSONresponse =
     [
@@ -69,17 +71,21 @@ const JobOpportunitiesHumanResources = () => {
     ]
 
     React.useEffect(() => {
+        setIsLoading(true);
         const obj = {
-            "hiring_process": 0,
-            "activo": 2
+            area: 0,
+            posicion: 0,
         };
         axiosEmployeeGaps
-        .post("jobOfferSearch",obj)
+        .post("gaps/jobOfferSearch",obj)
         .then(function(response){
-            setJobOpportunities(response);
+            console.log(response.data);
+            setJobOpportunities(response.data);
+            setIsLoading(false);
         })
         .catch(function(error){
             console.log(error);
+            setIsLoading(false);
         })
     }, [])
 
@@ -89,14 +95,19 @@ const JobOpportunitiesHumanResources = () => {
                 <h2>Puestos vacantes para ascensos</h2>
                 <p className="text-muted">Puestos vacantes que son afines a tus competencias</p>
                 <br/>
-                <h3>Puestos vacantes</h3>
-                {JSONresponse && JSONresponse.map((jobOpp, index) => {
-                    return (
-                        <div className='col-4'>
-                            <JobOpportunityCard jobOpportunity={jobOpp} numBot={1} hhrr/>
-                        </div>
-                    )
-                })}
+                {isLoading ? <LoadingScreen /> :
+                    <>
+                        <h3>Puestos vacantes</h3>
+                        {jobOpportunities && jobOpportunities.length !== 0 ? jobOpportunities.map((jobOpt, index) => {
+                            return (
+                                <div className='col-4'>
+                                    <JobOpportunityCard jobOpportunity={jobOpt} numBot={1} hhrr/>
+                                </div>
+                            )
+                        }) : <p>No se encontraron oportunidades laborales</p>
+                        }
+                    </>
+                }
             </div>
         </>
     )

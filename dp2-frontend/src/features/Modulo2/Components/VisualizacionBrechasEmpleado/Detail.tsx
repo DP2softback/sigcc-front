@@ -147,18 +147,24 @@ const TrainingNeeds = () => {
               <Table striped bordered className='table-need'>
                 <thead>
                   <tr>
+                  <th onClick={() => handleOrdenarPorCampo('type')}>
+                      Tipo de capacidad
+                      {campoOrdenamiento === 'type' && (
+                        <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
+                      )}
+                    </th>
                     <th onClick={() => handleOrdenarPorCampo('competence__name')}>
                       Capacidad
                       {campoOrdenamiento === 'competence__name' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                       )}
                     </th>
-                    {/* <th onClick={() => handleOrdenarPorCampo('competence__type__name')}>
+                    <th onClick={() => handleOrdenarPorCampo('competence__type__name')}>
                       Tipo de capacidad
                       {campoOrdenamiento === 'competence__type__name' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                       )}
-                    </th> */}
+                    </th>
                     <th onClick={() => handleOrdenarPorCampo('levelCurrent')}>
                       Nivel actual
                       {campoOrdenamiento === 'levelCurrent' && (
@@ -171,9 +177,9 @@ const TrainingNeeds = () => {
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                       )}
                     </th>
-                    <th onClick={() => handleOrdenarPorCampo('levelGap')}>
-                      Niveles faltanes
-                      {campoOrdenamiento === 'levelGap' && (
+                    <th onClick={() => handleOrdenarPorCampo('state')}>
+                      Estado
+                      {campoOrdenamiento === 'state' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                       )}
                     </th>
@@ -188,11 +194,12 @@ const TrainingNeeds = () => {
                 <tbody className='table-need'>
                   {trainingNeed && trainingNeed.map((competence, index) => (
                     <tr key={index} className={index % 0 === 0 ? "evenRow" : "oddRow"}>
+                      <td>{competence.type}</td>
                       <td>{competence.capacity__name}</td>
-                      {/* <td>{competence.capacity__type__name}</td> */}
+                      <td>{competence.capacity__type__name}</td>
                       <td>{returnLevel(competence.levelCurrent)}</td>
                       <td>{returnLevel(competence.levelRequired)}</td>
-                      <td>{competence.levelGap}</td>
+                      <td>{competence.state}</td>
                       <td>{competence.description}</td>
                     </tr>
                   ))}
