@@ -45,7 +45,6 @@ const SelectDemandCourses: React.FC = () => {
   }, []);
   const handleAreaChange = async (value) => {
     setAreaSeleccionada(value);
-    console.log('id area: ' + value.type)
     if (value) {
       try {
         const body = {
@@ -59,7 +58,6 @@ const SelectDemandCourses: React.FC = () => {
           },
           body: JSON.stringify(body),
         });
-        console.log(response)
         if (response.ok) {
           const data = await response.json();
           setPosiciones(data);
@@ -75,11 +73,10 @@ const SelectDemandCourses: React.FC = () => {
   }
   const handlePositionChange = async (value) => {
     setPosicionSeleccionada(value);
-    console.log('id posicion: ' + value.type)
   };
- const handleBuscarClick = async () => {
+ const handleBuscarClick = async (posicion,area) => {
   setBuscar(true);
-  if (posicionSeleccionada) {
+  if (area!= -1) {
     try {
       const requestOptions = {
         method: 'POST',
@@ -88,12 +85,14 @@ const SelectDemandCourses: React.FC = () => {
           'Authorization': TOKEN_SERVICE,
         },
         body: JSON.stringify({ 
-          area: areaSeleccionada,
-          posicion:  posicionSeleccionada,
+          area: area,
+          posicion:  posicion,
         }),
       };
       const response = await fetch(URL_SERVICE + '/gaps/employeeArea', requestOptions);
+      console.log(response)
       const data = await response.json();
+      console.log(data)
       setCompetencias(data);
     } catch (error) {
       console.error('Error fetching competencias:', error);
@@ -241,7 +240,7 @@ const SelectDemandCourses: React.FC = () => {
                 <Button variant="outline-secondary" className='Search' onClick={handleLimpiarFiltros}>
                   Limpiar filtros
                 </Button>{' '}
-                <Button variant="primary" className='Search' onClick={handleBuscarClick}>
+                <Button variant="primary" className='Search' onClick={()=>{handleBuscarClick(posicionSeleccionada,areaSeleccionada)}}>
                   Buscar
                 </Button>{' '}
               </div>              
@@ -256,7 +255,7 @@ const SelectDemandCourses: React.FC = () => {
           {renderListaPosicion()}
         </div>
         <div className='container-fluid'>
-          {(posicionSeleccionada!==-1 && buscar) ? renderTablaCompetencias() : "Seleccione una posicion"}
+          {(posicionSeleccionada!==-1 && buscar) ? renderTablaCompetencias() : "Seleccione un AREA y/o POSICION"}
         </div>
       </div>
   );
