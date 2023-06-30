@@ -16,7 +16,9 @@ export const USER_ID = 5;
 
 export const TEXTAREA_ROWS = 3;
 
-export const API_CREATE_EVALUATION_SUCCESS = "Evaluation created successfully.";
+export const API_CREATE_CONTINUOUS_EVALUATION_SUCCESS = "Evaluation created successfully.";
+
+export const API_CREATE_PERFORMANCE_EVALUATION_SUCCESS = "Se creó correctamente las evaluaciones ";
 
 export const EVALUACION_CREADA_CON_EXITO = "Evaluación creada con éxito";
 

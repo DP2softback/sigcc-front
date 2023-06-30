@@ -9,7 +9,7 @@ import { Button, Col, Row } from "react-bootstrap";
 import { useState } from "react";
 import { checkIfAllNull, navigateBack, navigateTo } from "@features/Modulo3/utils/functions";
 import { saveEvaluation } from "@features/Modulo3/services/continuousEvaluation";
-import { API_CREATE_EVALUATION_SUCCESS, EVALUACION_CREADA_CON_EXITO, TEXTAREA_ROWS } from "@features/Modulo3/utils/constants";
+import { API_CREATE_CONTINUOUS_EVALUATION_SUCCESS, EVALUACION_CREADA_CON_EXITO, TEXTAREA_ROWS } from "@features/Modulo3/utils/constants";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
 
@@ -249,16 +249,17 @@ const BaseForm = ({employee, categories, evaluation, isLoading, setEvaluation, s
 				result = await saveEvaluation(evaluation);
 			} catch (error) {
 				toast.error(`Ha ocurrido un error al guardar la evaluación.`);
+				setIsLoading(false);
 			} finally {
-				if (result.message === API_CREATE_EVALUATION_SUCCESS)
+				if (result.message === API_CREATE_CONTINUOUS_EVALUATION_SUCCESS)
 					toast.success(EVALUACION_CREADA_CON_EXITO);
 				setTimeout(() => {
 					navigateTo(CONTINUOS_EVALUATION_HISTORY, {
 						id: employee.id,
 						name: employee.name
 					});
+					setIsLoading(false);
 				}, 2000);
-				setIsLoading(false);
 			}
 		})();
 	}
