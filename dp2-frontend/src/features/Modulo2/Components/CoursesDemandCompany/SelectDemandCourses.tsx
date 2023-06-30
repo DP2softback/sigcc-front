@@ -19,8 +19,6 @@ const SelectDemandCourses: React.FC = () => {
   const [competencias, setCompetencias] = useState<Competencia[]>([]);
   const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
   const [competenciaSeleccionada, setCompetenciaSeleccionada] = useState(null);
-  const [tipo,setTipo] = useState('')  
-  const [name,setName] = useState('')
   const [lleno,setLleno] = useState(0)
   const [competenciasLista, setCompetenciasLista] = useState([
     { id: 1, nombre: 'Competencia 1', seleccionada: false },
@@ -58,7 +56,6 @@ const SelectDemandCourses: React.FC = () => {
           activo: estadoFiltro === 'Activo' ? 1 : estadoFiltro === 'Inactivo' ? 0 : 2,
           idEmpleado: 0,
         };
-
         const response = await fetch(URL_SERVICE + '/gaps/competenceSearch', {
           method: 'POST',
           headers: {
@@ -67,7 +64,6 @@ const SelectDemandCourses: React.FC = () => {
           },
           body: JSON.stringify(body),
         });
-
         if (response.ok) {
           const data = await response.json();
           setCompetencias(data);
@@ -80,7 +76,6 @@ const SelectDemandCourses: React.FC = () => {
     };
     const fetchTipoCompetencias = async () => {
       try {
-
         const response = await fetch(URL_SERVICE + '/gaps/competenceTypes', {
           method: 'GET',
           headers: {
@@ -88,7 +83,6 @@ const SelectDemandCourses: React.FC = () => {
             'Authorization': TOKEN_SERVICE,
           },
         });
-
         if (response.ok) {
           const data = await response.json();
           setTipoCompetencias(data);
@@ -154,8 +148,7 @@ const SelectDemandCourses: React.FC = () => {
         active: nuevaCompetencia.active,
         type: nuevaCompetencia.type
       })
-    };
-  
+    };  
     fetch(URL_SERVICE + '/gaps/competences', requestOptions)
       .then(response => response.json())
       .then(data => {
@@ -163,8 +156,7 @@ const SelectDemandCourses: React.FC = () => {
       })
       .catch(error => {
         console.error('Error al agregar competencia:', error);
-      });
-  
+      });  
     handleCerrarPopUpCrear();
   };
   const handleCerrarPopUpCrear = () => {
@@ -172,7 +164,6 @@ const SelectDemandCourses: React.FC = () => {
   };
   const handleMostrarPopUpBorrar  = (competencia) => {     
     setCompetenciaSeleccionada(competencia);
-    setName(competencia.name);
     setmostrarPopUpBorrar(true);
   };
   const borrarCompetencia = async (id) => {
@@ -189,7 +180,6 @@ const SelectDemandCourses: React.FC = () => {
       const updatedCompetencias = competencias.filter((competencia) => competencia.id !== id);
       setCompetencias(updatedCompetencias);
       setCompetenciaSeleccionada(null);
-      setName('');
       handleCerrarPopUpBorrar();
     } else {
       console.error('Error al borrar la competencia');
@@ -203,7 +193,6 @@ const SelectDemandCourses: React.FC = () => {
   };
   const handleMostrarPopUpAsignar  = (competencia) => {     
     setCompetenciaSeleccionada(competencia);
-    setName(competencia.name);
     setmostrarPopUpAsignar(true);
   };
   const asignarCompetencia = async (id) => {
@@ -227,7 +216,6 @@ const SelectDemandCourses: React.FC = () => {
   };
   const handleMostrarPopUpGenerar  = (competencia) => {     
     setCompetenciaSeleccionada(competencia);
-    setName(competencia.name);
     setLleno(lleno + 1)
     console.log(lleno)
     setmostrarPopUpGenerar(true);

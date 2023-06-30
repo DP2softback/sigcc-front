@@ -39,3 +39,8 @@ export type AreaActiva = {
   id: number,
   name: string
 }
+
+export type Posicion = {
+  position__id: number,
+  position__name: string
+}
