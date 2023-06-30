@@ -34,3 +34,10 @@
   margin-right: 8px;
   margin-bottom: 8px;
 }
+.input-feedback {
+    margin-top: 5px;
+  }
+  .input-button-container .form-control {
+    margin-right: 10px;
+  }  
+  

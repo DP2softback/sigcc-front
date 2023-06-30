@@ -18,6 +18,7 @@ const ModalAddSubcategorie = (props) => {
     const [competencias, setCompetencias] = useState([]);
     const [selectedId,setSelectedId]=useState(-1);
     const [isLoading, setIsLoading] = useState(true);
+    const [formError, setFormError] = useState(false); 
 
     useEffect(() => {
       setIsLoading(true);
@@ -36,15 +37,21 @@ const ModalAddSubcategorie = (props) => {
           : 'bg-white';
       }
       const handleAgregar = () => {
-        const newSubcategory = {
-          name: subcategoriaName,
-          description:"",
-        };
+        if (subcategoriaName.trim() !== '') {
+          const newSubcategory = {
+            name: subcategoriaName,
+            description: "",
+          };
     
-        subcategorias.push(newSubcategory)
-        setSubcategoriaName("");
-        setSelectedOption('');
+          setSubcategorias([...subcategorias, newSubcategory]);
+          setSubcategoriaName("");
+          setSelectedOption('');
+          setFormError(false); 
+        } else {
+          setFormError(true); 
+        }
       };
+
       const handleAgregarExistente = () => {
         const newSubcategory = {
           name:selectedOption,
@@ -106,17 +113,22 @@ const ModalAddSubcategorie = (props) => {
                 Nueva competencia
               </label>
               <div className="input-button-container">
-                <Form.Control
-                  placeholder="Ingrese el nombre de la competencia"
-                  id="nombreSubcategoría"
-                  value={subcategoriaName}
-                  onChange={handleChangeSubcategoriaName}
-                />
-                <Button variant="outline-primary" onClick={handleAgregar} className="ca-buttonAdd">
-                + 
-                </Button>
-              </div>
+  <Form.Control
+    placeholder="Ingrese el nombre de la competencia"
+    id="nombreSubcategoría"
+    value={subcategoriaName}
+    onChange={handleChangeSubcategoriaName}
+    isInvalid={formError} 
+  />
+  {formError && <Form.Control.Feedback type="invalid" className="input-feedback">Ingrese un nombre de competencia válido.</Form.Control.Feedback>}
+
+  <Button variant="outline-primary" onClick={handleAgregar} className="ca-buttonAdd">
+    + 
+  </Button>
+</div>
+
             </div>
+
           </Form.Group>
         </Form>
       );
@@ -132,16 +144,18 @@ const ModalAddSubcategorie = (props) => {
         await delay(4000);
         window.location.reload();
         };
-    const handleGuardar = ()=>{
-      (async () => { 
-        const response = await agregarSubcategorias(subcategorias,idCategory);
-        if (response){
+  const handleGuardar = () => {
+    if (subcategorias.length > 0) {
+      (async () => {
+        const response = await agregarSubcategorias(subcategorias, idCategory);
+        if (response) {
           toast.success("Se ha añadido correctamente las competencias");
           setShow(false);
           closeNotification();
         }
-        })();
+      })();
     }
+  };
 	return (
 		<Modal show={show} onHide={handleClose}>
       			    <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />  
@@ -157,7 +171,7 @@ const ModalAddSubcategorie = (props) => {
             <Button variant='outline-primary' className='boton-dejar mr-10' onClick={() => setShow(false)}>
        			Volver
      		</Button>
-            <Button variant="primary" onClick={handleGuardar}>
+            <Button variant="primary" onClick={handleGuardar} disabled={subcategorias.length === 0}>
               Agregar
             </Button>
             </Modal.Footer>
