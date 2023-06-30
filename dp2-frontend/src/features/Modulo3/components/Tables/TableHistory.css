@@ -48,3 +48,7 @@ width: 50% !important;
 .competencia{
 	padding-right: 60px !important;
 }
+.accionesLabel{
+	text-align: end !important;
+	padding-right: 50px !important;
+}
