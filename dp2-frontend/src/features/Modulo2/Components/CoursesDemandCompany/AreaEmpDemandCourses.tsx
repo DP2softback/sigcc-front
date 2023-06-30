@@ -1,59 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Form, Button, Modal } from 'react-bootstrap';
 import { ArrowRightCircleFill, Pencil, Trash, Upload } from 'react-bootstrap-icons';
-import {Competencia,Posicion, AreaActiva} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos'
+import {EmpleadoDeArea,Posicion, AreaActiva} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos'
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
 import { useNavigate } from 'react-router-dom';
 import { DEMAND_COMPANY_COURSES, DEMAND_COMPANY_COURSES_LIST, GAPS_ANALYSIS_MODULE } from '@features/Modulo2/routes/path';
 import './AreaEmpDemandCourses.css'
-
-const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
 const SelectDemandCourses: React.FC = () => {
   const navigate = useNavigate(); 
   const [tipoFiltro, setTipoFiltro] = useState(0);
+  const [buscar, setBuscar] = useState(false);
   const [estadoFiltro, setEstadoFiltro] = useState('');
   const [areas, setAreas] = useState<AreaActiva[]>([]);
-  const [areaSeleccionada, setAreaSeleccionada] = useState('');
+  const [areaSeleccionada, setAreaSeleccionada] = useState(-1);
   const [posiciones, setPosiciones] = useState<Posicion[]>([]);
-  const [posicionSeleccionada, setPosicionSeleccionada] = useState('');
-  const [competencias, setCompetencias] = useState<Competencia[]>([]);
+  const [posicionSeleccionada, setPosicionSeleccionada] = useState(0);
+  const [competencias, setCompetencias] = useState<EmpleadoDeArea[]>([]);
   const [competenciaSeleccionada, setCompetenciaSeleccionada] = useState(null);
   const [datosCargados, setDatosCargados] = useState(false);
   const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
   const [tipoOrden, setTipoOrden] = useState('ascendente');
   const [searchQuery, setSearchQuery] = useState('');
-  const [mostrarPopUpCrear , setmostrarPopUpCrear] = useState(false);
   useEffect(() => {
-      const fetchCompetencias = async () => {
-        try {
-          const body = {
-            idCompetencia: 0,
-            palabraClave: searchQuery,
-            idTipoCompetencia: tipoFiltro === 0 ? 0 : tiposCompetencia[tipoFiltro + 1],
-            activo: estadoFiltro === 'Activo' ? 1 : estadoFiltro === 'Inactivo' ? 0 : 2,
-            idEmpleado: 0,
-          };
-
-          const response = await fetch(URL_SERVICE + '/gaps/competenceSearch', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': TOKEN_SERVICE,
-            },
-            body: JSON.stringify(body),
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            setCompetencias(data);
-          } else {
-            console.log('Error al obtener los datos de competencias');
-          }
-        } catch (error) {
-          console.log('Error al obtener los datos de competencias:', error);
-        }
-      };
-
       const fetchareas = async () => {
         try {
           const response = await fetch(URL_SERVICE + '/gaps/employeeArea', {
@@ -73,140 +41,101 @@ const SelectDemandCourses: React.FC = () => {
           console.log('Error al obtener los datos de competencias:', error);
         }
       };
-      
       fetchareas();
   }, []);
   const handleAreaChange = async (value) => {
     setAreaSeleccionada(value);
-    console.log('area: ' + value)
+    console.log('id area: ' + value.type)
     if (value) {
       try {
+        const body = {
+          area: value,
+        };
         const response = await fetch(URL_SERVICE + '/gaps/employeePosition', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': TOKEN_SERVICE,
           },
-          body: JSON.stringify({ area: value })
+          body: JSON.stringify(body),
         });
+        console.log(response)
         if (response.ok) {
           const data = await response.json();
           setPosiciones(data);
         } else {
-          console.error('Error al obtener las posiciones');
+          console.log('Error al obtener los datos de posiciones');
         }
       } catch (error) {
-        console.error('Error al realizar la solicitud:', error);
+        console.log('Error al obtener los datos de posiciones:', error);
       }
     } else {
       setPosiciones([]);
     }
-
   }
-  const handlePositionChange = (value) => {
+  const handlePositionChange = async (value) => {
     setPosicionSeleccionada(value);
+    console.log('id posicion: ' + value.type)
   };
-  const handleTipoFiltroChange = (value) => {
-    setTipoFiltro(value);
-    setCompetenciaSeleccionada(null);
-  };
- ;const handleBuscarClick = async () => {
-    if (!competenciaSeleccionada) {
-      return;
-    }
-
+ const handleBuscarClick = async () => {
+  setBuscar(true);
+  if (posicionSeleccionada) {
     try {
-      const body = {
-        idCompetencia: 0,
-        palabraClave: '',
-        idTipoCompetencia: competenciaSeleccionada,
-        activo: estadoFiltro === 'Activo' ? 1 : estadoFiltro === 'Inactivo' ? 0 : 2,
-        idEmpleado: 0,
-      };
-
-      const response = await fetch(URL_SERVICE + '/gaps/competenceSearch', {
+      const requestOptions = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': TOKEN_SERVICE,
         },
-        body: JSON.stringify(body),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setCompetencias(data);
-        setDatosCargados(true);
-      } else {
-        console.log('Error al obtener los datos de competencias');
-      }
-    } catch (error) {
-      console.log('Error al obtener los datos de competencias:', error);
-    }
-  };
-  const handleMostrarPopUpCrear  = () => {       
-      navigate(`/${GAPS_ANALYSIS_MODULE}/${DEMAND_COMPANY_COURSES}/${DEMAND_COMPANY_COURSES_LIST}`);
-  };
-  const agregarCompetencia = (nuevaCompetencia) => {
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': TOKEN_SERVICE
-        },
-        body: JSON.stringify({
-          name: nuevaCompetencia.name,
-          description: nuevaCompetencia.description,
-          active: nuevaCompetencia.active,
-          type: nuevaCompetencia.type
-        })
+        body: JSON.stringify({ 
+          area: areaSeleccionada,
+          posicion:  posicionSeleccionada,
+        }),
       };
-      fetch(URL_SERVICE + '/gaps/competences', requestOptions)
-        .then(response => response.json())
-        .then(data => {
-          console.log('Competencia agregada:', data);
-        })
-        .catch(error => {
-          console.error('Error al agregar competencia:', error);
-        });
-      handleCerrarPopUpCrear();
-  };
-  const handleCerrarPopUpCrear = () => {
-      setmostrarPopUpCrear(false);
+      const response = await fetch(URL_SERVICE + '/gaps/employeeArea', requestOptions);
+      const data = await response.json();
+      setCompetencias(data);
+    } catch (error) {
+      console.error('Error fetching competencias:', error);
+    }
+  } else {
+    setPosiciones([]);
+  }
   };
   const filtrarCompetencias = () => {
       var competenciasFiltradas = competencias;
       if (tipoFiltro) {
         estadoFiltro !== ''?  
-        competenciasFiltradas = competenciasFiltradas.filter(competencia => competencia.type === tipoFiltro):
+        competenciasFiltradas = competenciasFiltradas.filter(competencia => parseInt(competencia.area__name) == areaSeleccionada):
         competenciasFiltradas = competenciasFiltradas;
       }      
       if (estadoFiltro) {
-        competenciasFiltradas = competenciasFiltradas.filter(competencia => (competencia.active  == (estadoFiltro === 'Activo'? true : false)));
+        competenciasFiltradas = competenciasFiltradas.filter(competencia => (parseInt(competencia.position__name)  == posicionSeleccionada));
       }
       if (searchQuery) {
           const palabrasClaveLower = searchQuery.toLowerCase();
           competenciasFiltradas = competenciasFiltradas.filter(competencia =>
             competencia.id.toString().toLowerCase().includes(palabrasClaveLower) ||
-            competencia.name.toLowerCase().includes(palabrasClaveLower) ||
-            //competencia.code.toString().toLowerCase().includes(palabrasClaveLower) ||
-            competencia.type.toString().toLowerCase().includes(palabrasClaveLower)||
-            competencia.active.toString().toLowerCase().includes(palabrasClaveLower)
+            competencia.user__first_name.toLowerCase().includes(palabrasClaveLower) ||
+            competencia.area__name.toLowerCase().includes(palabrasClaveLower) ||
+            competencia.user__last_name.toString().toLowerCase().includes(palabrasClaveLower)||
+            competencia.user__email.toString().toLowerCase().includes(palabrasClaveLower)
           );
         }
       return competenciasFiltradas;
   };
   const filteredCompetencias = filtrarCompetencias().filter((competencia) => {
       const searchMatch =
-        competencia.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        competencia.code.toLowerCase().includes(searchQuery.toLowerCase());
-      const tipoMatch = tipoFiltro === 0 || competencia.type === tipoFiltro;
-      const estadoMatch = estadoFiltro === '' || competencia.active === (estadoFiltro === 'Activo');
+        competencia.user__first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        competencia.user__last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        competencia.position__name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        competencia.area__name.toLowerCase().includes(searchQuery.toLowerCase());
+        competencia.user__email.toLowerCase().includes(searchQuery.toLowerCase());
+        competencia.id.toString().toLowerCase().includes(searchQuery.toLowerCase());
+      const tipoMatch = tipoFiltro === 0 || parseInt(competencia.area__name) == areaSeleccionada;
+      const estadoMatch = estadoFiltro === '' || parseInt(competencia.position__name) == posicionSeleccionada;
       return searchMatch && tipoMatch && estadoMatch;
   });
-  const handleSearch = () => {
-      // Lógica para realizar la búsqueda
-  };
   const handleLimpiarFiltros = () => {
       setSearchQuery('');
       setTipoFiltro(0);
@@ -241,23 +170,21 @@ const SelectDemandCourses: React.FC = () => {
       <Table striped bordered hover>
         <thead>
           <tr>
-              <th onClick={() => handleOrdenarPorCampo('code')}>Nombres {campoOrdenamiento === 'code' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-              <th onClick={() => handleOrdenarPorCampo('name')}>Apellidos {campoOrdenamiento === 'name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-              <th onClick={() => handleOrdenarPorCampo('type')}>Posicion {campoOrdenamiento === 'type' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-              <th onClick={() => handleOrdenarPorCampo('active')}>Área {campoOrdenamiento === 'active' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-              <th onClick={() => handleOrdenarPorCampo('active')}>Email {campoOrdenamiento === 'active' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-              <th onClick={() => handleOrdenarPorCampo('active')}>Estado {campoOrdenamiento === 'active' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
+              <th onClick={() => handleOrdenarPorCampo('user__first_name')}>Nombres {campoOrdenamiento === 'user__first_name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
+              <th onClick={() => handleOrdenarPorCampo('user__last_name')}>Apellidos {campoOrdenamiento === 'user__last_name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
+              <th onClick={() => handleOrdenarPorCampo('position__name')}>Posicion {campoOrdenamiento === 'position__name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
+              <th onClick={() => handleOrdenarPorCampo('user__email')}>Email {campoOrdenamiento === 'user__email' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
+              <th onClick={() => handleOrdenarPorCampo('id')}>ID {campoOrdenamiento === 'id' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
           </tr>
         </thead>
         <tbody>
           {datosFiltradosYOrdenados.map((competencia) => (
             <tr key={competencia.id}>
-              <td>{competencia.code}</td>
-              <td>{competencia.name}</td>
-              <td>{areas.find((tipo) => tipo.id == competencia.type)?.name}</td>
-              <td>{competencia.active ? 'Activo' : 'Inactivo'}</td>
-              <td>{competencia.active ? 'Activo' : 'Inactivo'}</td>
-              <td>{competencia.active ? 'Activo' : 'Inactivo'}</td>
+              <td>{competencia.user__first_name}</td>
+              <td>{competencia.user__last_name}</td>
+              <td>{competencia.position__name}</td>
+              <td>{competencia.user__email}</td>
+              <td>{competencia.id}</td>
             </tr>
           ))}
         </tbody>
@@ -282,14 +209,11 @@ const SelectDemandCourses: React.FC = () => {
         <h2 className='Head'>Demanda de capacitación</h2>
         <p className="text-muted subtitle">Generar la demanda de capacitación.</p>
         </div>
-
         <div className='container-fluid'>
           <div className='row'>
-
-
             <div className='col-sm-3 botones'>
               <Form.Group className="mb-3" controlId="tipoFiltro">
-                  <Form.Control as="select" value={areaSeleccionada} onChange={(e) => handleAreaChange(e.target.value)}>
+                  <Form.Control as="select" value={areaSeleccionada} onChange={(e) => handleAreaChange(parseInt(e.target.value))}>
                     <option value="">Área</option>
                     {areas.map((tipo) => (
                       <option key={tipo.id} value={tipo.id}>
@@ -299,44 +223,41 @@ const SelectDemandCourses: React.FC = () => {
                   </Form.Control>
                 </Form.Group>
               </div>
-
-            <div className='col-sm-3 botones'>
-              <Form.Group controlId="estadoFiltro">
-                <Form.Control as="select" value={estadoFiltro} onChange={(e) =>{ setEstadoFiltro(e.target.value); console.log(e.target.value)}}>
-                  <option value="">Posición</option>
-                  <option value="Activo">Activo</option>
-                  <option value="Inactivo">Inactivo</option>
-                </Form.Control>
-              </Form.Group>
-            </div>
+              <div className='col-sm-3 botones'>
+              <Form.Group className="mb-3" controlId="tipoFiltro">
+                  <Form.Control as="select" value={posicionSeleccionada} onChange={(e) => handlePositionChange(e.target.value)}>
+                    <option value="">Posicion</option>
+                    {areaSeleccionada!== -1 ?posiciones.map((tipo) => (
+                      <option key={tipo.position__id} value={tipo.position__id}>
+                        {tipo.position__name}
+                      </option>
+                    )): <option>Ingrese un area primero</option>}
+                  </Form.Control>
+                </Form.Group>
+              </div>
          </div>
             <div className='row'>
               <div className="col-sm-3 botones2 justify-content-center">
                 <Button variant="outline-secondary" className='Search' onClick={handleLimpiarFiltros}>
                   Limpiar filtros
                 </Button>{' '}
-                <Button variant="primary" className='Search' onClick={handleSearch}>
+                <Button variant="primary" className='Search' onClick={handleBuscarClick}>
                   Buscar
                 </Button>{' '}
-              </div>
-              
+              </div>              
               <div className="col-sm-3 botones2 justify-content-center">          
-                <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
+                <Button variant="primary" className='Search2' onClick={()=>{navigate(`/${GAPS_ANALYSIS_MODULE}/${DEMAND_COMPANY_COURSES}/${DEMAND_COMPANY_COURSES_LIST}`)}}>
                 Generar demanda
                 </Button>
               </div>  
           </div>
-        </div>  
-
+        </div>
           <div className='container-fluid'>
           {renderListaPosicion()}
         </div>
-
         <div className='container-fluid'>
-          {renderTablaCompetencias()}
+          {(posicionSeleccionada!==-1 && buscar) ? renderTablaCompetencias() : "Seleccione una posicion"}
         </div>
-
-
       </div>
   );
 };
