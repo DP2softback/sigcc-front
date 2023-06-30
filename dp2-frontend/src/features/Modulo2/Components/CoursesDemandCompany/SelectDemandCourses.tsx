@@ -4,6 +4,7 @@ import { ArrowRightCircleFill, Pencil, Trash, Upload } from 'react-bootstrap-ico
 import {Competencia,tipoCompetencia, AreaActiva} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos'
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
 import { useNavigate } from 'react-router-dom';
+import './SelectDemandCourses.css'
 const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
 const SelectDemandCourses: React.FC = () => {
   const navigate = useNavigate();
@@ -303,17 +304,19 @@ const SelectDemandCourses: React.FC = () => {
       </Modal.Header>
       <Modal.Body>      
         <div className='container-fluid'>
-          <p>¿Seguro que desea asignar los cursos seleccionados?</p>           
-          <div className='espacio'>
-            <Button className="botones2" onClick={()=>{navigate(-1)}}>
-              Aceptar
-            </Button>
-          </div>
-        </div>
-        <div className='botonCerrar2'>
-        <Button variant="secondary" onClick={handleCerrarPopUpGenerar}>
-        Cancelar
-        </Button>
+            <p>¿Seguro que desea asignar los cursos seleccionados?</p>      
+
+
+  
+              <Button className="Search2" onClick={()=>{navigate(-1)}}>
+                Aceptar
+              </Button>
+
+  
+
+              <Button variant="secondary" className='Search2' onClick={handleCerrarPopUpGenerar}>
+              Cancelar
+              </Button>
         </div>
       </Modal.Body>
   </Modal>
@@ -349,15 +352,22 @@ const SelectDemandCourses: React.FC = () => {
         <h2 className='Head'>Demanda de capacitación</h2>
         <p className="text-muted subtitle">Generar la demanda de capacitación.</p>
       </div>
+
       <div className='container-fluid'>
-        <h2 className='Head'>Necesidades de competencias</h2>
-         {renderCards()}
+  
+      <div className='row'>
+
+        <div className='col'>
+          <h2 className='Head2'>Necesidades de competencias</h2>
+          {renderCards()}
+        </div>
+
+        <div className='col'>
+          <h2 className='Head2'>Lista de cursos</h2>
+          {renderTablaCompetencias()}
+        </div>
       </div>
-      <div className='container-fluid'>
-        <h2 className='Head'>Lista de cursos</h2>
-         {renderTablaCompetencias()}
-      </div>
-      <div className='container-fluid'>
+      
         <div className='row'>
          </div>
             <div className='row'>
@@ -369,7 +379,7 @@ const SelectDemandCourses: React.FC = () => {
                 Generar lista
                 </Button>{' '}
               </div>
-              <div className="col-sm-3 botones2 justify-content-center">          
+              <div className="col-md-9  justify-content-right">          
                 <Button variant="primary" className='Search2' onClick={handleMostrarPopUpGenerar}>
                 Generar demanda
                 </Button>
@@ -395,16 +405,21 @@ const SelectDemandCourses: React.FC = () => {
                   </li>
                 ))}
               </ul>              
-              <div className='espacio'>
-                <Button className="botones2" onClick={asignarCompetencia}>
+   
+
+              <Button className="Search2" onClick={asignarCompetencia}>
                   Aceptar
                 </Button>
-              </div>
-            </div>
-            <div className='botonCerrar2'>
-            <Button variant="secondary" onClick={handleCerrarPopUpAsignar}>
-              Cerrar
-            </Button>
+
+              <Button variant="secondary" className='Search2' onClick={handleCerrarPopUpAsignar}>
+                  Cancelar
+                </Button>
+
+
+           
+     
+            
+
             </div>
           </Modal.Body>
       </Modal> 

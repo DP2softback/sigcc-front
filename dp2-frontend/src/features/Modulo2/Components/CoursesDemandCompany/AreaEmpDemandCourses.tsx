@@ -5,6 +5,8 @@ import {Competencia,Posicion, AreaActiva} from '@features/Modulo2/Components/Ges
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
 import { useNavigate } from 'react-router-dom';
 import { DEMAND_COMPANY_COURSES, DEMAND_COMPANY_COURSES_LIST, GAPS_ANALYSIS_MODULE } from '@features/Modulo2/routes/path';
+import './AreaEmpDemandCourses.css'
+
 const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
 const SelectDemandCourses: React.FC = () => {
   const navigate = useNavigate(); 
@@ -298,37 +300,33 @@ const SelectDemandCourses: React.FC = () => {
                 </Form.Group>
               </div>
 
-              <div className='col-sm-3 botones'>
-              <Form.Group className="mb-3" controlId="tipoFiltro">
-                  <Form.Control as="select" value={posicionSeleccionada} onChange={(e) => handlePositionChange(e.target.value)}>
-                    <option value="">Posicion</option>
-                    {posiciones.map((tipo) => (
-                      <option key={tipo.position__id} value={tipo.position__id}>
-                        {tipo.position__name}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Form.Group>
-              </div>
-
-          </div>
-              <div className='row'>
-                <div className="col-sm-3 botones2 justify-content-center">
-                  <Button variant="outline-secondary" className='Search' onClick={handleLimpiarFiltros}>
-                    Limpiar filtros
-                  </Button>{' '}
-                  <Button variant="primary" className='Search' onClick={handleSearch}>
-                    Buscar
-                  </Button>{' '}
-                </div>
-                
-                <div className="col-sm-3 botones2 justify-content-center">          
-                  <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
-                  Generar demanda
-                  </Button>
-                </div>  
+            <div className='col-sm-3 botones'>
+              <Form.Group controlId="estadoFiltro">
+                <Form.Control as="select" value={estadoFiltro} onChange={(e) =>{ setEstadoFiltro(e.target.value); console.log(e.target.value)}}>
+                  <option value="">Posición</option>
+                  <option value="Activo">Activo</option>
+                  <option value="Inactivo">Inactivo</option>
+                </Form.Control>
+              </Form.Group>
             </div>
-          </div>  
+         </div>
+            <div className='row'>
+              <div className="col-sm-3 botones2 justify-content-center">
+                <Button variant="outline-secondary" className='Search' onClick={handleLimpiarFiltros}>
+                  Limpiar filtros
+                </Button>{' '}
+                <Button variant="primary" className='Search' onClick={handleSearch}>
+                  Buscar
+                </Button>{' '}
+              </div>
+              
+              <div className="col-sm-3 botones2 justify-content-center">          
+                <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
+                Generar demanda
+                </Button>
+              </div>  
+          </div>
+        </div>  
 
           <div className='container-fluid'>
           {renderListaPosicion()}
