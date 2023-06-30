@@ -22,6 +22,9 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [show,setShow] = useState(false);
 	const [showAS,setShowAS] = useState(false);
+  const [filterValue, setFilterValue] = useState('');
+  const [filteredCategories, setFilteredCategories] = useState(categories);
+
 
   useEffect(() => {
     setIsLoading(true);
@@ -29,26 +32,41 @@ const Index = () => {
       const response = await listAllCategorias(CONTINUOS_EVALUATION_TYPE);
       if(response){
         setCategories(response)
+
       }
         
       setIsLoading(false);
     })();
   }, []);
 
-  const filters = (
-		<Form.Group controlId="searchEmployees" className="d-flex justify-content">
-        <Form.Control
-		placeholder="Buscar categoría"
-		aria-describedby="ec-indexSearch"
-        className="me-2 w-90"
-		/><Button variant="primary">Buscar</Button>
-		</Form.Group>
+
+
+useEffect(() => {
+  const filteredData = categories.filter((category) =>
+    category.name.toLowerCase().includes(filterValue.toLowerCase())
   );
+  setFilteredCategories(filteredData);
+}, [filterValue, categories]);
+
+  
+  const filters = (
+    <Form.Group controlId="searchEmployees" className="d-flex justify-content">
+      <Form.Control
+        placeholder="Buscar categoría"
+        aria-describedby="ec-indexSearch"
+        className="me-2 w-90"
+        value={filterValue}
+        onChange={(e) => setFilterValue(e.target.value)}
+      />
+    </Form.Group>
+  );
+
+  
 
 
   const table =(
     <div>
-      <TableCategories rows ={categories}/>
+      <TableCategories rows ={filteredCategories}/>
     </div>
   );
 

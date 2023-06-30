@@ -19,7 +19,7 @@ export default function TableCategories({ rows, isReadOnly = false }) {
       <thead className={`bg-white${isReadOnly ? 'ReadOnly' : ''}`}>
         <tr>
           <th className='categorie_name'>Nombre</th>
-          <th className='text-end label'>Acciones</th>
+          <th className='text-end labelA'>Acciones</th>
         </tr>
       </thead>
       <tbody>
