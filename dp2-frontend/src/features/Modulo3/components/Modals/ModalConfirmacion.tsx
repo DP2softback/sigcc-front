@@ -61,7 +61,7 @@ const ModalConfirmacion = (props) => {
 			<Modal.Header closeButton>
 				<Modal.Title>{
 					type === "plantilla" ?
-					<div>Eliminar Plantilla</div> :type === "editar" ?<div> Editar Plantilla</div>:<div> Eliminar Subcategoria</div> 	
+					<div>Eliminar Plantilla</div> :type === "editar" ?<div> Editar Plantilla</div>:<div> Eliminar Competencia</div> 	
 					}
 				</Modal.Title>
 			</Modal.Header>

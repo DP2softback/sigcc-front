@@ -24,6 +24,7 @@ export default function TableCompetencia({ rows, isReadOnly = false,setShow,setI
       <thead className={`bg-white${isReadOnly ? 'ReadOnly' : ''}`}>
         <tr>
           <th className='categorie_name'>Nombre</th>
+          <th className='accionesLabel'>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -34,8 +35,11 @@ export default function TableCompetencia({ rows, isReadOnly = false,setShow,setI
             <tr key={row.idSubcategory} className={rowStyle}>
               <td className='categorie_name'>{row.nameSubCategory}</td>
               <td className='text-center'>                
-
-
+              <div className='acciones'>
+                <Button variant="outline-danger" className='accion' onClick={()=>handleEliminar(row.idSubcategory)}>
+                  Quitar
+                </Button>
+                </div>
               </td>
             </tr>:<tr key={row.idSubcategory}></tr>
           );

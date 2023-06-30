@@ -113,23 +113,59 @@ const ModalAddSubcategorie = (props) => {
                 Nueva competencia
               </label>
               <div className="input-button-container">
-  <Form.Control
-    placeholder="Ingrese el nombre de la competencia"
-    id="nombreSubcategoría"
-    value={subcategoriaName}
-    onChange={handleChangeSubcategoriaName}
-    isInvalid={formError} 
-  />
-  {formError && <Form.Control.Feedback type="invalid" className="input-feedback">Ingrese un nombre de competencia válido.</Form.Control.Feedback>}
-
-  <Button variant="outline-primary" onClick={handleAgregar} className="ca-buttonAdd">
-    + 
-  </Button>
-</div>
-
+                <Form.Control
+                  placeholder="Ingrese el nombre de la competencia"
+                  id="nombreSubcategoría"
+                  value={subcategoriaName}
+                  onChange={handleChangeSubcategoriaName}
+                  isInvalid={formError} 
+                />
+                {formError && <Form.Control.Feedback type="invalid" className="input-feedback">Ingrese un nombre de competencia válido.</Form.Control.Feedback>}
+                
+                <Button variant="outline-primary" onClick={handleAgregar} className="ca-buttonAdd">
+                  + 
+                </Button>
+            </div>
+            
             </div>
 
           </Form.Group>
+          <Form.Group>
+  <div className="label-input-container">
+    <label className="label-estilizado" htmlFor="dropdown">
+      Competencia existente
+    </label>
+    <div className="input-button-container">
+      <Form.Select
+        value={selectedOption}
+        onChange={(e) => handleOptionSelect(e.target.value)}
+        disabled={competencias.length === 0}
+      >
+        {competencias.length === 0 && (
+          <option hidden>No hay competencias libres</option>
+        )}
+        {competencias.length > 0 && (
+          <>
+            <option hidden>Seleccione una competencia</option>
+            {competencias.map((competencia, index) => (
+              <option key={competencia.id}>{competencia.name}</option>
+            ))}
+          </>
+        )}
+      </Form.Select>
+      <Button
+        variant="outline-primary"
+        onClick={handleAgregarExistente}
+        className="ca-buttonAdd"
+        disabled={competencias.length === 0}
+      >
+        +
+      </Button>
+    </div>
+  </div>
+</Form.Group>
+
+
         </Form>
       );
       
