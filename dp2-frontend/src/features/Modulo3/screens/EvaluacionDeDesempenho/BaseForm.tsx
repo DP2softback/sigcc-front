@@ -2,7 +2,7 @@ import "./EvaluacionDeDesempenho.css";
 import { PERFORMANCE_EVALUATION_HISTORY, PERFORMANCE_EVALUATION_INDEX } from "@features/Modulo3/routes/path";
 import { Button, Col, Row } from "react-bootstrap";
 import { checkIfAllNull, navigateBack, navigateTo } from "@features/Modulo3/utils/functions";
-import { saveEvaluation } from "@features/Modulo3/services/performanceEvaluation";
+import { saveEvaluation, saveAutoevaluation } from "@features/Modulo3/services/performanceEvaluation";
 import { API_CREATE_PERFORMANCE_EVALUATION_SUCCESS, EVALUACION_CREADA_CON_EXITO, TEXTAREA_ROWS } from "@features/Modulo3/utils/constants";
 import { useState } from "react";
 import Layout from "@features/Modulo3/components/Layout/Content/Content";
@@ -23,9 +23,11 @@ type BaseFormProps = {
 	setEvaluation?: any;
 	setIsLoading?: any;
 	isReadOnly?: boolean;
+	isAutoevaluation?: boolean;
+	evaluationId?: any;
 };
 
-const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoading, setEvaluation, setIsLoading, isReadOnly}: BaseFormProps) => {
+const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoading, setEvaluation, setIsLoading, isReadOnly, isAutoevaluation, evaluationId}: BaseFormProps) => {
 	const [showEvaluatedAnswers, setShowEvaluatedAnswers] = useState(false);
 
 	const evaluationMatrix = categories && (
@@ -128,6 +130,10 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 	);
 
 	const buttons = (
+		isAutoevaluation ? 
+		<div className="text-end">
+			{saveButton}
+		</div> :
 		<div className="text-end">
 			{cancelButton}
 			{saveButton}
@@ -208,7 +214,7 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 
 	function handleSave(){
 		const formErrors = validateForm();
-		
+
 		if(!checkIfAllNull(formErrors)){
 			return;
 		}
@@ -218,7 +224,8 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 		setIsLoading(true);
 		(async () => {
 			try {
-				result = await saveEvaluation(evaluation);
+				const aux = {evaluationId: evaluationId, categories: categories}
+				isAutoevaluation ? result = await saveAutoevaluation(aux) : result = await saveEvaluation(evaluation);
 			} catch (error) {
 				toast.error(`Ha ocurrido un error al guardar la evaluación.`);
 				setIsLoading(false);

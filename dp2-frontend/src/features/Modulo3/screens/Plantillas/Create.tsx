@@ -158,12 +158,12 @@ const Create = () => {
   //Real
   const handleRadioChange = (categoryName: string,index: number) => {
     
-    if(selectedOption==CONTINUOS_EVALUATION_TYPE){
-      let nuevo=[{categoriaNombre: categoryName, subcategory:[]}]
-      setData({
-        categorias: nuevo,
-      })
-    }else{
+    // if(selectedOption==CONTINUOS_EVALUATION_TYPE){
+    //   let nuevo=[{categoriaNombre: categoryName, subcategory:[]}]
+    //   setData({
+    //     categorias: nuevo,
+    //   })
+    // }else{
       let nuevo={categoriaNombre: categoryName, subcategory:[]}
       //guardo las categorias ya seleccionadas
       let lista = data ? [...data.categorias] : [];
@@ -177,35 +177,35 @@ const Create = () => {
         ...data,
         categorias: lista,
       })
-    }
+    //}
   }
 
   //Real
   const handleSubcategoryRadioChange = (e: any,subcategoria: string, categoryName: string, subId: string) => {
-    if(selectedOption==CONTINUOS_EVALUATION_TYPE){
-      //guardo las subcategorias actuales
-      //console.log("dataBeforeLista",data,data?.categorias[0]?.subcategory.length)
-      let lista = data?.categorias[0]?.subcategory || [];
-      //console.log("listaContSubcat",lista,lista.length)
-      //creo la nueva entrada
-      let nuevo={id:subId, name: subcategoria}
-      //verifica si la subcat ya esta para quitarla o pushearla
-      if(data?.categorias[0]?.subcategory?.find(sub => subcategoria==sub.name)){ 
-        lista=lista.filter(sub => sub.name!=subcategoria)
-      }
-      else{ 
-        lista.push(nuevo) 
-      }
-      //guardo la categoria actual
-      let aux=data.categorias
-      //le pongo las nuevas subcats
-      aux[0].subcategory=lista
-      //actualizo data
-      setData({
-        ...data,
-        categorias: aux,
-      })
-    }else{
+    // if(selectedOption==CONTINUOS_EVALUATION_TYPE){
+    //   //guardo las subcategorias actuales
+    //   //console.log("dataBeforeLista",data,data?.categorias[0]?.subcategory.length)
+    //   let lista = data?.categorias[0]?.subcategory || [];
+    //   //console.log("listaContSubcat",lista,lista.length)
+    //   //creo la nueva entrada
+    //   let nuevo={id:subId, name: subcategoria}
+    //   //verifica si la subcat ya esta para quitarla o pushearla
+    //   if(data?.categorias[0]?.subcategory?.find(sub => subcategoria==sub.name)){ 
+    //     lista=lista.filter(sub => sub.name!=subcategoria)
+    //   }
+    //   else{ 
+    //     lista.push(nuevo) 
+    //   }
+    //   //guardo la categoria actual
+    //   let aux=data.categorias
+    //   //le pongo las nuevas subcats
+    //   aux[0].subcategory=lista
+    //   //actualizo data
+    //   setData({
+    //     ...data,
+    //     categorias: aux,
+    //   })
+    // }else{
       //consigo el indice de la categoria
       const catIndex = data?.categorias.findIndex(cat => cat.categoriaNombre === categoryName);
       //guardo las subcategorias actuales
@@ -227,8 +227,7 @@ const Create = () => {
           categorias: aux,
         })
       }
-    }
-    //console.log("dataS",data)
+    //}
   }
 
 
@@ -246,75 +245,27 @@ const Create = () => {
           <Accordion.Header>
             <FormCheck
               name='opciones'
-              type={selectedOption === CONTINUOS_EVALUATION_TYPE ? 'radio' : 'checkbox'}
+              // type={selectedOption === CONTINUOS_EVALUATION_TYPE ? 'radio' : 'checkbox'}
+              type={'checkbox'}
               label={categoria["category-name"]}
-              // label={categoria.name}
-              // checked={selectedOptions[categoria.id] === categoria.name}
               onChange={() => handleRadioChange(categoria["category-name"],index)}
-              // onChange={() => handleRadioChange(categoria["category-name"])}
-              // onChange={() => handleRadioChange(categoria.name)}
-              //disabled={!isSelected(categoria.name) && categoria.subcategories && categoria.subcategories.length > 0}
             />
           </Accordion.Header>
           <Accordion.Body>
             <div className="accordionExpPla-bodyitems">
-              {/* {categorias && categoria.subcategories.map((subcategoria, index) => ( */}
               {categorias && categoria.subcategory.map((subcategoria, subIndex) => (
                 <FormCheck
-                  // key={subcategoria}
                   key={subcategoria.id}
                   type="checkbox"
-                  // label={subcategoria}
                   label={subcategoria.name}
-                  // checked={data.subcategory.find(sub => subcategoria==sub) ? true : false}
-                  // checked={data && data.categorias[index].subcategory && data.categorias[index].subcategory.length>0 && data.categorias[index].subcategory.find(sub => subcategoria.name==sub) ? true : false}
-                  // checked={data.categorias[index].subcategory.find(sub => subcategoria.name==sub) ? true : false}
-                  // checked={
-                  //   data &&
-                  //   data.categorias &&
-                  //   data.categorias[index] &&
-                  //   data.categorias[index].subcategory &&
-                  //   data.categorias[index].subcategory.length > 0 &&
-                  //   data.categorias[index].subcategory.find(sub => sub.name === subcategoria.name)
-                  //     ? true
-                  //     : false
-                  // }
                   onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria.name,categoria["category-name"],subcategoria.id)}
                   checked={isSubcategorySelected(categoria["category-name"], subcategoria.name)}
-                  //disabled={!isSelected(categoria.name)}
-                  
-                  // checked={data.subcategory.find(sub => subcategoria.name==sub) ? true : false}
-                  // disabled={}
-                  // onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria)}
-                  
-                  // onChange={(e)=> handleSubcategoryRadioChange(e,subcategoria.name)}
                 />
               ))}
             </div>
-
-            {/* <div className="row ingreso-sub mt-32">
-              <Form.Control
-                className="input-sub"
-                placeholder="Ingrese una nueva subcategoría"
-                value={inputValues[categoria.id] || ''}
-                onChange={(event) =>
-                  handleInputChange(categoria.id, event.target.value)
-                }
-              />
-              <Button
-                className="boton-subcategorie mt-32"
-                variant="secondary"
-                onClick={() => handleAddSubcategory(categoria.id)}
-              >
-                <span>+</span>
-              </Button>
-            </div> */}
           </Accordion.Body>
         </Accordion.Item>
       ))}
-      {/* <div className="text-end mt-32">
-        <Button onClick={() => setShowAC(true)}>+ Añadir nueva categoría</Button>
-      </div> */}
     </Accordion>
 
   );
