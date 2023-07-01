@@ -10,11 +10,11 @@ export const DAYS_UNIT = 'días';
 
 export const BACKEND_URL = 'https://payd6uk5t9.execute-api.us-east-1.amazonaws.com/dev-eval/api/v1/';
 
-export const TOKEN = '90833f32c0b04ddb0754ddd74c864354baf1940d';
+export const TOKEN = 'e3ba078386774f179a337d6488668302e87ab131';
 
 export const USER_ID = 5;
 
-export const TEXTAREA_ROWS = 3;
+export const TEXTAREA_ROWS = 3; 
 
 export const API_CREATE_CONTINUOUS_EVALUATION_SUCCESS = "Evaluation created successfully.";
 
