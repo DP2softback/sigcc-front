@@ -3,6 +3,7 @@ import { Table, Form, Button, Modal } from 'react-bootstrap';
 import { ArrowRightCircleFill, Pencil, Trash, Upload } from 'react-bootstrap-icons';
 import {Competencia,tipoCompetencia} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos'
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
+import './DemandaCapacitacion.css';
 
 const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
 
@@ -379,7 +380,7 @@ const borrarCompetencia = async (id) => {
             </div>
          </div>
             <div className='row'>
-              <div className="col-sm-3 botones2 justify-content-center">
+              <div className="col-md-6 botones2 justify-content-center">
                 <Button variant="outline-secondary" className='Search' onClick={handleLimpiarFiltros}>
                   Limpiar filtros
                 </Button>{' '}
@@ -387,7 +388,7 @@ const borrarCompetencia = async (id) => {
                   Buscar
                 </Button>{' '}
               </div>
-              <div className="col-sm-3 botones2 justify-content-center">          
+              <div className="col-md-6 botones2 justify-content-center">          
                 <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
                   Agregar capacidad
                 </Button>

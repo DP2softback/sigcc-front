@@ -26,7 +26,6 @@ const DetalleCompetenciasArea = () => {
   
         const fetchAreasActivas = async () => {
         try {
-          
           const requestOptions = {
             method: 'POST',
             headers: {

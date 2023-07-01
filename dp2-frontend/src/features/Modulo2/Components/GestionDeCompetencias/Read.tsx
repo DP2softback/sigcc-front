@@ -349,7 +349,7 @@ const borrarCompetencia = async (id) => {
 
       <div className='container-fluid'>
         <div className='row'>
-          <div className='col-sm-3 basicSearch'>
+          <div className='col-md-6 basicSearch'>
             <Form.Group controlId="search">
               <Form.Control
                 type="text"
@@ -384,18 +384,29 @@ const borrarCompetencia = async (id) => {
             </div>
          </div>
             <div className='row'>
-              <div className="col-sm-3 botones2 justify-content-center">
-                <Button variant="outline-secondary" className='Search' onClick={handleLimpiarFiltros}>
-                  Limpiar filtros
-                </Button>{' '}
-                <Button variant="primary" className='Search' onClick={handleSearch}>
-                  Buscar
-                </Button>{' '}
-              </div>
-              <div className="col-sm-3 botones2 justify-content-center">          
+              <div className="col-md-12  justify-content-right">
+
+        
+
+
+
+ 
                 <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
                   Agregar capacidad
                 </Button>
+
+                <Button variant="primary" className='Search' onClick={handleSearch}>
+                  Buscar
+                </Button>{' '}
+
+                <Button variant="outline-secondary" className='SearchP' onClick={handleLimpiarFiltros}>
+                  Limpiar filtros
+                </Button>{' '}
+
+                
+
+         
+                
               </div>  
           </div>
         </div>  
