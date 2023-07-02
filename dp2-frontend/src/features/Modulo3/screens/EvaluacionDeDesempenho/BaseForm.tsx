@@ -71,28 +71,28 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 		})
 	);
 
-	const evaluatedMatrix = associatedEvaluation && associatedEvaluation.categories && (
-		associatedEvaluation.categories.map((category, index) => {
-			const matrixAndComent = (
+	const evaluatedMatrix = associatedEvaluation?.categories && (
+		associatedEvaluation.categories.map((evaluatedCategory, index) => {
+			const evaluatedMatrixAndComent = (
 				<Row>
 					<Col>
 						<div className="mb-2">
 							<Matrix
 								header={["Muy mala", "Mala", "Regular", "Buena", "Muy buena"]}
-								rows={category.subcategories}
+								rows={evaluatedCategory?.subcategories}
 								index={index}
-								evaluation={evaluation}
+								evaluation={associatedEvaluation}
 								setEvaluation={setEvaluation}
 								isReadOnly={isReadOnly}
 							/>
 						</div>
 						<div className="mb-4">
 							<Form.Control
-								value={category?.subcategories?.[0]?.comment}
+								value={evaluatedCategory?.subcategories?.[0]?.comment}
 								disabled={isReadOnly}
 								as="textarea"
 								aria-label="With textarea"
-								placeholder="Ingrese los comentarios o recomendaciones que crea conveniente"
+								placeholder="El evaluado no ha ingresado comentarios"
 								rows={TEXTAREA_ROWS}
 								onChange={onAdditionalCommentsChange(index)}
 							/>
@@ -102,12 +102,12 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 			);
 
 			return (
-				<div key={category.id}>
+				<div key={evaluatedCategory.id}>
 					<Section
-						title={category.name + (isReadOnly ? "" : "*")}
+						title={evaluatedCategory.name + (isReadOnly ? "" : "*")}
 						titleStyle={{marginBottom: '1em'}}
 						sectionStyle={{marginBottom: 0}}
-						content={matrixAndComent}
+						content={evaluatedMatrixAndComent}
 					/>
 				</div>
 			);
@@ -134,6 +134,7 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 		</div>
 	);
 
+	
 	const body = (
 		<>
 			<Row>
@@ -166,7 +167,7 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 
 	const buttonsDetails = (
 		<>
-			{associatedEvaluation && (
+			{associatedEvaluation?.categories?.[0]?.subcategories?.[0]?.score !== 0 && (
 				<Button
 					variant="outline-primary"
 					className="me-2"
@@ -179,7 +180,9 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 					Respuestas de trabajador
 				</Button>
 			)}
-			<Button variant="primary">Añadir compromisos</Button>
+			{associatedEvaluation?.categories?.[0]?.subcategories?.[0]?.score !== 0 && (
+				<Button variant="primary">Añadir compromisos</Button>
+			)}
 		</>
 	);
 
@@ -223,15 +226,19 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 				toast.error(`Ha ocurrido un error al guardar la evaluación.`);
 				setIsLoading(false);
 			} finally {
-				if (result === API_CREATE_PERFORMANCE_EVALUATION_SUCCESS)
+				if (result === API_CREATE_PERFORMANCE_EVALUATION_SUCCESS){
 					toast.success(EVALUACION_CREADA_CON_EXITO);
-				setTimeout(() => {
-					navigateTo(PERFORMANCE_EVALUATION_HISTORY, {
-						id: employee.id,
-						name: employee.name
-					});
+					setTimeout(() => {
+						navigateTo(PERFORMANCE_EVALUATION_HISTORY, {
+							id: employee.id,
+							name: employee.name
+						});
+						setIsLoading(false);
+					}, 2000);
+				} else {
+					toast.error(`Ha ocurrido un error al guardar la evaluación.`);
 					setIsLoading(false);
-				}, 2000);
+				}
 			}
 		})();
 	}
