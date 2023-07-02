@@ -14,7 +14,7 @@ export const TOKEN = 'e3ba078386774f179a337d6488668302e87ab131';
 
 export const USER_ID = 5;
 
-export const TEXTAREA_ROWS = 3;
+export const TEXTAREA_ROWS = 3; 
 
 export const API_CREATE_CONTINUOUS_EVALUATION_SUCCESS = "Evaluation created successfully.";
 
