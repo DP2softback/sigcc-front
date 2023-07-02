@@ -28,7 +28,7 @@ const Info = ({competencia, tipo }) => {
           className="form-control"
           id="nombres"
           value={nombres}
-          onChange={(event) => setNombres(event.target.value)}
+          readOnly  
         />
       </div>
       <div className="form-group">
@@ -38,7 +38,7 @@ const Info = ({competencia, tipo }) => {
           className="form-control"
           id="apellidos"
           value={apellidos}
-          onChange={(event) => setApellidos(event.target.value)}
+          readOnly  
         />
       </div>
       <div className="form-group">
@@ -48,7 +48,7 @@ const Info = ({competencia, tipo }) => {
           className="form-control"
           id="puesto"
           value={tipo}
-          onChange={(event) => setPuesto(event.target.value)}
+          readOnly  
         />
       </div>
       <div className="form-group">
@@ -58,7 +58,7 @@ const Info = ({competencia, tipo }) => {
           className="form-control"
           id="area"
           value={area}
-          onChange={(event) => setArea(event.target.value)}
+          readOnly  
         />
       </div>
     </form>
