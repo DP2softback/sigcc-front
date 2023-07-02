@@ -22,13 +22,9 @@ const Detail = () => {
       const response = await getEvaluation(parseInt(urlParams.get('evaluationId')));
       if (response) {
         setEvaluation(response);
-        if (response.associatedEvaluationId) {
-          const associatedResponse = await getEvaluation(response.associatedEvaluationId);
-          if (associatedResponse) {
-            setAssociatedEvaluation(associatedResponse);
-          }
-        }else{
-          setAssociatedEvaluation(response);
+        if (response.RelatedEvaluation) {
+          const associatedResponse = await getEvaluation(response.RelatedEvaluation);          
+          if (associatedResponse) setAssociatedEvaluation(associatedResponse);
         }
       }
       setIsLoading(false);
