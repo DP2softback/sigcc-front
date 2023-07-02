@@ -173,9 +173,6 @@ const PieChart = ({ title, labels, datasets }) => {
       const handleClick = () => {        
       navigate(`/${GAPS_ANALYSIS_MODULE}/${GAPS_EMPLOYEES_ORG}/${GAPS_EMPLOYEES_ORG_DETAIL}`, { state: { tipoCompetencia } });
       };
-      const handleMostrarLineChartClick = () => {
-      };
-      
   
       const labels= ['80% - 100%', '60% - 79%', '40% - 59%', '20% - 39%', '0% - 19%'];
       
@@ -212,7 +209,7 @@ const PieChart = ({ title, labels, datasets }) => {
                     <div className="chart-legend"> 
                       {/* Agregar aquí la leyenda del gráfico 1 */}
                     </div>
-                    <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
+
                   </div>
                 </div>
               </div>
@@ -225,7 +222,7 @@ const PieChart = ({ title, labels, datasets }) => {
                    <div className="chart-legend">
                      {/* Agregar aquí la leyenda del gráfico 2 */}
                    </div>
-                   <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
+
                    <button className="btn btn-secondary" onClick={handleClick}>Ver detalle del área</button>
                    </div>
                </div>

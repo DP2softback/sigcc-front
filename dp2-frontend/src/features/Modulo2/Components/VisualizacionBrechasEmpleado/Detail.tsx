@@ -94,11 +94,11 @@ const TrainingNeeds = () => {
   };
 
   const returnLevel = (number) => {
-    if (number === 1) return "Muy bajo";
-    if (number === 2) return "Bajo";
-    if (number === 3) return "Medio";
-    if (number === 4) return "Alto";
-    return "Muy alto"
+    if (number === 'A') return "Alto";
+    if (number === 'M') return "Medio";
+    if (number === 'B') return "Bajo";
+    //if (number === 4) return "Alto";
+    return " "
   }
 
   return (
@@ -106,7 +106,7 @@ const TrainingNeeds = () => {
       <div className='row'>
         <h2>Necesidades de capacitación</h2>
         <p className="text-muted">Necesidades de capacitación del empleado</p>
-        {isLoading ? <></> : 
+        {/* {isLoading ? <></> : 
         <Form className="row align-items-center mb-4">
           <Form.Group className="col-6">
             <FormControl
@@ -137,7 +137,7 @@ const TrainingNeeds = () => {
             <Button variant="primary" onClick={handleSearch}>Buscar</Button>
           </div>
         </Form>
-        }
+        } */}
 
         {isLoading ? <LoadingScreen/> :     
         <div className='row align-items-start'>
@@ -147,6 +147,12 @@ const TrainingNeeds = () => {
               <Table striped bordered className='table-need'>
                 <thead>
                   <tr>
+                  <th onClick={() => handleOrdenarPorCampo('type')}>
+                      Tipo de capacidad
+                      {campoOrdenamiento === 'type' && (
+                        <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
+                      )}
+                    </th>
                     <th onClick={() => handleOrdenarPorCampo('competence__name')}>
                       Capacidad
                       {campoOrdenamiento === 'competence__name' && (
@@ -171,9 +177,9 @@ const TrainingNeeds = () => {
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                       )}
                     </th>
-                    <th onClick={() => handleOrdenarPorCampo('levelGap')}>
-                      Niveles faltanes
-                      {campoOrdenamiento === 'levelGap' && (
+                    <th onClick={() => handleOrdenarPorCampo('state')}>
+                      Estado
+                      {campoOrdenamiento === 'state' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                       )}
                     </th>
@@ -188,11 +194,12 @@ const TrainingNeeds = () => {
                 <tbody className='table-need'>
                   {trainingNeed && trainingNeed.map((competence, index) => (
                     <tr key={index} className={index % 0 === 0 ? "evenRow" : "oddRow"}>
-                      <td>{competence.competence__name}</td>
-                      <td>{competence.competence__type__name}</td>
+                      <td>{competence.type}</td>
+                      <td>{competence.capacity__name}</td>
+                      <td>{competence.capacity__type__name}</td>
                       <td>{returnLevel(competence.levelCurrent)}</td>
                       <td>{returnLevel(competence.levelRequired)}</td>
-                      <td>{competence.levelGap}</td>
+                      <td>{competence.state}</td>
                       <td>{competence.description}</td>
                     </tr>
                   ))}

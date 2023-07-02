@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Form, Button, Modal } from 'react-bootstrap';
 import { ArrowRightCircleFill, Pencil, Trash, Upload } from 'react-bootstrap-icons';
-import AgregarCompetencia from './Create';
-import ActualizarCompetencia from './Update';
-import BorrarCompetencia from './Delete';
-import Info from './Info';
-import {Competencia,tipoCompetencia} from './Tipos'
-import './Read.css';
+import {Competencia,tipoCompetencia} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos'
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
 
 const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
@@ -399,68 +394,6 @@ const borrarCompetencia = async (id) => {
               </div>  
           </div>
         </div>  
-
-      <Modal show={mostrarPopUpCrear} onHide={handleCerrarPopUpCrear}>
-        <Modal.Header closeButton>
-          <Modal.Title>Crear Competencia</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <AgregarCompetencia agregarCompetencia={agregarCompetencia} tipoCompetencias ={tipoCompetencias}/>
-          <div className='botonCerrar'>
-          <Button variant="secondary"  onClick={handleCerrarPopUpCrear}>
-            Cerrar
-          </Button>
-          </div>
-        </Modal.Body>
-      </Modal>
-
-      <Modal show={mostrarPopUpInfo} onHide={handleCerrarPopUpInfo}>
-        <Modal.Header closeButton>
-          <Modal.Title>{'Informacion de Capacidad: ' + ' ' + name}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Info competencia ={competenciaSeleccionada} tipo = {tipo}/>
-          <div className='botonCerrar'>
-          </div>
-        </Modal.Body>
-      </Modal>
-
-
-
-
-      <Modal show={mostrarPopUpActualizar} onHide={handleCerrarPopUpActualizar}>
-        <Modal.Header closeButton>
-          <Modal.Title>Actualizar Competencia</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          
-          <ActualizarCompetencia actualizarCompetencia={actualizarCompetencia} competencia={competenciaSeleccionada} tipoCompetencias ={tipoCompetencias}/>
-          <div className='botonCerrar'>
-            <Button variant="secondary" onClick={handleCerrarPopUpActualizar}>
-              Cerrar
-            </Button>
-          </div>
-        </Modal.Body>
-      </Modal>
-
-
-      <Modal show={mostrarPopUpBorrar} onHide={handleCerrarPopUpBorrar}>
-        <Modal.Header closeButton>
-          <Modal.Title>Borrar Competencia</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <BorrarCompetencia borrarCompetencia={borrarCompetencia} competencia={competenciaSeleccionada}/>
-          <div className='botonCerrar2'>
-          <Button variant="secondary" onClick={handleCerrarPopUpBorrar}>
-            Cerrar
-          </Button>
-          </div>
-        </Modal.Body>
-      </Modal>
-
-
-
-
 
       <div className='container-fluid'>
          {renderTablaCompetencias()}

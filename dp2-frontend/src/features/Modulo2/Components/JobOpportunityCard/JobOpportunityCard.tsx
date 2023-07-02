@@ -46,7 +46,7 @@ const JobOpportunityCard = (props) => {
                 {jobOpportunity.responsabilities_introduction}
             </div>
             <div className='row row-cols-auto mb-2'>
-                {jobOpportunity.labels.map((lbl) => {
+                {jobOpportunity.labels && jobOpportunity.labels.map((lbl) => {
                     return (
                         <div className='col lbl-job-opp d-flex align-items-center'>
                             {lbl}
