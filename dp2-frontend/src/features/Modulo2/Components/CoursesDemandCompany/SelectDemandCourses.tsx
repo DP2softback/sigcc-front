@@ -106,7 +106,7 @@ const SelectDemandCourses: React.FC = () => {
       competenciasFiltradas = competenciasFiltradas;
     }      
     if (estadoFiltro) {
-      competenciasFiltradas = competenciasFiltradas.filter(competencia => (competencia.active  == (estadoFiltro === 'Activo'? true : false)));
+      competenciasFiltradas = competenciasFiltradas.filter(competencia => (competencia.isActive  == (estadoFiltro === 'Activo'? true : false)));
     }
     if (searchQuery) {
         const palabrasClaveLower = searchQuery.toLowerCase();
@@ -115,7 +115,7 @@ const SelectDemandCourses: React.FC = () => {
           competencia.name.toLowerCase().includes(palabrasClaveLower) ||
           //competencia.code.toString().toLowerCase().includes(palabrasClaveLower) ||
           competencia.type.toString().toLowerCase().includes(palabrasClaveLower)||
-          competencia.active.toString().toLowerCase().includes(palabrasClaveLower)
+          competencia.isActive.toString().toLowerCase().includes(palabrasClaveLower)
         );
       }
     return competenciasFiltradas;
@@ -125,7 +125,7 @@ const SelectDemandCourses: React.FC = () => {
       competencia.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       competencia.code.toLowerCase().includes(searchQuery.toLowerCase());
     const tipoMatch = tipoFiltro === 0 || competencia.type === tipoFiltro;
-    const estadoMatch = estadoFiltro === '' || competencia.active === (estadoFiltro === 'Activo');
+    const estadoMatch = estadoFiltro === '' || competencia.isActive === (estadoFiltro === 'Activo');
 
     return searchMatch && tipoMatch && estadoMatch;
   });

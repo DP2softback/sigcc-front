@@ -72,22 +72,22 @@ const GestionCompetenciaAM = (state) => {
           case 'capacity__id':
             datosOrdenados = competenciasData.sort((a, b) =>
               tipoOrden === 'ascendente'
-                ? a.capacity_id.localeCompare(b.capacity_id)
-                : b.capacity_id.localeCompare(a.capacity_id)
+                ? a.competence_code.localeCompare(b.competence_code)
+                : b.competence_code.localeCompare(a.competence_code)
             );
             break;
           case 'capacity__name':
             datosOrdenados = competenciasData.sort((a, b) =>
               tipoOrden === 'ascendente'
-                ? a.capacity_name.localeCompare(b.capacity_name)
-                : b.capacity_name.localeCompare(a.capacity_name)
+                ? a.competence_name.localeCompare(b.competence_name)
+                : b.competence_name.localeCompare(a.competence_name)
             );
             break;
-          case 'competence__type__name':
+          case 'competence_type':
             datosOrdenados = competenciasData.sort((a, b) =>
               tipoOrden === 'ascendente'
-                ? a.competence__type__name.localeCompare(b.competence__type__name)
-                : b.competence__type__name.localeCompare(a.competence__type__name)
+                ? a.competence_type.localeCompare(b.competence_type)
+                : b.competence_type.localeCompare(a.competence_type)
             );
             break;
           default:
@@ -115,9 +115,9 @@ const GestionCompetenciaAM = (state) => {
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
-                    <th onClick={() => handleOrdenarPorCampo('competence__type__name')}>
+                    <th onClick={() => handleOrdenarPorCampo('competence_type')}>
                     Tipo de capacidad
-                    {campoOrdenamiento === 'competence__type__name' && (
+                    {campoOrdenamiento === 'competence_type' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
@@ -174,7 +174,7 @@ const GestionCompetenciaAM = (state) => {
       </div>
       
     <div className='container-fluid'>
-    <img  src={examplePhoto} style={{width: '80px',height: '80px', borderRadius:'50%',objectFit:'cover'}} ></img>
+    <img  alt="" src={examplePhoto} style={{width: '80px',height: '80px', borderRadius:'50%',objectFit:'cover'}} ></img>
     <div>{nombreEmpleado}</div>
     <div>{cargoEmpleado}</div>
     </div>

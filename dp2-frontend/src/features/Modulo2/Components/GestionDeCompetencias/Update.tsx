@@ -82,8 +82,8 @@ const ActualizarCompetencia: React.FC<Props> = ({ actualizarCompetencia, compete
           type="checkbox"
           className="form-check-input"
           id="activo"
-          name="active"
-          checked={competenciaActualizada?.active || false}
+          name="isActive"
+          checked={competenciaActualizada?.isActive || false}
           onChange={handleChange}
         />
       </div>
