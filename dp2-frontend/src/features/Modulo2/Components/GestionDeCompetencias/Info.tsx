@@ -4,7 +4,7 @@ const Info = ({competencia, tipo }) => {
   const [nombres, setNombres] = useState(competencia.name);
   const [apellidos, setApellidos] = useState(competencia.description);
   const [puesto, setPuesto] = useState(competencia.type);
-  const [area, setArea] = useState(competencia.active);
+  const [area, setArea] = useState(competencia.isActive);
   const handleSubmit = (event) => {
     event.preventDefault();
     const competenciaActualizada = {
