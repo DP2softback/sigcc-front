@@ -17,10 +17,9 @@ const SelectDemandCourses: React.FC = () => {
   const [posicionSeleccionada, setPosicionSeleccionada] = useState(0);
   const [competencias, setCompetencias] = useState<EmpleadoDeArea[]>([]);
   const [competenciaSeleccionada, setCompetenciaSeleccionada] = useState(null);
-  const [datosCargados, setDatosCargados] = useState(false);
   const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
   const [tipoOrden, setTipoOrden] = useState('ascendente');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedRows, setSelectedRows] = useState([]);
   useEffect(() => {
       const fetchareas = async () => {
         try {
@@ -43,6 +42,25 @@ const SelectDemandCourses: React.FC = () => {
       };
       fetchareas();
   }, []);
+  const handleSelectAllRows = (e) => {
+    if (e.target.checked) {
+      const allRowIds = datosFiltradosYOrdenados.map((competencia) => competencia.id);
+      setSelectedRows(allRowIds);
+    } else {
+      setSelectedRows([]);
+    }
+  };
+  const handleSelectRow = (competenciaId, e) => {
+    if (e.target.checked) {
+      setSelectedRows((prevSelectedRows) => [...prevSelectedRows, competenciaId]);
+    } else {
+      setSelectedRows((prevSelectedRows) =>
+        prevSelectedRows.filter((rowId) => rowId !== competenciaId)
+      );
+    }
+  };
+  const isRowSelected = (competenciaId) => selectedRows.includes(competenciaId);
+
   const handleAreaChange = async (value) => {
     setAreaSeleccionada(value);
     if (value) {
@@ -90,7 +108,6 @@ const SelectDemandCourses: React.FC = () => {
         }),
       };
       const response = await fetch(URL_SERVICE + '/gaps/employeeArea', requestOptions);
-      console.log(response)
       const data = await response.json();
       console.log(data)
       setCompetencias(data);
@@ -111,32 +128,14 @@ const SelectDemandCourses: React.FC = () => {
       if (estadoFiltro) {
         competenciasFiltradas = competenciasFiltradas.filter(competencia => (parseInt(competencia.position__name)  == posicionSeleccionada));
       }
-      if (searchQuery) {
-          const palabrasClaveLower = searchQuery.toLowerCase();
-          competenciasFiltradas = competenciasFiltradas.filter(competencia =>
-            competencia.id.toString().toLowerCase().includes(palabrasClaveLower) ||
-            competencia.user__first_name.toLowerCase().includes(palabrasClaveLower) ||
-            competencia.area__name.toLowerCase().includes(palabrasClaveLower) ||
-            competencia.user__last_name.toString().toLowerCase().includes(palabrasClaveLower)||
-            competencia.user__email.toString().toLowerCase().includes(palabrasClaveLower)
-          );
-        }
       return competenciasFiltradas;
   };
   const filteredCompetencias = filtrarCompetencias().filter((competencia) => {
-      const searchMatch =
-        competencia.user__first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        competencia.user__last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        competencia.position__name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        competencia.area__name.toLowerCase().includes(searchQuery.toLowerCase());
-        competencia.user__email.toLowerCase().includes(searchQuery.toLowerCase());
-        competencia.id.toString().toLowerCase().includes(searchQuery.toLowerCase());
       const tipoMatch = tipoFiltro === 0 || parseInt(competencia.area__name) == areaSeleccionada;
       const estadoMatch = estadoFiltro === '' || parseInt(competencia.position__name) == posicionSeleccionada;
-      return searchMatch && tipoMatch && estadoMatch;
+      return   tipoMatch && estadoMatch;
   });
   const handleLimpiarFiltros = () => {
-      setSearchQuery('');
       setTipoFiltro(0);
       setEstadoFiltro('');
   };
@@ -159,7 +158,7 @@ const SelectDemandCourses: React.FC = () => {
       return 0;
   });
   const renderTablaCompetencias = () => { 
-    if (!datosCargados) {
+    if (!competencias) {
       return null;
     }   
     if (competencias.length === 0) {
@@ -169,6 +168,8 @@ const SelectDemandCourses: React.FC = () => {
       <Table striped bordered hover>
         <thead>
           <tr>
+              <th>
+              </th>
               <th onClick={() => handleOrdenarPorCampo('user__first_name')}>Nombres {campoOrdenamiento === 'user__first_name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
               <th onClick={() => handleOrdenarPorCampo('user__last_name')}>Apellidos {campoOrdenamiento === 'user__last_name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
               <th onClick={() => handleOrdenarPorCampo('position__name')}>Posicion {campoOrdenamiento === 'position__name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
@@ -179,6 +180,14 @@ const SelectDemandCourses: React.FC = () => {
         <tbody>
           {datosFiltradosYOrdenados.map((competencia) => (
             <tr key={competencia.id}>
+              <td>
+              <Form.Check
+                type="checkbox"
+                id={`checkbox-select-${competencia.id}`}
+                checked={isRowSelected(competencia.id)}
+                onChange={(e) => handleSelectRow(competencia.id, e)}
+              />
+              </td>
               <td>{competencia.user__first_name}</td>
               <td>{competencia.user__last_name}</td>
               <td>{competencia.position__name}</td>
@@ -253,6 +262,15 @@ const SelectDemandCourses: React.FC = () => {
         </div>
           <div className='container-fluid'>
           {renderListaPosicion()}
+        </div>
+        <div className='container-fluid'>
+          <Form.Check
+                type="checkbox"
+                id="checkbox-select-all"
+                label="Seleccionar todos"
+                checked={selectedRows.length === datosFiltradosYOrdenados.length}
+                onChange={handleSelectAllRows}
+          />
         </div>
         <div className='container-fluid'>
           {(posicionSeleccionada!==-1 && buscar) ? renderTablaCompetencias() : "Seleccione un AREA y/o POSICION"}
