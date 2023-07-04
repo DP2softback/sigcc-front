@@ -14,7 +14,7 @@ const AgregarCompetencia: React.FC<Props> = ({ agregarCompetencia, tipoCompetenc
     name: '',
     description: '',
     type: 0,
-    active: false,
+    isActive: false,
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +43,7 @@ const AgregarCompetencia: React.FC<Props> = ({ agregarCompetencia, tipoCompetenc
       name: '',
       description: '',
       type: 0,
-      active: false,
+      isActive: false,
     });
   };
 
@@ -78,8 +78,8 @@ const AgregarCompetencia: React.FC<Props> = ({ agregarCompetencia, tipoCompetenc
             type="checkbox"
             className="form-check-input"
             id="activo"
-            name="active"
-            checked={nuevaCompetencia?.active || false}
+            name="isActive"
+            checked={nuevaCompetencia?.isActive || false}
             onChange={handleChange}
           />
         </div>

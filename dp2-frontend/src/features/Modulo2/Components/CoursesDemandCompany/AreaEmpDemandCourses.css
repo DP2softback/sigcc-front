@@ -1,0 +1,37 @@
+.pantalla{
+    background-color: #F8f8f9;
+
+}
+
+.titles{
+
+}
+
+.basicSearch{
+    width: 150%; 
+    height: 50%;
+    padding-top: 32px;
+}
+
+.botones{
+    padding-top: 32px;
+    width: max-content ;
+}
+
+
+.selectores{
+    padding-top: 32px;
+
+}
+.descargas{
+    padding-top: 20px;
+}
+
+.Head{
+    font-size: 48px;
+    font-weight: bold !important;
+}
+
+.subtitle{
+    opacity: 50%;
+}
