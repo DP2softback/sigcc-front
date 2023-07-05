@@ -5,6 +5,9 @@ import { DAYS_UNIT } from '@features/Modulo3/utils/constants';
 import { formatEmployeeCode, obtenerFechaActual, obtenerFechaHaceUnAnio } from '@features/Modulo3/utils/functions';
 import EmployeeCard from '../EmployeeCard/EmployeeCard';
 import { Button, Form } from 'react-bootstrap';
+import Linechart from '@features/Modulo2/Components/LineChart/Linechart';
+import BarChart1 from '@features/Modulo2/Components/VisualizacionBrechasEmpleado/Barchart1';
+import axiosEmployeeGaps from '@features/Modulo2/services/EmployeeGapsServices';
 const examplePhoto = 'https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg?b=1&s=170667a&w=0&k=20&c=0aBawAGIMPymGUppOgw1HmV8MNXB1536B3sX_PP9_SQ='
 
 const JobOpportunityStats = () => {
@@ -18,11 +21,29 @@ const JobOpportunityStats = () => {
         fecha_fin: obtenerFechaActual()
       });
     const [matchRate, setMatchRate] = React.useState(null);
-
+    const [dashboard, setDashboard] = React.useState(null);
+    const [employeeCompetences, setEmployeeCompetences] = React.useState(null);
     React.useEffect(() => {
         console.log(state.candidate);
         setCandidate(state.candidate);
         setIsLoading(false);
+        const obj = {
+            idCompetencia: 0,
+            palabraClave: "",
+            idTipoCompetencia: 0,
+            activo: 1,
+            idEmpleado: 1// Cambiar idEmpleado logeado
+        }
+        axiosEmployeeGaps
+        .post("gaps/competenceSearch", obj)
+        .then(function (response){
+            setEmployeeCompetences(response.data);
+            setIsLoading(false);
+        })
+        .catch(function(error){
+            console.log(error);
+            setIsLoading(false);
+        })
     }, [])
 
     function onFiltersChange (e) {
@@ -37,6 +58,17 @@ const JobOpportunityStats = () => {
         setMatchRate(matchRate ? null : 10);
     }
 
+    const showlinechart = (
+        <div className="col-md-8 mb-32px">
+          {dashboard && (
+            <Linechart
+              title={'Evaluaciones continuas'}
+              labelsX={dashboard.months}
+              dataInfoprops={dashboard.data}/>
+          )}
+        </div>
+      );
+
     return (
         <>
             <div className='row'>
@@ -47,7 +79,7 @@ const JobOpportunityStats = () => {
                 <>
                     <div className='row'>
                         <div className='col-3'>
-                            <h5>Evaluación continua</h5>
+                        {matchRate === null ? <><h5>Evaluación continua</h5></> : <h5>Adecuación al puesto</h5>}
                         </div>
                         <div className='d-flex justify-content-end col-9'>
                             {!matchRate && 
@@ -97,6 +129,9 @@ const JobOpportunityStats = () => {
                                 matchRate={matchRate}
                             />
                         </div> 
+                        <div className='col-7'>
+                        {matchRate === null ? <>{showlinechart}</> : <BarChart1 dataBarProps={employeeCompetences}/>}
+                        </div>
                     </div>
                     <button className='btn btn-outline-primary col-1 ms-3 btn-sm mt-2' onClick={() => navigate(-1)}>
                         Regresar
