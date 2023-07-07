@@ -96,22 +96,26 @@ const SelectDemandCourses: React.FC = () => {
   setBuscar(true);
   if (area!= -1) {
     try {
-      const requestOptions = {
+      const body = {
+        area: area,
+        posicion:  posicion,
+      };
+      const response = await fetch(URL_SERVICE + '/gaps/employeeArea', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': TOKEN_SERVICE,
         },
-        body: JSON.stringify({ 
-          area: area,
-          posicion:  posicion,
-        }),
-      };
-      const response = await fetch(URL_SERVICE + '/gaps/employeeArea', requestOptions);
-      const data = await response.json();
-      console.log(data)
-      setCompetencias(data);
-    } catch (error) {
+        body: JSON.stringify(body),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data)
+        setCompetencias(data);
+      } else {
+        console.log('Error al obtener los datos de posiciones');
+      }
+    }catch (error) {
       console.error('Error fetching competencias:', error);
     }
   } else {
