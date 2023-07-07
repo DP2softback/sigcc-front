@@ -98,8 +98,9 @@ const SelectDemandCourses: React.FC = () => {
     try {
       const body = {
         area: area,
-        posicion:  posicion,
+        posicion:  parseInt(posicion),
       };
+      console.log(body)
       const response = await fetch(URL_SERVICE + '/gaps/employeeArea', {
         method: 'POST',
         headers: {
@@ -108,6 +109,8 @@ const SelectDemandCourses: React.FC = () => {
         },
         body: JSON.stringify(body),
       });
+
+      console.log(response)
       if (response.ok) {
         const data = await response.json();
         console.log(data)
