@@ -116,7 +116,7 @@ const GestionCompetenciaAM = (state) => {
                     )}
                     </th>
                     <th onClick={() => handleOrdenarPorCampo('competence_type')}>
-                    Tipo de capacidad
+                    Tipo de competencia
                     {campoOrdenamiento === 'competence_type' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}

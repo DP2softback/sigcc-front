@@ -330,7 +330,7 @@ const SelectDemandCourses: React.FC = () => {
       </Modal.Header>
       <Modal.Body>      
         <div className='container-fluid'>
-          <p>¿Seguro que desea asignar los cursos seleccionados? No se estan cubriendo todas las capacidades</p>           
+          <p>¿Seguro que desea asignar los cursos seleccionados? No se estan cubriendo todas las comptencias</p>           
           <div className='espacio'>
             <Button className="botones2" onClick={()=>{}}>
               Aceptar

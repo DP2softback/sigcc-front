@@ -196,7 +196,7 @@ const DetalleCompetenciasArea = () => {
     <div className="pantalla">
       <div className='titles'>
       <h2 className='Head'>Empleados del puesto de asistente</h2>
-      <p className="text-muted subtitle">Consultar capacidades de los empleados.</p>
+      <p className="text-muted subtitle">Consultar competencias de los empleados.</p>
       </div>
 
       <Form className="FormComp">
@@ -204,8 +204,8 @@ const DetalleCompetenciasArea = () => {
           <div className='row primera'>
               <InputGroup className="col basicSearch">
               <FormControl
-                placeholder="Ingrese palabras clave, código o nombre de las capacidades"
-                aria-label="Buscar capacidades"
+                placeholder="Ingrese palabras clave, código o nombre de las competencias"
+                aria-label="Buscar competencias"
                 aria-describedby="buscar-icono"
                 value={palabrasClave}
                 onChange={(e) => setPalabrasClave(e.target.value)}

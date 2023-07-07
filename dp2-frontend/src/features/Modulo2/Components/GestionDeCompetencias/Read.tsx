@@ -344,7 +344,7 @@ const borrarCompetencia = async (id) => {
     <div className='pantalla'>
       <div className='titles'>
       <h2 className='Head'>Gestión de Capacidades</h2>
-      <p className="text-muted subtitle">Agrega, edita y desactiva capacidades.</p>
+      <p className="text-muted subtitle">Agrega, edita y desactiva competencias.</p>
       </div>
 
       <div className='container-fluid'>
@@ -353,7 +353,7 @@ const borrarCompetencia = async (id) => {
             <Form.Group controlId="search">
               <Form.Control
                 type="text"
-                placeholder="Buscar capacidad..."
+                placeholder="Buscar competencia..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -392,7 +392,7 @@ const borrarCompetencia = async (id) => {
 
  
                 <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
-                  Agregar capacidad
+                  Agregar competencia
                 </Button>
 
                 <Button variant="primary" className='Search' onClick={handleSearch}>
