@@ -385,28 +385,12 @@ const borrarCompetencia = async (id) => {
          </div>
             <div className='row'>
               <div className="col-md-12  justify-content-right">
-
-        
-
-
-
- 
                 <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
                   Agregar competencia
                 </Button>
-
-                <Button variant="primary" className='Search' onClick={handleSearch}>
-                  Buscar
-                </Button>{' '}
-
                 <Button variant="outline-secondary" className='SearchP' onClick={handleLimpiarFiltros}>
                   Limpiar filtros
                 </Button>{' '}
-
-                
-
-         
-                
               </div>  
           </div>
         </div>  
