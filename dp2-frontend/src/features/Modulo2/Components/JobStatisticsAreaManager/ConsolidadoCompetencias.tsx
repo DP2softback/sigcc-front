@@ -221,7 +221,7 @@ const PieChart = ({ title, labels, datasets }) => {
               <div className="col-md-6">
                 <div className="card">
                   <div className="card-body">
-                    <h3 className="card-title">Adecuación a capacidades del area</h3>
+                    <h3 className="card-title">Adecuación a competencias del area</h3>
                     <PieChart title='' labels= ''datasets={data1} />
                     <div className="chart-legend"> 
                       {/* Agregar aquí la leyenda del gráfico 1 */}
@@ -234,7 +234,7 @@ const PieChart = ({ title, labels, datasets }) => {
               <div className="col-md-6">
                <div className="card">
                  <div className="card-body">
-                   <h3 className="card-title">Adecuación a capacidades de  {abbreviation}</h3>
+                   <h3 className="card-title">Adecuación a competencias de  {abbreviation}</h3>
                    <PieChart title='' labels= {labels} datasets={data2} />
                    <div className="chart-legend">
                      {/* Agregar aquí la leyenda del gráfico 2 */}
