@@ -6,6 +6,7 @@ import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis
 import { useNavigate } from 'react-router-dom';
 import { DEMAND_COMPANY_COURSES, DEMAND_COMPANY_COURSES_LIST, GAPS_ANALYSIS_MODULE } from '@features/Modulo2/routes/path';
 import './AreaEmpDemandCourses.css'
+import { set } from 'lodash';
 const SelectDemandCourses: React.FC = () => {
   const navigate = useNavigate(); 
   const [tipoFiltro, setTipoFiltro] = useState(0);
@@ -143,8 +144,8 @@ const SelectDemandCourses: React.FC = () => {
       return   tipoMatch && estadoMatch;
   });
   const handleLimpiarFiltros = () => {
-      setTipoFiltro(0);
-      setEstadoFiltro('');
+      setAreaSeleccionada(-1);
+      setPosicionSeleccionada(0);
   };
   const handleOrdenarPorCampo = (campo) => {
       // Si se hace clic en el mismo campo, cambia el tipo de orden
