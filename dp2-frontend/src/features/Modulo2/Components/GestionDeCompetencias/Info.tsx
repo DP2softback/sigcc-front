@@ -57,7 +57,7 @@ const Info = ({competencia, tipo }) => {
           type="text"
           className="form-control"
           id="area"
-          value={area}
+          value={area?'Si':'No'}
           readOnly  
         />
       </div>
