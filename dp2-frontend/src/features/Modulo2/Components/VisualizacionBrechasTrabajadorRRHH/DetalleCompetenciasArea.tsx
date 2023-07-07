@@ -214,7 +214,7 @@ const DetalleCompetenciasArea = () => {
       return (
         <div className="pantalla">
           <div className='titles'>
-          <h2 className='Head'>Capacidades por empleado del área de TI</h2>
+          <h2 className='Head'>Competencias por empleado del área de TI</h2>
           <p className="text-muted subtitle">Consultar competencias de los empleados.</p>
           </div>
     

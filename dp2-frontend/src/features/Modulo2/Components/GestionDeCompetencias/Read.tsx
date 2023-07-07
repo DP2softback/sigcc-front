@@ -313,7 +313,7 @@ const borrarCompetencia = async (id) => {
         <tr>
             <th onClick={() => handleOrdenarPorCampo('code')}>Código {campoOrdenamiento === 'code' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th onClick={() => handleOrdenarPorCampo('name')}>Nombre {campoOrdenamiento === 'name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-            <th onClick={() => handleOrdenarPorCampo('type')}>Tipo de Capacidad {campoOrdenamiento === 'type' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
+            <th onClick={() => handleOrdenarPorCampo('type')}>Tipo de Competencia {campoOrdenamiento === 'type' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th onClick={() => handleOrdenarPorCampo('isActive')}>Estado {campoOrdenamiento === 'isActive' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th>Acciones</th>        
         </tr>
@@ -343,7 +343,7 @@ const borrarCompetencia = async (id) => {
   return (
     <div className='pantalla'>
       <div className='titles'>
-      <h2 className='Head'>Gestión de Capacidades</h2>
+      <h2 className='Head'>Gestión de Competencias</h2>
       <p className="text-muted subtitle">Agrega, edita y desactiva competencias.</p>
       </div>
 
@@ -411,7 +411,7 @@ const borrarCompetencia = async (id) => {
 
       <Modal show={mostrarPopUpInfo} onHide={handleCerrarPopUpInfo}>
         <Modal.Header closeButton>
-          <Modal.Title>{'Informacion de Capacidad: ' + ' ' + name}</Modal.Title>
+          <Modal.Title>{'Informacion de Competencia: ' + ' ' + name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Info competencia ={competenciaSeleccionada} tipo = {tipo}/>

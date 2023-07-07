@@ -169,8 +169,8 @@ const GestionCompetenciaAM = (state) => {
   return (
     <div className="pantalla">
       <div className='titles'>
-      <h2>Capacidades de empleado</h2>
-      <p className="text-muted">Capacidades por empleado.</p>
+      <h2>Competencias de empleado</h2>
+      <p className="text-muted">Competencias por empleado.</p>
       </div>
       
     <div className='container-fluid'>
