@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button, Table} from 'react-bootstrap';
-import {tipoCompetencia,CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
+import {CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
 import { useLocation,  useNavigate  } from 'react-router-dom';
-import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE } from '@features/Modulo2/routes/path';
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
 const examplePhoto = 'https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg?b=1&s=170667a&w=0&k=20&c=0aBawAGIMPymGUppOgw1HmV8MNXB1536B3sX_PP9_SQ='
 
@@ -25,7 +24,7 @@ const GestionCompetenciaAM = (state) => {
           const body = {
             "idCompetencia": 0,		//dejarlo así
             "palabraClave": "",		//poner la palabra clave del buscador, si es nada pon ""
-            "idTipoCompetencia": 0,		//el idTipoCompetencia del buscador, si es todos pon 0
+            "idTipoCompetencia": 2,		//el idTipoCompetencia del buscador, si es todos pon 0
             "activo": 2,			//el estado 0 o 1 (inactivo o activo), si es todos pon 2
             "idEmpleado": 1			//ponerle el idEmpleado usuario.id
     };

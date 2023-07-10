@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button, Table} from 'react-bootstrap';
 import './GestionCompetencias.css'
-import {tipoCompetencia,CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
+import {CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos';
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
@@ -23,7 +23,7 @@ const GestionCompetencia = (state) => {
           const body = {
             idCompetencia: 0,		//dejarlo así
             palabraClave: "",		//poner la palabra clave del buscador, si es nada pon ""
-            idTipoCompetencia: 0,		//el idTipoCompetencia del buscador, si es todos pon 0
+            idTipoCompetencia: 2,		//el idTipoCompetencia del buscador, si es todos pon 0
             activo: 2,			//el estado 0 o 1 (inactivo o activo), si es todos pon 2
             idEmpleado: usuario.id			//ponerle el idEmpleado usuario.id
           };

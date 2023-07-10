@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Form, Button, Modal } from 'react-bootstrap';
-import { ArrowRightCircleFill, Pencil, Trash, Upload } from 'react-bootstrap-icons';
+import { Table, Form, Button,} from 'react-bootstrap';
+import { ArrowRightCircleFill} from 'react-bootstrap-icons';
 import {EmpleadoDeArea,Posicion, AreaActiva} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos'
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
 import { useNavigate } from 'react-router-dom';
 import { DEMAND_COMPANY_COURSES, DEMAND_COMPANY_COURSES_LIST, GAPS_ANALYSIS_MODULE } from '@features/Modulo2/routes/path';
 import './AreaEmpDemandCourses.css'
-import { set } from 'lodash';
 const SelectDemandCourses: React.FC = () => {
   const navigate = useNavigate(); 
   const [tipoFiltro, setTipoFiltro] = useState(0);

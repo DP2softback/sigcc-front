@@ -15,7 +15,7 @@ const CompetenciasRead: React.FC = () => {
   const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
   const [tipoOrden, setTipoOrden] = useState('ascendente');
   const [searchQuery, setSearchQuery] = useState('');
-  const [tipoFiltro, setTipoFiltro] = useState(0);
+  const [tipoFiltro, setTipoFiltro] = useState(2);
   const [estadoFiltro, setEstadoFiltro] = useState(''); 
   const [mostrarPopUpCrear , setmostrarPopUpCrear] = useState(false);
   const [mostrarPopUpActualizar, setmostrarPopUpActualizar] = useState(false);
@@ -33,7 +33,7 @@ const CompetenciasRead: React.FC = () => {
         const body = {
           idCompetencia: 0,
           palabraClave: searchQuery,
-          idTipoCompetencia: tipoFiltro === 0 ? 0 : tiposCompetencia[tipoFiltro + 1],
+          idTipoCompetencia: tipoFiltro === 2 ? 2 : tiposCompetencia[tipoFiltro - 1],
           activo: estadoFiltro === 'Activo' ? 1 : estadoFiltro === 'Inactivo' ? 0 : 2,
           idEmpleado: 0,
         };

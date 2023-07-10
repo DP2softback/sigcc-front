@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Form, FormControl, InputGroup, Button, Table, Modal  } from 'react-bootstrap';
 import UpdateCompetencia from './Update';
 import DeleteCompetencia from './Delete';
-import {ArrowRightCircleFill,Pencil,Trash } from 'react-bootstrap-icons';
+import {ArrowRightCircleFill} from 'react-bootstrap-icons';
 import { useLocation,  useNavigate  } from 'react-router-dom';
 import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos';
 import './DetalleCompetenciasArea.css';
@@ -12,7 +12,6 @@ import {TOKEN_SERVICE, URL_SERVICE} from '@features/Modulo2/services/ServicesApi
 const DetalleCompetenciasArea = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  //const { tipoCompetencia } = location.state;
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [tipoOrden, setTipoOrden] = useState('ascendente');
     const [position__name, setposition__name] = useState('');

@@ -7,12 +7,6 @@ const Info = ({competencia, tipo }) => {
   const [area, setArea] = useState(competencia.isActive);
   const handleSubmit = (event) => {
     event.preventDefault();
-    const competenciaActualizada = {
-      nombres: nombres,
-      apellidos: apellidos,
-      puesto: puesto,
-      area: area,
-    };
     setNombres('');
     setApellidos('');
     setPuesto('');

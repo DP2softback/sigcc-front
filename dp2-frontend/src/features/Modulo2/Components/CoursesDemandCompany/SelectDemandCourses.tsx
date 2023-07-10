@@ -18,7 +18,6 @@ const SelectDemandCourses: React.FC = () => {
   const [mostrarPopUpCrear , setmostrarPopUpCrear] = useState(false);
   const [mostrarPopUpBorrar, setmostrarPopUpBorrar] = useState(false);
   const [competencias, setCompetencias] = useState<Competencia[]>([]);
-  const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
   const [competenciaSeleccionada, setCompetenciaSeleccionada] = useState(null);
   const [lleno,setLleno] = useState(0)
   const [competenciasLista, setCompetenciasLista] = useState([
@@ -75,28 +74,7 @@ const SelectDemandCourses: React.FC = () => {
         console.log('Error al obtener los datos de competencias:', error);
       }
     };
-    const fetchTipoCompetencias = async () => {
-      try {
-        const response = await fetch(URL_SERVICE + '/gaps/competenceTypes', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': TOKEN_SERVICE,
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setTipoCompetencias(data);
-        } else {
-          console.log('Error al obtener los datos de competencias');
-        }
-      } catch (error) {
-        console.log('Error al obtener los datos de competencias:', error);
-      }
-    };
-
     fetchCompetencias();
-    fetchTipoCompetencias();
   }, []);
   const filtrarCompetencias = () => {
     var competenciasFiltradas = competencias;
