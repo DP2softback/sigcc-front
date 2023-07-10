@@ -32,12 +32,14 @@ const dataIni2 ={
   ]
 }
 
+const dataInicial = {categorias: []}
+
 const Create = () => {
   const [categorias,setCategorias]= useState([]);
   const [file, setFile] = useState(null);
   const [inputValues, setInputValues] = useState({});
   const [selectedOption, setSelectedOption] = useState('');
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(dataInicial);
   const [isLoading, setIsLoading] = useState(false);
   const [plantillaName, setPlantillaName] = useState('');
   const [showNotification, setShowNotification] = useState(false);
@@ -51,6 +53,55 @@ const Create = () => {
       })();
   }, [selectedOption]);
 
+  const validateData = (aux) => {
+    let validate={
+      check: true, 
+      msg: ''
+    };
+
+    if(aux.nombre==''){
+      validate={check:false,msg:'Debe asignar un nombre a la plantilla'}
+      return validate;
+    }
+
+    if(aux.evaluationType==''){
+      validate={check:false,msg:'Debe seleccionar un tipo de evaluación'}
+      return validate;
+    }
+
+    const subcats = [];
+
+    data.categorias && data.categorias.forEach(categoria => {
+      categoria.subcategory.forEach(subcategoria => {
+        subcats.push({ id: subcategoria.id,nombre:subcategoria.name });
+      });
+    });
+
+    console.log(subcats,subcats.length)
+
+    if(subcats.length==0){
+      validate={check:false,msg:'Debe seleccionar al menos una categoría y competencia'}
+      return validate;
+    }
+
+    return validate;
+  
+  }
+
+  const validateSubcategories = (subcategories) => {
+    let validate={
+      check: true, 
+      msg: ''
+    };
+
+    if(subcategories.length=0){
+      validate={check:false,msg:'Debe seleccionar al menos una categoría y competencia'}
+      return validate;
+    }
+
+    return validate;
+  }
+
   const handleGuardar = () => {
     const aux = {
       "evaluationType": selectedOption,
@@ -58,16 +109,44 @@ const Create = () => {
       "subCategories": []
     };
 
-    data.categorias.forEach(categoria => {
-      categoria.subcategory.forEach(subcategoria => {
-        aux.subCategories.push({ id: subcategoria.id,nombre:subcategoria.name });
-      });
-    });
-    (async () => { 
-      const response = await guardarPlantilla(aux);
-      if (response){
+    // data.categorias.forEach(categoria => {
+    //   categoria.subcategory.forEach(subcategoria => {
+    //     aux.subCategories.push({ id: subcategoria.id,nombre:subcategoria.name });
+    //   });
+    // });
+
+    const validate1 = validateData(aux); 
+
+    (async () => {
+      if(validate1.check){
+
+        data.categorias.forEach(categoria => {
+          categoria.subcategory.forEach(subcategoria => {
+            aux.subCategories.push({ id: subcategoria.id,nombre:subcategoria.name });
+          });
+        });
+
+        //const validate2 = validateSubcategories(aux.subCategories);;
+        //if(validate2.check){
+          const response = await guardarPlantilla(aux);
+          if (response){
+            setShowNotification(true); 
+            toast.success("Se ha creado correctamente la plantilla");
+            closeNotificationOK();
+          }
+          else{
+            setShowNotification(true); 
+            toast.error("Ha ocurrido un error en el guardado, por favor vuelva a intentarlo");
+            closeNotification();
+          }
+        // }else{
+        //   setShowNotification(true); 
+        //   toast.error(validate2.msg);
+        //   closeNotification();
+        // }
+      }else{
         setShowNotification(true); 
-        toast.success("Se ha creado correctamente la plantilla");
+        toast.error(validate1.msg);
         closeNotification();
       }
     })();
@@ -77,10 +156,15 @@ const Create = () => {
       setTimeout(resolve, ms);
     });
   }
-  const closeNotification = async () => {
+  const closeNotificationOK = async () => {
     setShowNotification(false);
     await delay(4000);
     navigateTo(EVALUATION_TEMPLATE_INDEX);
+  };
+
+  const closeNotification = async () => {
+    setShowNotification(false);
+    await delay(4000);
   };
 
   const handleInputChange = (categoriaId, value) => {
@@ -312,7 +396,7 @@ const Create = () => {
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
       <Layout
         title={'Nueva Plantilla'}
-        subtitle={'Si desea crear la plantilla para una evaluación de desempeño puede seleccionar las categorías que desee, sin embargo, si se trata de una evaluación continua, recuerde que solo puede seleccionar una categoría a evaluar.'}
+        subtitle={'Para crear una nueva plantilla, debe elegir el tipo de evaluación y luego las categorías y competencias que desea evaluar'}
         body={body}
       />
     </div>
