@@ -8,7 +8,7 @@
 }
 
 .basicSearch{
-   width: 49%;
+    width: 50%; 
     height: 50%;
     padding-top: 32px;
 
@@ -30,26 +30,13 @@
 }
 
 .Search{
-    float: right;
-width: 10%;
-margin-right: 4%;
-margin-left: 2%;
+
+width: 48%;
 }
 
-.SearchP{
-    float: right;
-    width: 10%;
-    margin-right: 0%;
-    }
-
-
-.center{
-        padding-left: 0px;
- }
 .Search2{
-float: right;
-    width: 20%;
-    margin-right: 3%;
+
+    width: 98%;
 }
 
 .botonCerrar{

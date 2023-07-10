@@ -2,6 +2,7 @@ import React from 'react'
 import { Table } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import detailTableIcon from '../../assets/icons/detail-table.svg'
+import { EMPLOYEES_JOB_OPPORTUNITIES, EMPLOYEES_JOB_STATISTICS, GAPS_ANALYSIS_MODULE } from '@features/Modulo2/routes/path';
 
 const JobOpportunityCandidates = () => {
 
@@ -86,6 +87,14 @@ const JobOpportunityCandidates = () => {
 
     ]
 
+    const handleStats = (cand) => {
+        navigate(`/${GAPS_ANALYSIS_MODULE}/${EMPLOYEES_JOB_OPPORTUNITIES}/${EMPLOYEES_JOB_STATISTICS}`, {
+            state: {
+                candidate: cand
+            }
+        })
+    }
+
     return (
         <>
             <div className='row'>
@@ -155,8 +164,8 @@ const JobOpportunityCandidates = () => {
                                     <td>{cand.percentaje_conicidence + '%'}</td>
                                     <td>{cand.user__email}</td>
                                     <td>{cand.user__is_active === true ? 'Activo' : 'Inactivo'}</td>
-                                    <td className='d-flex justify-content-center align-items-center'>
-                                        <img src={detailTableIcon} alt='Notificar'></img>
+                                    <td className="text-center">
+                                        <img src={detailTableIcon} title='Notificar' onClick={() => handleStats(cand)} style={{cursor: "pointer"}}></img>
                                     </td>
                                 </tr>
                             ))}

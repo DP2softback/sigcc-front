@@ -70,22 +70,22 @@ const GestionCompetencia = (state) => {
           case 'capacity__code':
             datosOrdenados = competenciasData.sort((a, b) =>
               tipoOrden === 'ascendente'
-                ? a.capacity_id.localeCompare(b.capacity_id)
-                : b.capacity_id.localeCompare(a.capacity_id)
+                ? a.competence_code.localeCompare(b.competence_code)
+                : b.competence_code.localeCompare(a.competence_code)
             );
             break;
           case 'capacity__name':
             datosOrdenados = competenciasData.sort((a, b) =>
               tipoOrden === 'ascendente'
-                ? a.capacity_name.localeCompare(b.capacity_name)
-                : b.capacity_name.localeCompare(a.capacity_name)
+                ? a.competence_name.localeCompare(b.competence_name)
+                : b.competence_name.localeCompare(a.competence_name)
             );
             break;
           case 'capacity__type__name':
             datosOrdenados = competenciasData.sort((a, b) =>
               tipoOrden === 'ascendente'
-                ? a.competence__type__name.localeCompare(b.competence__type__name)
-                : b.competence__type__name.localeCompare(a.competence__type__name)
+                ? a.competence_type.localeCompare(b.competence_type)
+                : b.competence_type.localeCompare(a.competence_type)
             );
             break;
           default:
