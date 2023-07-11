@@ -26,7 +26,6 @@ const DetalleCompetenciasArea = () => {
   
         const fetchAreasActivas = async () => {
         try {
-          
           const requestOptions = {
             method: 'POST',
             headers: {
@@ -211,9 +210,6 @@ const DetalleCompetenciasArea = () => {
                 value={palabrasClave}
                 onChange={(e) => setPalabrasClave(e.target.value)}
               />
-              <Button variant="outline-secondary" id="buscar-icono" onClick={() => setBusquedaRealizada(true)}>
-                <i className="bi bi-search"></i>
-              </Button>
             </InputGroup>
             <div className="col-sm-3 botones">
               <Button variant="primary" className ="col-sm-4">Buscar</Button>

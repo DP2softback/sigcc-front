@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Form, Button, Modal } from 'react-bootstrap';
 import { ArrowRightCircleFill, Pencil, Trash, Upload } from 'react-bootstrap-icons';
-import AgregarCompetencia from './Create';
-import ActualizarCompetencia from './Update';
-import BorrarCompetencia from './Delete';
-import Info from './Info';
-import {Competencia,tipoCompetencia} from './Tipos'
-import './Read.css';
+import {Competencia,tipoCompetencia} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos'
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
+import './DemandaCapacitacion.css';
 
 const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
 
@@ -139,7 +135,7 @@ const CompetenciasRead: React.FC = () => {
       body: JSON.stringify({
         name: nuevaCompetencia.name,
         description: nuevaCompetencia.description,
-        isActive: nuevaCompetencia.isActive,
+        active: nuevaCompetencia.active,
         type: nuevaCompetencia.type
       })
     };
@@ -204,7 +200,7 @@ const actualizarCompetencia = async (competenciaActualizada) => {
     id: competenciaActualizada.id,
     name: competenciaActualizada.name,
     description: competenciaActualizada.description,
-    isActive: competenciaActualizada.isActive,
+    active: competenciaActualizada.active,
     type: competenciaActualizada.type
 }
 
@@ -314,7 +310,7 @@ const borrarCompetencia = async (id) => {
             <th onClick={() => handleOrdenarPorCampo('code')}>Código {campoOrdenamiento === 'code' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th onClick={() => handleOrdenarPorCampo('name')}>Nombre {campoOrdenamiento === 'name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th onClick={() => handleOrdenarPorCampo('type')}>Tipo de Capacidad {campoOrdenamiento === 'type' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-            <th onClick={() => handleOrdenarPorCampo('isActive')}>Estado {campoOrdenamiento === 'isActive' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
+            <th onClick={() => handleOrdenarPorCampo('active')}>Estado {campoOrdenamiento === 'active' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th>Acciones</th>        
         </tr>
       </thead>
@@ -349,7 +345,7 @@ const borrarCompetencia = async (id) => {
 
       <div className='container-fluid'>
         <div className='row'>
-          <div className='col-md-6 basicSearch'>
+          <div className='col-sm-3 basicSearch'>
             <Form.Group controlId="search">
               <Form.Control
                 type="text"
@@ -384,94 +380,21 @@ const borrarCompetencia = async (id) => {
             </div>
          </div>
             <div className='row'>
-              <div className="col-md-12  justify-content-right">
-
-        
-
-
-
- 
-                <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
-                  Agregar capacidad
-                </Button>
-
+              <div className="col-md-6 botones2 justify-content-center">
+                <Button variant="outline-secondary" className='Search' onClick={handleLimpiarFiltros}>
+                  Limpiar filtros
+                </Button>{' '}
                 <Button variant="primary" className='Search' onClick={handleSearch}>
                   Buscar
                 </Button>{' '}
-
-                <Button variant="outline-secondary" className='SearchP' onClick={handleLimpiarFiltros}>
-                  Limpiar filtros
-                </Button>{' '}
-
-                
-
-         
-                
+              </div>
+              <div className="col-md-6 botones2 justify-content-center">          
+                <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
+                  Agregar capacidad
+                </Button>
               </div>  
           </div>
         </div>  
-
-      <Modal show={mostrarPopUpCrear} onHide={handleCerrarPopUpCrear}>
-        <Modal.Header closeButton>
-          <Modal.Title>Crear Competencia</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <AgregarCompetencia agregarCompetencia={agregarCompetencia} tipoCompetencias ={tipoCompetencias}/>
-          <div className='botonCerrar'>
-          <Button variant="secondary"  onClick={handleCerrarPopUpCrear}>
-            Cerrar
-          </Button>
-          </div>
-        </Modal.Body>
-      </Modal>
-
-      <Modal show={mostrarPopUpInfo} onHide={handleCerrarPopUpInfo}>
-        <Modal.Header closeButton>
-          <Modal.Title>{'Informacion de Capacidad: ' + ' ' + name}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Info competencia ={competenciaSeleccionada} tipo = {tipo}/>
-          <div className='botonCerrar'>
-          </div>
-        </Modal.Body>
-      </Modal>
-
-
-
-
-      <Modal show={mostrarPopUpActualizar} onHide={handleCerrarPopUpActualizar}>
-        <Modal.Header closeButton>
-          <Modal.Title>Actualizar Competencia</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          
-          <ActualizarCompetencia actualizarCompetencia={actualizarCompetencia} competencia={competenciaSeleccionada} tipoCompetencias ={tipoCompetencias}/>
-          <div className='botonCerrar'>
-            <Button variant="secondary" onClick={handleCerrarPopUpActualizar}>
-              Cerrar
-            </Button>
-          </div>
-        </Modal.Body>
-      </Modal>
-
-
-      <Modal show={mostrarPopUpBorrar} onHide={handleCerrarPopUpBorrar}>
-        <Modal.Header closeButton>
-          <Modal.Title>Borrar Competencia</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <BorrarCompetencia borrarCompetencia={borrarCompetencia} competencia={competenciaSeleccionada}/>
-          <div className='botonCerrar2'>
-          <Button variant="secondary" onClick={handleCerrarPopUpBorrar}>
-            Cerrar
-          </Button>
-          </div>
-        </Modal.Body>
-      </Modal>
-
-
-
-
 
       <div className='container-fluid'>
          {renderTablaCompetencias()}
