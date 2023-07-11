@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button, Table} from 'react-bootstrap';
 import './GestionCompetencias.css'
-import {tipoCompetencia,CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
+import {CompetenciaTrabajador } from '../GestionDeCompetencias/Tipos';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos';
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
@@ -23,7 +23,7 @@ const GestionCompetencia = (state) => {
           const body = {
             idCompetencia: 0,		//dejarlo así
             palabraClave: "",		//poner la palabra clave del buscador, si es nada pon ""
-            idTipoCompetencia: 0,		//el idTipoCompetencia del buscador, si es todos pon 0
+            idTipoCompetencia: 2,		//el idTipoCompetencia del buscador, si es todos pon 0
             activo: 2,			//el estado 0 o 1 (inactivo o activo), si es todos pon 2
             idEmpleado: usuario.id			//ponerle el idEmpleado usuario.id
           };
@@ -70,22 +70,22 @@ const GestionCompetencia = (state) => {
           case 'capacity__code':
             datosOrdenados = competenciasData.sort((a, b) =>
               tipoOrden === 'ascendente'
-                ? a.capacity_id.localeCompare(b.capacity_id)
-                : b.capacity_id.localeCompare(a.capacity_id)
+                ? a.competence_code.localeCompare(b.competence_code)
+                : b.competence_code.localeCompare(a.competence_code)
             );
             break;
           case 'capacity__name':
             datosOrdenados = competenciasData.sort((a, b) =>
               tipoOrden === 'ascendente'
-                ? a.capacity_name.localeCompare(b.capacity_name)
-                : b.capacity_name.localeCompare(a.capacity_name)
+                ? a.competence_name.localeCompare(b.competence_name)
+                : b.competence_name.localeCompare(a.competence_name)
             );
             break;
           case 'capacity__type__name':
             datosOrdenados = competenciasData.sort((a, b) =>
               tipoOrden === 'ascendente'
-                ? a.competence__type__name.localeCompare(b.competence__type__name)
-                : b.competence__type__name.localeCompare(a.competence__type__name)
+                ? a.competence_type.localeCompare(b.competence_type)
+                : b.competence_type.localeCompare(a.competence_type)
             );
             break;
           default:
@@ -170,8 +170,8 @@ const GestionCompetencia = (state) => {
   return (
     <div className="pantalla">
       <div className='titles'>
-      <h2 className='Head'>Capacidades de empleado del área de TI</h2>
-      <p className="text-muted subtitle">Capacidades por empleado.</p>
+      <h2 className='Head'>Competencias de empleado del área de TI</h2>
+      <p className="text-muted subtitle">Competencias por empleado.</p>
       </div>
       
     <div className='container-fluid'>

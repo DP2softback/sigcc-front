@@ -40,7 +40,8 @@ const Edit = () => {
   const [idPlantilla,setIdPlantilla]=useState(parseInt(urlParams.get('id')));
   const [typePlantilla,setTypePlantilla]=useState(urlParams.get('type'));
   const [show,setShow]=useState(false);
-
+  const [showEd,setShowEd]=useState(false);
+  const [confirmarEditar,setConfirmarEditar]=useState(false);
   useEffect(() => {
     setIsLoading(true);
     (async () => {
@@ -69,6 +70,21 @@ const Edit = () => {
       setIsLoading(false);
     })();
   }, []);
+
+  useEffect(() => {
+    const aux = {
+      ...editar,
+      "plantilla-nombre": plantillaName,
+    };
+    (async () => { 
+      const response = await guardarEditar(aux, categorias);
+      if (response){
+        setShowNotification(true); 
+        toast.success("Se ha editado correctamente la plantilla");
+        closeNotification();
+      }
+    })();
+  }, [confirmarEditar]);
 
   function delay(ms: number): Promise<void> {
     return new Promise<void>((resolve) => {
@@ -262,7 +278,7 @@ const Edit = () => {
         <div>
           <div className="d-flex">
             <Button variant="outline-primary" className="boton-dejar mr-20" onClick={() => navigateBack()}>Volver</Button>
-            <Button onClick={handleGuardarEditar}>Guardar</Button>
+            <Button onClick={()=>setShowEd(true)}>Editar Plantilla</Button>
           </div>
         </div>
       </div>
@@ -282,6 +298,7 @@ const Edit = () => {
         <>
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />  
         <ModalConfirmacion show={show} setShow={setShow} idPlantilla={idPlantilla} type={"plantilla"}></ModalConfirmacion>
+        <ModalConfirmacion show={showEd} setShow={setShowEd}  type={"editar"} setEditar={setConfirmarEditar}></ModalConfirmacion>
         <Layout
         title={'Plantilla - '+plantilla[0].name }
         body={body}
