@@ -160,8 +160,7 @@ const PieChart = ({ title, labels, datasets }) => {
       const handleCompetenciaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {    
         const tipo  = tipoCompetencias.find((tipo) => tipo.id.toString() === event.target.value)
         setAre(tipo)
-        setTipoCompetencia(tipoCompetencias[0]);
-        console.log(tipoCompetencias)
+        setTipoCompetencia(tipoCompetencias[parseInt(event.target.value)-1])
         setname(area.name)
         setData1(data1);
         setData2(data2);
