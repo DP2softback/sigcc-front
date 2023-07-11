@@ -198,11 +198,11 @@ const PieChart = ({ title, labels, datasets }) => {
       
       return (
         <div className="container">
-          <h2 className="Head">Consolidado de capacidades de área de TI</h2>
+          <h2 className="Head">Consolidado de competencias de área de TI</h2>
           
           <div className="row">
             <div className="col-md-6">
-              <label className="subtitle" htmlFor="competencia-select">Capacidades por puesto:</label>
+              <label className="subtitle" htmlFor="competencia-select">Competencias por puesto:</label>
               <select
                 id="competencia-select"
                 className="form-control"
@@ -214,9 +214,6 @@ const PieChart = ({ title, labels, datasets }) => {
                 ))}
               </select>
             </div>
-            <div className="col-md-6 d-flex align-items-end">
-              <button className="btn btn-primary" onClick={handleBuscarClick}>Buscar</button>
-            </div>
           </div>
 
           {data1 && (
@@ -224,7 +221,7 @@ const PieChart = ({ title, labels, datasets }) => {
               <div className="col-md-6">
                 <div className="card">
                   <div className="card-body">
-                    <h3 className="card-title">Adecuación a capacidades del area</h3>
+                    <h3 className="card-title">Adecuación a competencias del area</h3>
                     <PieChart title='' labels= ''datasets={data1} />
                     <div className="chart-legend"> 
                       {/* Agregar aquí la leyenda del gráfico 1 */}
@@ -237,7 +234,7 @@ const PieChart = ({ title, labels, datasets }) => {
               <div className="col-md-6">
                <div className="card">
                  <div className="card-body">
-                   <h3 className="card-title">Adecuación a capacidades de  {abbreviation}</h3>
+                   <h3 className="card-title">Adecuación a competencias de  {abbreviation}</h3>
                    <PieChart title='' labels= {labels} datasets={data2} />
                    <div className="chart-legend">
                      {/* Agregar aquí la leyenda del gráfico 2 */}

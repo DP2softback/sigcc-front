@@ -9,7 +9,7 @@ type Props = {
 
 const AgregarCompetencia: React.FC<Props> = ({ agregarCompetencia, tipoCompetencias }) => {
   const [nuevaCompetencia, setNuevaCompetencia] = useState<Competencia>({
-    id: 0,
+    id: 2,
     code: '',
     name: '',
     description: '',
@@ -30,7 +30,7 @@ const AgregarCompetencia: React.FC<Props> = ({ agregarCompetencia, tipoCompetenc
     const selectedTipoCompetencia = tipoCompetencias.find((tipo) => tipo.id === selectedTipoId);
     setNuevaCompetencia((prevCompetencia) => ({
       ...prevCompetencia,
-      type: selectedTipoCompetencia?.id || 0,
+      type: selectedTipoCompetencia?.id || 2,
     }));
   };
 
