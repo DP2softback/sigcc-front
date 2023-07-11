@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from 'react-bootstrap';
-import {Competencia,tipoCompetencia} from './Tipos'
+import {Competencia} from './Tipos'
 
 type Props = {
   borrarCompetencia: (id: number) => void;
