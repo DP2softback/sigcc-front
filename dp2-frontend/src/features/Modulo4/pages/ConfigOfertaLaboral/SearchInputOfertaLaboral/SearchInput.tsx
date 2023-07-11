@@ -117,7 +117,7 @@ const SearchInput = ({ onClose, onSelect }) => {
 					maxWidth: "30 rem"
 				}}>
 				<Modal.Header closeButton>
-					<Modal.Title>Buscar información</Modal.Title>
+					<Modal.Title>Buscar información del proceso de selección</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<Form>
