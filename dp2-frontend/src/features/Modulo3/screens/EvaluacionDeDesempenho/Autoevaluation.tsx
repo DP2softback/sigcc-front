@@ -3,7 +3,7 @@ import BaseForm from './BaseForm';
 import { useEffect, useState } from 'react';
 import { getEvaluation } from '@features/Modulo3/services/continuousEvaluation';
 
-const Detail = () => {  
+const Autoevaluation = () => {  
   const urlParams = new URLSearchParams(window.location.search);
 
   const [employee, setEmployee] = useState({
@@ -22,9 +22,13 @@ const Detail = () => {
       const response = await getEvaluation(parseInt(urlParams.get('evaluationId')));
       if (response) {
         setEvaluation(response);
-        if (response.RelatedEvaluation) {
-          const associatedResponse = await getEvaluation(response.RelatedEvaluation);          
-          if (associatedResponse) setAssociatedEvaluation(associatedResponse);
+        if (response.associatedEvaluationId) {
+          const associatedResponse = await getEvaluation(response.associatedEvaluationId);
+          if (associatedResponse) {
+            setAssociatedEvaluation(associatedResponse);
+          }
+        }else{
+          setAssociatedEvaluation(response);
         }
       }
       setIsLoading(false);
@@ -36,11 +40,15 @@ const Detail = () => {
       employee={employee}
       categories={evaluation.categories}
       evaluation={evaluation}
-      associatedEvaluation={associatedEvaluation}
+      //associatedEvaluation={associatedEvaluation}
+      setEvaluation={setEvaluation}
+      setIsLoading={setIsLoading}
       isLoading={isLoading}
-      isReadOnly={true}
+      isReadOnly={false}
+      isAutoevaluation={true}
+      evaluationId={parseInt(urlParams.get('evaluationId'))}
     />
   );
 };
 
-export default Detail;
+export default Autoevaluation;
