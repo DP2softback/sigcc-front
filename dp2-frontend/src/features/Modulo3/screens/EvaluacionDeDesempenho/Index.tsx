@@ -3,7 +3,7 @@ import { PERFORMANCE_EVALUATION_INDEX, PERFORMANCE_EVALUATION_HISTORY } from '@f
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import { Search } from 'react-bootstrap-icons'
-import { Form, InputGroup, Button } from 'react-bootstrap';
+import { Form, InputGroup, Button, Row, Col } from 'react-bootstrap';
 import Employee from '@features/Modulo3/components/Cards/Employee/Employee';
 import { useEffect, useState } from 'react';
 import { getEmployees, getEmployeesEvaluationDashboard } from '@features/Modulo3/services/performanceEvaluation';
@@ -85,7 +85,7 @@ const Index = () => {
   );
 
   const firstTwoEmployees = (
-    <div className="ec-indexFirstTwoEmployees col-md-4">
+    <Col md={4} className="ec-indexFirstTwoEmployees">
       {employees &&
         employees.slice(0, 1).map((employee) => {
           return (
@@ -112,16 +112,17 @@ const Index = () => {
             </div>
           );
         })}
-    </div>
+    </Col>
   );
 
   const restEmployees = (
     employees &&
     employees.slice(1).map((employee) => {
       return (
-        <div
+        <Col
           key={employee.id}
-          className="col-md-4 mb-32px cursor-pointer"
+          md={4}
+          className="mb-32px cursor-pointer"
           onClick={() => {
             navigateTo(PERFORMANCE_EVALUATION_HISTORY, { 
               id: employee.id,
@@ -139,28 +140,28 @@ const Index = () => {
             area={employee.area.name}
             email={employee.email}
           />
-        </div>
+        </Col>
       );
   }));
 
   const chart = (
-    <div className="col-md-8 mb-32px">
+    <Col md={8} className="mb-32px">
       {dashboard && (
         <Linechart
           title={'Evaluaciones de desempeño'}
           labelsX={dashboard.months}
           dataInfoprops={dashboard.data}/>
       )}
-    </div>
+    </Col>
   );
 
   const content = (
     employees && employees.length > 0 ? (
-      <div className='row mt-32'>
+      <Row className='mt-32'>
         {firstTwoEmployees}
         {chart}
         {restEmployees}
-      </div>
+      </Row>
     ) : (
       <NoDataFound/>
     )

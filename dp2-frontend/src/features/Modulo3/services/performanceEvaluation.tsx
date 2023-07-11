@@ -29,3 +29,15 @@ export const saveEvaluation = async (evaluation) => {
   }
   return await ajax(optionsRequest);
 }
+
+export const saveAutoevaluation = async (evaluation) => {
+  const optionsRequest = {
+    method: 'PUT',
+    url: BACKEND_URL + 'CrearEvaluacionDese',
+    headers:{
+      Authorization: `Token ${TOKEN}`
+    },
+    data: evaluation
+  }
+  return await ajax(optionsRequest);
+}

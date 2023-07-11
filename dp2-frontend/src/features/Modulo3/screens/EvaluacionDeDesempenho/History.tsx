@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './EvaluacionDeDesempenho.css';
 import { PERFORMANCE_EVALUATION_INDEX, PERFORMANCE_EVALUATION_CREATE } from '@features/Modulo3/routes/path';
 import { navigateTo, formatDashboardJson, obtenerFechaHaceUnAnio, obtenerFechaActual } from '@features/Modulo3/utils/functions';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Col, Row } from 'react-bootstrap';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
@@ -75,7 +75,7 @@ const History = () => {
   );
 
   const chart = (
-    <div className='col-md-6 mb-32px'>
+    <Col md={6} className='mb-32px'>
       <div className='container-mt-32px'>
       {dashboard && (
         <Linechart
@@ -85,22 +85,22 @@ const History = () => {
       )}
       </div>
 
-    </div>
+    </Col>
   );
 
   const table =(
-    <div className='col-md-6'>
+    <Col md={6}>
       <TableHistoryDesempenho rows ={evaluations} employee={employee}/>
-    </div>
+    </Col>
   );
 
   const content = (
     <>
       {evaluations && evaluations.length > 0 ? (
-        <div className='row mt-32'>
+        <Row className='mt-32'>
           {table}
           {chart}
-        </div>
+        </Row>
       ) : (
         <NoDataFound />
       )}
