@@ -8,9 +8,6 @@ import Info from './Info';
 import {Competencia,tipoCompetencia} from './Tipos'
 import './Read.css';
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
-
-const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
-
 const CompetenciasRead: React.FC = () => {
   const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
   const [tipoOrden, setTipoOrden] = useState('ascendente');
@@ -27,17 +24,15 @@ const CompetenciasRead: React.FC = () => {
   const [tipo,setTipo] = useState('')  
   const [name,setName] = useState('')
   useEffect(() => {
-    // Función para obtener los datos de competencias desde la API
     const fetchCompetencias = async () => {
       try {
         const body = {
           idCompetencia: 0,
           palabraClave: searchQuery,
-          idTipoCompetencia: tipoFiltro === 2 ? 2 : tiposCompetencia[tipoFiltro - 1],
-          activo: estadoFiltro === 'Activo' ? 1 : estadoFiltro === 'Inactivo' ? 0 : 2,
+          idTipoCompetencia: 2,
+          activo:2,
           idEmpleado: 0,
         };
-
         const response = await fetch(URL_SERVICE + '/gaps/competenceSearch', {
           method: 'POST',
           headers: {
@@ -46,7 +41,6 @@ const CompetenciasRead: React.FC = () => {
           },
           body: JSON.stringify(body),
         });
-
         if (response.ok) {
           const data = await response.json();
           setCompetencias(data);
@@ -59,7 +53,6 @@ const CompetenciasRead: React.FC = () => {
     };
     const fetchTipoCompetencias = async () => {
       try {
-
         const response = await fetch(URL_SERVICE + '/gaps/competenceTypes', {
           method: 'GET',
           headers: {
@@ -67,7 +60,6 @@ const CompetenciasRead: React.FC = () => {
             'Authorization': TOKEN_SERVICE,
           },
         });
-
         if (response.ok) {
           const data = await response.json();
           setTipoCompetencias(data);
@@ -78,12 +70,12 @@ const CompetenciasRead: React.FC = () => {
         console.log('Error al obtener los datos de competencias:', error);
       }
     };
-
     fetchCompetencias();
     fetchTipoCompetencias();
   }, []);
-
-
+  useEffect(() => {
+    
+  }, [competencias, tipoCompetencias]);
   const filtrarCompetencias = () => {
     var competenciasFiltradas = competencias;
     if (tipoFiltro) {
@@ -110,25 +102,18 @@ const CompetenciasRead: React.FC = () => {
     const searchMatch =
       competencia.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       competencia.code.toLowerCase().includes(searchQuery.toLowerCase());
-    const tipoMatch = tipoFiltro === 0 || competencia.type === tipoFiltro;
+    const tipoMatch = tipoFiltro === 2 || competencia.type === tipoFiltro;
     const estadoMatch = estadoFiltro === '' || competencia.isActive === (estadoFiltro === 'Activo');
-
     return searchMatch && tipoMatch && estadoMatch;
   });
-  const handleSearch = () => {
-    // Lógica para realizar la búsqueda
-  };
-
   const handleLimpiarFiltros = () => {
     setSearchQuery('');
     setTipoFiltro(0);
     setEstadoFiltro('');
   };
-
   const handleMostrarPopUpCrear  = () => {
     setmostrarPopUpCrear(true);
   };
-
   const agregarCompetencia = (nuevaCompetencia) => {
     const requestOptions = {
       method: 'POST',
@@ -142,8 +127,7 @@ const CompetenciasRead: React.FC = () => {
         isActive: nuevaCompetencia.isActive,
         type: nuevaCompetencia.type
       })
-    };
-  
+    };  
     fetch(URL_SERVICE + '/gaps/competences', requestOptions)
       .then(response => response.json())
       .then(data => {
@@ -152,52 +136,27 @@ const CompetenciasRead: React.FC = () => {
       .catch(error => {
         console.error('Error al agregar competencia:', error);
       });
-  
     handleCerrarPopUpCrear();
   };
-  
-
   const handleCerrarPopUpCrear = () => {
     setmostrarPopUpCrear(false);
+    window.location.reload();
   };
-
   const handleMostrarPopUpInfo  = (competencia) => {
     setCompetenciaSeleccionada(competencia);
     setTipo(tipoCompetencias.find((tipo) => tipo.id == competencia.type)?.name)
     setName(competencia.name);
     setmostrarPopUpInfo(true);
   };
-
-
-
   const handleCerrarPopUpInfo = () => {
     setmostrarPopUpInfo(false);
   };
-
-
-
-  
   const handleMostrarPopUpActualizar = (competencia) => {
     setCompetenciaSeleccionada(competencia);
     setTipo(tipoCompetencias.find((tipo) => tipo.id == competencia.type)?.name)
     setName(competencia.name);
     setmostrarPopUpActualizar(true);
   };
-
-/*
-//ACTUALIZADO LOCAL
-  
-  const actualizarCompetencia = (competenciaActualizada) => {
-    var tablaAux = competencias;
-    const indice = competencias.findIndex((competencia) => competencia.id=== competenciaActualizada.id);
-    if (indice !== -1) {
-      tablaAux[indice] = competenciaActualizada;
-    }
-    setCompetencias(tablaAux);
-    handleCerrarPopUpActualizar();
-  };
-*/
-
 const actualizarCompetencia = async (competenciaActualizada) => {
   console.log(competenciaActualizada)
   const body = {
@@ -206,9 +165,7 @@ const actualizarCompetencia = async (competenciaActualizada) => {
     description: competenciaActualizada.description,
     isActive: competenciaActualizada.isActive,
     type: competenciaActualizada.type
-}
-
-
+  }
   try {
     const response = await fetch(
       URL_SERVICE + `/gaps/competences`,
@@ -221,7 +178,6 @@ const actualizarCompetencia = async (competenciaActualizada) => {
         body: JSON.stringify(body)
       }
     );
-
     if (response.ok) {
       const updatedCompetencia = await response.json();
       var tablaAux = competencias;
@@ -242,17 +198,15 @@ const actualizarCompetencia = async (competenciaActualizada) => {
     console.error(error);
   }
 };
-
   const handleCerrarPopUpActualizar = () => { 
     setmostrarPopUpActualizar(false);
+    window.location.reload();
   };
-
   const handleMostrarPopUpBorrar  = (competencia) => {     
     setCompetenciaSeleccionada(competencia);
     setName(competencia.name);
     setmostrarPopUpBorrar(true);
   };
-
 const borrarCompetencia = async (id) => {
   console.log(id)
   try {
@@ -276,14 +230,10 @@ const borrarCompetencia = async (id) => {
     console.error('Error al realizar la solicitud de borrado', error);
   }
 };
-
-
   const handleCerrarPopUpBorrar = () => {
     setmostrarPopUpBorrar(false);
+    window.location.reload();
   };
-
-
-
   const handleOrdenarPorCampo = (campo) => {
     // Si se hace clic en el mismo campo, cambia el tipo de orden
     if (campo === campoOrdenamiento) {
@@ -293,7 +243,6 @@ const borrarCompetencia = async (id) => {
       setTipoOrden('ascendente');
     }
   };
-
   const datosFiltradosYOrdenados = filteredCompetencias.sort((a, b) => {
     if (a[campoOrdenamiento] < b[campoOrdenamiento]) {
       return tipoOrden === 'ascendente' ? -1 : 1;
@@ -303,10 +252,7 @@ const borrarCompetencia = async (id) => {
     }
     return 0;
   });
-
   const renderTablaCompetencias = () => {
-    
-    
     return (
     <Table striped bordered hover>
       <thead>
@@ -331,22 +277,19 @@ const borrarCompetencia = async (id) => {
                       <i className="bi bi-box-arrow-in-right"></i>
                     </Button>
                     <Button variant="secondary" size="sm" onClick={() => handleMostrarPopUpActualizar(competencia)}><Pencil /></Button>
-                    <Button variant="danger" size="sm" onClick={() => handleMostrarPopUpBorrar(competencia)}><Trash /></Button>
-                 
+                    <Button variant="danger" size="sm" onClick={() => handleMostrarPopUpBorrar(competencia)}><Trash /></Button>                 
                   </td>
           </tr>
         ))}
       </tbody>
     </Table>)
   }
-
   return (
     <div className='pantalla'>
       <div className='titles'>
       <h2 className='Head'>Gestión de Competencias</h2>
       <p className="text-muted subtitle">Agrega, edita y desactiva competencias.</p>
       </div>
-
       <div className='container-fluid'>
         <div className='row'>
           <div className='col-md-6 basicSearch'>
@@ -359,7 +302,6 @@ const borrarCompetencia = async (id) => {
               />
             </Form.Group>
           </div>
-
           <div className='col-sm-3 botones'>
             <Form.Group className="mb-3" controlId="tipoFiltro">
                 <Form.Control as="select" value={tipoFiltro} onChange={(e) => setTipoFiltro(parseInt(e.target.value))}>
@@ -372,7 +314,6 @@ const borrarCompetencia = async (id) => {
                 </Form.Control>
               </Form.Group>
             </div>
-
             <div className='col-sm-3 botones'>
               <Form.Group controlId="estadoFiltro">
                 <Form.Control as="select" value={estadoFiltro} onChange={(e) =>{ setEstadoFiltro(e.target.value); console.log(e.target.value)}}>
@@ -420,9 +361,6 @@ const borrarCompetencia = async (id) => {
         </Modal.Body>
       </Modal>
 
-
-
-
       <Modal show={mostrarPopUpActualizar} onHide={handleCerrarPopUpActualizar}>
         <Modal.Header closeButton>
           <Modal.Title>Actualizar Competencia</Modal.Title>
@@ -438,7 +376,6 @@ const borrarCompetencia = async (id) => {
         </Modal.Body>
       </Modal>
 
-
       <Modal show={mostrarPopUpBorrar} onHide={handleCerrarPopUpBorrar}>
         <Modal.Header closeButton>
           <Modal.Title>Borrar Competencia</Modal.Title>
@@ -452,18 +389,10 @@ const borrarCompetencia = async (id) => {
           </div>
         </Modal.Body>
       </Modal>
-
-
-
-
-
       <div className='container-fluid'>
          {renderTablaCompetencias()}
       </div>
-
-
     </div>
   );
 };
-
 export default CompetenciasRead;

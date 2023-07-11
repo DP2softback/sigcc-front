@@ -38,7 +38,7 @@ const PieChart = ({ title, labels, datasets }) => {
       const [data1, setData1] = useState(null);
       const [data2, setData2] = useState(null);
       const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
-      const [tipoCompetencia, setTipoCompetencia] = useState<tipoCompetencia>(null);
+      const [tipoCompetencia, setTipoCompetencia] = useState<AreaActiva>(null);
       const [areasActivas, setAreasActivas] = useState<AreaActiva[]>([]);
       const [abbreviation, setAbbreviation] = useState('');
       const [hard, setHard] = useState(['Ingeniero de software', 'Desarrollador de aplicaciones', '	Arquitecto de software','Analista de sistemas', 'Asistente' ]);
@@ -52,13 +52,14 @@ const PieChart = ({ title, labels, datasets }) => {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+                Authorization: TOKEN_SERVICE,
               },
             });
     
             if (response.ok) {
               const data = await response.json();
               setTipoCompetencias(data);
+              setAreasActivas(data);
             } else {
               console.log('Error al obtener los datos de competencias');
             }
@@ -178,9 +179,9 @@ const PieChart = ({ title, labels, datasets }) => {
 
       const handleCompetenciaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {    
         const tipo  = tipoCompetencias.find((tipo) => tipo.id.toString() === event.target.value)
-        setTipoCompetencia(tipoCompetencias[0]);
+        setTipoCompetencia(areasActivas[parseInt(event.target.value)-1])
         console.log(tipoCompetencia)
-        setAbbreviation(event.target.value)
+        setAbbreviation(areasActivas.find((area) => area.id.toString() === event.target.value)?.name || '')
         //setAbbreviation(tipo.abbreviation)
         setData1(data1);
         setData2(data2);
@@ -209,8 +210,8 @@ const PieChart = ({ title, labels, datasets }) => {
                 value={abbreviation}
                 onChange={handleCompetenciaChange}
               ><option value="">Todas</option>
-                {hard.map((hard) => (
-                  <option key={hard} value={hard}>{hard}</option>
+                {areasActivas.map((hard) => (
+                  <option key={hard.id} value={hard.id}>{hard.name}</option>
                 ))}
               </select>
             </div>

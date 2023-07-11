@@ -68,14 +68,14 @@ const GestionCompetenciaAM = (state) => {
       const datosFiltradosYOrdenados = () => {
         let datosOrdenados = [];
         switch (campoOrdenamiento) {
-          case 'capacity__id':
+          case 'competence__id':
             datosOrdenados = competenciasData.sort((a, b) =>
               tipoOrden === 'ascendente'
                 ? a.competence_code.localeCompare(b.competence_code)
                 : b.competence_code.localeCompare(a.competence_code)
             );
             break;
-          case 'capacity__name':
+          case 'competence__name':
             datosOrdenados = competenciasData.sort((a, b) =>
               tipoOrden === 'ascendente'
                 ? a.competence_name.localeCompare(b.competence_name)
@@ -96,10 +96,10 @@ const GestionCompetenciaAM = (state) => {
         return datosOrdenados;
       };  
       const returnLevel = (number) => {
-        if (number === 'A') return "Alto";
-        if (number === 'M') return "Medio";
-        if (number === 'B') return "Bajo";
-        //if (number === 4) return "Alto";
+        if (number === 0) return "Alto";
+        if (number === 1) return "Medio";
+        if (number === 2) return "Bajo";
+        if (number === 3) return "Alto";
         return " "
       }
     const renderTablaCompetencias = () => {
@@ -108,9 +108,9 @@ const GestionCompetenciaAM = (state) => {
             <Table striped bordered>
             <thead>
                 <tr>
-                    <th onClick={() => handleOrdenarPorCampo('capacity__name')}>
+                    <th onClick={() => handleOrdenarPorCampo('competence__name')}>
                     Nombre
-                    {campoOrdenamiento === 'capacity__name' && (
+                    {campoOrdenamiento === 'competence__name' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                     )}
                     </th>
@@ -152,8 +152,9 @@ const GestionCompetenciaAM = (state) => {
             const observacion = item.levelCurrent < item.levelRequired ? 'Necesidad de curso de capacitación' : 'Nivel requerido es alcanzado';
             return (
               <tr key={index}>
-                <td>{item.capacity__name}</td>
-                <td>{item.capacity__type__name}</td>
+                <td>{item.competence__name}</td>
+                <td>{item.competence__type__name}</td>
+                {/*item.competence_type==1?'Blando':'Tecnico'*/}
                 <td>{returnLevel(item.levelCurrent)}</td>
                 <td>{returnLevel(item.levelRequired)}</td>
                 <td>{item.likeness + ' %'}</td>
