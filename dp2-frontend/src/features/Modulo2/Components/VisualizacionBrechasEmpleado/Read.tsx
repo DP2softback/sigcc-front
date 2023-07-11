@@ -28,7 +28,7 @@ const Read = () => {
             .then(function (response) {
                 let temp = {
                     id: -1,
-                    name: "Tipos de capacidad"
+                    name: "Tipos de competencia"
                 }
                 let temp2 = {
                     id: 2,
@@ -124,21 +124,24 @@ const Read = () => {
             })
     }
 
-    const returnLevel = (number) => {
-        if (number === 'A') return "Alto";
-        if (number === 'M') return "Medio";
-        if (number === 'B') return "Bajo";
-        if (number === 1) return "Bajo";
-        if (number === 2) return "Medio";
-        if (number === 3) return "Alto";
-        return " "
+    const returnCompetenceType = (type) => {
+        if (type === 0) return "Técnica";
+        return "Blanda";
+    }
+
+    const returnLevel = (level) => {
+        if (level === 0) return "No iniciado";
+        if (level === 1) return "En proceso";
+        if (level === 2) return "Logrado";
+        if (level === 3) return "Sobresaliente";
+        return "Experto"
     }
 
     return (
         <>
             <div className='row'>
-                <h2>Mis brechas de capacidades</h2>
-                <p className="text-muted">Visualización de estadísticas de los niveles requeridos por capacidades</p>
+                <h2>Mis brechas de competencias</h2>
+                <p className="text-muted">Visualización de estadísticas de los niveles requeridos por competencias</p>
                 {isLoading ? <></> :
                     <Form className="row align-items-center mb-4">
                         <Form.Group className="col-6">
@@ -217,7 +220,7 @@ const Read = () => {
                                         {employeeCompetences && employeeCompetences.map((competence, index) => (
                                             <tr key={index} className={index % 0 === 0 ? "evenRow" : "oddRow"}>
                                                 <td>{competence.competence_name}</td>
-                                                <td>{competence.competence_type}</td>
+                                                <td>{returnCompetenceType(competence.competence_type)}</td>
                                                 <td>{returnLevel(competence.levelCurrent)}</td>
                                                 <td>{returnLevel(competence.levelRequired)}</td>
                                                 <td>{Math.round(competence.likeness) + "%"}</td>
