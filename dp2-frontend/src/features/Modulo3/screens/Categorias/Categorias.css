@@ -12,16 +12,20 @@
     margin-left: 20px;
 }
 
-.ca-tableCategorie{
-    margin-top: 20px;
-    margin-left: 14px;
-    margin-right: 14px;
-}
+.ca-tableCategorie {
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+  .ca-tableCategorie thead th,
+  .ca-tableCategorie tbody td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
 
-.ca-buttonAdd{
-    align-self: flex-end;
-    margin-left: 20px;
-}
+
 
 .TableHistory{
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
@@ -74,5 +78,34 @@
 }
 
 .competencia{
-    padding-right: 60px !important;
+    padding-right: 50px !important;
 }
+.label-input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  
+  .input-button-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .ca-buttonAdd {
+    margin-left: 10px;
+    cursor: pointer;
+    height: 100% !important;
+    font-weight: bold;
+  }
+  .form-group-inline {
+    display: flex;
+    align-items: stretch;
+  }
+  
+  .form-group-inline .form-select,
+  .form-group-inline .form-control {
+    flex: 1;
+  }

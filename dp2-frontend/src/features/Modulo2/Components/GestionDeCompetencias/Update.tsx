@@ -21,9 +21,10 @@ const ActualizarCompetencia: React.FC<Props> = ({ actualizarCompetencia, compete
     }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (competenciaActualizada) {
+      console.log(competenciaActualizada)
       actualizarCompetencia(competenciaActualizada);
     }
   };
@@ -50,7 +51,7 @@ const ActualizarCompetencia: React.FC<Props> = ({ actualizarCompetencia, compete
           id="codigo"
           name="code"
           value={competenciaActualizada?.code || ''}
-          onChange={handleChange}
+          readOnly  
         />
       </div>
       <div className="form-group">
@@ -81,8 +82,8 @@ const ActualizarCompetencia: React.FC<Props> = ({ actualizarCompetencia, compete
           type="checkbox"
           className="form-check-input"
           id="activo"
-          name="active"
-          checked={competenciaActualizada?.active || false}
+          name="isActive"
+          checked={competenciaActualizada?.isActive || false}
           onChange={handleChange}
         />
       </div>

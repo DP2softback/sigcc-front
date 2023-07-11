@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './EvaluacionContinua.css';
 import { CONTINUOS_EVALUATION_CREATE, CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
 import { formatDashboardJson, navigateTo, obtenerFechaActual, obtenerFechaHaceUnAnio } from '@features/Modulo3/utils/functions';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Col, Row } from 'react-bootstrap';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
 import Section from '@features/Modulo3/components/Layout/Section/Section';
 import TableHistoryContinua from '@features/Modulo3/components/Tables/TableHistoryContinua';
@@ -75,7 +75,7 @@ const History = () => {
   );
 
   const chart = (
-		<div className="col-md-6 mb-32px">
+		<Col md={6} className="mb-32px">
 			<div className="container-mt-32px">
 				{dashboard && (
 					<Linechart
@@ -85,22 +85,22 @@ const History = () => {
 					/>
 				)}
 			</div>
-		</div>
+		</Col>
 	);
 
   const table =(
-    <div className='col-md-6'>
+    <Col md={6}>
       <TableHistoryContinua rows ={evaluations} employee={employee}/>
-    </div>
+    </Col>
   );
 
   const content = (
 		<>
 			{evaluations && evaluations.length > 0 ? (
-				<div className="row mt-32">
+				<Row className="mt-32">
 					{table}
 					{chart}
-				</div>
+				</Row>
 			) : (
 				<NoDataFound />
 			)}

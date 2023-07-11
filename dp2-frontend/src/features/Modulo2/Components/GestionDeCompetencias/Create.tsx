@@ -9,12 +9,12 @@ type Props = {
 
 const AgregarCompetencia: React.FC<Props> = ({ agregarCompetencia, tipoCompetencias }) => {
   const [nuevaCompetencia, setNuevaCompetencia] = useState<Competencia>({
-    id: 0,
+    id: 2,
     code: '',
     name: '',
     description: '',
     type: 0,
-    active: false,
+    isActive: false,
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +30,7 @@ const AgregarCompetencia: React.FC<Props> = ({ agregarCompetencia, tipoCompetenc
     const selectedTipoCompetencia = tipoCompetencias.find((tipo) => tipo.id === selectedTipoId);
     setNuevaCompetencia((prevCompetencia) => ({
       ...prevCompetencia,
-      type: selectedTipoCompetencia?.id || 0,
+      type: selectedTipoCompetencia?.id || 2,
     }));
   };
 
@@ -43,24 +43,13 @@ const AgregarCompetencia: React.FC<Props> = ({ agregarCompetencia, tipoCompetenc
       name: '',
       description: '',
       type: 0,
-      active: false,
+      isActive: false,
     });
   };
 
   return (
     <form onSubmit={handleSubmit}>
         <div className='container-fluid'>
-        <div className="form-group">
-          <label htmlFor="codigo">Código:</label>
-          <input
-            type="text"
-            className="form-control"
-            id="codigo"
-            name="code"
-            value={nuevaCompetencia?.code || ''}
-            onChange={handleChange}
-          />
-        </div>
         <div className="form-group">
           <label htmlFor="nombre">Nombre:</label>
           <input
@@ -89,8 +78,8 @@ const AgregarCompetencia: React.FC<Props> = ({ agregarCompetencia, tipoCompetenc
             type="checkbox"
             className="form-check-input"
             id="activo"
-            name="active"
-            checked={nuevaCompetencia?.active || false}
+            name="isActive"
+            checked={nuevaCompetencia?.isActive || false}
             onChange={handleChange}
           />
         </div>

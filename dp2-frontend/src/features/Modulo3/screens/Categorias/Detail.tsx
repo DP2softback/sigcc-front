@@ -76,7 +76,7 @@ const Detail = () => {
 					Volver
 				</Button>
 				<Button onClick={()=>setShowAS(true)}>
-					Agregar nueva subcategoría
+					Agregar nueva competencia
 				</Button>
 			</div>
 		</>
@@ -84,7 +84,7 @@ const Detail = () => {
 
   const body = (
     <Section
-      title={"Subcategorias"}
+      title={"Competencias"}
       content={isLoading ? <LoadingScreen/> : content}
 
     />

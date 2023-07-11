@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Form, Button, Modal } from 'react-bootstrap';
-import { ArrowRightCircleFill, Download, Pencil, Trash, Upload } from 'react-bootstrap-icons';
+import { ArrowRightCircleFill, Pencil, Trash, Upload } from 'react-bootstrap-icons';
 import AgregarCompetencia from './Create';
 import ActualizarCompetencia from './Update';
 import BorrarCompetencia from './Delete';
+import Info from './Info';
 import {Competencia,tipoCompetencia} from './Tipos'
 import './Read.css';
+import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
 
 const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
 
@@ -13,7 +15,7 @@ const CompetenciasRead: React.FC = () => {
   const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
   const [tipoOrden, setTipoOrden] = useState('ascendente');
   const [searchQuery, setSearchQuery] = useState('');
-  const [tipoFiltro, setTipoFiltro] = useState(0);
+  const [tipoFiltro, setTipoFiltro] = useState(2);
   const [estadoFiltro, setEstadoFiltro] = useState(''); 
   const [mostrarPopUpCrear , setmostrarPopUpCrear] = useState(false);
   const [mostrarPopUpActualizar, setmostrarPopUpActualizar] = useState(false);
@@ -21,7 +23,9 @@ const CompetenciasRead: React.FC = () => {
   const [competencias, setCompetencias] = useState<Competencia[]>([]);
   const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
   const [competenciaSeleccionada, setCompetenciaSeleccionada] = useState(null);
-
+  const [mostrarPopUpInfo,setmostrarPopUpInfo] = useState(null)
+  const [tipo,setTipo] = useState('')  
+  const [name,setName] = useState('')
   useEffect(() => {
     // Función para obtener los datos de competencias desde la API
     const fetchCompetencias = async () => {
@@ -29,16 +33,16 @@ const CompetenciasRead: React.FC = () => {
         const body = {
           idCompetencia: 0,
           palabraClave: searchQuery,
-          idTipoCompetencia: tipoFiltro === 0 ? 0 : tiposCompetencia[tipoFiltro + 1],
+          idTipoCompetencia: tipoFiltro === 2 ? 2 : tiposCompetencia[tipoFiltro - 1],
           activo: estadoFiltro === 'Activo' ? 1 : estadoFiltro === 'Inactivo' ? 0 : 2,
           idEmpleado: 0,
         };
 
-        const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceSearch', {
+        const response = await fetch(URL_SERVICE + '/gaps/competenceSearch', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+            'Authorization': TOKEN_SERVICE,
           },
           body: JSON.stringify(body),
         });
@@ -56,11 +60,11 @@ const CompetenciasRead: React.FC = () => {
     const fetchTipoCompetencias = async () => {
       try {
 
-        const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceTypes', {
+        const response = await fetch(URL_SERVICE + '/gaps/competenceTypes', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+            'Authorization': TOKEN_SERVICE,
           },
         });
 
@@ -88,16 +92,16 @@ const CompetenciasRead: React.FC = () => {
       competenciasFiltradas = competenciasFiltradas;
     }      
     if (estadoFiltro) {
-      competenciasFiltradas = competenciasFiltradas.filter(competencia => (competencia.active  == (estadoFiltro === 'Activo'? true : false)));
+      competenciasFiltradas = competenciasFiltradas.filter(competencia => (competencia.isActive  == (estadoFiltro === 'Activo'? true : false)));
     }
     if (searchQuery) {
         const palabrasClaveLower = searchQuery.toLowerCase();
         competenciasFiltradas = competenciasFiltradas.filter(competencia =>
           competencia.id.toString().toLowerCase().includes(palabrasClaveLower) ||
           competencia.name.toLowerCase().includes(palabrasClaveLower) ||
-          competencia.code.toLowerCase().includes(palabrasClaveLower) ||
+          //competencia.code.toString().toLowerCase().includes(palabrasClaveLower) ||
           competencia.type.toString().toLowerCase().includes(palabrasClaveLower)||
-          competencia.active.toString().toLowerCase().includes(palabrasClaveLower)
+          competencia.isActive.toString().toLowerCase().includes(palabrasClaveLower)
         );
       }
     return competenciasFiltradas;
@@ -107,7 +111,7 @@ const CompetenciasRead: React.FC = () => {
       competencia.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       competencia.code.toLowerCase().includes(searchQuery.toLowerCase());
     const tipoMatch = tipoFiltro === 0 || competencia.type === tipoFiltro;
-    const estadoMatch = estadoFiltro === '' || competencia.active === (estadoFiltro === 'Activo');
+    const estadoMatch = estadoFiltro === '' || competencia.isActive === (estadoFiltro === 'Activo');
 
     return searchMatch && tipoMatch && estadoMatch;
   });
@@ -130,17 +134,17 @@ const CompetenciasRead: React.FC = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d'
+        'Authorization': TOKEN_SERVICE
       },
       body: JSON.stringify({
         name: nuevaCompetencia.name,
         description: nuevaCompetencia.description,
-        active: nuevaCompetencia.active,
+        isActive: nuevaCompetencia.isActive,
         type: nuevaCompetencia.type
       })
     };
   
-    fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competences', requestOptions)
+    fetch(URL_SERVICE + '/gaps/competences', requestOptions)
       .then(response => response.json())
       .then(data => {
         console.log('Competencia agregada:', data);
@@ -156,9 +160,27 @@ const CompetenciasRead: React.FC = () => {
   const handleCerrarPopUpCrear = () => {
     setmostrarPopUpCrear(false);
   };
+
+  const handleMostrarPopUpInfo  = (competencia) => {
+    setCompetenciaSeleccionada(competencia);
+    setTipo(tipoCompetencias.find((tipo) => tipo.id == competencia.type)?.name)
+    setName(competencia.name);
+    setmostrarPopUpInfo(true);
+  };
+
+
+
+  const handleCerrarPopUpInfo = () => {
+    setmostrarPopUpInfo(false);
+  };
+
+
+
   
   const handleMostrarPopUpActualizar = (competencia) => {
     setCompetenciaSeleccionada(competencia);
+    setTipo(tipoCompetencias.find((tipo) => tipo.id == competencia.type)?.name)
+    setName(competencia.name);
     setmostrarPopUpActualizar(true);
   };
 
@@ -177,16 +199,26 @@ const CompetenciasRead: React.FC = () => {
 */
 
 const actualizarCompetencia = async (competenciaActualizada) => {
+  console.log(competenciaActualizada)
+  const body = {
+    id: competenciaActualizada.id,
+    name: competenciaActualizada.name,
+    description: competenciaActualizada.description,
+    isActive: competenciaActualizada.isActive,
+    type: competenciaActualizada.type
+}
+
+
   try {
     const response = await fetch(
-      'https://o4vwfhvzsh.execute-api.us-east-1.amazonaws.com/dev-modulo-brechas/api/v1/gaps/competences',
+      URL_SERVICE + `/gaps/competences`,
       {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d',
+          'Authorization': TOKEN_SERVICE,
         },
-        body: JSON.stringify(competenciaActualizada),
+        body: JSON.stringify(body)
       }
     );
 
@@ -201,6 +233,7 @@ const actualizarCompetencia = async (competenciaActualizada) => {
       }
       setCompetencias(tablaAux);
       setCompetenciaSeleccionada(null);
+      setName('');
       handleCerrarPopUpActualizar();
     } else {
       throw new Error('Error al actualizar la competencia');
@@ -216,34 +249,25 @@ const actualizarCompetencia = async (competenciaActualizada) => {
 
   const handleMostrarPopUpBorrar  = (competencia) => {     
     setCompetenciaSeleccionada(competencia);
+    setName(competencia.name);
     setmostrarPopUpBorrar(true);
   };
 
-
-/*
-//BORRADO LOCAL
-  const borrarCompetencia = (id) => {
-    const updatedCompetencias = 
-    competencias.filter((competencia) => competencia.id !== id);
-    setCompetencias(updatedCompetencias);
-    setCompetenciaSeleccionada(null);
-    handleCerrarPopUpBorrar();
-  };
-*/
-
 const borrarCompetencia = async (id) => {
+  console.log(id)
   try {
-    const response = await fetch(`https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competences?id=${id}`, {
+    const response = await fetch(`https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competences/${id}`, {
       method: 'DELETE',
       headers: {
-        'Authorization': 'Token 06ef101f0752dd28182b9e8535add969ca6aa35d'
+        'Authorization': TOKEN_SERVICE
       }
     });
-
+    console.log(response)
     if (response.ok) {
       const updatedCompetencias = competencias.filter((competencia) => competencia.id !== id);
       setCompetencias(updatedCompetencias);
       setCompetenciaSeleccionada(null);
+      setName('');
       handleCerrarPopUpBorrar();
     } else {
       console.error('Error al borrar la competencia');
@@ -282,14 +306,15 @@ const borrarCompetencia = async (id) => {
 
   const renderTablaCompetencias = () => {
     
-    return (<Table striped bordered hover>
+    
+    return (
+    <Table striped bordered hover>
       <thead>
         <tr>
             <th onClick={() => handleOrdenarPorCampo('code')}>Código {campoOrdenamiento === 'code' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th onClick={() => handleOrdenarPorCampo('name')}>Nombre {campoOrdenamiento === 'name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-            <th onClick={() => handleOrdenarPorCampo('description')}>Descripción {campoOrdenamiento === 'description' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th onClick={() => handleOrdenarPorCampo('type')}>Tipo de Competencia {campoOrdenamiento === 'type' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-            <th onClick={() => handleOrdenarPorCampo('active')}>Activo {campoOrdenamiento === 'active' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
+            <th onClick={() => handleOrdenarPorCampo('isActive')}>Estado {campoOrdenamiento === 'isActive' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th>Acciones</th>        
         </tr>
       </thead>
@@ -298,16 +323,16 @@ const borrarCompetencia = async (id) => {
           <tr key={competencia.id}>
             <td>{competencia.code}</td>
             <td>{competencia.name}</td>
-            <td>{competencia.description}</td>
             <td>{tipoCompetencias.find((tipo) => tipo.id == competencia.type)?.name}</td>
-            <td>{competencia.active ? 'Activo' : 'Inactivo'}</td>
+            <td>{competencia.isActive ? 'Activo' : 'Inactivo'}</td>
                   <td>
-                    <Button variant="link" size="sm">
+                    <Button variant="link" size="sm" onClick={() => handleMostrarPopUpInfo(competencia)}>
                     <ArrowRightCircleFill color='gray'></ArrowRightCircleFill>
                       <i className="bi bi-box-arrow-in-right"></i>
                     </Button>
-                    <Button variant="secondary" onClick={() => handleMostrarPopUpActualizar(competencia)}><Pencil /></Button>
-                    <Button variant="danger" onClick={() => handleMostrarPopUpBorrar(competencia)}><Trash /></Button>
+                    <Button variant="secondary" size="sm" onClick={() => handleMostrarPopUpActualizar(competencia)}><Pencil /></Button>
+                    <Button variant="danger" size="sm" onClick={() => handleMostrarPopUpBorrar(competencia)}><Trash /></Button>
+                 
                   </td>
           </tr>
         ))}
@@ -318,13 +343,13 @@ const borrarCompetencia = async (id) => {
   return (
     <div className='pantalla'>
       <div className='titles'>
-      <h2>Gestión de Competencias</h2>
-      <p className="text-muted">Agrega, edita y desactiva competencias.</p>
+      <h2 className='Head'>Gestión de Competencias</h2>
+      <p className="text-muted subtitle">Agrega, edita y desactiva competencias.</p>
       </div>
 
       <div className='container-fluid'>
         <div className='row'>
-          <div className='col-sm-3 basicSearch'>
+          <div className='col-md-6 basicSearch'>
             <Form.Group controlId="search">
               <Form.Control
                 type="text"
@@ -359,40 +384,16 @@ const borrarCompetencia = async (id) => {
             </div>
          </div>
             <div className='row'>
-
-
-            <div className="col-sm-3 botones">
-                    <Button variant="outline-primary" className="me-2">
-                    <Download></Download>
-                      <i className="bi bi-upload"></i> Importar lista
-                    </Button>
-                    <p className="text-muted">Maximum file size 2MB</p>
-              </div>
-              <div className="col-sm-3 botones">
-                    <Button variant="outline-primary">
-                    <Upload></Upload>
-                      <i className="bi bi-download"></i> Exportar lista
-                    </Button>
-                    <p className="text-muted">Maximum file size 2MB</p>
-              </div>
-
-              <div className="col-sm-3 botones2 justify-content-center">
-                <Button variant="outline-secondary" className='Search' onClick={handleLimpiarFiltros}>
-                  Limpiar filtros
-                </Button>{' '}
-                <Button variant="primary" className='Search' onClick={handleSearch}>
-                  Buscar
-                </Button>{' '}
-              </div>
-        
-              <div className="col-sm-3 botones2 justify-content-center">          
+              <div className="col-md-12  justify-content-right">
                 <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
                   Agregar competencia
                 </Button>
+                <Button variant="outline-secondary" className='SearchP' onClick={handleLimpiarFiltros}>
+                  Limpiar filtros
+                </Button>{' '}
               </div>  
           </div>
         </div>  
-  
 
       <Modal show={mostrarPopUpCrear} onHide={handleCerrarPopUpCrear}>
         <Modal.Header closeButton>
@@ -407,6 +408,20 @@ const borrarCompetencia = async (id) => {
           </div>
         </Modal.Body>
       </Modal>
+
+      <Modal show={mostrarPopUpInfo} onHide={handleCerrarPopUpInfo}>
+        <Modal.Header closeButton>
+          <Modal.Title>{'Informacion de Competencia: ' + ' ' + name}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Info competencia ={competenciaSeleccionada} tipo = {tipo}/>
+          <div className='botonCerrar'>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+
+
 
       <Modal show={mostrarPopUpActualizar} onHide={handleCerrarPopUpActualizar}>
         <Modal.Header closeButton>

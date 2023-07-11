@@ -13,6 +13,7 @@ const Detail = () => {
   const [evaluation, setEvaluation] = useState({
     categories: []
   });
+  const [associatedEvaluation, setAssociatedEvaluation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -21,6 +22,10 @@ const Detail = () => {
       const response = await getEvaluation(parseInt(urlParams.get('evaluationId')));
       if (response) {
         setEvaluation(response);
+        if (response.RelatedEvaluation) {
+          const associatedResponse = await getEvaluation(response.RelatedEvaluation);          
+          if (associatedResponse) setAssociatedEvaluation(associatedResponse);
+        }
       }
       setIsLoading(false);
     })();
@@ -31,6 +36,7 @@ const Detail = () => {
       employee={employee}
       categories={evaluation.categories}
       evaluation={evaluation}
+      associatedEvaluation={associatedEvaluation}
       isLoading={isLoading}
       isReadOnly={true}
     />
