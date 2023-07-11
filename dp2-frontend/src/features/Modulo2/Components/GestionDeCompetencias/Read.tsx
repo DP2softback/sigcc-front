@@ -15,7 +15,7 @@ const CompetenciasRead: React.FC = () => {
   const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
   const [tipoOrden, setTipoOrden] = useState('ascendente');
   const [searchQuery, setSearchQuery] = useState('');
-  const [tipoFiltro, setTipoFiltro] = useState(0);
+  const [tipoFiltro, setTipoFiltro] = useState(2);
   const [estadoFiltro, setEstadoFiltro] = useState(''); 
   const [mostrarPopUpCrear , setmostrarPopUpCrear] = useState(false);
   const [mostrarPopUpActualizar, setmostrarPopUpActualizar] = useState(false);
@@ -33,7 +33,7 @@ const CompetenciasRead: React.FC = () => {
         const body = {
           idCompetencia: 0,
           palabraClave: searchQuery,
-          idTipoCompetencia: tipoFiltro === 0 ? 0 : tiposCompetencia[tipoFiltro + 1],
+          idTipoCompetencia: tipoFiltro === 2 ? 2 : tiposCompetencia[tipoFiltro - 1],
           activo: estadoFiltro === 'Activo' ? 1 : estadoFiltro === 'Inactivo' ? 0 : 2,
           idEmpleado: 0,
         };
@@ -313,7 +313,7 @@ const borrarCompetencia = async (id) => {
         <tr>
             <th onClick={() => handleOrdenarPorCampo('code')}>Código {campoOrdenamiento === 'code' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th onClick={() => handleOrdenarPorCampo('name')}>Nombre {campoOrdenamiento === 'name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-            <th onClick={() => handleOrdenarPorCampo('type')}>Tipo de Capacidad {campoOrdenamiento === 'type' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
+            <th onClick={() => handleOrdenarPorCampo('type')}>Tipo de Competencia {campoOrdenamiento === 'type' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th onClick={() => handleOrdenarPorCampo('isActive')}>Estado {campoOrdenamiento === 'isActive' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th>Acciones</th>        
         </tr>
@@ -343,8 +343,8 @@ const borrarCompetencia = async (id) => {
   return (
     <div className='pantalla'>
       <div className='titles'>
-      <h2 className='Head'>Gestión de Capacidades</h2>
-      <p className="text-muted subtitle">Agrega, edita y desactiva capacidades.</p>
+      <h2 className='Head'>Gestión de Competencias</h2>
+      <p className="text-muted subtitle">Agrega, edita y desactiva competencias.</p>
       </div>
 
       <div className='container-fluid'>
@@ -353,7 +353,7 @@ const borrarCompetencia = async (id) => {
             <Form.Group controlId="search">
               <Form.Control
                 type="text"
-                placeholder="Buscar capacidad..."
+                placeholder="Buscar competencia..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -385,28 +385,12 @@ const borrarCompetencia = async (id) => {
          </div>
             <div className='row'>
               <div className="col-md-12  justify-content-right">
-
-        
-
-
-
- 
                 <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
-                  Agregar capacidad
+                  Agregar competencia
                 </Button>
-
-                <Button variant="primary" className='Search' onClick={handleSearch}>
-                  Buscar
-                </Button>{' '}
-
                 <Button variant="outline-secondary" className='SearchP' onClick={handleLimpiarFiltros}>
                   Limpiar filtros
                 </Button>{' '}
-
-                
-
-         
-                
               </div>  
           </div>
         </div>  
@@ -427,7 +411,7 @@ const borrarCompetencia = async (id) => {
 
       <Modal show={mostrarPopUpInfo} onHide={handleCerrarPopUpInfo}>
         <Modal.Header closeButton>
-          <Modal.Title>{'Informacion de Capacidad: ' + ' ' + name}</Modal.Title>
+          <Modal.Title>{'Informacion de Competencia: ' + ' ' + name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Info competencia ={competenciaSeleccionada} tipo = {tipo}/>
