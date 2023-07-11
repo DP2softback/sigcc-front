@@ -39,6 +39,10 @@ const EvaluacionDeDesempenhoCreate = Loader(
 	lazy(() => import("@features/Modulo3/screens/EvaluacionDeDesempenho/Create"))
 );
 
+const EvaluacionDeDesempenhoAuto = Loader(
+	lazy(() => import("@features/Modulo3/screens/EvaluacionDeDesempenho/Autoevaluation"))
+);
+
 const EvaluacionDeDesempenhoDetail = Loader(
 	lazy(() => import("@features/Modulo3/screens/EvaluacionDeDesempenho/Detail"))
 );
@@ -343,6 +347,12 @@ export const routes: RouteObject[] = [
 						element: <Navigate to={REPORT_CONTINUOS_EVALUATION_INDEX} replace />
 					}
 				]
+			},
+			{
+				path: "auto-evaluation",
+				element: (
+					<EvaluacionDeDesempenhoAuto />
+				)
 			}
 		]
 	}
