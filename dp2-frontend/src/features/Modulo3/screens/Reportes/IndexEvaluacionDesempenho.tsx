@@ -7,8 +7,8 @@ import { Form, Button, Dropdown} from 'react-bootstrap';
 import { jsPDF } from 'jspdf';
 import domtoimage from 'dom-to-image';
 import { REPORT_CONTINUOS_EVALUATION_INDEX } from '@features/Modulo3/routes/path';
-import { getAreas, getCategoriasDesempenio, postReportLineChart, postReportLineChartAll, postReportLineChartAllAreasCategories} from '@features/Modulo3/services/reports';
-import { formatDashboardJson, formatDashboardJsonAreasCategorias,formatDashboardJsonAreas, formatDashboardJsonCategorias } from '@features/Modulo3/utils/functions';
+import { getAreas, getCategoriasDesempenio, postReportLineChartAll, postReportLineChartAllAreasCategories} from '@features/Modulo3/services/reports';
+import { formatDashboardJsonReport, formatDashboardJsonAreasCategorias,formatDashboardJsonAreas, formatDashboardJsonCategorias } from '@features/Modulo3/utils/functions';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import { toast, ToastContainer } from 'react-toastify';  // Import react-toastify
 import 'react-toastify/dist/ReactToastify.css'; 
@@ -31,8 +31,8 @@ const IndexEvaluacionDesempenho = () => {
   const [searchParams, setSearchParams] = useState({
     area: {id:0 , name:"Todas las áreas"},
     categoria: {id:0, name:"Todas las categorías"},
-    fechaInicio: null,
-    fechaFin: null,
+    fechaInicio: new Date().toISOString().substring(0, 10),
+    fechaFin: new Date().toISOString().substring(0, 10),
     evaluationType: "Evaluación de Desempeño"
   });
   
@@ -175,14 +175,14 @@ const IndexEvaluacionDesempenho = () => {
   const handleFechaInicio = (event) => {
     setSearchParams(prevState => ({
       ...prevState,
-      fechaInicio: new Date(event.target.value),
+      fechaInicio: event.target.value,
     }));
   };
 
   const handleFechaFin = (event) => {
     setSearchParams(prevState => ({
       ...prevState,
-      fechaFin: new Date(event.target.value),
+      fechaFin: event.target.value,
     }));
   };
 
@@ -264,11 +264,11 @@ const IndexEvaluacionDesempenho = () => {
     else if(searchParamsCopy.area.id !== 0 && searchParamsCopy.categoria.id !== 0) {
       const fetchData = async () => {
         setIsLoading(true);
-        const data = await postReportLineChart(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
+        const data = await postReportLineChartAll(searchParamsCopy.area.id, searchParamsCopy.categoria.id, searchParamsCopy.fechaInicio, searchParamsCopy.fechaFin, searchParamsCopy.evaluationType);
         if(data){
-          let dataSorted:DataLineChart = data;
-          dataSorted = sortMonths(dataSorted);
-          setDashboard(formatDashboardJson(dataSorted));
+          // let dataSorted:DataLineChart = data;
+          // dataSorted = sortMonths(dataSorted);
+          setDashboard(formatDashboardJsonReport(data));
         }
         else{
           console.log("Error D: ", data);
