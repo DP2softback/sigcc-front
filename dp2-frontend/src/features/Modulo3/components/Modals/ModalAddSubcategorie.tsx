@@ -19,6 +19,7 @@ const ModalAddSubcategorie = (props) => {
     const [selectedId,setSelectedId]=useState(-1);
     const [isLoading, setIsLoading] = useState(true);
     const [formError, setFormError] = useState(false); 
+    const [dropdown,setDropdown] = useState(false);
 
     useEffect(() => {
       setIsLoading(true);
@@ -53,19 +54,33 @@ const ModalAddSubcategorie = (props) => {
       };
 
       const handleAgregarExistente = () => {
-        const newSubcategory = {
-          name:selectedOption,
-          id:selectedId,
-        };
-    
-        subcategorias.push(newSubcategory)
-        setSubcategoriaName("");
-        setSelectedOption('');
+        if (selectedOption !== '') {
+          const selectedCompetencia = competencias.find((competencia) => competencia.name === selectedOption);
+          const newSubcategory = {
+            name: selectedOption,
+            id: selectedId,
+          };
+      
+          setSubcategorias([...subcategorias, newSubcategory]);
+          setSubcategoriaName('');
+          setSelectedOption('');
+          const updatedCompetencias = competencias.filter((competencia) => competencia.name !== selectedOption);
+          setCompetencias(updatedCompetencias);
+          setDropdown(false);
+        } else {
+          setDropdown(true);
+        }
       };
     
       const handleEliminar = (nombre: string) => {
         const subcatAux = subcategorias.filter(sub => sub.name != nombre);
-        setSubcategorias(subcatAux)
+        setSubcategorias(subcatAux);
+        (async () => {
+          const response= await listarCompetenciasFree();
+          if(response){
+           setCompetencias(response);
+          }
+        })();
       };
 
       const handleOptionSelect = (option) => {
@@ -140,6 +155,7 @@ const ModalAddSubcategorie = (props) => {
         value={selectedOption}
         onChange={(e) => handleOptionSelect(e.target.value)}
         disabled={competencias.length === 0}
+        isInvalid={dropdown}
       >
         {competencias.length === 0 && (
           <option hidden>No hay competencias libres</option>
@@ -153,17 +169,22 @@ const ModalAddSubcategorie = (props) => {
           </>
         )}
       </Form.Select>
-      <Button
-        variant="outline-primary"
-        onClick={handleAgregarExistente}
-        className="ca-buttonAdd"
-        disabled={competencias.length === 0}
-      >
-        +
-      </Button>
-    </div>
-  </div>
-</Form.Group>
+      {dropdown  && (
+        <Form.Control.Feedback type="invalid" className="input-feedback">
+          Seleccione una competencia.
+        </Form.Control.Feedback>
+      )}
+          <Button
+            variant="outline-primary"
+            onClick={handleAgregarExistente}
+            className="ca-buttonAdd"
+            disabled={competencias.length === 0}
+          >
+            +
+          </Button>
+        </div>
+      </div>
+    </Form.Group>
 
 
         </Form>
