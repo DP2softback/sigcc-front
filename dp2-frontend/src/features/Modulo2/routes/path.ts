@@ -13,6 +13,7 @@ export const GAPS_EMPLOYEES_AREA_DETAIL_EMPLOYEE = 'more';
 
 export const EMPLOYEES_JOB_OPPORTUNITIES = 'employees-job-opportunities';
 export const EMPLOYEES_JOB_CANDIDATES = 'detail';
+export const EMPLOYEES_JOB_STATISTICS = 'stats';
 // export const A
 
 export const GAPS_EMPLOYEE_EMP = 'my-gaps';
@@ -20,3 +21,6 @@ export const GAPS_EMPLOYEE_EMP_DETAIL = 'detail';
 
 export const MY_JOB_OPPORTUNITIES = 'my-job-opportunities';
 export const MY_JOB_OPPORTUNITIES_DETAIL = 'detail';
+
+export const DEMAND_COMPANY_COURSES = 'company-demand-courses';
+export const DEMAND_COMPANY_COURSES_LIST = 'list';

@@ -28,11 +28,11 @@ const JobOpportunityCard = (props) => {
     return (
         <div className='container card-job-opp'>
             <div className='row'>
-                <div className='col-4 d-flex align-items-center justify-content-center'>
+                <div className='col-3 d-flex align-items-center justify-content-center'>
                     {<img className='image-job-opp' src={JobOppImage}>
                     </img>}
                 </div>
-                <div className='col-6'>
+                <div className='col-9 d-flex flex-column justify-content-center '>
                     <div className='row title-job-opp'>
                         {jobOpportunity.introduction}
                     </div>
@@ -41,12 +41,12 @@ const JobOpportunityCard = (props) => {
                     </div>
                 </div>
             </div>
-            <hr/>
-            <div className='row mx-0 mb-4 desc-job-opp'>
+            <hr className='line-card'/>
+            <div className='row mx-0 mb-2 desc-job-opp'>
                 {jobOpportunity.responsabilities_introduction}
             </div>
-            <div className='row row-cols-auto mb-4'>
-                {jobOpportunity.labels.map((lbl) => {
+            <div className='row row-cols-auto mb-2'>
+                {jobOpportunity.labels && jobOpportunity.labels.map((lbl) => {
                     return (
                         <div className='col lbl-job-opp d-flex align-items-center'>
                             {lbl}
@@ -55,15 +55,22 @@ const JobOpportunityCard = (props) => {
                 })}
             </div>
 
-
+            {numBot === 3 && 
+            <div className='mb-2 availability-job-opp'>
+                {'Porcentaje de adecuación: ' + (jobOpportunity.id === 1 ? 50 : (jobOpportunity.id===2 ? 70 : 85)) + '%'}
+            </div>
+            }
             
             <div className='row row-cols-auto d-flex justify-content-between'>
                 <div className='col'>
                     {numBot === 3 && <Button className='btn btn-sm btn-job-opp' onClick={() => {hhrr === undefined ? navigateToMyJobOppDetail() :  console.log("A");}}>Detalle del puesto</Button>}
                 </div>
                 <div className='col'>
-                    {numBot === 3 && <Button className='btn btn-sm btn-job-opp btn-acept'>Aceptar postulación</Button>}
-                    <Button className='btn btn-sm btn-job-opp' onClick={() => {hhrr !== undefined ? navigateToCandidates() : console.log("A")}}>{hhrr ? 'Ver posibles candidatos' : 'Declinar postulación'}</Button>
+                    {numBot === 3 ?
+                        <Button className='btn btn-sm btn-job-opp btn-acept'>Aceptar postulación</Button>
+                    :
+                        <Button className='btn btn-sm btn-job-opp btn-acept' onClick={() => {navigateToCandidates()}}>Ver posibles candidatos</Button>
+                    }
                 </div>
             </div>
                         

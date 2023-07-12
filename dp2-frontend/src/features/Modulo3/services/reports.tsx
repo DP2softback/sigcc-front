@@ -154,36 +154,6 @@ export const getPostCategoriasDesempenio = async () => {
   }
 };
 
-export const getPostReportContinuaLineChart = async (areaid, categoriaid, dateFechaInicio, dateFechaFin) => {
-  try {
-    const response = await axios.post(`${BACKEND_URL}reporte`, {
-      areaId: areaid,
-      categoriaId: categoriaid,
-      fechaInicio: dateFechaInicio,
-      fechaFin: dateFechaFin,
-    });
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    console.log("Hubo un error con la solicitud:", error);
-  }
-};
-
-export const getPostReportDesempenioLineChart = async (areaid, categoriaid, dateFechaInicio, dateFechaFin) => {
-  try {
-    const response = await axios.post(`${BACKEND_URL}reporte`, {
-      areaId: areaid,
-      categoriaId: categoriaid,
-      fechaInicio: dateFechaInicio,
-      fechaFin: dateFechaFin,
-    });
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    console.log("Hubo un error con la solicitud:", error);
-  }
-};
-
 // EL POST DEL REPORTE PARA EVALUACION CONTINUA Y DESEMPEÑO
 export const postReportLineChart = async (areaid, categoriaid, dateFechaInicio, dateFechaFin, evaluationType) => {
   const body ={
@@ -212,3 +182,55 @@ export const postReportLineChart = async (areaid, categoriaid, dateFechaInicio, 
     console.log("Hubo un error con la solicitud:", error);
   }
 };
+
+export const postReportLineChartAll = async (areaid, categoriaid, dateFechaInicio, dateFechaFin, evaluationType) => {
+  const body ={
+    "evaluationType": evaluationType,
+    "fecha_inicio": dateFechaInicio,
+    "fecha_fin": dateFechaFin
+  }
+  if(areaid!==0){
+    body["area-id"]=areaid
+  }
+  if(categoriaid!==0){
+    body["category-id"]=categoriaid
+  }
+  try {
+    const response = await axios.post(`${BACKEND_URL}LineChartReporteApi2`,
+      body,
+      {
+        headers:{
+          "Authorization": `Token ${TOKEN}`,
+          "Content-Type": 'application/json'
+        },
+        timeout: 40000 // Establece un tiempo de espera de 30 segundos
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Hubo un error con la solicitud:", error);
+  }
+};
+
+export const postReportLineChartAllAreasCategories = async (dateFechaInicio, dateFechaFin, evaluationType) => {
+  const body ={
+    "evaluationType": evaluationType,
+    "fecha_inicio": dateFechaInicio,
+    "fecha_fin": dateFechaFin
+  }
+  try {
+    const response = await axios.post(`${BACKEND_URL}report`,
+      body,
+      {
+        headers:{
+          "Authorization": `Token ${TOKEN}`,
+          "Content-Type": 'application/json'
+        },
+        timeout: 30000 // Establece un tiempo de espera de 30 segundos
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Hubo un error con la solicitud:", error);
+  }
+}

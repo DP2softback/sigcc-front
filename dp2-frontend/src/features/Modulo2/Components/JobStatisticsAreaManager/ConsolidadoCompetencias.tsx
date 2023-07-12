@@ -3,8 +3,10 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { useEffect, useState } from "react";
 import { useLocation,  useNavigate  } from 'react-router-dom';
 import { Competencia, tipoCompetencia,AreaActiva } from "../GestionDeCompetencias/Tipos";
-import DetalleCompetenciasArea from "./DetalleCompetenciasArea";
-import { set } from "lodash";
+import './ConsolidadoCompetencias.css';
+import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL } from '@features/Modulo2/routes/path';
+
+import {TOKEN_SERVICE, URL_SERVICE} from '@features/Modulo2/services/ServicesApis'
 
 const PieChart = ({ title, labels, datasets }) => {
     ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -33,30 +35,31 @@ const PieChart = ({ title, labels, datasets }) => {
 
   const ConsolidadoCompetenciasAM = () => {
     const navigate = useNavigate();
-    const location = useLocation();
       const [data1, setData1] = useState(null);
       const [data2, setData2] = useState(null);
       const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
-      const [tipoCompetencia, setTipoCompetencia] = useState<tipoCompetencia>(null);
+      const [tipoCompetencia, setTipoCompetencia] = useState<AreaActiva>(null);
       const [areasActivas, setAreasActivas] = useState<AreaActiva[]>([]);
       const [abbreviation, setAbbreviation] = useState('');
+      const [hard, setHard] = useState(['Ingeniero de software', 'Desarrollador de aplicaciones', '	Arquitecto de software','Analista de sistemas', 'Asistente' ]);
       
       useEffect(() => {    
 
         const fetchTipoCompetencias = async () => {
           try {
     
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceTypes', {
+            const response = await fetch(URL_SERVICE + '/gaps/employeeArea', {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
+                Authorization: TOKEN_SERVICE,
               },
             });
     
             if (response.ok) {
               const data = await response.json();
               setTipoCompetencias(data);
+              setAreasActivas(data);
             } else {
               console.log('Error al obtener los datos de competencias');
             }
@@ -66,15 +69,21 @@ const PieChart = ({ title, labels, datasets }) => {
         };
 
         const fetchAreasActivas = async () => {
+          const requestOptions = {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': TOKEN_SERVICE,
+            }
+          }
           try {
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/employeeArea', {
-              headers: {
-                Authorization: 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf'
-              }
-            });
-            const data = await response.json();
-            setAreasActivas(data);
-          } catch (error) {
+            const response = await fetch(URL_SERVICE + '/positions', requestOptions);
+            if (response.ok) {
+              const data = await response.json();
+              setAreasActivas(data);
+            }
+          }
+            catch (error) {
             console.error('Error fetching competencias:', error);
           }
         };
@@ -84,16 +93,19 @@ const PieChart = ({ title, labels, datasets }) => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Token 5ad77c64f19039ef87cca20c2308ddbbaf3014bf',
+              'Authorization': TOKEN_SERVICE,
             },
-            body: JSON.stringify({
-              idArea: 0, // Poner 0 para toda la empresa, poner el <id> si es por área
-              activo: 2, // Poner 2 si es cualquiera, poner 0 o 1 si es inactivo o activo
+            // Poner 2 si es cualquiera, poner 0 o 1 si es inactivo o activo
+            // Poner 0 para toda la empresa, poner el <id> si es por área
+            body: JSON.stringify({ 
+                idArea: 2,
+                idPosicion:  0,
+                activo: 2
             }),
           };
       
           try {
-            const response = await fetch('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competenceConsolidateSearch', requestOptions);
+            const response = await fetch(URL_SERVICE + '/gaps/competenceConsolidateSearch', requestOptions);
       
             if (response.ok) {
               const data = await response.json();
@@ -167,9 +179,10 @@ const PieChart = ({ title, labels, datasets }) => {
 
       const handleCompetenciaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {    
         const tipo  = tipoCompetencias.find((tipo) => tipo.id.toString() === event.target.value)
-        setTipoCompetencia(tipoCompetencias[0]);
+        setTipoCompetencia(areasActivas[parseInt(event.target.value)-1])
         console.log(tipoCompetencia)
-        setAbbreviation(tipo.abbreviation)
+        setAbbreviation(areasActivas.find((area) => area.id.toString() === event.target.value)?.name || '')
+        //setAbbreviation(tipo.abbreviation)
         setData1(data1);
         setData2(data2);
       }
@@ -178,34 +191,29 @@ const PieChart = ({ title, labels, datasets }) => {
       const handleBuscarClick = () => {
       };
       const handleClick = () => {        
-      navigate('/DetalleCompetenciasArea', { state: { tipoCompetencia } });
+      navigate(`/${GAPS_ANALYSIS_MODULE}/${GAPS_EMPLOYEES_AREA}/${GAPS_EMPLOYEES_AREA_DETAIL}`, { state: { tipoCompetencia } });
       };
-      const handleMostrarLineChartClick = () => {
-      };
-      
+
   
       const labels= ['80% - 100%', '60% - 79%', '40% - 59%', '20% - 39%', '0% - 19%'];
       
       return (
         <div className="container">
-          <h2>Consolidado de competencias de área de TI</h2>
+          <h2 className="Head">Consolidado de competencias de área de TI</h2>
           
           <div className="row">
             <div className="col-md-6">
-              <label htmlFor="competencia-select">Competencias por puesto:</label>
+              <label className="subtitle" htmlFor="competencia-select">Competencias por puesto:</label>
               <select
                 id="competencia-select"
                 className="form-control"
                 value={abbreviation}
                 onChange={handleCompetenciaChange}
               ><option value="">Todas</option>
-                {areasActivas.map((area) => (
-                  <option key={area.id} value={area.id}>{area.name}</option>
+                {areasActivas.map((hard) => (
+                  <option key={hard.id} value={hard.id}>{hard.name}</option>
                 ))}
               </select>
-            </div>
-            <div className="col-md-6 d-flex align-items-end">
-              <button className="btn btn-primary" onClick={handleBuscarClick}>Buscar</button>
             </div>
           </div>
 
@@ -219,7 +227,7 @@ const PieChart = ({ title, labels, datasets }) => {
                     <div className="chart-legend"> 
                       {/* Agregar aquí la leyenda del gráfico 1 */}
                     </div>
-                    <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
+
                   </div>
                 </div>
               </div>
@@ -232,7 +240,7 @@ const PieChart = ({ title, labels, datasets }) => {
                    <div className="chart-legend">
                      {/* Agregar aquí la leyenda del gráfico 2 */}
                    </div>
-                   <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
+
                    <button className="btn btn-secondary" onClick={handleClick}>Ver detalle del puesto</button>
                    </div>
                </div>

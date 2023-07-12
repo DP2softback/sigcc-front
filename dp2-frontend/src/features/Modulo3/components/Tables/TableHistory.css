@@ -29,7 +29,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: end;
-	padding-right: 30px;
+	padding-right: 160px;
 }
 
 .accion{
@@ -38,13 +38,17 @@
 
 .categorie_name{
 padding-left: 30px !important;
-
+width: 50% !important;
 }
 
-.label{
-	padding-right: 250px !important;
+.labelA{
+	padding-right: 65px !important;
 }
 
 .competencia{
 	padding-right: 60px !important;
+}
+.accionesLabel{
+	text-align: end !important;
+	padding-right: 50px !important;
 }

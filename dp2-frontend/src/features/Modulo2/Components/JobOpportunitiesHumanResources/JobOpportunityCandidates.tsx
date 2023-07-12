@@ -1,6 +1,8 @@
 import React from 'react'
 import { Table } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
+import detailTableIcon from '../../assets/icons/detail-table.svg'
+import { EMPLOYEES_JOB_OPPORTUNITIES, EMPLOYEES_JOB_STATISTICS, GAPS_ANALYSIS_MODULE } from '@features/Modulo2/routes/path';
 
 const JobOpportunityCandidates = () => {
 
@@ -78,54 +80,74 @@ const JobOpportunityCandidates = () => {
             "user__last_name": "Zapata",
             "position__name": "Asistente",
             "area__name": "Contabilidad",
-            "percentaje_conicidence": "90",
+            "percentaje_conicidence": 90,
             "user__email": "demoemployee3@demoemployee5.com",
             "user__is_active": true
         }
 
     ]
 
+    const handleStats = (cand) => {
+        navigate(`/${GAPS_ANALYSIS_MODULE}/${EMPLOYEES_JOB_OPPORTUNITIES}/${EMPLOYEES_JOB_STATISTICS}`, {
+            state: {
+                candidate: cand
+            }
+        })
+    }
+
     return (
-        <div className='container'>
+        <>
             <div className='row'>
                 <h2>Posibles candidatos afines a UX/UI Designer</h2>
                 <p className="text-muted">Necesidades de capacitación del empleado</p>
-                {candidates && candidates.length === 0 ? <p>No se encontraron resultados.</p> :
+                {JSONresponse && JSONresponse.length === 0 ? <p>No se encontraron resultados.</p> :
                     <Table striped bordered className='tableGapsEmployees'>
                         <thead>
                             <tr>
-                                <th onClick={() => handleOrdenarPorCampo('training_type')}>
-                                    Tipo de capacitación
-                                    {campoOrdenamiento === 'training_type' && (
+                                <th onClick={() => handleOrdenarPorCampo('user__first_name')}>
+                                    Nombres
+                                    {campoOrdenamiento === 'user__first_name' && (
                                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                                     )}
                                 </th>
-                                <th onClick={() => handleOrdenarPorCampo('competence')}>
-                                    Competencia
-                                    {campoOrdenamiento === 'competence' && (
+                                <th onClick={() => handleOrdenarPorCampo('user__last_name')}>
+                                    Apellidos
+                                    {campoOrdenamiento === 'user__last_name' && (
                                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                                     )}
                                 </th>
-                                <th onClick={() => handleOrdenarPorCampo('competence__type__name')}>
-                                    Descripción
-                                    {campoOrdenamiento === 'competence__type__name' && (
+                                <th onClick={() => handleOrdenarPorCampo('position__name')}>
+                                    Puesto
+                                    {campoOrdenamiento === 'position__name' && (
                                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                                     )}
                                 </th>
-                                <th onClick={() => handleOrdenarPorCampo('levelCurrent')}>
-                                    Tipo de competencia
-                                    {campoOrdenamiento === 'levelCurrent' && (
+                                <th onClick={() => handleOrdenarPorCampo('area__name')}>
+                                    Área
+                                    {campoOrdenamiento === 'area__name' && (
                                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                                     )}
                                 </th>
-                                <th onClick={() => handleOrdenarPorCampo('levelRequired')}>
-                                    Nivel actual
-                                    {campoOrdenamiento === 'levelRequired' && (
+                                <th onClick={() => handleOrdenarPorCampo('percentaje_conicidence')}>
+                                    Porc. de coincidencia
+                                    {campoOrdenamiento === 'percentaje_conicidence' && (
                                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                                     )}
                                 </th>
-                                <th onClick={() => handleOrdenarPorCampo('description')}>
-                                    Nivel requerido
+                                <th onClick={() => handleOrdenarPorCampo('user__email')}>
+                                    Email
+                                    {campoOrdenamiento === 'user__email' && (
+                                        <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
+                                    )}
+                                </th>
+                                <th onClick={() => handleOrdenarPorCampo('user__is_active')}>
+                                    Estado
+                                    {campoOrdenamiento === 'user__is_active' && (
+                                        <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
+                                    )}
+                                </th>
+                                <th>
+                                    Acciones
                                     {campoOrdenamiento === 'description' && (
                                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                                     )}
@@ -133,14 +155,18 @@ const JobOpportunityCandidates = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {candidates && candidates.map((cand, index) => (
+                            {JSONresponse && JSONresponse.map((cand, index) => (
                                 <tr key={index} className={index % 0 === 0 ? "evenRow" : "oddRow"}>
-                                    <td>{cand.training_type}</td>
-                                    <td>{cand.competence}</td>
-                                    <td>{cand.competence__type__name}</td>
-                                    <td>{returnLevel(cand.levelCurrent)}</td>
-                                    <td>{returnLevel(cand.levelRequired)}</td>
-                                    <td>{cand.description}</td>
+                                    <td>{cand.user__first_name}</td>
+                                    <td>{cand.user__last_name}</td>
+                                    <td>{cand.position__name}</td>
+                                    <td>{cand.area__name}</td>
+                                    <td>{cand.percentaje_conicidence + '%'}</td>
+                                    <td>{cand.user__email}</td>
+                                    <td>{cand.user__is_active === true ? 'Activo' : 'Inactivo'}</td>
+                                    <td className="text-center">
+                                        <img src={detailTableIcon} title='Notificar' onClick={() => handleStats(cand)} style={{cursor: "pointer"}}></img>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -148,7 +174,7 @@ const JobOpportunityCandidates = () => {
                 }
                 <button className='btn btn-outline-primary col-1 ms-3 btn-sm' onClick={() => navigate(-1)}>Regresar</button>
             </div>
-        </div>
+        </>
     )
 }
 
