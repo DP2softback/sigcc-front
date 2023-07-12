@@ -140,14 +140,18 @@ class QuizGenerator extends Component<QuizGeneratorProps, QuizGeneratorState> {
                 })
             })
         }
+        
         else{
             axiosInt.get(`capacitaciones/curso_empresa/${this.props.quizId}/evaluacion/`)
             .then((response) => {
-                this.setState({
-                    questions: response.data.preguntas
-                })
+                if(Object.keys(response.data.preguntas).length !== 0){
+                    this.setState({
+                        questions: response.data.preguntas
+                    })
+                }
             })
         }
+        
     }
 
     componentDidMount (): void
