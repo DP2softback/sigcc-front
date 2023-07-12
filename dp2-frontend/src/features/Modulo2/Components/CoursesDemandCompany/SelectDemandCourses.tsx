@@ -3,11 +3,15 @@ import { Table, Form, Button, Modal } from 'react-bootstrap';
 import { ArrowRightCircleFill, Pencil, Trash, Upload } from 'react-bootstrap-icons';
 import {Competencia,tipoCompetencia, AreaActiva} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos'
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './SelectDemandCourses.css'
 const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
 const SelectDemandCourses: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { data } = location.state;
+  console.log(data)
+  
   const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
   const [tipoOrden, setTipoOrden] = useState('ascendente');
   const [searchQuery, setSearchQuery] = useState('');

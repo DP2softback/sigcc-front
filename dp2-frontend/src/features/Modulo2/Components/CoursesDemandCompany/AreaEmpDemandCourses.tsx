@@ -50,6 +50,39 @@ const SelectDemandCourses: React.FC = () => {
       setSelectedRows([]);
     }
   };
+  const handleGenerar = async ()=>{
+    const  a = posicionSeleccionada.toString(); 
+    try {
+      const body = {
+        "area": areaSeleccionada,
+        "posicion": parseInt(a),
+        "empleados": selectedRows.length > 0 ? selectedRows.map((competencia)=>competencia.id) : [],
+      };
+      console.log(body)
+      const response = await fetch(
+        URL_SERVICE + '/gaps/trainingNeedDemand',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': TOKEN_SERVICE,
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data)
+        navigate(`/${GAPS_ANALYSIS_MODULE}/${DEMAND_COMPANY_COURSES}/${DEMAND_COMPANY_COURSES_LIST}`, { state: {data} })
+  
+      } else {
+        console.log('Error al obtener los datos de competencias');
+      }
+    } catch (error) {
+      console.log('Error al obtener los datos de competencias:', error);
+    }
+    }
   const handleSelectRow = (competenciaId, e) => {
     if (e.target.checked) {
       setSelectedRows((prevSelectedRows) => [...prevSelectedRows, competenciaId]);
@@ -90,7 +123,7 @@ const SelectDemandCourses: React.FC = () => {
     }
   }
   const handlePositionChange = async (value) => {
-    setPosicionSeleccionada(value);
+    setPosicionSeleccionada(parseInt(value));
   };
  const handleBuscarClick = async (posicion,area) => {
   setBuscar(true);
@@ -181,7 +214,7 @@ const SelectDemandCourses: React.FC = () => {
               <th onClick={() => handleOrdenarPorCampo('user__last_name')}>Apellidos {campoOrdenamiento === 'user__last_name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
               <th onClick={() => handleOrdenarPorCampo('position__name')}>Posicion {campoOrdenamiento === 'position__name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
               <th onClick={() => handleOrdenarPorCampo('user__email')}>Email {campoOrdenamiento === 'user__email' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-              <th onClick={() => handleOrdenarPorCampo('id')}>ID {campoOrdenamiento === 'id' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
+              {/* <th onClick={() => handleOrdenarPorCampo('id')}>ID {campoOrdenamiento === 'id' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>*/}
           </tr>
         </thead>
         <tbody>
@@ -199,7 +232,7 @@ const SelectDemandCourses: React.FC = () => {
               <td>{competencia.user__last_name}</td>
               <td>{competencia.position__name}</td>
               <td>{competencia.user__email}</td>
-              <td>{competencia.id}</td>
+              {/*<td>{competencia.id}</td>*/}
             </tr>
           ))}
         </tbody>
@@ -209,14 +242,6 @@ const SelectDemandCourses: React.FC = () => {
     if (!competenciaSeleccionada) {
       return null;
     }
-    return (
-      <Form.Select>
-        <option>Posición 1</option>
-        <option>Posición 2</option>
-        <option>Posición 3</option>
-        {/* ... */}
-      </Form.Select>
-    );
   };
   return (
       <div className='pantalla'>
@@ -261,7 +286,7 @@ const SelectDemandCourses: React.FC = () => {
                 </Button>{' '}
               </div>              
               <div className="col-sm-3 botones2 justify-content-center">          
-                <Button variant="primary" className='Search2' onClick={()=>{navigate(`/${GAPS_ANALYSIS_MODULE}/${DEMAND_COMPANY_COURSES}/${DEMAND_COMPANY_COURSES_LIST}`)}}>
+                <Button variant="primary" className='Search2' onClick={handleGenerar}>
                 Generar demanda
                 </Button>
               </div>  
