@@ -244,7 +244,7 @@ function LearningPathDetails(props: any) {
                                                             </> :
                                                             <>
                                                                 <button type="button" className="btn btn-primary w-100 mb-3" data-bs-toggle="modal" data-bs-target={`#quizGeneratorModal${course.id}`}>Validar cuestionario</button>
-                                                                <QuizGenerator title={course.nombre} quizId={course.id} />
+                                                                <QuizGenerator title={course.nombre} quizId={course.id} course={false} />
                                                             </>
                                                     }
                                                     <button className="btn btn-danger w-100" onClick={(e) => handleRemoveCard(e, course.id)}>

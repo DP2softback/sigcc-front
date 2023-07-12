@@ -16,6 +16,7 @@ export interface QuizGeneratorProps
 {
     quizId: number;
     title: string;
+    course: boolean;
 }
 export interface QuizGeneratorState
 {

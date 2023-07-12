@@ -6,42 +6,29 @@ import { useEffect, useRef, useState } from 'react'
 import { ArrowLeftCircleFill } from 'react-bootstrap-icons';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const dataHard = {
-    nombre: "Ruta de Aprendizaje 2.0",
-    descripcion: "Ruta de Aprendizaje 2.0 es una prueba pa ver si se cae o no."
-}
 
-const employeesData: EmployeeObj[] = [
+const employeesData: any = [
     {
-        id: 123,
-        nombre: "John Doe",
-        estado: 2,
-        fecha_completado: "02/06/2023",
-    },
-    {
-        id: 234,
-        nombre: "Jane Smith",
-        estado: 0,
-        fecha_completado: null,
-    },
-    {
-        id: 345,
-        nombre: "Bob Johnson",
-        estado: 2,
-        fecha_completado: "03/06/2023",
-    },
-    {
-        id: 456,
-        nombre: "Sarah Lee",
-        estado: 3,
-        fecha_completado: "01/06/2023",
-    },
-    {
-        id: 567,
-        nombre: "Tom Jackson",
-        estado: 4,
-        fecha_completado: "02/06/2023",
-    }
+        "learning_path": 1,
+        "nombre": "ABC",
+        "descripcion": "XYZ",
+        "estado": "0",
+        "porcentaje_progreso": "0.00",
+        "valoracion": 0,
+        "comentario_valoracion": null,
+        "fecha_asignacion": "2023-07-12T11:27:10.384668-05:00",
+        "fecha_limite": "2023-07-12T11:27:07.538000-05:00",
+        "fecha_completado": null,
+        "empleado": {
+            "usuario": {
+                "id": 1,
+                "first_name": "",
+                "last_name": "",
+                "email": "angel@angel.angel"
+            },
+            "position": null
+        }
+    } 
 ];
 
 const evalStatus = [
@@ -58,14 +45,14 @@ const headerTable = [
     },
     {
         heading: "Código",
-        value: "id"
+        value: "empleado.usuario.id"
     },
     {
-        heading: "Nombre",
+        heading: "Nombre(s)",
         value: "empleado.usuario.first_name"
     },
     {
-        heading: "Apellido",
+        heading: "Apellido(s)",
         value: "empleado.usuario.last_name"
     },
     {
@@ -82,40 +69,25 @@ const headerTable = [
     }
 ];
 
-type EmployeeObj = {
-    id: number;
-    nombre: string;
-    estado: number;
-    fecha_completado?: string;
-}
-
-type EmployeeDetailsObj = {
-    id?: number;
-    first_name: string;
-    last_name: string;
-    estado: string;
-    fecha_completado: string;
-}
-
 function EvaluationDetails() {
     const { learningPathId } = useParams()
     const [loading, setLoading] = useState<boolean>(false);
-    //const [employees, setEmployees] = useState<EmployeeObj[]>(employeesData)
-    //const [employeesFilter, setEmployeesFilter] = useState<EmployeeObj[]>(employeesData)
 
-    const [employees, setEmployees] = useState<EmployeeDetailsObj[]>([])
-    const [employeesFilter, setEmployeesFilter] = useState<EmployeeDetailsObj[]>([])
+    const [employees, setEmployees] = useState<any[]>(employeesData)
+    const [employeesFilter, setEmployeesFilter] = useState<any[]>(employeesData)
 
-    const [lpName, setLPName] = useState<string>(dataHard.nombre)
-    const [lpDescription, setLPDescription] = useState<string>(dataHard.descripcion)
+    const [lpName, setLPName] = useState<string>("")
+    const [lpDescription, setLPDescription] = useState<string>("")
     const [evaluationStatus, setEvaluationStatus] = useState<string>("Todos")
 
     const loadEvaluationDetails = () => {
         setLoading(true);
         
-        axiosInt.get(`capacitaciones/learning_path/empleados_progress/${learningPathId}/`)
+        axiosInt.get(`capacitaciones/learning_path/empleados/${learningPathId}/`)
             .then(function (response) {
                 console.log(response.data)
+                setLPName(response.data[0].nombre)
+                setLPDescription(response.data[0].descripcion)
                 setEmployees(response.data)
                 setEmployeesFilter(response.data)
                 setLoading(false);
@@ -138,8 +110,7 @@ function EvaluationDetails() {
     const refEmployee = useRef(null)
     
     const evaluationReview = (employeeID: any) => {
-        console.log(employeeID)
-        navigate(`revision/1`)
+        navigate(`revision/${employeeID}`)
     }
 
     /* TRAINING FILTERS */

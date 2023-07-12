@@ -13,6 +13,8 @@ import VideoUpload from '@features/Modulo1/components/VideoUpload';
 import moment from 'moment-timezone';
 import 'moment-timezone';
 import Layout from "@layout/default/index";
+import QuizGenerator from '../../LearningPath/QuizGenerator';
+import { number } from 'zod';
 
 let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
 
@@ -23,14 +25,6 @@ const locationOptions = [
     { id: 4, type: "Auditorio cuarto piso" },
     { id: 5, type: "Auditorio quinto piso" },
 ]
-
-const data = {
-    id: 1,
-    nombre: "Ejemplo de Creación",
-    url_foto: null,
-    descripcion: "Esto es un ejemplo de creación de un curso empresa",
-    tipo: "A"
-}
 
 const suppliers2: typeSupp[] = [
     {
@@ -98,6 +92,11 @@ type typeSuppId = {
     id: number
 }
 
+type typeCompentencie = {
+    id: number,
+    name: string
+}
+
 const typeTra: typeTraI[] = [
     { id: 1, categoria: "Software" },
     { id: 2, categoria: "Salud" },
@@ -130,11 +129,12 @@ const typeHa: typeHabI[] = [
 
 const TrainingCreate = () => {
     const { trainingID } = useParams();
-    /* CAMBIAR CON LA API */
+
     const [training, setTraining] = useState<any>([]);
     const [nombreT, setNombreT] = useState(training.nombre)
     const [descripcionT, setDescripcionT] = useState(training.descripcion)
-    /* CAMBIAR CON LA API */
+
+    const [competencies, setCompetencies] = useState<typeCompentencie[]>([])
 
     const [sessionCreated, setSessionCreated] = useState<any>(false);
 
@@ -439,7 +439,15 @@ const TrainingCreate = () => {
                 setDescripcionT(response.data.descripcion)
                 setClassSessions(response.data.sesiones)
 
-                setLoading(false);
+                axiosInt.get(`capacitaciones/curso/${trainingID}/competencias/`)
+                    .then(function (response) {
+                        console.log(response.data)
+                        setCompetencies(response.data)
+                        setLoading(false);
+                    })
+                    .catch(function (error) {
+                        setLoading(false);
+                    });
             })
             .catch(function (error) {
                 setLoading(false);
@@ -637,7 +645,11 @@ const TrainingCreate = () => {
                                     <PencilFill color='cornflowerblue' className='editar' data-bs-target='#editTrainingModal' data-bs-toggle='modal' />
                                 </div>
                             </div>
-
+                            
+                            <div className='pt-3' style={{ marginLeft: "60px" }}>
+                                <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#quizGeneratorModal${trainingID}`}>Crear cuestionario</button>
+                                <QuizGenerator title={training.nombre} quizId={parseInt(trainingID)} course={true}/>
+                            </div>
                         </div>
 
                         <div className='row'>
@@ -672,10 +684,34 @@ const TrainingCreate = () => {
                                     )
                                 }
                             </div>
-
                         </div>
-
-
+                        <div className='row'>
+                            <div className='col' style={{ marginLeft: "60px" }}>
+                                <div className='mt-3 mb-3' style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                    <h4>Competencias</h4>
+                                </div>
+                                {competencies.length ?
+                                    (
+                                        competencies.map((comp, index) => {
+                                            return(
+                                                <div className='row' key={comp.id}>
+                                                    <div className='col-1'>
+                                                        <h6><b>{index + 1}.</b></h6>
+                                                    </div>
+                                                    <div className='col-10'>
+                                                        <p>{comp.name}</p>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    )
+                                    :
+                                    (
+                                        <p>No se asignaron competencias</p>
+                                    )
+                                }   
+                            </div>
+                        </div>
 
                         {/* CREATE SESSION MODAL */}
                         <div className="modal fade" id="createSessionModal" aria-hidden="true" aria-labelledby="createSessionModal" tabIndex={-1}>

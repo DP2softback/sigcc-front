@@ -16,7 +16,7 @@ export const ORG_COURSE_CREATE = 'creacion/:trainingID';
 export const ORG_COURSE_DETAIL = 'detalle/:trainingID';
 export const ORG_COURSE_ATTENDANCE = 'detalle/:trainingID/asistencia/:sessionID';
 export const ORG_COURSE_ASSIGNMENT = 'asignacion/:trainingID';
-
+export const ORG_COURSE_REVIEW = 'detalle/:trainingID/valoraciones';
 
 /*----- Vista Empleado LP -----*/
 export const EMP_LEARNING_PATH_INDEX = 'empleado/rutadeaprendizaje';

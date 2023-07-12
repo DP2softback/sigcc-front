@@ -111,22 +111,43 @@ class QuizGenerator extends Component<QuizGeneratorProps, QuizGeneratorState> {
     handleGenerateJSON = () =>
     {
         const { questions } = this.state;
-        axiosInt.post(`capacitaciones/udemy_course/questionary/${this.props.quizId}/`, {
-            evaluacion: questions
-        })
-        .then((response) => {
-            this.refCancelBtn.current.click();
-        })
+        if(this.props.course === false){
+            axiosInt.post(`capacitaciones/udemy_course/questionary/${this.props.quizId}/`, {
+                evaluacion: questions
+            })
+            .then((response) => {
+                this.refCancelBtn.current.click();
+            })
+        }
+        else{
+            axiosInt.post(`capacitaciones/curso_empresa/${this.props.quizId}/evaluacion/`, {
+                evaluacion: questions
+            })
+            .then((response) => {
+                this.refCancelBtn.current.click();
+            })
+        }
+        
     };
 
     get()
     {
-        axiosInt.get(`capacitaciones/udemy_course/questionary/${this.props.quizId}/`)
-        .then((response) => {
-            this.setState({
-                questions: response.data.evaluacion
+        if(this.props.course === false){
+            axiosInt.get(`capacitaciones/udemy_course/questionary/${this.props.quizId}/`)
+            .then((response) => {
+                this.setState({
+                    questions: response.data.evaluacion
+                })
             })
-        })
+        }
+        else{
+            axiosInt.get(`capacitaciones/curso_empresa/${this.props.quizId}/evaluacion/`)
+            .then((response) => {
+                this.setState({
+                    questions: response.data.preguntas
+                })
+            })
+        }
     }
 
     componentDidMount (): void

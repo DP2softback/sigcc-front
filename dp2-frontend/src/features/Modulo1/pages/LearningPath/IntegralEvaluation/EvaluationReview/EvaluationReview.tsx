@@ -14,7 +14,7 @@ const dataHard = {
 
 
 function EvaluationReview() {
-    const { learningPathId } = useParams();
+    const { learningPathId, employeeID } = useParams();
     const [loading, setLoading] = useState<boolean>(false);
     const [lpName, setLPName] = useState<string>("")
     const [lpDescription, setLPDescription] = useState<string>("")
@@ -27,7 +27,7 @@ function EvaluationReview() {
 
     const loadEvalReview = () => {
         setLoading(true);
-        axiosInt.get(`capacitaciones/learning_path/${learningPathId}/empleado/1/`)
+        axiosInt.get(`capacitaciones/learning_path/${learningPathId}/empleado/${employeeID}/`)
             .then(function (response) {
                 console.log(response.data)
                 setEmployeeName(response.data.empleado)
@@ -120,7 +120,12 @@ function EvaluationReview() {
                             <div className='row mt-3'>
                                 <h5>Documento adjunto:</h5>
                                 <div className='col'>
-                                    <button className='btn btn-outline-primary'><a href={fileURLEmp} download={fileNameEmp}><Download/><span style={{marginLeft: "1rem"}}>{fileNameEmp}</span></a></button>
+                                    {
+                                        fileNameEmp === "" ?
+                                        <button className='btn btn-secundary disabled'>Sin documento</button>
+                                        :
+                                        <button className='btn btn-outline-primary'><a href={fileURLEmp} download={fileNameEmp}><Download/><span style={{marginLeft: "1rem"}}>{fileNameEmp}</span></a></button>
+                                    }
                                 </div>
                             </div>
 

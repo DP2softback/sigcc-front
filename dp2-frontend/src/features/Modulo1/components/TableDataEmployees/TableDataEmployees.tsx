@@ -33,7 +33,7 @@ function TableDataEmployees(Props: Props) {
                                 return <td key={indexH}>{"-"}</td>
                             }
                             else if(headerItems.value === "acciones"){
-                                return <td className='text-center' key={indexH}><ArrowRightCircleFill onClick={() => {obj && Props.action(obj.id)}}/></td>
+                                return <td className='text-center' key={indexH}><ArrowRightCircleFill onClick={() => {obj && Props.action(obj.empleado.usuario.id)}}/></td>
                             }
                             else if(headerItems.value === "estado"){
                                 if(obj[`${headerItems.value}`] === "0"){

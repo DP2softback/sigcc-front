@@ -221,30 +221,30 @@ const datos: TrainingObj[] = [
 
 type typeHabI = {
     id: number,
-    habilidad: string
+    name: string
 }
 
 const typeHa: typeHabI[] = [
-    { id: 1, habilidad: "Programación" },
-    { id: 2, habilidad: "Desarrollo de software" },
-    { id: 3, habilidad: "Diseño de interfaces de usuario" },
-    { id: 4, habilidad: "Gestión de bases de datos" },
-    { id: 5, habilidad: "Administración de sistemas" },
-    { id: 6, habilidad: "Seguridad informática" },
-    { id: 7, habilidad: "Análisis de datos" },
-    { id: 8, habilidad: "Arquitectura de software" },
-    { id: 9, habilidad: "Networking y administración de redes" },
-    { id: 10, habilidad: "Desarrollo web" },
-    { id: 11, habilidad: "Virtualización y contenedores" },
-    { id: 12, habilidad: "Computación en la nube" },
-    { id: 13, habilidad: "Machine Learning" },
-    { id: 14, habilidad: "Internet de las cosas" },
-    { id: 15, habilidad: "Desarrollo de aplicaciones móviles" },
-    { id: 16, habilidad: "Automatización de procesos" },
-    { id: 17, habilidad: "Gestión de proyectos de tecnología" },
-    { id: 18, habilidad: "Big Data" },
-    { id: 19, habilidad: "Ciberseguridad" },
-    { id: 20, habilidad: "DevOps" },
+    { id: 1, name: "Programación" },
+    { id: 2, name: "Desarrollo de software" },
+    { id: 3, name: "Diseño de interfaces de usuario" },
+    { id: 4, name: "Gestión de bases de datos" },
+    { id: 5, name: "Administración de sistemas" },
+    { id: 6, name: "Seguridad informática" },
+    { id: 7, name: "Análisis de datos" },
+    { id: 8, name: "Arquitectura de software" },
+    { id: 9, name: "Networking y administración de redes" },
+    { id: 10, name: "Desarrollo web" },
+    { id: 11, name: "Virtualización y contenedores" },
+    { id: 12, name: "Computación en la nube" },
+    { id: 13, name: "Machine Learning" },
+    { id: 14, name: "Internet de las cosas" },
+    { id: 15, name: "Desarrollo de aplicaciones móviles" },
+    { id: 16, name: "Automatización de procesos" },
+    { id: 17, name: "Gestión de proyectos de tecnología" },
+    { id: 18, name: "Big Data" },
+    { id: 19, name: "Ciberseguridad" },
+    { id: 20, name: "DevOps" },
 ]
 
 function padTo2Digits(num: number) {
@@ -342,7 +342,7 @@ const Training = () => {
     const [positionFi, setPositionFi] = useState(0);
     const filterCourseShow = trainingFilter.slice(positionFi, positionFi + mostrarF);
 
-    const [habilities, setHabilities] = useState<any[]>(typeHa)
+    const [habilities, setHabilities] = useState<any[]>([])
     const [checked, setChecked] = useState([]);
     const [habilitiesS, setHabilitiesS] = useState([]);
     const [pageHa, setPageHa] = useState(1)
@@ -373,15 +373,16 @@ const Training = () => {
             var updatedList2 = [...habilitiesS];
             if (event.target.checked) {
                 updatedList = [...checked, item.id];
-                updatedList2 = [...habilitiesS, item.habilidad];
+                updatedList2 = [...habilitiesS, item.name];
             } else {
                 updatedList.splice(checked.indexOf(item.id), 1);
-                updatedList2.splice(habilitiesS.indexOf(item.habilidad), 1);
+                updatedList2.splice(habilitiesS.indexOf(item.name), 1);
             }
             setChecked(updatedList);
             setHabilitiesS(updatedList2);
         }
         updateArray()
+        console.log(checked)
     };
 
     /* TRAINING FILTERS */
@@ -454,14 +455,21 @@ const Training = () => {
             porcentaje_asistencia_aprobacion: parseInt(refTrAttendance.current?.value),
         }
 
-        console.log(data)
-
-        /* RUTA HARDCODEADA*/
-        //navigate(`/modulo1/cursoempresa/creacion/1`);
+        const dataComp = {
+            competencias: checked
+        }
 
         axiosInt.post('capacitaciones/course_company_course/', data)
-            .then(function (response) {
-                navigate(`/modulo1/cursoempresa/creacion/${response.data.id}`);
+            .then(function (responsePost1) {
+                axiosInt.post(`capacitaciones/curso/${responsePost1.data.id}/competencias/`, dataComp)
+                    .then(function (response) {
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+                navigate(`/modulo1/cursoempresa/creacion/${responsePost1.data.id}`);
             })
             .catch(function (error) {
                 console.log(error);
@@ -495,6 +503,29 @@ const Training = () => {
     useEffect(() => {
         loadTrainings();
     }, []);
+
+    const [loadingCompetencies, setLoadingCompetencies] = useState(false);
+
+    const loadCompetencies = () => {
+        setLoadingCompetencies(true);
+        const data = {
+            "idCompetencia": 0,
+            "palabraClave": "",
+            "idTipoCompetencia": 2,	//0: técnico, 1: blanda, 2: todos
+            "activo": 2,			//0: inactivo, 1: activo, 2: todos
+            "idEmpleado": 0
+        }
+
+        axiosInt.post('v1/gaps/competenceSearch', data)
+            .then(function (response) {
+                console.log(response.data)
+                setHabilities(response.data)
+                setLoadingCompetencies(false);
+            })
+            .catch(function (error) {
+                setLoadingCompetencies(false);
+            });
+    }
 
     return (
         <>
@@ -910,7 +941,7 @@ const Training = () => {
 
                                     </div>
                                     <div className="modal-footer">
-                                        <button className="btn btn-primary" data-bs-dismiss="modal" data-bs-target='#assignCapModal' data-bs-toggle='modal'>Asignar capacidades</button>
+                                        <button className="btn btn-primary" data-bs-dismiss="modal" data-bs-target='#assignCapModal' data-bs-toggle='modal' onClick={() => loadCompetencies()}>Asignar compentencias</button>
                                     </div>
                                 </div>
                             </div>
@@ -921,42 +952,54 @@ const Training = () => {
                             <div className="modal-dialog modal-dialog-centered">
                                 <div className="modal-content">
                                     <div className="modal-header">
-                                        <h1 className="modal-title fs-5" id="createTrainingModal">Asignar capacidades</h1>
+                                        <h1 className="modal-title fs-5" id="createTrainingModal">Asignar competencias</h1>
                                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div className="modal-body">
-
-                                        <div className='row' style={{ display: "flex", justifyContent: "flex-end"}}>
-
-                                            <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", fontSize: "12px" }}>
-                                                {filterHabilitiesShow.map((item) => {
-                                                    return (
-                                                        <label key={item.id}>
-                                                            <input value={item} type="checkbox" onChange={() => handleCheck(item, event)} style={{ marginRight: "0.5rem", fontSize: "12px" }} />
-                                                            <span >{item.habilidad}</span>
-                                                        </label>
-                                                    )
-                                                })}  
-                                            </div>
-                                            {habilities.length > mostrarHa &&
-                                                    <div>
-                                                        <div>
-                                                            <Pagination
-                                                                page={pageHa}
-                                                                totalPages={totalPagesHa}
-                                                                handlePagination={setPageHa}
-                                                                setPosition={setPositionHa}
-                                                                position={positionHa}
-                                                                mostrar={mostrarHa}
-                                                            />
+                                        {
+                                            loadingCompetencies ?
+                                            (
+                                                <div className='vertical-align-parent' style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                                    <div className='vertical-align-child'>
+                                                        <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                                            <span className="visually-hidden">Loading...</span>
                                                         </div>
                                                     </div>
-                                                }
-                                            <div style={{fontSize: "10px" }}>
-                                                {`Capacidades seleccionadas: ${checkedItems}`}
-                                            </div>
-                                        </div>
-
+                                                </div>
+                                            )
+                                            :
+                                            (
+                                                <div className='row' style={{ display: "flex", justifyContent: "flex-end" }}>
+                                                    <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", fontSize: "12px" }}>
+                                                        {filterHabilitiesShow.map((item) => {
+                                                            return (
+                                                                <label key={item.id}  style={{ paddingRight: "1rem", paddingLeft: "1rem" }}>
+                                                                    <input value={item} type="checkbox" onChange={() => handleCheck(item, event)} style={{ marginRight: "0.5rem", fontSize: "12px" }} />
+                                                                    <span >{item.name}</span>
+                                                                </label>
+                                                            )
+                                                        })}  
+                                                    </div>
+                                                    {habilities.length > mostrarHa &&
+                                                            <div>
+                                                                <div>
+                                                                    <Pagination
+                                                                        page={pageHa}
+                                                                        totalPages={totalPagesHa}
+                                                                        handlePagination={setPageHa}
+                                                                        setPosition={setPositionHa}
+                                                                        position={positionHa}
+                                                                        mostrar={mostrarHa}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    <div className='mt-3' style={{fontSize: "10px" }}>
+                                                        <strong>Capacidades seleccionadas:</strong> {`${checkedItems}`}
+                                                    </div>
+                                                </div>
+                                            )
+                                        }
                                     </div>
                                     <div className="modal-footer">
                                         <button className="btn btn-primary" data-bs-dismiss="modal" onClick={createTraining}>Crear</button>

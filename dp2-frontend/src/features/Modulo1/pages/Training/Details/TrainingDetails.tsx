@@ -2,146 +2,20 @@ import axiosInt from '@config/axios';
 import Sidebar from '@components/Sidebar'
 import sidebarItems from '@utils/sidebarItems'
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom';
-import { People, ArrowLeftCircle, ArrowLeftCircleFill, ArrowRightCircle } from 'react-bootstrap-icons'
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { People, ArrowLeftCircleFill, BarChart } from 'react-bootstrap-icons'
 import EmployeeCard from '@features/Modulo1/components/EmployeeCard/EmployeeCard';
 import '../../../basic.css';
 import '../training.css';
 import SessionAccordion from '@features/Modulo1/components/SessionAccordion';
 import Pagination from '@features/Modulo1/components/Pagination';
 import Layout from "@layout/default/index";
-
+import Rate from '@features/Modulo1/components/Rate';
+import QuizGenerator from '../../LearningPath/QuizGenerator';
+import '../../../content/common.css';
+import '../../LearningPath/Details/learning-path-details.css'
 
 let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
-
-const datos = {
-    id: 1,
-    nombre: "Seguridad de Información 1",
-    url_foto: 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
-    descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
-    cantidad_empleados: 10,
-    tipo: "P",
-    sesiones: [
-        {
-            id: 1,
-            temas: [
-                {
-                    id: 1,
-                    nombre: "Tema Sesión 1"
-                },
-                {
-                    id: 2,
-                    nombre: "Tema 2 Sesión 1"
-                }
-            ],
-            nombre: "Sesión 1",
-            descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
-            fecha_inicio: "2023-05-31T00:00:00-05:00",
-            url_video: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
-            ubicacion: "Auditorio tercer piso",
-            aforo_maximo: 20,
-            responsables: [
-
-            ]
-        },
-        {
-            id: 2,
-            temas: [
-                {
-                    id: 1,
-                    nombre: "Tema Sesión 2"
-                },
-                {
-                    id: 2,
-                    nombre: "Tema 2 Sesión 2"
-                },
-                {
-                    id: 3,
-                    nombre: "Tema Sesión 2"
-                },
-                {
-                    id: 4,
-                    nombre: "Tema 2 Sesión 2"
-                },
-            ],
-            nombre: "Sesión 2",
-            descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
-            fecha_inicio: "2023-06-01T00:00:00-05:00",
-            url_video: null,
-            ubicacion: "Auditorio tercer piso",
-            aforo_maximo: 20,
-            responsables: [
-
-            ]
-
-        },
-        {
-            id: 3,
-            temas: [
-                {
-                    id: 1,
-                    nombre: "Tema Sesión 3"
-                },
-                {
-                    id: 2,
-                    nombre: "Tema 2 Sesión 3"
-                }
-            ],
-            nombre: "Sesión 3",
-            descripcion: "Capacitación diseñada para proporcionar a los participantes los conocimientos y las habilidades necesarias para proteger la información confidencial y garantizar la seguridad de los sistemas y datos en un entorno digital.",
-            fecha_inicio: "2023-06-02T00:00:00-05:00",
-            url_video: "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
-            ubicacion: "Auditorio tercer piso",
-            aforo_maximo: 20,
-            responsables: [
-
-            ]
-        },
-    ]
-}
-
-const employeesData: Employee[] = [
-    {
-        id: "1",
-        nombre: "John Doe",
-        empleado: "123456789",
-        area: "Área de Base de datos",
-        posicion: "Manager",
-        image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-    },
-    {
-        id: "2",
-        nombre: "Jane Smith",
-        empleado: "123456789",
-        area: "Área de Base de datos",
-        posicion: "Developer",
-        image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-    },
-    {
-        id: "3",
-        nombre: "Bob Johnson",
-        empleado: "123456789",
-        area: "Área de Base de datos",
-        posicion: "Designer",
-        image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-    },
-    {
-        id: "4",
-        nombre: "Sarah Lee",
-        empleado: "123456789",
-        area: "Área de Base de datos",
-        posicion: "Tester",
-        image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-    },
-    {
-        id: "5",
-        nombre: "Tom Jackson",
-        empleado: "123456789",
-        area: "Área de Base de datos",
-        posicion: "Analyst",
-        image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-    }
-];
 
 type Employee = {
     id: string;
@@ -175,6 +49,11 @@ type SessionObj = {
     responsables: SupplierObj[];
 }
 
+type CompentencieObj = {
+    id: number,
+    name: string
+}
+
 const TrainingDetails = () => {
     const { trainingID } = useParams();
     const [training, setTraining] = useState<any>([]);
@@ -189,7 +68,9 @@ const TrainingDetails = () => {
     const [page, setPage] = useState(1)
     const totalPages = Math.ceil(employees.length / mostrar);
     const employeesToShow = employees.slice(position, position + mostrar);
+    const [evaluation, setEvaluation] = useState<any>([]);
 
+    const [competencies, setCompetencies] = useState<CompentencieObj[]>([])
 
     const handlePrevious = () => {
         if (position > 0) {
@@ -210,15 +91,25 @@ const TrainingDetails = () => {
                 setTraining(response.data);
                 setClassSessions(response.data.sesiones)
                 console.log(response.data)
-                axiosInt.get(`capacitaciones/course_company_course_list_empployees/${trainingID}`)
+
+                axiosInt.get(`capacitaciones/curso/${trainingID}/competencias/`)
                     .then(function (response) {
-                        setEmployees(response.data);
-                        setLoading(false);
+                        console.log(response.data)
+                        setCompetencies(response.data)
+
+                        axiosInt.get(`capacitaciones/course_company_course_list_empployees/${trainingID}`)
+                            .then(function (response) {
+                                setEmployees(response.data);
+                                setLoading(false);
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                                setLoading(false);
+                            });
                     })
                     .catch(function (error) {
-                        console.log(error);
                         setLoading(false);
-                    });
+                    });                
             })
             .catch(function (error) {
                 console.log(error);
@@ -229,6 +120,12 @@ const TrainingDetails = () => {
     useEffect(() => {
         loadTrainingDetails();
     }, []);
+
+    const navigate = useNavigate();
+
+    const goBack = () =>{
+        navigate(-1);
+    };
 
     return (
         <>
@@ -247,7 +144,7 @@ const TrainingDetails = () => {
                         )
                         :
                         (<>
-                            <div className='row'>
+                            <div className='row'>                                
                                 {/* TRAINING DATA */}
                                 <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
                                     <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
@@ -266,30 +163,49 @@ const TrainingDetails = () => {
                                         <div>
                                             <h1 className='screenTitle'>{training.nombre}</h1>
                                             <p><small className='subtitle'>{training.descripcion}.</small></p>
-                                            {
-                                                training.tipo === "A" ?
-                                                    (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Virtual Asincrono</small><People style={{ opacity: "50%" }} /></p>)
-                                                    :
-                                                    (training.tipo === "P" ?
-                                                        (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Presencial</small><People style={{ opacity: "50%" }} /></p>)
+                                            <p style={{ display: "flex", alignItems: "center" }}>
+                                                <People style={{ opacity: "50%" }} />
+                                                <small style={{ paddingLeft: "0.5rem" }} className='subtitle'>
+                                                    Modalidad: 
+                                                {
+                                                    training.tipo === "A" ?
+                                                        (" Virtual Asincrono")
                                                         :
-                                                        (<p style={{ display: "flex", alignItems: "center" }}><small style={{ paddingRight: "0.5rem" }} className='subtitle' >Modalidad: Virtual Sincrono</small><People style={{ opacity: "50%" }} /></p>)
-                                                    )
-                                            }
+                                                        (training.tipo === "P" ?
+                                                            (" Presencial")
+                                                            :
+                                                            (" Virtual Sincrono")
+                                                        )
+                                                }
+                                                </small>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className='col-xs-12 col-md-4 col-xl-2' style={{ paddingLeft: "2rem" }}>
+                                        <div className='d-grid gap-2 mx-auto mb-3'>
+                                            <Link to={`evaluacion`} className='btn btn-primary'>Ver evaluaciones</Link>
+                                            <Link to={`valoraciones`} className='btn btn-primary'>Ver valoraciones</Link>
                                         </div>
                                     </div>
                                 </div>
+                                {/*
+                                <div className='pt-3'>
+                                    <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#quizGeneratorModal${trainingID}`}>Validar cuestionario</button>
+                                    <QuizGenerator title={training.nombre} quizId={parseInt(trainingID)} course={true}/>
+                                </div>
+                                */}
                             </div>
 
                             <div className='row'>
                                 <div className='col' style={{ marginLeft: "60px" }}>
-                                    <div className="row mb-3 ">
+                                    <div className="row">
                                         <h4 className='mt-3 mb-3 subarea'>Sesiones</h4>
                                         {classSessions.length > 0 ?
                                             (<SessionAccordion trainingType={training.tipo} sessions={classSessions} mode={"detail"} />)
                                             :
                                             (
-                                                <div className='row align-items-stretch g-3 py-3'>
+                                                <div className='row align-items-stretch'>
                                                     <div className='col'>
                                                         <div className='card'>
                                                             <div className='card-body'>
@@ -307,12 +223,43 @@ const TrainingDetails = () => {
                                     </div>
                                 </div>
                             </div>
-
+                            
+                            <div className='row'>
+                                <div className='col' style={{ marginLeft: "60px" }}>
+                                    <div className='mt-3 mb-3' style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                        <h4>Competencias</h4>
+                                    </div>
+                                    <div className='card'>
+                                        <div className='card-body'>
+                                        {competencies.length ?
+                                            (
+                                                competencies.map((comp, index) => {
+                                                    return(
+                                                        <div className='row' key={comp.id}>
+                                                            <div className='col-1'>
+                                                                <h6><b>{index + 1}.</b></h6>
+                                                            </div>
+                                                            <div className='col-10'>
+                                                                <p>{comp.name}</p>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })
+                                            )
+                                            :
+                                            (
+                                                <p>No se asignaron competencias</p>
+                                            )
+                                        }
+                                       </div>
+                                    </div> 
+                                </div>
+                            </div>
 
                             {/* EMPLOYEES SECTION */}
                             <div className='row'>
                                 <div className='col' style={{ marginLeft: "60px" }}>
-                                    <div className='mt-4 mb-3' style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                    <div className='mt-3 mb-3' style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                         <h4 className='subarea'>Empleados asignados</h4>
                                         <Link to={`/modulo1/cursoempresa/asignacion/${training.id}`}>
                                             <button className='btn btn-primary' style={{ marginRight: "23px" }}>
@@ -386,7 +333,6 @@ const TrainingDetails = () => {
                                 </div>
 
                             </div>
-
                         </>
 
                         )
