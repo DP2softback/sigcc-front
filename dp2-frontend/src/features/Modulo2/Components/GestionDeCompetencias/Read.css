@@ -47,7 +47,7 @@ margin-left: 2%;
         padding-left: 0px;
  }
 .Search2{
-float: right;
+float: none;
     width: 20%;
     margin-right: 3%;
 }
@@ -79,4 +79,35 @@ top: 335px;
 
 .big{
     width: 90%;
+}
+
+
+.button1{
+    display:inline-block;
+    padding:0.35em 1.2em;
+
+    margin:0 0.3em 1.3em 0;
+    text-decoration:none;
+    font-family:'Roboto',sans-serif;
+    font-weight:300;
+    text-align:center;
+    transition:all 0.2s;
+    float: right;
+}
+
+.tabla{
+    overflow-x: auto;
+}
+
+
+@media all and (max-width:40em){
+    .button1{
+    display:block;
+    margin:0.4em auto;
+    float:none
+    }
+
+    .basicSearch{
+        width: 100%;
+    }
 }
