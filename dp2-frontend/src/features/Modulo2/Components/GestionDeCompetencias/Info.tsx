@@ -7,12 +7,6 @@ const Info = ({competencia, tipo }) => {
   const [area, setArea] = useState(competencia.isActive);
   const handleSubmit = (event) => {
     event.preventDefault();
-    const competenciaActualizada = {
-      nombres: nombres,
-      apellidos: apellidos,
-      puesto: puesto,
-      area: area,
-    };
     setNombres('');
     setApellidos('');
     setPuesto('');
@@ -57,7 +51,7 @@ const Info = ({competencia, tipo }) => {
           type="text"
           className="form-control"
           id="area"
-          value={area}
+          value={area?'Si':'No'}
           readOnly  
         />
       </div>

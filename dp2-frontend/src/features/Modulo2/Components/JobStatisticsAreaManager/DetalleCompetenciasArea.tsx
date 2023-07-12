@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Form, FormControl, InputGroup, Button, Table, Modal  } from 'react-bootstrap';
 import UpdateCompetencia from './Update';
 import DeleteCompetencia from './Delete';
-import {ArrowRightCircleFill,Pencil,Trash } from 'react-bootstrap-icons';
+import {ArrowRightCircleFill} from 'react-bootstrap-icons';
 import { useLocation,  useNavigate  } from 'react-router-dom';
 import {EmpleadoDeArea} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos';
 import './DetalleCompetenciasArea.css';
@@ -12,7 +12,7 @@ import {TOKEN_SERVICE, URL_SERVICE} from '@features/Modulo2/services/ServicesApi
 const DetalleCompetenciasArea = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  //const { tipoCompetencia } = location.state;
+  const { tipoCompetencia } = location.state;
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [tipoOrden, setTipoOrden] = useState('ascendente');
     const [position__name, setposition__name] = useState('');
@@ -55,7 +55,6 @@ const DetalleCompetenciasArea = () => {
       setEmpleados(tablaAux);
       handleCerrarPopUpActualizar();
     };
-    console.log(empleados);
     const handleMostrarPopUpActualizar = (competencia) => {
       setCompetenciaSeleccionada(competencia);
       setmostrarPopUpActualizar(true);
@@ -195,8 +194,8 @@ const DetalleCompetenciasArea = () => {
   return (
     <div className="pantalla">
       <div className='titles'>
-      <h2 className='Head'>Empleados del puesto de asistente</h2>
-      <p className="text-muted subtitle">Consultar capacidades de los empleados.</p>
+      <h2 className='Head'>Empleados del puesto de {tipoCompetencia.name}</h2>
+      <p className="text-muted subtitle">Consultar competencias de los empleados.</p>
       </div>
 
       <Form className="FormComp">
@@ -204,8 +203,8 @@ const DetalleCompetenciasArea = () => {
           <div className='row primera'>
               <InputGroup className="col basicSearch">
               <FormControl
-                placeholder="Ingrese palabras clave, código o nombre de las capacidades"
-                aria-label="Buscar capacidades"
+                placeholder="Ingrese palabras clave, código o nombre de las competencias"
+                aria-label="Buscar competencias"
                 aria-describedby="buscar-icono"
                 value={palabrasClave}
                 onChange={(e) => setPalabrasClave(e.target.value)}

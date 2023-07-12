@@ -12,7 +12,8 @@ import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_ORG, GAPS_EMPLOYEES_ORG_DETAIL_EMP
 const DetalleCompetenciasArea = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  //const { tipoCompetencia } = location.state;
+  const { tipoCompetencia } = location.state;
+  console.log(tipoCompetencia)
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [tipoOrden, setTipoOrden] = useState('ascendente');
     const [position__name, setposition__name] = useState('');
@@ -214,8 +215,8 @@ const DetalleCompetenciasArea = () => {
       return (
         <div className="pantalla">
           <div className='titles'>
-          <h2 className='Head'>Capacidades por empleado del área de TI</h2>
-          <p className="text-muted subtitle">Consultar capacidades de los empleados.</p>
+          <h2 className='Head'>Competencias por empleado del {tipoCompetencia.name}</h2>
+          <p className="text-muted subtitle">Consultar competencias de los empleados.</p>
           </div>
     
           <Form className="FormComp">
@@ -223,8 +224,8 @@ const DetalleCompetenciasArea = () => {
               <div className='row primera'>
                   <InputGroup className="col basicSearch">
                   <FormControl
-                    placeholder="Ingrese palabras clave, código o nombre de las capacidades"
-                    aria-label="Buscar capacidades"
+                    placeholder="Ingrese palabras clave, código o nombre de las competencias"
+                    aria-label="Buscar competencias"
                     aria-describedby="buscar-icono"
                     value={palabrasClave}
                     onChange={(e) => setPalabrasClave(e.target.value)}
@@ -238,7 +239,7 @@ const DetalleCompetenciasArea = () => {
                     <Form.Label>Puesto de trabajo</Form.Label>
                     <Form.Control as="select" value={position__name} onChange={(e) => setposition__name(e.target.value)}>
                         <option value="">Todos</option>
-                        {empleados.map((competencia, index) => (
+                        {empleados.filter((competencia, index, self) => self.findIndex(c => c.position__name === competencia.position__name) === index).map((competencia, index) => (
                         <option key={index} value={competencia.position__name}>{competencia.position__name}</option>
                         ))}
                     </Form.Control>
