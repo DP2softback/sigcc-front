@@ -254,6 +254,7 @@ const borrarCompetencia = async (id) => {
   });
   const renderTablaCompetencias = () => {
     return (
+
     <Table striped bordered hover>
       <thead>
         <tr>
@@ -282,7 +283,8 @@ const borrarCompetencia = async (id) => {
           </tr>
         ))}
       </tbody>
-    </Table>)
+    </Table>
+   )
   }
   return (
     <div className='pantalla'>
@@ -325,11 +327,11 @@ const borrarCompetencia = async (id) => {
             </div>
          </div>
             <div className='row'>
-              <div className="col-md-12  justify-content-right">
-                <Button variant="primary" className='Search2' onClick={handleMostrarPopUpCrear}>
+              <div className="col-md-12">
+                <Button variant="primary" className='button1' onClick={handleMostrarPopUpCrear}>
                   Agregar competencia
                 </Button>
-                <Button variant="outline-secondary" className='SearchP' onClick={handleLimpiarFiltros}>
+                <Button variant="outline-secondary" className='button1' onClick={handleLimpiarFiltros}>
                   Limpiar filtros
                 </Button>{' '}
               </div>  
@@ -389,7 +391,7 @@ const borrarCompetencia = async (id) => {
           </div>
         </Modal.Body>
       </Modal>
-      <div className='container-fluid'>
+      <div className='container-fluid tabla'>
          {renderTablaCompetencias()}
       </div>
     </div>
