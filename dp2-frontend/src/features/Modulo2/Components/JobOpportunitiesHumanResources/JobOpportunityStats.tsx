@@ -12,6 +12,7 @@ import axiosEmployeeStats from '@features/Modulo2/services/StatsEmployeeServices
 const examplePhoto = 'https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg?b=1&s=170667a&w=0&k=20&c=0aBawAGIMPymGUppOgw1HmV8MNXB1536B3sX_PP9_SQ='
 import { TOKEN_SERVICE, URL_SERVICE, URL_SERVICE2 } from '@features/Modulo2/services/ServicesApis'
 import { TOKEN } from '@features/Modulo3/utils/constants';
+import { formatDashboardJson } from '@features/Modulo3/utils/functions';
 const TOKEN_G3 = 'Token ' + TOKEN;
 //console.log(TOKEN_G3)
 
@@ -46,8 +47,8 @@ const JobOpportunityStats = () => {
             evaluationType: "Evaluación de Desempeño",
         }
         const obj3 = {
-            employee_id: 18,
-            evaluationType: "Evaluación de Desempeño",
+            id: 18,
+            evaluationType: "Evaluación Continua",
         }
 
         axiosEmployeeGaps
@@ -68,9 +69,9 @@ const JobOpportunityStats = () => {
         //aí que trae los datos para el dashboard de evaluacion continua
 
         axiosEmployeeStats
-            .post("/evaluations", obj3)
+            .post("/LineChartEvaluacionesPersona", obj3)
             .then(function (response) {
-                setDashboard(response.data);
+                setDashboard(formatDashboardJson(response.data));
                 console.log(response.data)
                 //setIsLoading(false);
             })
@@ -107,7 +108,7 @@ const JobOpportunityStats = () => {
     }
 
     const showlinechart = (
-        <div className="col-md-8 mb-32px">
+        <div className='chart'>
             {dashboard && (
                 <Linechart
                     title={'Evaluaciones continuas'}
@@ -132,6 +133,23 @@ const JobOpportunityStats = () => {
     }
 
     //employeeInfo[0].time_since_last_evaluation != null ? employeeInfo[0].time_since_last_evaluation + ' dias' : 'No realizada'
+    /*export const getEmployeeEvaluationDashboardShared = async (employeeId: number, evaluationType : string, fechaInicio? : Date, fechaFin? : Date) => {
+  const optionsRequest = {
+    method: 'POST',
+    url: BACKEND_URL + 'LineChartEvaluacionesPersona',
+    headers:{
+      Authorization: `Token ${TOKEN}`
+    },
+    data: {
+      id: employeeId,
+      evaluationType: evaluationType,
+      fecha_inicio: fechaInicio,
+      fecha_fin: fechaFin
+    }
+  }
+  return await ajax(optionsRequest);
+}*/
+    
     return (
         <>
             <div className='row'>
@@ -195,7 +213,7 @@ const JobOpportunityStats = () => {
                                 />
                             </div>
                             <div className='col-7'>
-                                {matchRate === null ? <>{'arreglando'}</> : <BarChart1 dataBarProps={employeeCompetences} />}
+                                {matchRate === null ? <>{showlinechart}</> : <BarChart1 dataBarProps={employeeCompetences} />}
                             </div>
                         </div>
                         <button className='btn btn-outline-primary col-1 ms-3 btn-sm mt-2' onClick={() => navigate(-1)}>
