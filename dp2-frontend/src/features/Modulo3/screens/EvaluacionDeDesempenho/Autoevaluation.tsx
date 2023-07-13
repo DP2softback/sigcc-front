@@ -15,6 +15,7 @@ const Autoevaluation = () => {
   });
   const [associatedEvaluation, setAssociatedEvaluation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [lleno, setLleno] = useState(true)
 
   useEffect(() => {
     setIsLoading(false);
@@ -22,6 +23,16 @@ const Autoevaluation = () => {
       const response = await getEvaluation(parseInt(urlParams.get('evaluationId')));
       if (response) {
         setEvaluation(response);
+        for(let i = 0; i < response.categories.length; i++){
+          const category = response.categories[i];
+          const subcategories = category.subcategories;
+          for(let j = 0; j < subcategories.length; j++){
+            const subcategory = subcategories[j];
+            if (subcategory.score === null || subcategory.score === undefined || subcategory.score === "" || subcategory.score == 0){
+              setLleno(false)
+            }
+          }
+        }
         if (response.associatedEvaluationId) {
           const associatedResponse = await getEvaluation(response.associatedEvaluationId);
           if (associatedResponse) {
@@ -36,18 +47,20 @@ const Autoevaluation = () => {
   }, []);
 
   return (
-    <BaseForm
-      employee={employee}
-      categories={evaluation.categories}
-      evaluation={evaluation}
-      //associatedEvaluation={associatedEvaluation}
-      setEvaluation={setEvaluation}
-      setIsLoading={setIsLoading}
-      isLoading={isLoading}
-      isReadOnly={false}
-      isAutoevaluation={true}
-      evaluationId={parseInt(urlParams.get('evaluationId'))}
-    />
+    <div className='auto-32'>
+      <BaseForm
+        employee={employee}
+        categories={evaluation.categories}
+        evaluation={evaluation}
+        //associatedEvaluation={associatedEvaluation}
+        setEvaluation={setEvaluation}
+        setIsLoading={setIsLoading}
+        isLoading={isLoading}
+        isReadOnly={lleno}
+        isAutoevaluation={true}
+        evaluationId={parseInt(urlParams.get('evaluationId'))}
+      />
+    </div>
   );
 };
 
