@@ -10,18 +10,16 @@ import BarChart1 from '@features/Modulo2/Components/VisualizacionBrechasEmpleado
 import axiosEmployeeGaps from '@features/Modulo2/services/EmployeeGapsServices';
 import axiosEmployeeStats from '@features/Modulo2/services/StatsEmployeeServices';
 const examplePhoto = 'https://media.istockphoto.com/id/1325565779/photo/smiling-african-american-business-woman-wearing-stylish-eyeglasses-looking-at-camera-standing.jpg?b=1&s=170667a&w=0&k=20&c=0aBawAGIMPymGUppOgw1HmV8MNXB1536B3sX_PP9_SQ='
-import { TOKEN_SERVICE, URL_SERVICE, URL_SERVICE2 } from '@features/Modulo2/services/ServicesApis'
 import { TOKEN } from '@features/Modulo3/utils/constants';
 import { formatDashboardJson } from '@features/Modulo3/utils/functions';
 const TOKEN_G3 = 'Token ' + TOKEN;
-//console.log(TOKEN_G3)
 
 const JobOpportunityStats = () => {
 
     const navigate = useNavigate();
     const { state } = useLocation();
     const [isLoading, setIsLoading] = React.useState(true);
-    const [candidate, setCandidate] = React.useState(null);
+    const [candidate, setCandidate] = React.useState(state.candidate);
     const [filters, setFilters] = React.useState({
         fecha_inicio: obtenerFechaHaceUnAnio(),
         fecha_fin: obtenerFechaActual()
@@ -30,69 +28,57 @@ const JobOpportunityStats = () => {
     const [dashboard, setDashboard] = React.useState(null);
     const [employeeCompetences, setEmployeeCompetences] = React.useState(null);
     const [employeeInfo, setEmployeeInfo] = React.useState(null);
-    React.useEffect(() => {
 
-        console.log(state.candidate);
-        setCandidate(state.candidate);
-        setIsLoading(true);
+    React.useEffect(() => {
         const obj = {
             idCompetencia: 0,
             palabraClave: "",
-            idTipoCompetencia: 0,
-            activo: 1,
-            idEmpleado: 1// Cambiar idEmpleado logeado
+            idTipoCompetencia: 2,
+            activo: 2,
+            idEmpleado: candidate.id
         }
-        const obj2 = {
-            id: 18,
-            evaluationType: "Evaluación de Desempeño",
-        }
-        const obj3 = {
-            id: 18,
-            evaluationType: "Evaluación Continua",
-        }
-
         axiosEmployeeGaps
             .post("gaps/competenceSearch", obj)
             .then(function (response) {
                 setEmployeeCompetences(response.data);
-                //console.log(response.data)
-                //setIsLoading(false);
+                const obj2 = {
+                    id: candidate.id,
+                    evaluationType: "Evaluación Continua",
+                }
+                axiosEmployeeStats
+                    .post("emp", obj2)
+                    .then(function (response) {
+                        setEmployeeInfo(response.data);
+                        console.log(response.data);
+                        const obj3 = {
+                            id: candidate.id,
+                            evaluationType: "Evaluación Continua",
+                            fecha_inicio: filters.fecha_inicio,
+                            fecha_fin: filters.fecha_fin
+                        }
+                        axiosEmployeeStats
+                            .post("/LineChartEvaluacionesPersona", obj3)
+                            .then(function (response) {
+                                setDashboard(formatDashboardJson(response.data));
+                                setIsLoading(false);
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                                setIsLoading(false);
+                            })
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
 
             })
             .catch(function (error) {
                 console.log(error);
-                setIsLoading(false);
             })
 
+        
 
-
-        //aí que trae los datos para el dashboard de evaluacion continua
-
-        axiosEmployeeStats
-            .post("/LineChartEvaluacionesPersona", obj3)
-            .then(function (response) {
-                setDashboard(formatDashboardJson(response.data));
-                console.log(response.data)
-                //setIsLoading(false);
-            })
-            .catch(function (error) {
-                console.log(error);
-                setIsLoading(false);
-            })
-
-        //esta api trae la info del usuario, pero es del grupo 3, sirve para traer los dias de evaluacion
-        axiosEmployeeStats
-            .post("emp", obj2)
-            .then(function (response) {
-                setEmployeeInfo(response.data);
-                //console.log(response.data)
-                setIsLoading(false);
-            })
-            .catch(function (error) {
-                console.log(error);
-                setIsLoading(false);
-            })
-
+        
     }, [])
 
     function onFiltersChange(e) {
@@ -103,8 +89,40 @@ const JobOpportunityStats = () => {
         }));
     }
 
+    const handleSearch = () => {
+        setIsLoading(true);
+        const obj = {
+            id: candidate.id,
+            evaluationType: "Evaluación Continua",
+            fecha_inicio: filters.fecha_inicio,
+            fecha_fin: filters.fecha_fin
+        }
+        console.log(obj);
+        axiosEmployeeStats
+            .post("/emp", obj)
+            .then(function (response) {
+                console.log(response);
+                setEmployeeInfo(response.data);
+                axiosEmployeeStats
+                    .post("/LineChartEvaluacionesPersona", obj)
+                    .then(function (response) {
+                        console.log(response);
+                        setDashboard(formatDashboardJson(response.data));
+                        setIsLoading(false);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        setIsLoading(false);
+                    })
+            })
+            .catch(function (error) {
+                console.log(error);
+                setIsLoading(false);
+            })
+    }
+
     const handleMatchRate = () => {
-        setMatchRate(matchRate ? null : candidate.percentaje_conicidence);//aca hubo un cambio, estaba constante 10, c puso lo del navigate
+        setMatchRate(matchRate ? null : Math.round(candidate.adecuacion));//aca hubo un cambio, estaba constante 10, c puso lo del navigate
     }
 
     const showlinechart = (
@@ -118,8 +136,9 @@ const JobOpportunityStats = () => {
         </div>
     );
 
-    function EvaluationDays(timeLastEv): string {
+    function EvaluationDays(timeLastEv?): string {
         var stringdays;
+
         if (timeLastEv === null) {
             stringdays = 'No realizada'
         }
@@ -132,24 +151,6 @@ const JobOpportunityStats = () => {
         return stringdays;
     }
 
-    //employeeInfo[0].time_since_last_evaluation != null ? employeeInfo[0].time_since_last_evaluation + ' dias' : 'No realizada'
-    /*export const getEmployeeEvaluationDashboardShared = async (employeeId: number, evaluationType : string, fechaInicio? : Date, fechaFin? : Date) => {
-  const optionsRequest = {
-    method: 'POST',
-    url: BACKEND_URL + 'LineChartEvaluacionesPersona',
-    headers:{
-      Authorization: `Token ${TOKEN}`
-    },
-    data: {
-      id: employeeId,
-      evaluationType: evaluationType,
-      fecha_inicio: fechaInicio,
-      fecha_fin: fechaFin
-    }
-  }
-  return await ajax(optionsRequest);
-}*/
-    
     return (
         <>
             <div className='row'>
@@ -163,34 +164,6 @@ const JobOpportunityStats = () => {
                                 {matchRate === null ? <><h5>Evaluación continua</h5></> : <h5>Adecuación al puesto</h5>}
                             </div>
                             <div className='d-flex justify-content-end col-9'>
-                                {!matchRate &&
-                                    <>
-                                        <div>
-
-                                            <Form.Control
-                                                type="date"
-                                                className="me-2 w-auto"
-                                                name="fecha_inicio"
-                                                value={filters.fecha_inicio || ""}
-                                                onChange={onFiltersChange}
-                                                size="sm"
-                                            />
-                                        </div>
-                                        <div>
-                                            <Form.Control
-                                                type="date"
-                                                className="me-2 w-auto"
-                                                name="fecha_fin"
-                                                value={filters.fecha_fin || ""}
-                                                onChange={onFiltersChange}
-                                                size="sm"
-                                            />
-                                        </div>
-                                        <div className='d-flex'>
-                                            <Button className='me-2 px-2' size="sm">Buscar</Button>
-                                        </div>
-                                    </>
-                                }
                                 <div className='d-flex'>
                                     <Button className='me-2 px-2' size="sm" onClick={handleMatchRate}>{matchRate ? 'Ver evaluación continua' : 'Ver adecuación'}</Button>
                                 </div>
@@ -201,14 +174,14 @@ const JobOpportunityStats = () => {
 
                                 <EmployeeCard
                                     id={candidate.id}
-                                    name={candidate.user__first_name + ' ' + candidate.user__last_name}
+                                    name={candidate.first_name + ' ' + candidate.last_name}
                                     photoURL={examplePhoto}
-                                    position={candidate.position__name}
+                                    position={candidate.position_name}
                                     code={formatEmployeeCode(candidate.id)}
                                     lastEvaluation={EvaluationDays(employeeInfo[0].time_since_last_evaluation)}
                                     lastEvaluationUnit={candidate.time_since_last_evaluation != null ? DAYS_UNIT : ''}
-                                    area={'Área de ' + candidate.area__name}
-                                    email={candidate.user__email}
+                                    area={candidate.area_name}
+                                    email={candidate.email}
                                     matchRate={matchRate}
                                 />
                             </div>

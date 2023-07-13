@@ -79,7 +79,6 @@ const JobOpportunitiesHumanResources = () => {
         axiosEmployeeGaps
         .post("gaps/jobOfferSearch",obj)
         .then(function(response){
-            console.log(response.data);
             setJobOpportunities(response.data);
             setIsLoading(false);
         })
