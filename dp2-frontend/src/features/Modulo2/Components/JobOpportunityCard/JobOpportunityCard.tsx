@@ -26,7 +26,7 @@ const JobOpportunityCard = (props) => {
     }
 
     return (
-        <div className='container card-job-opp'>
+        <div className='container card-job-opp mb-4'>
             <div className='row'>
                 <div className='col-3 d-flex align-items-center justify-content-center'>
                     {<img className='image-job-opp' src={JobOppImage}>

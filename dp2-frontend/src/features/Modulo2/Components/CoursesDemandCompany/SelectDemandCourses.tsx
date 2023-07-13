@@ -3,11 +3,15 @@ import { Table, Form, Button, Modal } from 'react-bootstrap';
 import { ArrowRightCircleFill, Pencil, Trash, Upload } from 'react-bootstrap-icons';
 import {Competencia,tipoCompetencia, AreaActiva} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos'
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './SelectDemandCourses.css'
 const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
 const SelectDemandCourses: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { data } = location.state;
+  console.log(data)
+  
   const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
   const [tipoOrden, setTipoOrden] = useState('ascendente');
   const [searchQuery, setSearchQuery] = useState('');
@@ -290,8 +294,6 @@ const SelectDemandCourses: React.FC = () => {
                 Aceptar
               </Button>
 
-  
-
               <Button variant="secondary" className='Search2' onClick={handleCerrarPopUpGenerar}>
               Cancelar
               </Button>
@@ -313,13 +315,12 @@ const SelectDemandCourses: React.FC = () => {
             <Button className="botones2" onClick={()=>{}}>
               Aceptar
             </Button>
+            <Button variant="secondary" className='botones2' onClick={handleCerrarPopUpGenerar}>
+            Cancelar
+            </Button>
           </div>
         </div>
-        <div className='botonCerrar2'>
-        <Button variant="secondary" onClick={handleCerrarPopUpGenerar}>
-          Cancelar
-        </Button>
-        </div>
+
       </Modal.Body>
   </Modal> 
 )
@@ -357,8 +358,8 @@ const SelectDemandCourses: React.FC = () => {
                 Generar lista
                 </Button>{' '}
               </div>
-              <div className="col-md-9  justify-content-right">          
-                <Button variant="primary" className='Search2' onClick={handleMostrarPopUpGenerar}>
+              <div className="col-md-9  justify-content-center">          
+                <Button variant="primary" className='Search3' onClick={handleMostrarPopUpGenerar}>
                 Generar demanda
                 </Button>
               </div>  
