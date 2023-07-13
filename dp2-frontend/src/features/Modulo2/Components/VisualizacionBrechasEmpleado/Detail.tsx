@@ -70,7 +70,6 @@ const TrainingNeeds = () => {
   };
 
   const handleSearch = () => {
-    console.log(tipoCompetenciaSelected.id);
     const obj = {
       estado: 0,
       tipo: tipoCompetenciaSelected.id,

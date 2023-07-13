@@ -119,7 +119,6 @@ const Read = () => {
         axiosEmployeeGaps
             .post("gaps/competenceSearch", obj)
             .then(function (response) {
-                console.log(response)
                 setEmployeeCompetences(response.data);
             })
     }
