@@ -78,7 +78,7 @@ const SelectDemandCourses: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         console.log(data)
-        navigate(`/${GAPS_ANALYSIS_MODULE}/${DEMAND_COMPANY_COURSES}/${DEMAND_COMPANY_COURSES_LIST}`, { state: {data} })
+        navigate(`/${GAPS_ANALYSIS_MODULE}/${DEMAND_COMPANY_COURSES}/${DEMAND_COMPANY_COURSES_LIST}`, { state: {data,selectedRows,areaSeleccionada,a} })
   
       } else {
         console.log('Error al obtener los datos de competencias');

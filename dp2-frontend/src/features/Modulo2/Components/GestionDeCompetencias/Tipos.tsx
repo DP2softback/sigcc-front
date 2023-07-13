@@ -1,3 +1,5 @@
+import { string } from "zod";
+
 export  type Competencia = {
     id: number;
     code: string;
@@ -43,4 +45,16 @@ export type AreaActiva = {
 export type Posicion = {
   position__id: number,
   position__name: string
+}
+
+export type comp2={
+  competencia: number,
+  competencia_nombre: string,
+}
+
+export type comp={
+  competencias: comp2[],
+  curso: number,
+  curso_nombre:string
+
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Form, Button, Modal } from 'react-bootstrap';
 import { ArrowRightCircleFill, Pencil, Trash, Upload } from 'react-bootstrap-icons';
-import {Competencia,tipoCompetencia, AreaActiva} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos'
+import {comp,Competencia,tipoCompetencia, AreaActiva} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos'
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
 import { useLocation, useNavigate } from 'react-router-dom';
 import './SelectDemandCourses.css'
@@ -9,9 +9,8 @@ const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array pred
 const SelectDemandCourses: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { data } = location.state;
-  console.log(data)
-  
+  const { data, selectedRows,areaSeleccionada,a } = location.state;
+  console.log(location.state)
   const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
   const [tipoOrden, setTipoOrden] = useState('ascendente');
   const [searchQuery, setSearchQuery] = useState('');
@@ -21,7 +20,7 @@ const SelectDemandCourses: React.FC = () => {
   const [mostrarPopUpGenerar , setmostrarPopUpGenerar] = useState(false);
   const [mostrarPopUpCrear , setmostrarPopUpCrear] = useState(false);
   const [mostrarPopUpBorrar, setmostrarPopUpBorrar] = useState(false);
-  const [competencias, setCompetencias] = useState<Competencia[]>([]);
+  const [competencias, setCompetencias] = useState([]);
   const [competenciaSeleccionada, setCompetenciaSeleccionada] = useState(null);
   const [lleno,setLleno] = useState(0)
   const [competenciasLista, setCompetenciasLista] = useState([
@@ -30,6 +29,8 @@ const SelectDemandCourses: React.FC = () => {
     { id: 3, nombre: 'Competencia 3', seleccionada: false },
     // Agrega más competencias si es necesario
   ]);
+  const [cursosLista, setCursosLista] = useState([]);
+  const [comLista, setComLista] = useState<comp[]>([]);
   const hardcodeTable = [
     { id: 1, code: '001', name: 'Java Avanzado', type: 'Java A', active: true },
     { id: 2, code: '002', name: 'Python Básico', type: 'Python B', active: false },
@@ -50,30 +51,6 @@ const SelectDemandCourses: React.FC = () => {
     { id: 5, name: "Ruby 'E'", demanda: 40 }
   ]
   useEffect(() => {
-    
-    const fetchCompetencias2 = async () => {
-      try {
-        const body = JSON.stringify(data);
-        console.log(body)
-        const response = await fetch(URL_SERVICE + '/gaps/trainingNeedGenerateCourse', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': TOKEN_SERVICE,
-          },
-          body: JSON.stringify(data),
-        });
-        if (response.ok) {
-          const res = await response.json();
-          console.log(res)
-          setCompetencias(res);
-        } else {
-          console.log('Error al obtener los datos de competencias');
-        }
-      } catch (error) {
-        console.log('Error al obtener los datos de competencias:', error);
-      }
-    };
     
     // Función para obtener los datos de competencias desde la API
     const fetchCompetencias = async () => {
@@ -104,7 +81,6 @@ const SelectDemandCourses: React.FC = () => {
       }
     };
     fetchCompetencias();
-    fetchCompetencias2();
   }, []);
   const filtrarCompetencias = () => {
     var competenciasFiltradas = competencias;
@@ -129,16 +105,40 @@ const SelectDemandCourses: React.FC = () => {
     return competenciasFiltradas;
   };
   const filteredCompetencias = filtrarCompetencias().filter((competencia) => {
+    /*
     const searchMatch =
       competencia.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       competencia.code.toLowerCase().includes(searchQuery.toLowerCase());
-    const tipoMatch = tipoFiltro === 0 || competencia.type === tipoFiltro;
+   */
+   const tipoMatch = tipoFiltro === 0 || competencia.type === tipoFiltro;
     const estadoMatch = estadoFiltro === '' || competencia.isActive === (estadoFiltro === 'Activo');
 
-    return searchMatch && tipoMatch && estadoMatch;
+    return tipoMatch && estadoMatch;
   });
-  const handleSearch = () => {
-  };
+  const handleSearch = async () => {
+      try {
+        const body = JSON.stringify(data);
+        console.log(data)
+        const response = await fetch(URL_SERVICE + '/gaps/trainingNeedGenerateCourse', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': TOKEN_SERVICE,
+          },
+          body: JSON.stringify(data),
+        });
+        if (response.ok) {
+          const res = await response.json();
+          console.log(res)
+          setComLista(res);
+        } else {
+          console.log('Error al obtener los datos de competencias');
+        }
+      } catch (error) {
+        console.log('Error al obtener los datos de competencias:', error);
+      }
+
+    };
   const handleMostrarPopUpCrear  = () => {
     setmostrarPopUpCrear(true);
     setLleno(lleno + 1)
@@ -176,7 +176,6 @@ const SelectDemandCourses: React.FC = () => {
     setmostrarPopUpBorrar(true);
   };
   const borrarCompetencia = async (id) => {
-  console.log(id)
   try {
     const response = await fetch(`https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/gaps/competences/${id}`, {
       method: 'DELETE',
@@ -184,7 +183,6 @@ const SelectDemandCourses: React.FC = () => {
         'Authorization': TOKEN_SERVICE
       }
     });
-    console.log(response)
     if (response.ok) {
       const updatedCompetencias = competencias.filter((competencia) => competencia.id !== id);
       setCompetencias(updatedCompetencias);
@@ -223,11 +221,43 @@ const SelectDemandCourses: React.FC = () => {
   const handleCerrarPopUpAsignar = () => {
     setmostrarPopUpAsignar(false);
   };
-  const handleMostrarPopUpGenerar  = (competencia) => {     
+  const handleMostrarPopUpGenerar  = async (competencia) => {     
     setCompetenciaSeleccionada(competencia);
     setLleno(lleno + 1)
     console.log(lleno)
     setmostrarPopUpGenerar(true);
+    try {
+      const empleadosId = selectedRows.map(id => ({
+        empleado: id
+      }));  
+    const body = {
+      "area": areaSeleccionada,
+      "posicion": parseInt(a),
+      "empleados":[] /*selectedRows.length > 0 ? empleadosId : []*/,
+      "cursos":comLista
+    };
+      console.log(body)
+      const response = await fetch(URL_SERVICE + '/gaps/trainingNeedCourse ', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': TOKEN_SERVICE,
+        },
+        body: JSON.stringify(data),
+      });
+      if (response.ok) {
+        const res = await response.json();
+        console.log("funciona")
+        console.log(res)
+        setCursosLista(res);
+      } else {
+        console.log('Error al obtener los datos de competencias');
+      }
+    } catch (error) {
+      console.log('Error al obtener los datos de competencias:', error);
+    }
+
+
   };
   const confirmarCompetencia = async (id) => {
     const competenciasSeleccionadas = competenciasLista.filter(
@@ -269,10 +299,10 @@ const SelectDemandCourses: React.FC = () => {
   const renderCards = () => {
     return (
       <div className="card-container">
-        {hardcodeCards.map((competencia) => (
+        {data.map((competencia) => (
           <div key={competencia.id} className="card">
-            <h4>Competencia: {competencia.name}</h4>
-            <p>Demanda: {competencia.name}</p>
+            <h4>Competencia: {competencia.competencia_nombre}</h4>
+            <p>Demanda: {competencia.cantidad} Empleados</p>
           </div>
         ))}
       </div>
@@ -285,20 +315,15 @@ const SelectDemandCourses: React.FC = () => {
         <tr>
             <th onClick={() => handleOrdenarPorCampo('name')}>Nombre {campoOrdenamiento === 'name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th onClick={() => handleOrdenarPorCampo('type')}>Competencias {campoOrdenamiento === 'type' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-            <th onClick={() => handleOrdenarPorCampo('active')}>Para Demanda? {campoOrdenamiento === 'active' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
-            <th>Acciones</th>        
+            <th onClick={() => handleOrdenarPorCampo('active')}>Para Demanda? {campoOrdenamiento === 'active' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>    
         </tr>
       </thead>
       <tbody>
-        {hardcodeTable.map((competencia) => (
-          <tr key={competencia.id}>
-            <td>{competencia.name}</td>
-            <td>{competencia.type}</td>
-            <td>{competencia.active ? 'Activo' : 'Inactivo'}</td>
-            <td>
-              <Button variant="danger" size="sm" onClick={() => handleMostrarPopUpBorrar(competencia)}><Trash /></Button>
-              <Button variant="secondary" size="sm" onClick={() => handleMostrarPopUpAsignar(competencia)}><Pencil /></Button>
-            </td>
+        {comLista.map((competencia) => (
+          <tr key={competencia.curso}>
+            <td>{competencia.curso_nombre}</td>
+            <td>{competencia.competencias.map((compe)=> (compe.competencia_nombre + " "))}</td>
+            <td>Si</td>
           </tr>
         ))}
       </tbody>
@@ -314,12 +339,9 @@ const SelectDemandCourses: React.FC = () => {
         <div className='container-fluid'>
             <p>¿Seguro que desea asignar los cursos seleccionados?</p>      
 
-
-  
               <Button className="Search2" onClick={()=>{navigate(-1)}}>
                 Aceptar
               </Button>
-
               <Button variant="secondary" className='Search2' onClick={handleCerrarPopUpGenerar}>
               Cancelar
               </Button>
@@ -430,7 +452,7 @@ const SelectDemandCourses: React.FC = () => {
             </div>
           </Modal.Body>
       </Modal> 
-      {lleno %2 === 0 ? renderConfirmacion() : renderAlerta()}
+      {renderConfirmacion()}
     </div>
   );
 };
