@@ -147,9 +147,11 @@ class ChoiceBase extends React.Component<PropsChoiceBase, StateChoiceBase>
 
     componentDidUpdate (prevProps: Readonly<PropsChoiceBase>, prevState: Readonly<StateChoiceBase>, snapshot?: any): void
     {
+        /*
         console.log(prevProps);
         console.log(this.props);
         console.log("dfffdfdffd")
+        */
     }
 
     render ()

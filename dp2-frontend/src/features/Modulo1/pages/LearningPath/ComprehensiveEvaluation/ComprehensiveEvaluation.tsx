@@ -43,14 +43,14 @@ class LearningPathComprehensiveEvaluation extends Component<Props, State>
     {
         let a = {
             descripcion_evaluacion: this.refDescription.current.value,
-            rubrica: this.refRubricCriterias.current ? this.refRubricCriterias.current.get() : this.state.data.rubrica,
+            criterias: this.refRubricCriterias.current ? this.refRubricCriterias.current.get() : this.state.data.criterias,
             documentos: this.refFileDropzone.current.getFiles()
         }
-        axiosInt.post(`capacitaciones/learning_path/${this.props.learningPathId}/evaluation/`, a)
+        axiosInt.post(`capacitaciones/learning_path/${this.props.learningPathId}/competencias/`, a)
             .then((response) =>
             {
                 this.refCloseModal.current.click();
-                window.location.reload();
+                // window.location.reload();
             });
     }
 
@@ -63,7 +63,7 @@ class LearningPathComprehensiveEvaluation extends Component<Props, State>
 
     loadsEvaluation ()
     {
-        axiosInt.get(`capacitaciones/learning_path/${this.props.learningPathId}/evaluation/`)
+        axiosInt.get(`capacitaciones/learning_path/${this.props.learningPathId}/competencias/`)
             .then((response) =>
             {
                 this.setState({ data: response.data });
@@ -100,7 +100,7 @@ class LearningPathComprehensiveEvaluation extends Component<Props, State>
                                 <div className='row mb-4'>
                                     <div className='col'>
                                         <h5>Rúbrica de evaluación</h5>
-                                        <RubricCriterias ref={this.refRubricCriterias} criterias={this.state.data.rubrica} />
+                                        <RubricCriterias ref={this.refRubricCriterias} criterias={this.state.data.criterias} />
                                     </div>
                                 </div>
                                 <div className='row'>

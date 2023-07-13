@@ -24,6 +24,7 @@ function EvaluationReview ()
     const [fileURLEmp, setFileURLEmp] = useState<string>("")
     const [fileURLEval, setFileURLEval] = useState<string>("")
     const [rubric, setRubric] = useState<any>([])
+    const [lpState, setLPState] = useState<string>("")
 
     const refCalification = useRef(null)
 
@@ -38,6 +39,8 @@ function EvaluationReview ()
                 setEvalDescription(response.data.descripcion_evaluacion)
                 setLPDescription(response.data.descripcion_lp)
                 setLPName(response.data.nombre_lp)
+                setRubric(response.data.rubrica)
+                setLPState(response.data.estado_lp)
 
                 if (response.data.archivo_emp !== null)
                 {
@@ -51,7 +54,7 @@ function EvaluationReview ()
                 {
                     setFileURLEval(response.data.archivo_eval.url_documento)
                 }
-
+/*
                 axiosInt.get(`capacitaciones/learning_path/rubrica/${learningPathId}/empleado/${employeeID}/`)
                     .then(function (response)
                     {
@@ -66,7 +69,8 @@ function EvaluationReview ()
                         console.log(error);
                         setLoading(false);
                     });
-
+*/
+                setLoading(false);      
             })
             .catch(function (error)
             {
@@ -189,7 +193,7 @@ function EvaluationReview ()
                                     <h5>Rúbrica de evaluación:</h5>
                                     <div className='col'>
                                         {
-                                            rubric.length > 0 ?
+                                            lpState === "4" ?
                                                 (<RubricGrade criterias={rubric} disabled={true} />)
                                                 :
                                                 (<RubricGrade criterias={rubric} action={saveCalification.bind(refCalification)} disabled={false} />)
