@@ -23,7 +23,7 @@ const authSlice = createSlice({
 			state.user = user;
 			state.token = token;
 			state.applicant = applicant;
-			setStorage({ "user": JSON.stringify(user), "dp2-access-token": token })
+			setStorage({ "user": JSON.stringify(user), "dp2-access-token": token, "applicant": JSON.stringify(applicant) })
 		},
 		logOut: (state: AuthUser) => {
 			state.user = null;
