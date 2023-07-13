@@ -18,6 +18,9 @@
     width: max-content ;
 }
 
+.botones2{
+    float: right;
+}
 
 .selectores{
     padding-top: 32px;
@@ -49,6 +52,25 @@
     background-color: #A9F4D0;
 }
 
+.Search3{
+    float: right;
+}
+
 .Search2{
     float: right;
+}
+
+
+@media all and (max-width:40em){
+    .Head2{
+        margin-top: 0.5em;
+    }
+    .Search{
+        width: 49%;
+        margin-bottom: 0.5em;
+    }
+    .Search3{
+       width:99% ;
+    }
+
 }

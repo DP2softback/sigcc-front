@@ -42,8 +42,7 @@ const PieChart = ({ title, labels, datasets }) => {
       const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
       const [tipoCompetencia, setTipoCompetencia] = useState<tipoCompetencia>(null);
       const [areasActivas, setAreasActivas] = useState<AreaActiva[]>([]);
-      const [name, setname] = useState('');
-      const [area, setAre] = useState<tipoCompetencia>(null);
+      const [name, setname] = useState("");
       
       useEffect(() => {    
 
@@ -157,13 +156,61 @@ const PieChart = ({ title, labels, datasets }) => {
       }, []);
       
 
-      const handleCompetenciaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {    
-        const tipo  = tipoCompetencias.find((tipo) => tipo.id.toString() === event.target.value)
-        setAre(tipo)
+      const handleCompetenciaChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {    
+        setname(event.target.value)
         setTipoCompetencia(tipoCompetencias[parseInt(event.target.value)-1])
-        setname(area.name)
-        setData1(data1);
-        setData2(data2);
+          const requestOptions = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': TOKEN_SERVICE,
+            },
+            body: JSON.stringify({
+              idArea: parseInt(name),
+              idPosicion:  0,
+              activo: 2
+            }),
+          };
+      
+          try {
+            const response = await fetch(URL_SERVICE + '/gaps/competenceConsolidateSearch', requestOptions);
+      
+            if (response.ok) {
+              const data = await response.json();
+              console.log(data)
+              const newData1 = {
+                labels: labels,
+                datasets: [
+                  {
+                    label: '% de adecuación',
+                    data: [data.rango1, data.rango2, data.rango3, data.rango4, data.rango5],
+                    backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                    ],
+                    borderColor: [
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                    ],
+                    borderWidth: 1,
+                  },
+                ],
+              };
+              setData2(newData1);
+
+            } else {
+              console.log('Error al obtener los datos desde el API');
+            }
+          } catch (error) {
+            console.log('Error al obtener los datos desde el API:', error);
+          }      
+
       }
 
       
@@ -213,7 +260,7 @@ const PieChart = ({ title, labels, datasets }) => {
               <div className="col-md-6">
                <div className="card">
                  <div className="card-body">
-                   <h3 className="card-title">Adecuación a competencias de {name}</h3>
+                   <h3 className="card-title">Adecuación a competencias de {areasActivas[parseInt(name)-1].name}</h3>
                    <PieChart title='' labels= {labels} datasets={data2} />
                    <div className="chart-legend">
                      {/* Agregar aquí la leyenda del gráfico 2 */}

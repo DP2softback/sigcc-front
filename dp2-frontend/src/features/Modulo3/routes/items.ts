@@ -13,33 +13,33 @@ import {
 export const sideBarItemsGroup3: TSidebarItemGroup[] = [
 	{
 		groupName: "Gestión de competencias",
-		roles: [Roles.HEAD_OF_AREA, Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.WORKER, Roles.GENERAL_MANAGER],
+		roles: [Roles.HEAD_OF_AREA, Roles.WORKER, Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER],
 		children: [
 			{
 				name: "Evaluación continua",
 				icon: ArrowRepeat,
-				roles: [Roles.HEAD_OF_AREA],
+				roles: [Roles.HEAD_OF_AREA, Roles.WORKER, Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER],
 				hasChildren: false,
         route: CONTINUOS_EVALUATION_INDEX
 			},
 			{
 				name: "Evaluación de desempeño",
 				icon: JournalCheck,
-				roles: [Roles.HEAD_OF_AREA, Roles.WORKER],
+				roles: [Roles.HEAD_OF_AREA, Roles.WORKER, Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER],
 				hasChildren: false,
         route: PERFORMANCE_EVALUATION_INDEX
 			},
       {
 				name: "Plantillas",
 				icon: FileEarmarkText,
-				roles: [Roles.HR_ADMIN, Roles.HR_MANAGER],
+				roles: [Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER],
 				hasChildren: false,
         route: EVALUATION_TEMPLATE_INDEX
       },
       {
 				name: "Categorías",
 				icon: ListUl,
-				roles: [Roles.HR_ADMIN, Roles.HR_MANAGER],
+				roles: [Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER],
 				hasChildren: false,
         route: CATEGORIES_INDEX
       },
