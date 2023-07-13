@@ -6,7 +6,7 @@ import { EMPLOYEES_JOB_CANDIDATES, EMPLOYEES_JOB_OPPORTUNITIES, GAPS_ANALYSIS_MO
 import JobOppImage from '../../../../assets/images/image-job-opp.png';
 
 const JobOpportunityCardEmployee = (props) => {
-    const {jobOpportunity, numBot, hhrr} = props;
+    const {jobOpportunity, numBot, hhrr, accept, decline} = props;
     const navigate = useNavigate();
 
     const navigateToMyJobOppDetail = () => {
@@ -55,7 +55,8 @@ const JobOpportunityCardEmployee = (props) => {
                     <Button className='btn btn-sm btn-job-opp' onClick={() => {hhrr === undefined ? navigateToMyJobOppDetail() :  console.log("A");}}>Detalle del puesto</Button>
                 </div>
                 <div className='col'>
-                    <Button className='btn btn-sm btn-job-opp btn-acept'>Aceptar postulación</Button>
+                    <Button className='btn btn-sm btn-job-opp btn-acept' onClick={accept}>Aceptar postulación</Button>
+                    <Button className='btn btn-sm btn-job-opp btn-acept' onClick={decline}>Declinar postulación</Button>
                 </div>
             </div>
                         
