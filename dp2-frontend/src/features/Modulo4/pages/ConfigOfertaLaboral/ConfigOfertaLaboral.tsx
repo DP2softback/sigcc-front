@@ -184,7 +184,9 @@ function ConfigOfertaLaboral(props: any) {
 		// Lógica para guardar cambios
 		createPS();
 		setShowSaveModal(false);
-		navigate(`/selection-offers-and-positions/job-offers/list/`);
+		setTimeout(() => {
+			navigate(`/selection-offers-and-positions/job-offers/list/`);
+		}, 1000);
 	};
 
 	return (

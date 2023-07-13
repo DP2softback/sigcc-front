@@ -23,3 +23,8 @@ export const GET_ALL_EMPLOYEES = "/employee";
 // OFERTA LABORAL
 export const LIST_ALL_PROCESOS_SELECCION = "/hiring-processes";
 export const CREATE_OFERTA_LABORAL = "/job-offers";
+
+// INDICADORES
+export const LIST_ETAPAS_INDICADORES = "/process-stages?hiring_process_id=";
+export const LIST_ETAPAS_FIRST_STEP = "/filter-first-step";
+export const LIST_ETAPAS_SECOND_STEP = "/filter-second-step";
