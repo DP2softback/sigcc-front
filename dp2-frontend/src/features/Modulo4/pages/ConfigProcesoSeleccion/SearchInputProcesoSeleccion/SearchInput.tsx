@@ -108,7 +108,7 @@ const SearchInput = ({ onClose, onSelect }) => {
 					borderCollapse: "collapse"
 				}}>
 				<Modal.Header closeButton>
-					<Modal.Title>Buscar información</Modal.Title>
+					<Modal.Title>Buscar información puesto de trabajo</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<Form>

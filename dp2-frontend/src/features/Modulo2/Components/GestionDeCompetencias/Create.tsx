@@ -8,15 +8,8 @@ type Props = {
 };
 
 const AgregarCompetencia: React.FC<Props> = ({ agregarCompetencia, tipoCompetencias }) => {
-  const [nuevaCompetencia, setNuevaCompetencia] = useState<Competencia>({
-    id: 0,
-    code: '',
-    name: '',
-    description: '',
-    type: 0,
-    active: false,
-  });
-
+  const [nuevaCompetencia, setNuevaCompetencia] = useState<Competencia>();
+  const [name, setName] = useState('');
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setNuevaCompetencia((prevCompetencia) => ({
@@ -24,13 +17,15 @@ const AgregarCompetencia: React.FC<Props> = ({ agregarCompetencia, tipoCompetenc
       [name]: value,
     }));
   };
+  console.log(tipoCompetencias)
 
   const handleTipoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedTipoId = parseInt(e.target.value);
+    console.log(selectedTipoId)
     const selectedTipoCompetencia = tipoCompetencias.find((tipo) => tipo.id === selectedTipoId);
     setNuevaCompetencia((prevCompetencia) => ({
       ...prevCompetencia,
-      type: selectedTipoCompetencia?.id || 0,
+      type: selectedTipoCompetencia?.id || 2,
     }));
   };
 
@@ -43,7 +38,7 @@ const AgregarCompetencia: React.FC<Props> = ({ agregarCompetencia, tipoCompetenc
       name: '',
       description: '',
       type: 0,
-      active: false,
+      isActive: false,
     });
   };
 
@@ -78,25 +73,24 @@ const AgregarCompetencia: React.FC<Props> = ({ agregarCompetencia, tipoCompetenc
             type="checkbox"
             className="form-check-input"
             id="activo"
-            name="active"
-            checked={nuevaCompetencia?.active || false}
+            name="isActive"
+            checked={nuevaCompetencia?.isActive || false}
             onChange={handleChange}
           />
         </div>
-
         <div className="form-group">
           <label htmlFor="tipo">Tipo de Competencia:</label>
           <select
             className="form-control"
             id="tipo"
             name="type"
-            value={nuevaCompetencia?.type || ''}
+            value={tipoCompetencias.find((tipo) => tipo.id === nuevaCompetencia?.type)?.id || 0}
             onChange={handleTipoChange}
-          >
+          >  
             <option value="">Seleccionar tipo de competencia</option>
             {tipoCompetencias.map((tipo) => (
               <option key={tipo.id} value={tipo.id}>
-                {tipo.name}
+                {tipo.name}  
               </option>
             ))}
           </select>

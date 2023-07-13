@@ -82,8 +82,8 @@ const ActualizarCompetencia: React.FC<Props> = ({ actualizarCompetencia, compete
           type="checkbox"
           className="form-check-input"
           id="activo"
-          name="active"
-          checked={competenciaActualizada?.active || false}
+          name="isActive"
+          checked={competenciaActualizada?.isActive || false}
           onChange={handleChange}
         />
       </div>
@@ -94,7 +94,7 @@ const ActualizarCompetencia: React.FC<Props> = ({ actualizarCompetencia, compete
           className="form-control"
           id="tipo"
           name="type"
-          value={competenciaActualizada?.type || ''}
+          value={tipoCompetencias.find((tipo) => tipo.id === competenciaActualizada?.type)?.id || 0}
           onChange={handleTipoChange}
         >
           <option value="">Seleccionar tipo de competencia</option>

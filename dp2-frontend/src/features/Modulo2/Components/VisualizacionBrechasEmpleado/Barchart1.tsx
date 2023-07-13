@@ -64,7 +64,7 @@ const optionsBar = {
         },
         title: {
           display: true,
-          text: 'Adecuación a las capacidades',
+          text: 'Adecuación a las competencias',
         },
       },
     scales: {
@@ -119,31 +119,31 @@ const BarChart1 = (props) => {
         var dataBarReq = [];
         var dataBarAlc = [];
         for(var i=0; i<dataBarProps.length; i++){
-          labelsTab.push(dataBarProps[i].capacity__name)
+          labelsTab.push(dataBarProps[i].competence_name)
           console.log("REQ")
           console.log(dataBarProps[i].levelRequired)
           console.log("cur")
-          console.log(dataBarProps[i].levelCurrent)
-          if(dataBarProps[i].levelRequired === 'B'){
-            dataBarReq.push(1)
-          }
-          if(dataBarProps[i].levelRequired === 'M'){
-            dataBarReq.push(2)
-          }
-          if(dataBarProps[i].levelRequired === 'A'){
-            dataBarReq.push(3)
-          }
-          //dataBarReq.push(dataBarProps[i].levelRequired)
-          if(dataBarProps[i].levelCurrent === 'B'){
-            dataBarAlc.push(1)
-          }
-          if(dataBarProps[i].levelCurrent === 'M'){
-            dataBarAlc.push(2)
-          }
-          if(dataBarProps[i].levelCurrent === 'A'){
-            dataBarAlc.push(3)
-          }
-          //dataBarAlc.push(dataBarProps[i].levelCurrent)
+          // console.log(dataBarProps[i].levelCurrent)
+          // if(dataBarProps[i].levelRequired === 'B'){
+          //   dataBarReq.push(1)
+          // }
+          // if(dataBarProps[i].levelRequired === 'M'){
+          //   dataBarReq.push(2)
+          // }
+          // if(dataBarProps[i].levelRequired === 'A'){
+          //   dataBarReq.push(3)
+          // }
+          dataBarReq.push(dataBarProps[i].levelRequired + 1)
+          // if(dataBarProps[i].levelCurrent === 'B'){
+          //   dataBarAlc.push(1)
+          // }
+          // if(dataBarProps[i].levelCurrent === 'M'){
+          //   dataBarAlc.push(2)
+          // }
+          // if(dataBarProps[i].levelCurrent === 'A'){
+          //   dataBarAlc.push(3)
+          // }
+          dataBarAlc.push(dataBarProps[i].levelCurrent + 1)
         }
         setDataBarTot({
           labels: labelsTab,

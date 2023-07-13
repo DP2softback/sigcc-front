@@ -203,7 +203,7 @@ export const postReportLineChartAll = async (areaid, categoriaid, dateFechaInici
           "Authorization": `Token ${TOKEN}`,
           "Content-Type": 'application/json'
         },
-        timeout: 30000 // Establece un tiempo de espera de 30 segundos
+        timeout: 40000 // Establece un tiempo de espera de 30 segundos
       }
     );
     return response.data;
@@ -211,3 +211,26 @@ export const postReportLineChartAll = async (areaid, categoriaid, dateFechaInici
     console.log("Hubo un error con la solicitud:", error);
   }
 };
+
+export const postReportLineChartAllAreasCategories = async (dateFechaInicio, dateFechaFin, evaluationType) => {
+  const body ={
+    "evaluationType": evaluationType,
+    "fecha_inicio": dateFechaInicio,
+    "fecha_fin": dateFechaFin
+  }
+  try {
+    const response = await axios.post(`${BACKEND_URL}report`,
+      body,
+      {
+        headers:{
+          "Authorization": `Token ${TOKEN}`,
+          "Content-Type": 'application/json'
+        },
+        timeout: 30000 // Establece un tiempo de espera de 30 segundos
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Hubo un error con la solicitud:", error);
+  }
+}

@@ -4,6 +4,7 @@ import { ArrowRightCircleFill, Pencil, Trash, Upload } from 'react-bootstrap-ico
 import {Competencia,tipoCompetencia, AreaActiva} from '@features/Modulo2/Components/GestionDeCompetencias/Tipos'
 import {TOKEN_SERVICE, URL_SERVICE}from '@features/Modulo2/services/ServicesApis'
 import { useNavigate } from 'react-router-dom';
+import './SelectDemandCourses.css'
 const tiposCompetencia: string[] = ['Tipo 1', 'Tipo 2', 'Tipo 3']; // Array predefinido de tipos de competencia
 const SelectDemandCourses: React.FC = () => {
   const navigate = useNavigate();
@@ -17,10 +18,7 @@ const SelectDemandCourses: React.FC = () => {
   const [mostrarPopUpCrear , setmostrarPopUpCrear] = useState(false);
   const [mostrarPopUpBorrar, setmostrarPopUpBorrar] = useState(false);
   const [competencias, setCompetencias] = useState<Competencia[]>([]);
-  const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
   const [competenciaSeleccionada, setCompetenciaSeleccionada] = useState(null);
-  const [tipo,setTipo] = useState('')  
-  const [name,setName] = useState('')
   const [lleno,setLleno] = useState(0)
   const [competenciasLista, setCompetenciasLista] = useState([
     { id: 1, nombre: 'Competencia 1', seleccionada: false },
@@ -58,7 +56,6 @@ const SelectDemandCourses: React.FC = () => {
           activo: estadoFiltro === 'Activo' ? 1 : estadoFiltro === 'Inactivo' ? 0 : 2,
           idEmpleado: 0,
         };
-
         const response = await fetch(URL_SERVICE + '/gaps/competenceSearch', {
           method: 'POST',
           headers: {
@@ -67,7 +64,6 @@ const SelectDemandCourses: React.FC = () => {
           },
           body: JSON.stringify(body),
         });
-
         if (response.ok) {
           const data = await response.json();
           setCompetencias(data);
@@ -78,30 +74,7 @@ const SelectDemandCourses: React.FC = () => {
         console.log('Error al obtener los datos de competencias:', error);
       }
     };
-    const fetchTipoCompetencias = async () => {
-      try {
-
-        const response = await fetch(URL_SERVICE + '/gaps/competenceTypes', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': TOKEN_SERVICE,
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setTipoCompetencias(data);
-        } else {
-          console.log('Error al obtener los datos de competencias');
-        }
-      } catch (error) {
-        console.log('Error al obtener los datos de competencias:', error);
-      }
-    };
-
     fetchCompetencias();
-    fetchTipoCompetencias();
   }, []);
   const filtrarCompetencias = () => {
     var competenciasFiltradas = competencias;
@@ -111,7 +84,7 @@ const SelectDemandCourses: React.FC = () => {
       competenciasFiltradas = competenciasFiltradas;
     }      
     if (estadoFiltro) {
-      competenciasFiltradas = competenciasFiltradas.filter(competencia => (competencia.active  == (estadoFiltro === 'Activo'? true : false)));
+      competenciasFiltradas = competenciasFiltradas.filter(competencia => (competencia.isActive  == (estadoFiltro === 'Activo'? true : false)));
     }
     if (searchQuery) {
         const palabrasClaveLower = searchQuery.toLowerCase();
@@ -120,7 +93,7 @@ const SelectDemandCourses: React.FC = () => {
           competencia.name.toLowerCase().includes(palabrasClaveLower) ||
           //competencia.code.toString().toLowerCase().includes(palabrasClaveLower) ||
           competencia.type.toString().toLowerCase().includes(palabrasClaveLower)||
-          competencia.active.toString().toLowerCase().includes(palabrasClaveLower)
+          competencia.isActive.toString().toLowerCase().includes(palabrasClaveLower)
         );
       }
     return competenciasFiltradas;
@@ -130,7 +103,7 @@ const SelectDemandCourses: React.FC = () => {
       competencia.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       competencia.code.toLowerCase().includes(searchQuery.toLowerCase());
     const tipoMatch = tipoFiltro === 0 || competencia.type === tipoFiltro;
-    const estadoMatch = estadoFiltro === '' || competencia.active === (estadoFiltro === 'Activo');
+    const estadoMatch = estadoFiltro === '' || competencia.isActive === (estadoFiltro === 'Activo');
 
     return searchMatch && tipoMatch && estadoMatch;
   });
@@ -154,8 +127,7 @@ const SelectDemandCourses: React.FC = () => {
         active: nuevaCompetencia.active,
         type: nuevaCompetencia.type
       })
-    };
-  
+    };  
     fetch(URL_SERVICE + '/gaps/competences', requestOptions)
       .then(response => response.json())
       .then(data => {
@@ -163,8 +135,7 @@ const SelectDemandCourses: React.FC = () => {
       })
       .catch(error => {
         console.error('Error al agregar competencia:', error);
-      });
-  
+      });  
     handleCerrarPopUpCrear();
   };
   const handleCerrarPopUpCrear = () => {
@@ -172,7 +143,6 @@ const SelectDemandCourses: React.FC = () => {
   };
   const handleMostrarPopUpBorrar  = (competencia) => {     
     setCompetenciaSeleccionada(competencia);
-    setName(competencia.name);
     setmostrarPopUpBorrar(true);
   };
   const borrarCompetencia = async (id) => {
@@ -189,7 +159,6 @@ const SelectDemandCourses: React.FC = () => {
       const updatedCompetencias = competencias.filter((competencia) => competencia.id !== id);
       setCompetencias(updatedCompetencias);
       setCompetenciaSeleccionada(null);
-      setName('');
       handleCerrarPopUpBorrar();
     } else {
       console.error('Error al borrar la competencia');
@@ -203,7 +172,6 @@ const SelectDemandCourses: React.FC = () => {
   };
   const handleMostrarPopUpAsignar  = (competencia) => {     
     setCompetenciaSeleccionada(competencia);
-    setName(competencia.name);
     setmostrarPopUpAsignar(true);
   };
   const asignarCompetencia = async (id) => {
@@ -227,7 +195,6 @@ const SelectDemandCourses: React.FC = () => {
   };
   const handleMostrarPopUpGenerar  = (competencia) => {     
     setCompetenciaSeleccionada(competencia);
-    setName(competencia.name);
     setLleno(lleno + 1)
     console.log(lleno)
     setmostrarPopUpGenerar(true);
@@ -315,17 +282,19 @@ const SelectDemandCourses: React.FC = () => {
       </Modal.Header>
       <Modal.Body>      
         <div className='container-fluid'>
-          <p>¿Seguro que desea asignar los cursos seleccionados?</p>           
-          <div className='espacio'>
-            <Button className="botones2" onClick={()=>{navigate(-1)}}>
-              Aceptar
-            </Button>
-          </div>
-        </div>
-        <div className='botonCerrar2'>
-        <Button variant="secondary" onClick={handleCerrarPopUpGenerar}>
-        Cancelar
-        </Button>
+            <p>¿Seguro que desea asignar los cursos seleccionados?</p>      
+
+
+  
+              <Button className="Search2" onClick={()=>{navigate(-1)}}>
+                Aceptar
+              </Button>
+
+  
+
+              <Button variant="secondary" className='Search2' onClick={handleCerrarPopUpGenerar}>
+              Cancelar
+              </Button>
         </div>
       </Modal.Body>
   </Modal>
@@ -339,7 +308,7 @@ const SelectDemandCourses: React.FC = () => {
       </Modal.Header>
       <Modal.Body>      
         <div className='container-fluid'>
-          <p>¿Seguro que desea asignar los cursos seleccionados? No se estan cubriendo todas las capacidades</p>           
+          <p>¿Seguro que desea asignar los cursos seleccionados? No se estan cubriendo todas las comptencias</p>           
           <div className='espacio'>
             <Button className="botones2" onClick={()=>{}}>
               Aceptar
@@ -361,15 +330,22 @@ const SelectDemandCourses: React.FC = () => {
         <h2 className='Head'>Demanda de capacitación</h2>
         <p className="text-muted subtitle">Generar la demanda de capacitación.</p>
       </div>
+
       <div className='container-fluid'>
-        <h2 className='Head'>Necesidades de competencias</h2>
-         {renderCards()}
+  
+      <div className='row'>
+
+        <div className='col'>
+          <h2 className='Head2'>Necesidades de competencias</h2>
+          {renderCards()}
+        </div>
+
+        <div className='col'>
+          <h2 className='Head2'>Lista de cursos</h2>
+          {renderTablaCompetencias()}
+        </div>
       </div>
-      <div className='container-fluid'>
-        <h2 className='Head'>Lista de cursos</h2>
-         {renderTablaCompetencias()}
-      </div>
-      <div className='container-fluid'>
+      
         <div className='row'>
          </div>
             <div className='row'>
@@ -381,7 +357,7 @@ const SelectDemandCourses: React.FC = () => {
                 Generar lista
                 </Button>{' '}
               </div>
-              <div className="col-sm-3 botones2 justify-content-center">          
+              <div className="col-md-9  justify-content-right">          
                 <Button variant="primary" className='Search2' onClick={handleMostrarPopUpGenerar}>
                 Generar demanda
                 </Button>
@@ -407,16 +383,21 @@ const SelectDemandCourses: React.FC = () => {
                   </li>
                 ))}
               </ul>              
-              <div className='espacio'>
-                <Button className="botones2" onClick={asignarCompetencia}>
+   
+
+              <Button className="Search2" onClick={asignarCompetencia}>
                   Aceptar
                 </Button>
-              </div>
-            </div>
-            <div className='botonCerrar2'>
-            <Button variant="secondary" onClick={handleCerrarPopUpAsignar}>
-              Cerrar
-            </Button>
+
+              <Button variant="secondary" className='Search2' onClick={handleCerrarPopUpAsignar}>
+                  Cancelar
+                </Button>
+
+
+           
+     
+            
+
             </div>
           </Modal.Body>
       </Modal> 

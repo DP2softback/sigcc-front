@@ -1,0 +1,69 @@
+.pantalla{
+    background-color: #F8f8f9;
+
+}
+
+.titles{
+
+}
+
+.basicSearch{
+    width: 50%; 
+    height: 50%;
+    padding-top: 32px;
+
+
+}
+
+.botones{
+    padding-top: 32px;
+}
+
+.descargas{
+    padding-top: 20px;
+}
+
+.botones2{
+    padding-top: 32px;
+    padding-right: 5px;
+
+}
+
+.Search{
+
+width: 48%;
+}
+
+.Search2{
+
+    width: 98%;
+}
+
+.botonCerrar{
+position: absolute;
+left: 290px;
+top: 335px;
+}
+
+.botonCerrar2{
+    position: absolute;
+    left: 290px;
+    top: 95px;
+}
+
+.Head{
+    font-size: 48px;
+    font-weight: bold !important;
+}
+
+.subtitle{
+    opacity: 50%;
+}
+
+.small{
+    width: 8%;
+}
+
+.big{
+    width: 90%;
+}
