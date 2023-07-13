@@ -65,6 +65,7 @@ const TableComponent: React.FC = () => {
     console.log(process.current_process_stage.id)
     localStorage.setItem('step', process.current_process_stage.stage_type);
     localStorage.setItem('screen', process.current_process_stage.id);
+    localStorage.setItem('id', process.id.toString());
     var value = process.current_process_stage.stage_type;
     navigate(`/selection-offers-and-positions/selection-process/step`+value+`/`);
   };

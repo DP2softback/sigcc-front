@@ -38,6 +38,7 @@ const ApplicantList: React.FC = () => {
 		[]
 	);
 	var value = localStorage.getItem("screen");
+	var id = localStorage.getItem("id");
 
   // Función para filtrar los postulantes
   
@@ -57,7 +58,7 @@ const ApplicantList: React.FC = () => {
 		console.log("Hola")
 		console.log("afinidad:",percentageFilter)
 		const json = {
-			"hiring_process":1,    
+			"hiring_process":id,    
 			"mandatory": selectedCompetencias,
 			"affinity":parseInt(percentageFilter)
 		}
@@ -122,11 +123,12 @@ const ApplicantList: React.FC = () => {
   const handleCloseStageButtonClick = () => {
 
 		filtrarIDs();
+		navigateBack()
   };
 
 	const fetchData = async () => {
 		const json = {
-			"hiring_process":1,
+			"hiring_process":id,
 			"mandatory":[11],
 			"affinity":60
 		}
