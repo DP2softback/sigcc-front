@@ -91,10 +91,7 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN,
-									Roles.HR_MANAGER,
-									Roles.HR_WORKER,
-									Roles.CANDIDATE
+									Roles.HEAD_OF_AREA, Roles.WORKER, Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER
 								]}>
 								<EvaluacionContinuaIndex />
 							</AppLayout>
@@ -105,10 +102,7 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN,
-									Roles.HR_MANAGER,
-									Roles.HR_WORKER,
-									Roles.CANDIDATE
+									Roles.HEAD_OF_AREA, Roles.WORKER, Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER
 								]}>
 								<EvaluacionContinuaHistory />
 							</AppLayout>
@@ -119,10 +113,7 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN,
-									Roles.HR_MANAGER,
-									Roles.HR_WORKER,
-									Roles.CANDIDATE
+									Roles.HEAD_OF_AREA, Roles.WORKER, Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER
 								]}>
 								<EvaluacionContinuaDetail />
 							</AppLayout>
@@ -133,10 +124,7 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN,
-									Roles.HR_MANAGER,
-									Roles.HR_WORKER,
-									Roles.CANDIDATE
+									Roles.HEAD_OF_AREA, Roles.WORKER, Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER
 								]}>
 								<EvaluacionContinuaCreate />
 							</AppLayout>
@@ -156,10 +144,7 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN,
-									Roles.HR_MANAGER,
-									Roles.HR_WORKER,
-									Roles.CANDIDATE
+									Roles.HEAD_OF_AREA, Roles.WORKER, Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER
 								]}>
 								<EvaluacionDeDesempenhoIndex />
 							</AppLayout>
@@ -168,12 +153,9 @@ export const routes: RouteObject[] = [
 					{
 						path: "history",
 						element: (
-							<AppLayout
+								<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN,
-									Roles.HR_MANAGER,
-									Roles.HR_WORKER,
-									Roles.CANDIDATE
+									Roles.HEAD_OF_AREA, Roles.WORKER, Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER
 								]}>
 								<EvaluacionDeDesempenhoHistory />
 							</AppLayout>
@@ -184,10 +166,7 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN,
-									Roles.HR_MANAGER,
-									Roles.HR_WORKER,
-									Roles.CANDIDATE
+									Roles.HEAD_OF_AREA, Roles.WORKER, Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER
 								]}>
 								<EvaluacionDeDesempenhoDetail />
 							</AppLayout>
@@ -198,10 +177,7 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN,
-									Roles.HR_MANAGER,
-									Roles.HR_WORKER,
-									Roles.CANDIDATE
+									Roles.HEAD_OF_AREA, Roles.WORKER, Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER
 								]}>
 								<EvaluacionDeDesempenhoCreate />
 							</AppLayout>
@@ -221,10 +197,7 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN,
-									Roles.HR_MANAGER,
-									Roles.HR_WORKER,
-									Roles.CANDIDATE
+									Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER
 								]}>
 								<EvaluationTemplateIndex />
 							</AppLayout>
@@ -235,10 +208,7 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN,
-									Roles.HR_MANAGER,
-									Roles.HR_WORKER,
-									Roles.CANDIDATE
+									Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER
 								]}>
 								<EvaluationTemplateCreate />
 							</AppLayout>
@@ -249,10 +219,7 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN,
-									Roles.HR_MANAGER,
-									Roles.HR_WORKER,
-									Roles.CANDIDATE
+									Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER
 								]}>
 								<EvaluationTemplateEdit />
 							</AppLayout>
@@ -272,10 +239,7 @@ export const routes: RouteObject[] = [
 					element:(
 						<AppLayout
 							allowedRoles={[
-								Roles.HR_ADMIN,
-								Roles.HR_MANAGER,
-								Roles.HR_WORKER,
-								Roles.CANDIDATE
+								Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER
 							]}>
 							<CategoriesIndex />
 						</AppLayout>
@@ -286,10 +250,7 @@ export const routes: RouteObject[] = [
 					element:(
 						<AppLayout
 							allowedRoles={[
-								Roles.HR_ADMIN,
-								Roles.HR_MANAGER,
-								Roles.HR_WORKER,
-								Roles.CANDIDATE
+								Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER
 							]}>
 							<CategoriesDetail />
 						</AppLayout>
@@ -300,10 +261,7 @@ export const routes: RouteObject[] = [
 					element:(
 						<AppLayout
 							allowedRoles={[
-								Roles.HR_ADMIN,
-								Roles.HR_MANAGER,
-								Roles.HR_WORKER,
-								Roles.CANDIDATE
+								Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER
 							]}>
 							<CategoriesCreate />
 						</AppLayout>
@@ -319,10 +277,7 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN,
-									Roles.HR_MANAGER,
-									Roles.HR_WORKER,
-									Roles.CANDIDATE
+									Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER
 								]}>
 								<ReporteEvaluacionContinua />
 							</AppLayout>
@@ -333,10 +288,7 @@ export const routes: RouteObject[] = [
 						element: (
 							<AppLayout
 								allowedRoles={[
-									Roles.HR_ADMIN,
-									Roles.HR_MANAGER,
-									Roles.HR_WORKER,
-									Roles.CANDIDATE
+									Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.GENERAL_MANAGER
 								]}>
 								<ReporteEvaluacionDesempenho />
 							</AppLayout>

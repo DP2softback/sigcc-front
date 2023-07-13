@@ -3,7 +3,7 @@ import { Form, Row, Col } from "react-bootstrap";
 import CreateJobOfferContext from "@features/Modulo4/contexts/CreateJobOfffer";
 import CustomFormField from "@components/Form/InputForm";
 import { CandidateInfoSchema } from "@features/Modulo4/models/Candidate.schema";
-
+//testing
 const ContactForm: React.FC = () => {
 	const { currentControl } = useContext(CreateJobOfferContext);
 

@@ -1,9 +1,9 @@
 import "./EvaluacionDeDesempenho.css";
-import { PERFORMANCE_EVALUATION_HISTORY, PERFORMANCE_EVALUATION_INDEX } from "@features/Modulo3/routes/path";
+import { PERFORMANCE_EVALUATION_HISTORY, PERFORMANCE_EVALUATION_INDEX, PERFORMANCE_EVALUATION_AUTO } from "@features/Modulo3/routes/path";
 import { Button, Col, Row } from "react-bootstrap";
 import { checkIfAllNull, navigateBack, navigateTo } from "@features/Modulo3/utils/functions";
 import { saveEvaluation, saveAutoevaluation } from "@features/Modulo3/services/performanceEvaluation";
-import { API_CREATE_PERFORMANCE_EVALUATION_SUCCESS, EVALUACION_CREADA_CON_EXITO, TEXTAREA_ROWS } from "@features/Modulo3/utils/constants";
+import { AUTOEVALUACION_CREADA_CON_EXITO, API_CREATE_PERFORMANCE_EVALUATION_SUCCESS, EVALUACION_CREADA_CON_EXITO, TEXTAREA_ROWS } from "@features/Modulo3/utils/constants";
 import { useState } from "react";
 import Layout from "@features/Modulo3/components/Layout/Content/Content";
 import Section from "@features/Modulo3/components/Layout/Section/Section";
@@ -13,6 +13,7 @@ import Form from "react-bootstrap/Form";
 import { EyeFill, EyeSlashFill } from "react-bootstrap-icons";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
+import ModalCompromisos from "@features/Modulo3/components/Modals/ModalCompromisos";
 
 type BaseFormProps = {
 	employee: any;
@@ -29,6 +30,7 @@ type BaseFormProps = {
 
 const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoading, setEvaluation, setIsLoading, isReadOnly, isAutoevaluation, evaluationId}: BaseFormProps) => {
 	const [showEvaluatedAnswers, setShowEvaluatedAnswers] = useState(false);
+	const [show, setShow] = useState(false);
 
 	const evaluationMatrix = categories && (
 		categories.map((category, index) => {
@@ -173,7 +175,7 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 
 	const buttonsDetails = (
 		<>
-			{associatedEvaluation?.categories?.[0]?.subcategories?.[0]?.score !== 0 && (
+			{isAutoevaluation!==true && associatedEvaluation?.categories?.[0]?.subcategories?.[0]?.score !== 0 && (
 				<Button
 					variant="outline-primary"
 					className="me-2"
@@ -186,8 +188,10 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 					Respuestas de trabajador
 				</Button>
 			)}
-			{associatedEvaluation?.categories?.[0]?.subcategories?.[0]?.score !== 0 && (
-				<Button variant="primary">Añadir compromisos</Button>
+			{isAutoevaluation!==true && associatedEvaluation?.categories?.[0]?.subcategories?.[0]?.score !== 0 && (
+				<Button variant="primary" onClick={()=>setShow(true)}>
+					{evaluation?.additionalComments ? <>Ver compromisos</> : <>Añadir compromisos</>}
+				</Button>
 			)}
 		</>
 	);
@@ -227,21 +231,35 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 		setIsLoading(true);
 		(async () => {
 			try {
-				const aux = {evaluationId: evaluationId, categories: categories}
-				isAutoevaluation ? result = await saveAutoevaluation(aux) : result = await saveEvaluation(evaluation);
+				const aux = { evaluationId: evaluationId, categories: categories };
+				isAutoevaluation 
+				? result = await saveAutoevaluation(aux) 
+				: result = await saveEvaluation(evaluation);
 			} catch (error) {
 				toast.error(`Ha ocurrido un error al guardar la evaluación.`);
 				setIsLoading(false);
 			} finally {
-				if (result === API_CREATE_PERFORMANCE_EVALUATION_SUCCESS){
-					toast.success(EVALUACION_CREADA_CON_EXITO);
-					setTimeout(() => {
-						navigateTo(PERFORMANCE_EVALUATION_HISTORY, {
-							id: employee.id,
-							name: employee.name
-						});
-						setIsLoading(false);
-					}, 2000);
+				if (result === API_CREATE_PERFORMANCE_EVALUATION_SUCCESS){					
+					if(!isAutoevaluation){
+						toast.success(EVALUACION_CREADA_CON_EXITO);
+						setTimeout(() => {
+							navigateTo(PERFORMANCE_EVALUATION_HISTORY, {
+								id: employee.id,
+								name: employee.name
+							});
+							setIsLoading(false);
+						}, 2000);
+					}else{
+						toast.success(AUTOEVALUACION_CREADA_CON_EXITO);
+						setTimeout(() => {
+							navigateTo(PERFORMANCE_EVALUATION_AUTO, {
+								id: employee.id,
+								name: employee.name,
+								evaluationId: evaluationId
+							});
+							setIsLoading(false);
+						}, 2000);
+					}
 				} else {
 					toast.error(`Ha ocurrido un error al guardar la evaluación.`);
 					setIsLoading(false);
@@ -252,11 +270,27 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 
 	return (
 		<div>
-			<ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+			<ToastContainer
+				position="top-right"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+			/>
+			<ModalCompromisos
+				evaluationId={evaluationId}
+				show={show}
+				setShow={setShow}
+				compromisos={evaluation?.additionalComments}
+			/>
 			<Layout
 				title={`Evaluación de desempeño - ${employee.name}`}
 				subtitle={isReadOnly ? null : "Los campos con (*) son obligatorios."}
-				body={isLoading ? <LoadingScreen/> : body}
+				body={isLoading ? <LoadingScreen /> : body}
 				route={PERFORMANCE_EVALUATION_INDEX}
 				button={isReadOnly ? buttonsDetails : <></>}
 			/>

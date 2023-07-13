@@ -22,6 +22,8 @@ export const API_CREATE_PERFORMANCE_EVALUATION_SUCCESS = "Se creó correctamente
 
 export const EVALUACION_CREADA_CON_EXITO = "Evaluación creada con éxito";
 
+export const AUTOEVALUACION_CREADA_CON_EXITO = "Autoevaluación registrada con éxito";
+
 export const MONTHS_NAMES: string[] = [
   'Enero',
   'Febrero',

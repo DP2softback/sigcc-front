@@ -44,6 +44,7 @@ const Create = () => {
       categories={categories}
       evaluation={evaluation}
       isLoading={isLoading}
+      isAutoevaluation={false}
       setEvaluation={setEvaluation}
       setIsLoading={setIsLoading}
       isReadOnly={false}
