@@ -9,7 +9,7 @@ export default class RubricGrade extends React.Component<PropsRubricCriterias, S
             {
                 "id": 1,
                 "name": "Capacidad para crear aplicaciones y sitios web utilizando tecnologías como HTML, CSS, JavaScript, y frameworks populares como React, Angular o Vue.js.",
-                "score": 20
+                "score": 60
             }
         ],
         disabled: false,
@@ -77,7 +77,7 @@ export default class RubricGrade extends React.Component<PropsRubricCriterias, S
                     <thead>
                         <tr>
                             <th>Criterio de calificación</th>
-                            <th>Nivel</th>
+                            <th>Escala</th>
                         </tr>
                     </thead>
                     <tbody>

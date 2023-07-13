@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { PropsRubricCriterias, StateRubricCriterias, PropsChoiceBase, StateChoiceBase, Criteria } from './RubricCriterias.types';
-import proficiencies from './proficiencies.json';
+import axiosInt from '@config/axios';
 
 export default class RubricCriterias extends React.Component<PropsRubricCriterias, StateRubricCriterias>
 {
@@ -13,6 +13,7 @@ export default class RubricCriterias extends React.Component<PropsRubricCriteria
         super(props);
         this.state = {
             criterias: props.criterias,
+            proficiencies: [],
         }
     }
 
@@ -29,7 +30,7 @@ export default class RubricCriterias extends React.Component<PropsRubricCriteria
     addCriteria = () =>
     {
         const { criterias } = this.state;
-        this.setState({ criterias: [...criterias, JSON.parse(JSON.stringify(proficiencies[0]))] });
+        this.setState({ criterias: [...criterias, JSON.parse(JSON.stringify(this.state.proficiencies[0]))] });
     };
 
     removeCriteria = (criteriaIndex) =>
@@ -44,9 +45,31 @@ export default class RubricCriterias extends React.Component<PropsRubricCriteria
         }
     };
 
+    handleGetProficiencies ()
+    {
+        axiosInt.post('v1/gaps/competenceSearch', {
+            "idCompetencia": 0,
+            "palabraClave": "",
+            "idTipoCompetencia": 2,
+            "activo": 2,
+            "idEmpleado": 0
+        })
+            .then((response) =>
+            {
+                this.setState({
+                    proficiencies: response.data,
+                })
+            })
+    }
+
     get ()
     {
         return this.state.criterias;
+    }
+
+    componentDidMount ()
+    {
+        this.handleGetProficiencies();
     }
 
     componentDidUpdate (prevProps: Readonly<PropsRubricCriterias>)
@@ -78,6 +101,7 @@ export default class RubricCriterias extends React.Component<PropsRubricCriteria
                         return (<ChoiceBase key={criteriaIndex} choice={criteria}
                             onChange={criteriaState => this.handleCriteriaChange(criteriaIndex, criteriaState)}
                             onDelete={() => this.removeCriteria(criteriaIndex)}
+                            proficiencies={this.state.proficiencies}
                         />)
                     })
                 }
@@ -94,12 +118,12 @@ export default class RubricCriterias extends React.Component<PropsRubricCriteria
 class ChoiceBase extends React.Component<PropsChoiceBase, StateChoiceBase>
 {
     static defaultProps = {
-        choice: proficiencies[0],
+        proficiencies: []
     }
 
     handleSelectChange (e)
     {
-        const selected = proficiencies.find(obj => obj.id === parseInt(e.target.value));
+        const selected = this.props.proficiencies.find(obj => obj.id === parseInt(e.target.value));
         this.props.onChange(selected);
     }
 
@@ -116,7 +140,7 @@ class ChoiceBase extends React.Component<PropsChoiceBase, StateChoiceBase>
                     <div className='col'>
                         <select className="form-select" value={this.props.choice.id} onChange={this.handleSelectChange.bind(this)}>
                             {
-                                proficiencies.map((item: {
+                                this.props.proficiencies.map((item: {
                                     id: number,
                                     name: string,
                                 }, index) =>
