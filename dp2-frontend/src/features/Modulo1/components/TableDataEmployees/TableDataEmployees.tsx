@@ -46,12 +46,15 @@ function TableDataEmployees(Props: Props) {
                                     return <td key={indexH}>{"En progreso"}</td>
                                 }
                                 else if(obj[`${headerItems.value}`] === "2"){
-                                    return <td key={indexH}>{"Sin evaluar"}</td>
+                                    return <td key={indexH}>{"Sin rendir"}</td>
                                 }
                                 else if(obj[`${headerItems.value}`] === "3"){
-                                    return <td key={indexH}>{"Evaluado"}</td>
+                                    return <td key={indexH}>{"Sin evaluar"}</td>
                                 }
                                 else if(obj[`${headerItems.value}`] === "4"){
+                                    return <td key={indexH}>{"Evaluado"}</td>
+                                }
+                                else if(obj[`${headerItems.value}`] === "5"){
                                     return <td key={indexH}>{"Desaprobado"}</td>
                                 }
                                 
