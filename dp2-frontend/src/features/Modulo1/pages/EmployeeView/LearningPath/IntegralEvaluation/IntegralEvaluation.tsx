@@ -89,8 +89,9 @@ const IntegralEvaluation = () => {
 
                 axiosInt.get(`capacitaciones/learning_path/rubrica/${learningPathId}/empleado/${employeeID}/`)
                     .then(function (response) {
-                        console.log(response.data)
-                        if(response.data.criterias[0].rubrica_calificada_evaluacion ==! null){
+                        console.log(response.data.criterias[0].rubrica_calificada_evaluacion)
+                        if(response.data.criterias[0].rubrica_calificada_evaluacion.length > 0){
+                            console.log(response.data.criterias[0].rubrica_calificada_evaluacion);
                             setRubric(response.data.criterias[0].rubrica_calificada_evaluacion)
                         }
 
@@ -119,16 +120,30 @@ const IntegralEvaluation = () => {
 
         const data = {
             learning_path: parseInt(learningPathId),
-            empleado: 1,    // CAMBIAR
+            empleado: 1,    // CAMBIAR CON LOGIN
             archivo_emp: refLPFile.current.getUrl(),
         }
 
         console.log(data)
-        
+
+        const dataState = {
+            learning_path_id: parseInt(learningPathId),
+            empleado_id: 1,   // CAMBIAR CON LOGIN
+            estado_nuevo: 3
+        }
+
         axiosInt.post(`capacitaciones/learning_path/evaluacion/`, data)
             .then(function (response) {
                 console.log(response.data)
-                setLoading(false)
+
+                axiosInt.post(`capacitaciones/lp_employee_advance/`, dataState)
+                .then((response) => {
+                    console.log(response)
+                    setLoading(false)
+                })
+                .catch(function (error) {
+                    setLoading(false)
+                });
             })
             .catch(function (error) {
                 console.log(error);

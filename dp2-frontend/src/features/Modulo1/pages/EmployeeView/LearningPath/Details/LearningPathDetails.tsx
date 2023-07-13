@@ -31,6 +31,7 @@ function LearningPathDetails(props: any) {
     const [quizID, setQuizId] = useState(0);
     const [question, setQuestion] = useState([])
     const [courseID, setCourseID] = useState<number>(0);
+    const [lpState, setLPState] = useState<string>("0")
 
     const navigate = useNavigate();
 
@@ -55,6 +56,7 @@ function LearningPathDetails(props: any) {
                 setLPPhoto(response.data[0].url_foto);
                 setCourses(response.data[0].cursos);
                 setCourseID(response.data[0].cursos[0].id)
+                setLPState(response.data[0].estado)
                 setLoading(false);
             })
             .catch(function (error) {
@@ -119,7 +121,20 @@ function LearningPathDetails(props: any) {
     }, []);
 
     const goToIntegralEval = () => {
-        navigate('evaluacionintegral')
+        const data = {
+            learning_path_id: parseInt(learningPathId),
+            empleado_id: 1,   // CAMBIAR CON LOGIN
+            estado_nuevo: 2
+        }
+
+        axiosInt.post(`capacitaciones/lp_employee_advance/`, data)
+            .then((response) => {
+                console.log(response)
+                navigate('evaluacionintegral')
+            })
+            .catch(function (error) {
+
+            });
     }
 
     const refCourseComment = useRef<HTMLTextAreaElement>(null);
@@ -277,12 +292,27 @@ function LearningPathDetails(props: any) {
                                         {courses.length == activo &&
                                             <div style={{ display: "flex", flexDirection: "row-reverse", justifyContent: "space-around" }}>
                                                 <div>
-                                                    <button type='button' className='btn' data-bs-target='#confirmModalLP' data-bs-toggle='modal' style={{ backgroundColor: "#198754", border: "none", color: "white" }}>
-                                                        <div style={{ display: "flex", alignItems: "center" }}>
-                                                            <span className='me-3'>Finalizar Ruta</span>
-                                                            <JournalBookmarkFill />
-                                                        </div>
-                                                    </button>
+                                                    {
+                                                        lpState === "0" || lpState === "1"? 
+                                                        (
+                                                            <button type='button' className='btn' data-bs-target='#confirmModalLP' data-bs-toggle='modal' style={{ backgroundColor: "#198754", border: "none", color: "white" }}>
+                                                                <div style={{ display: "flex", alignItems: "center" }}>
+                                                                    <span className='me-3'>Finalizar Ruta</span>
+                                                                    <JournalBookmarkFill />
+                                                                </div>
+                                                            </button>
+                                                        )
+                                                        :
+                                                        (
+                                                            <button type='button' className='btn' style={{ backgroundColor: "#198754", border: "none", color: "white" }} onClick={() => navigate('evaluacionintegral')}>
+                                                                <div style={{ display: "flex", alignItems: "center" }}>
+                                                                    <span className='me-3'>Ver evaluación</span>
+                                                                    <JournalBookmarkFill />
+                                                                </div>
+                                                            </button>
+                                                        )
+                                                    }
+                                                    
                                                 </div>
                                             </div>                                            
                                         }

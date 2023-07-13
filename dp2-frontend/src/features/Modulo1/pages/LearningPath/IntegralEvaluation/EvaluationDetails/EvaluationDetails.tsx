@@ -34,8 +34,9 @@ const employeesData: any = [
 const evalStatus = [
     { id: 1, type: "Todos" },
     { id: 2, type: "Sin iniciar" },
-    { id: 3, type: "Sin evaluar" },
-    { id: 4, type: "Evaluado" },
+    { id: 3, type: "Sin rendir" },
+    { id: 4, type: "Sin evaluar" },
+    { id: 5, type: "Evaluado" },
 ]
 
 const headerTable = [
@@ -133,8 +134,9 @@ function EvaluationDetails() {
         switch (e.target.value) {
             case "Todos": setEvaluationStatus(e.target.value); break;
             case "Sin iniciar": setEvaluationStatus("0"); break;
-            case "Sin evaluar": setEvaluationStatus("2"); break;
-            case "Evaluado": setEvaluationStatus("3"); break;
+            case "Sin rendir": setEvaluationStatus("2"); break;
+            case "Sin evaluar": setEvaluationStatus("3"); break;
+            case "Evaluado": setEvaluationStatus("4"); break;
         }
     }
 

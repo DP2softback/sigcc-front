@@ -55,9 +55,11 @@ function EvaluationReview ()
                 axiosInt.get(`capacitaciones/learning_path/rubrica/${learningPathId}/empleado/${employeeID}/`)
                     .then(function (response)
                     {
+                        if(response.data.criterias[0].rubrica_calificada_evaluacion.length > 0){
+                            console.log(response.data.criterias[0].rubrica_calificada_evaluacion);
+                            setRubric(response.data.criterias[0].rubrica_calificada_evaluacion)
+                        }
                         setLoading(false);
-                        console.log(response.data.criterias[0].rubrica_calificada_evaluacion);
-                        setRubric(response.data.criterias[0].rubrica_calificada_evaluacion)
                     })
                     .catch(function (error)
                     {
@@ -89,22 +91,35 @@ function EvaluationReview ()
     {
         setLoading(true);
 
-        const data = {
+        const dataRubric = {
             criterias: refRC
         }
 
-        console.log(data)
-        /*
-                axiosInt.post(`capacitaciones/learning_path/rubrica/${learningPathId}/empleado/${employeeID}/`, data)
-                    .then(function (response) {
-                        console.log(response.data)
+        console.log(dataRubric)
+
+        const data = {
+            learning_path_id: parseInt(learningPathId),
+            empleado_id: parseInt(employeeID),   // CAMBIAR CON LOGIN
+            estado_nuevo: 4
+        }
+        
+        axiosInt.post(`capacitaciones/learning_path/rubrica/${learningPathId}/empleado/${employeeID}/`, dataRubric)
+            .then(function (response) {
+                console.log(response.data)
+
+                axiosInt.post(`capacitaciones/lp_employee_advance/`, data)
+                    .then((response) => {
+                        console.log(response)
                         setLoading(false);
                     })
                     .catch(function (error) {
-                        console.log(error);
                         setLoading(false);
                     });
-                    */
+            })
+            .catch(function (error) {
+                console.log(error);
+                setLoading(false);
+            });    
     }
 
     return (
