@@ -63,10 +63,11 @@ const IntegralEvaluation = () => {
     const refLPComment = useRef<HTMLTextAreaElement>(null);
     const refLPRate = useRef(null);
 
+    const [lpState, setLPState] = useState<string>("")
     const [rubric, setRubric] = useState<any>([])
     const employeeID = 1
     const userID = 7
-
+    
     const loadIntegralEval = () => {
         setLoading(true);
         
@@ -74,8 +75,17 @@ const IntegralEvaluation = () => {
             .then(function (response) {
                 console.log(response.data)
                 setLPDetails(response.data.datos_learning_path)
-                setFileURLEval(response.data.datos_learning_path.archivo_eval.url_documento)
                 setLPCourses(response.data.cursos)
+                setRubric(response.data.datos_learning_path.rubrica)
+                console.log(response.data.datos_learning_path.estado[0].estado)
+                setLPState(response.data.datos_learning_path.estado[0].estado)
+
+                if(response.data.datos_learning_path.archivo_eval === null){
+                    //setFileUploaded(false)
+                }
+                else{
+                    setFileURLEval(response.data.datos_learning_path.archivo_eval.url_documento)
+                }
 
                 if(response.data.archivo_emp === null){
                     setFileUploaded(false)
@@ -87,6 +97,8 @@ const IntegralEvaluation = () => {
                     setFileName(parts_url[4])
                 }
 
+                
+/*
                 axiosInt.get(`capacitaciones/learning_path/rubrica/${learningPathId}/empleado/${employeeID}/`)
                     .then(function (response) {
                         console.log(response.data.criterias[0].rubrica_calificada_evaluacion)
@@ -101,6 +113,8 @@ const IntegralEvaluation = () => {
                         console.log(error);
                         setLoading(false);
                     });
+*/
+                    setLoading(false);
             })
             .catch(function (error) {
                 console.log(error);
@@ -245,12 +259,7 @@ const IntegralEvaluation = () => {
                                                     <h5 className='card-title mt-3'>Rúbrica de evaluación:</h5>
                                                     <div className='row mt-3'>
                                                         <div className='col'>
-                                                        {
-                                                            rubric.length > 0 ?
-                                                            (<RubricGrade criterias={rubric} disabled={true}/>)
-                                                            :
-                                                            (<RubricGrade criterias={lpDetails.rubrica} disabled={true}/>)
-                                                        }
+                                                            <RubricGrade criterias={rubric} disabled={true}/>
                                                         </div>
                                                     </div>
 
@@ -268,7 +277,7 @@ const IntegralEvaluation = () => {
                                                                         <button className='btn btn-outline-primary'><a href={fileURL} download={fileName}><FileEarmarkZip /><span style={{ marginLeft: "1rem" }}>{fileName}</span></a></button>
                                                                     </div>
                                                                     {
-                                                                        rubric.length > 0 ? 
+                                                                        lpState === "4" ? 
                                                                         (<></>)
                                                                         :
                                                                         (
@@ -282,7 +291,7 @@ const IntegralEvaluation = () => {
                                                     }
                                                 </div>
                                                 {
-                                                    rubric.length > 0 ?
+                                                    lpState === "4" ?
                                                     (<></>)
                                                     :
                                                     (
