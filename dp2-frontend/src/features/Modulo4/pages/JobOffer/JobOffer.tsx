@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import OfferCard from "@features/Modulo4/components/OfferCard/OfferCard";
 import {LOCAL_CONNECTION, SAMPLE_TOKEN}  from '../../utils/constants';
+import { right } from '@popperjs/core';
 
 
 type JobOfferObj = {
@@ -61,19 +62,22 @@ const JobOffer = () => {
         </div>
       </div>
       <div>
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
-            {data.map((tr) => {
+        <div style={{ display: "flex", flexDirection: "column", marginRight: "20px"}}>
+        <div className='row row-cols-1 row-cols-md-4 align-items-stretch g-3 px-0 mx-0 cards'>
+            {data.map((tr, index) => {
               return (
+                
                 <OfferCard
                   key={tr.id}
                   id={tr.id}
                   name={tr.position_name}
                   photoURL={tr.photoURL}
                   description={tr.offer_introduction}
-                  creationDate={tr.modified_date}
+                  creationDate={tr.modified_date.substring(0, 10)}
                   eventDate={tr.salary_range}
+                  index={index}
                 />
+                
               );
             })}
           </div>
