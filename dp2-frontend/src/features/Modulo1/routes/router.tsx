@@ -109,7 +109,7 @@ const GSettings = Loader(
 );
 
 const AngelSamples = Loader(
-	lazy(() => import("@features/Modulo1/components/Rubric/RubricGrade"))
+	lazy(() => import("@features/Modulo1/pruebas/Dashboard"))
 );
 
 export const routes: RouteObject[] = [
