@@ -6,7 +6,7 @@ export type Score = {
 export type Criteria = {
     id: number,
     name: string,
-    score: Score,
+    choice: Score,
 }
 
 export type PropsRubricCriterias = {

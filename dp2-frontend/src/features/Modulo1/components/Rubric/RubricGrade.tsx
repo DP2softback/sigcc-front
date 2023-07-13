@@ -5,33 +5,15 @@ import levels from './levels.json';
 export default class RubricGrade extends React.Component<PropsRubricCriterias, StateRubricCriterias>
 {
     static defaultProps = {
-        criterias: [
-            {
-                "id": 1,
-                "name": "Capacidad para crear aplicaciones y sitios web utilizando tecnologías como HTML, CSS, JavaScript, y frameworks populares como React, Angular o Vue.js.",
-                "score": 60
-            }
-        ],
+        criterias: [],
         disabled: false,
     }
 
     constructor(props)
     {
         super(props);
-        let criterias = props.criterias;
-        if (props.disabled)
-        {
-            criterias = props.criterias.map(item => {
-                const score = item.score;
-                const option = levels.find(op => op.score === score);
-                if (option) {
-                    item.score = { id: option.id, name: option.name, score: score };
-                }
-                return item;
-            });
-        }
         this.state = {
-            criterias: criterias,
+            criterias: [],
         }
     }
 
@@ -40,22 +22,23 @@ export default class RubricGrade extends React.Component<PropsRubricCriterias, S
         this.setState(prevState =>
         {
             const criterias = [...prevState.criterias];
-            criterias[criteriaIndex].score = criteriaState;
+            criterias[criteriaIndex].choice = criteriaState;
             return { criterias };
         });
     };
 
     get ()
     {
-        const criterias = this.state.criterias.map(obj => {
-            const score = obj.score ? obj.score.score : 0;
+        const criterias = this.state.criterias.map(obj =>
+        {
+            const score = obj.choice ? obj.choice.score : 0;
             return {
-              id: obj.id,
-              name: obj.name,
-              score: score
+                id: obj.id,
+                name: obj.name,
+                score: score
             };
-          });
-          
+        });
+
         this.props.action(criterias)
 
         return criterias;
@@ -65,8 +48,24 @@ export default class RubricGrade extends React.Component<PropsRubricCriterias, S
     {
         if (this.props.criterias && prevProps.criterias !== this.props.criterias)
         {
+            let criterias = this.props.criterias;
+            if (this.props.disabled)
+            {
+                criterias = this.props.criterias.map((item: any) =>
+                {
+                    const score = item.score;
+                    const option = levels.find(op => op.score === score);
+                    if (option)
+                    {
+                        item.score = { id: option.id, name: option.name, score: score };
+                    }
+                    return item;
+                });
+            }
+            console.log(criterias);
+
             this.setState({
-                criterias: this.props.criterias,
+                criterias: criterias,
             })
         }
     }
@@ -90,7 +89,7 @@ export default class RubricGrade extends React.Component<PropsRubricCriterias, S
                                 return (
                                     <Fragment key={criteriaIndex}>
                                         <tr>
-                                            <ChoiceBase disabled={this.props.disabled} key={criteriaIndex} name={criteria.name} choice={criteria.score}
+                                            <ChoiceBase disabled={this.props.disabled} key={criteriaIndex} name={criteria.name} choice={criteria.choice}
                                                 onChange={criteriaState => this.handleCriteriaChange(criteriaIndex, criteriaState)}
                                             />
                                         </tr>
@@ -127,6 +126,15 @@ class ChoiceBase extends React.Component<PropsChoiceBase, StateChoiceBase>
         const selected = levels.find(obj => obj.id === parseInt(e.target.value));
         this.props.onChange(selected);
     }
+
+    componentDidUpdate (prevProps: Readonly<PropsChoiceBase>)
+    {
+        if (this.props.choice && prevProps.choice !== this.props.choice)
+        {
+            this.forceUpdate();
+        }
+    }
+
 
     render ()
     {
