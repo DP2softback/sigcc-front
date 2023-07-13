@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import './EvaluacionDeDesempenho.css';
 import { PERFORMANCE_EVALUATION_INDEX, PERFORMANCE_EVALUATION_CREATE } from '@features/Modulo3/routes/path';
-import { navigateTo, formatDashboardJson } from '@features/Modulo3/utils/functions';
-import { Form, InputGroup, Button } from 'react-bootstrap';
-import { Search } from 'react-bootstrap-icons'
+import { navigateTo, formatDashboardJson, obtenerFechaHaceUnAnio, obtenerFechaActual } from '@features/Modulo3/utils/functions';
+import { Form, Button, Col, Row } from 'react-bootstrap';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import NoDataFound from '@features/Modulo3/components/Shared/NoDataFound/NoDataFound';
 import Layout from '@features/Modulo3/components/Layout/Content/Content';
@@ -24,39 +23,59 @@ const History = () => {
   const [evaluations, setEvaluations] = useState([]);
   const [dashboard, setDashboard] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [show,setShow] = useState(false);
+  const [show, setShow] = useState(false);
+  const [reload, setReload] = useState(false);
+  const [filters, setFilters] = useState({
+    employeeId: parseInt(urlParams.get('id')),
+    fecha_inicio: obtenerFechaHaceUnAnio(),
+    fecha_fin: obtenerFechaActual()
+  });
 
   useEffect(() => {
     setIsLoading(true);
     (async () => {
-      const responseEvaluation = await getEvaluationsHistory(employee.id);
-      if(responseEvaluation) setEvaluations(responseEvaluation);
+      try {
+        const [responseEvaluation, responseDashboard] = await Promise.all([
+          getEvaluationsHistory(filters),
+          getEmployeeEvaluationDashboard(filters)
+        ]);
 
-      const responseDashboard = await getEmployeeEvaluationDashboard(employee.id);
-      if(responseDashboard) setDashboard(formatDashboardJson(responseDashboard));
-      
-      setIsLoading(false);
+        if (responseEvaluation) setEvaluations(responseEvaluation);
+        if (responseDashboard) setDashboard(formatDashboardJson(responseDashboard));
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
     })();
-  }, []);
+    setReload(false);
+  }, [reload]);
 
-  const filters = (
+  const filtersComponent = (
 		<Form.Group controlId="searchEmployees" className="d-flex justify-content-end">
-			<Form.Control
-				type="date"
-				placeholder="Fecha inicio"
-				className="me-2 w-auto"
-			/>
-			<Form.Control
-				type="date"
-				placeholder="Fecha fin"
-				className="me-2 w-auto"
-			/>
-			<Button variant="primary">Buscar</Button>
+      <Form.Control
+        type="date"
+        className="me-2 w-auto"
+        name='fecha_inicio'
+        value={filters.fecha_inicio || ''}
+        onChange={onFiltersChange}
+      />
+      <Form.Control
+        type="date"
+        className="me-2 w-auto"
+        name='fecha_fin'
+        value={filters.fecha_fin || ''}
+        onChange={onFiltersChange}
+      />
+      <Button variant="primary"
+        onClick={() => { setReload(true); }}>
+        Buscar
+      </Button>
 		</Form.Group>
   );
 
   const chart = (
-    <div className='col-md-6 mb-32px'>
+    <Col md={6} className='mb-32px'>
       <div className='container-mt-32px'>
       {dashboard && (
         <Linechart
@@ -66,23 +85,22 @@ const History = () => {
       )}
       </div>
 
-    </div>
+    </Col>
   );
 
   const table =(
-    <div className='col-md-6'>
+    <Col md={6}>
       <TableHistoryDesempenho rows ={evaluations} employee={employee}/>
-    </div>
+    </Col>
   );
-
 
   const content = (
     <>
       {evaluations && evaluations.length > 0 ? (
-        <div className='row mt-32'>
+        <Row className='mt-32'>
           {table}
           {chart}
-        </div>
+        </Row>
       ) : (
         <NoDataFound />
       )}
@@ -101,9 +119,17 @@ const History = () => {
     <Section
       title={"Evaluaciones"}
       content={isLoading ? <LoadingScreen/> : content}
-      filters={filters}
+      filters={filtersComponent}
     />
   );
+
+  function onFiltersChange (e) {
+    const { name, value } = e.target;
+    setFilters((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
+	}
 
   return (
 		<div>

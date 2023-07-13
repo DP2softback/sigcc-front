@@ -28,7 +28,7 @@ export default function TableHistoryDesempenho({ rows, employee = null, isReadOn
         {rows.map((row, index) => {
           const rowStyle = `matrixRow ${getBackgroundColor(index)}`;
           return (
-            <tr key={row.EvaluationId} className={rowStyle}>
+            <tr key={row.id} className={rowStyle}>
               <td>{formatDate(row.evaluationDate)}</td>
               <td className='text-center'>{formatNumberWithTwoDecimals(row.finalScore)}</td>
               <td className='text-center'>
@@ -38,7 +38,7 @@ export default function TableHistoryDesempenho({ rows, employee = null, isReadOn
                     navigateTo(PERFORMANCE_EVALUATION_DETAIL, {
                       id: employee.id,
                       name: employee.name,
-                      evaluationId: row.EvaluationId
+                      evaluationId: row.id
                     });
                   }}
                 />
