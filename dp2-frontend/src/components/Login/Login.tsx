@@ -46,8 +46,11 @@ const Login: React.FC = () => {
 			dispatch(
 				setCredentials({
 					user: {
+						id: userResponse.user.id,
 						email: userResponse.user.email,
 						password: password,
+						first_name: userResponse.user.first_name,
+						last_name: userResponse.user.last_name,
 						roles: [
 							Roles.HR_ADMIN,
 							Roles.HEAD_OF_AREA,
