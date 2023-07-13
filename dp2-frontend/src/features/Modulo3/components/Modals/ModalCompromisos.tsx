@@ -25,7 +25,6 @@ const ModalCompromisos = (props) => {
         //if (event.target.value.trim() !== '') {
         setCompromisos(event.target.value)
         //} 
-        console.log(evaluationId)
       };
 
     const closeNotification = async () => {
