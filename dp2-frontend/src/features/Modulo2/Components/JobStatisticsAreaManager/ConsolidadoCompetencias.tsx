@@ -8,6 +8,7 @@ import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL }
 
 import {TOKEN_SERVICE, URL_SERVICE} from '@features/Modulo2/services/ServicesApis'
 import { EventEmitter } from "stream";
+import { g } from "vitest/dist/types-e3c9754d";
 
 const PieChart = ({ title, labels, datasets }) => {
     ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -43,7 +44,7 @@ const PieChart = ({ title, labels, datasets }) => {
       const [areasActivas, setAreasActivas] = useState<Posicion[]>([]);
       const [abbreviation, setAbbreviation] = useState('');
       const [hard, setHard] = useState(['Ingeniero de software', 'Desarrollador de aplicaciones', '	Arquitecto de software','Analista de sistemas', 'Asistente' ]);
-      
+      const [posicion, setPosicion] = useState(null);
       useEffect(() => {    
 
         const fetchTipoCompetencias = async () => {
@@ -159,12 +160,10 @@ const PieChart = ({ title, labels, datasets }) => {
       }, []);
       
 
-      const handleCompetenciaChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {   
-        console.log(abbreviation) 
-        console.log(event.target.value)
+      const handleCompetenciaChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {  
         setTipoCompetencia(areasActivas[parseInt(event.target.value)-1])
         setAbbreviation(areasActivas.find((area) => area.position__id == parseInt(event.target.value))?.position__name || '')
-        
+        setPosicion(areasActivas.find((area) => area.position__id == parseInt(event.target.value)))
         const requestOptions = {
           method: 'POST',
           headers: {
@@ -221,11 +220,9 @@ const PieChart = ({ title, labels, datasets }) => {
 
       }
 
-      
-      const handleBuscarClick = () => {
-      };
       const handleClick = () => {        
-      navigate(`/${GAPS_ANALYSIS_MODULE}/${GAPS_EMPLOYEES_AREA}/${GAPS_EMPLOYEES_AREA_DETAIL}`, { state: { tipoCompetencia } });
+        console.log(posicion)
+      navigate(`/${GAPS_ANALYSIS_MODULE}/${GAPS_EMPLOYEES_AREA}/${GAPS_EMPLOYEES_AREA_DETAIL}`, { state: { posicion } });
       };
 
   

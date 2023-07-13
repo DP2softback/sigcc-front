@@ -50,6 +50,31 @@ const SelectDemandCourses: React.FC = () => {
     { id: 5, name: "Ruby 'E'", demanda: 40 }
   ]
   useEffect(() => {
+    
+    const fetchCompetencias2 = async () => {
+      try {
+        const body = JSON.stringify(data);
+        console.log(body)
+        const response = await fetch(URL_SERVICE + '/gaps/trainingNeedGenerateCourse', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': TOKEN_SERVICE,
+          },
+          body: JSON.stringify(data),
+        });
+        if (response.ok) {
+          const res = await response.json();
+          console.log(res)
+          setCompetencias(res);
+        } else {
+          console.log('Error al obtener los datos de competencias');
+        }
+      } catch (error) {
+        console.log('Error al obtener los datos de competencias:', error);
+      }
+    };
+    
     // Función para obtener los datos de competencias desde la API
     const fetchCompetencias = async () => {
       try {
@@ -79,6 +104,7 @@ const SelectDemandCourses: React.FC = () => {
       }
     };
     fetchCompetencias();
+    fetchCompetencias2();
   }, []);
   const filtrarCompetencias = () => {
     var competenciasFiltradas = competencias;
