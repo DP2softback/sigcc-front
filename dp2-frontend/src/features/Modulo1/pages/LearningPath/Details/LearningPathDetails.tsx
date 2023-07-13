@@ -227,7 +227,7 @@ function LearningPathDetails(props: any) {
                                                     {
                                                         coursesQuizStatuses[index] == 0 ?
                                                             <>
-                                                                <div className="d-flex justify-content-center">
+                                                                <div className="d-flex justify-content-center mb-3">
                                                                     <div className="spinner-border spinner-border-sm me-1" role="status">
                                                                         <span className="visually-hidden">Cargando...</span>
                                                                     </div>

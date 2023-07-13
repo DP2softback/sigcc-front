@@ -1,32 +1,27 @@
 [
     {
         "id": 1,
-        "name": "No presenta",
-        "score": 0
-    },
-    {
-        "id": 2,
-        "name": "Muy básico",
+        "name": "No iniciado",
         "score": 20
     },
     {
-        "id": 3,
-        "name": "Básico",
+        "id": 2,
+        "name": "En proceso",
         "score": 40
     },
     {
-        "id": 4,
-        "name": "Intermedio",
+        "id": 3,
+        "name": "Logrado",
         "score": 60
     },
     {
-        "id": 5,
-        "name": "Avanzado",
+        "id": 4,
+        "name": "Sobresaliente",
         "score": 80
     },
     {
-        "id": 6,
-        "name": "Muy avanzado",
+        "id": 5,
+        "name": "Experto",
         "score": 100
     }
 ]
