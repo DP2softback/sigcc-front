@@ -2,7 +2,7 @@ import BasicCard3 from '../BasicCard3/BasicCard3'
 import { Calendar2, Calendar2Event, PeopleFill } from 'react-bootstrap-icons'
 import { SELECTION_PROCESS_AND_JOB_OFFERS_MODULE, JOB_OFFERS, DETAIL_JOB_OFFER } from '@features/Modulo4/routes/path'
 
-const Offer = ({id, name, photoURL, description, creationDate, eventDate}) => {
+const Offer = ({id, name, photoURL, description, creationDate, eventDate, index}) => {
     const rows = [
         {
             icon: <Calendar2/>,
@@ -40,6 +40,7 @@ const Offer = ({id, name, photoURL, description, creationDate, eventDate}) => {
             button2='NO'
             button2Text='Agregar'
             options='SI'
+            index={index}
         />
     );
 }

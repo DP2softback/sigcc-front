@@ -37,6 +37,7 @@ class BasicCard2 extends Component<Props>
             area: string;
             position: string;
             image: string;
+            index: string;
         }
 
         const employees: Employee[] = [
@@ -47,6 +48,7 @@ class BasicCard2 extends Component<Props>
                 area: this.props.subtitle,
                 position: this.props.items[1].text,
                 image: this.props.image,
+                index: this.props.index
             }
         ]
 
@@ -55,7 +57,7 @@ class BasicCard2 extends Component<Props>
             if (this.props.button1Text === "Agregar" && this.props.typeCard === "Empleado") {
                 this.props.option(employees)
             }
-            localStorage.setItem("idOffer",this.props.id)
+            localStorage.setItem("idOffer",this.props.index)
         }
 
 

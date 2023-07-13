@@ -16,7 +16,10 @@ import {
 	LIST_SELECTION_PROCESS,
 	DETAIL_JOB_OFFER,
 	REGISTER_IN_JOB_OFFER,
-	LIST_SELECTION_PROCESS_STEP
+	LIST_SELECTION_PROCESS_STEP1,
+	LIST_SELECTION_PROCESS_STEP2,
+	LIST_SELECTION_PROCESS_STEP3,
+	LIST_SELECTION_PROCESS_STEP4
 } from "./path";
 
 const Loader = (Component) => (props) =>
@@ -78,11 +81,20 @@ const IndicadoresProcesoSeleccion = Loader(
 	)
 );
 
-const ListStep = Loader(
-	lazy(
-		() =>
-			import("@features/Modulo4/pages/EvaluationProcess/ListProcess/ListSteps")
-	)
+const ListStep1 = Loader(
+	lazy(() => import("@features/Modulo4/pages/EvaluationProcess/ListProcess/ListSteps1"))
+);
+
+const ListStep2 = Loader(
+	lazy(() => import("@features/Modulo4/pages/EvaluationProcess/ListProcess/ListSteps2"))
+);
+
+const ListStep3 = Loader(
+	lazy(() => import("@features/Modulo4/pages/EvaluationProcess/ListProcess/ListSteps3"))
+);
+
+const ListStep4 = Loader(
+	lazy(() => import("@features/Modulo4/pages/EvaluationProcess/ListProcess/ListSteps4"))
 );
 
 export const routes: RouteObject[] = [
@@ -199,7 +211,7 @@ export const routes: RouteObject[] = [
 						)
 					},
 					{
-						path: LIST_SELECTION_PROCESS_STEP,
+						path: LIST_SELECTION_PROCESS_STEP1,
 						element: (
 							<AppLayout
 								allowedRoles={[
@@ -208,10 +220,53 @@ export const routes: RouteObject[] = [
 									Roles.HR_WORKER,
 									Roles.CANDIDATE
 								]}>
-								<ListStep />
+								<ListStep1/>
 							</AppLayout>
 						)
 					},
+					{
+						path: LIST_SELECTION_PROCESS_STEP2,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
+									Roles.HR_WORKER,
+									Roles.CANDIDATE
+								]}>
+								<ListStep2/>
+							</AppLayout>
+						)
+					},
+					{
+						path: LIST_SELECTION_PROCESS_STEP3,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
+									Roles.HR_WORKER,
+									Roles.CANDIDATE
+								]}>
+								<ListStep3/>
+							</AppLayout>
+						)
+					},
+					{
+						path: LIST_SELECTION_PROCESS_STEP4,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
+									Roles.HR_WORKER,
+									Roles.CANDIDATE
+								]}>
+								<ListStep4/>
+							</AppLayout>
+						)
+					},
+					
 					{
 						path: "*",
 						element: <Navigate to={CREATE_SELECTION_PROCESS} replace />
