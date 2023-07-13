@@ -2,6 +2,8 @@ import React from 'react'
 import { Table } from 'react-bootstrap'
 import { Props } from './TableDataEmployees.types'
 import { ArrowRightCircleFill } from 'react-bootstrap-icons'
+import './TableDataEmployee.css';
+import moment from 'moment';
 
 function TableDataEmployees(Props: Props) {
     return (
@@ -36,7 +38,7 @@ function TableDataEmployees(Props: Props) {
                                 return <td key={indexH}>{"-"}</td>
                             }
                             else if(headerItems.value === "acciones"){
-                                return <td className='text-center' key={indexH}><ArrowRightCircleFill onClick={() => {obj && Props.action(obj.empleado.id)}}/></td>
+                                return <td className='text-center mouseHover' key={indexH}><ArrowRightCircleFill onClick={() => {obj && Props.action(obj.empleado.id)}}/></td>
                             }
                             else if(headerItems.value === "estado"){
                                 if(obj[`${headerItems.value}`] === "0"){
@@ -58,6 +60,9 @@ function TableDataEmployees(Props: Props) {
                                     return <td key={indexH}>{"Desaprobado"}</td>
                                 }
                                 
+                            }
+                            else if(headerItems.value === "fecha_completado"){
+                                return <td key={indexH}>{moment(obj[`${headerItems.value}`]).format("DD/MM/YYYY - HH:mm")}</td>
                             }
                             
                             return <td key={indexH}>{obj[`${headerItems.value}`]}</td>
