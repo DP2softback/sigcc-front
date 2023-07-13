@@ -7,6 +7,7 @@ import { NavLink, Link } from "react-router-dom";
 import { sidebarItems } from "@routes/sidebarItems";
 import { Icon } from "react-bootstrap-icons";
 import { Fragment } from "react";
+import { getStorageItem } from "@config/localStorage";
 
 type MenuHeadingProps = {
 	className?: string;
@@ -226,11 +227,15 @@ const Menu: React.FC = () => {
 	return (
 		<MenuList>
 			{sidebarItems.map((itemGroup, index) => {
+				let user = getStorageItem("user", false);
+				//console.log(user)
 				return (
+					itemGroup.roles.find((role) => user?.roles?.includes(role)) && 
 					<Fragment key={index}>
 						<MenuHeading text={itemGroup.groupName} key={index} />
 						{itemGroup.children.map((item, idx) => {
 							return (
+								item.roles.find((role) => user?.roles?.includes(role)) && 
 								<MenuItem sub={item.hasChildren} key={idx}>
 									<MenuItemLink
 										key={idx}
@@ -244,7 +249,7 @@ const Menu: React.FC = () => {
 										<MenuSub>
 											{item.children.map((itemChild, i) => {
 												return (
-													<MenuItem key={i}>
+													itemChild.roles.find((role) => user?.roles?.includes(role)) && <MenuItem key={i}>
 														<MenuItemLink key={i}
 															Icon={itemChild.icon}
 															text={itemChild.name}
