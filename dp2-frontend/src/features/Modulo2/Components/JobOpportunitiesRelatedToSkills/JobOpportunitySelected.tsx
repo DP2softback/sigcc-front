@@ -13,14 +13,16 @@ const JobOpportunitySelected = () => {
 	const [jobOpp, setJobOpp] = React.useState(state.jobOpp);
 	const [showRegisterPost, setShowRegisterPost] = React.useState(false);
 	const [showConfirm, setShowConfirm] = React.useState(false);
+	const [option, setOption] = React.useState(0);
 
 	React.useEffect(() => {
 		setJobOpp(state.jobOpp);
 		setIsLoading(false);
 	}, [])
 
-	const handleSubmit = () => {
+	const handleSubmit = (opt) => {
 		setShowRegisterPost(true)
+		setOption(opt)
 	}
 
 	const handleCloseModalNotify = () => {
@@ -28,10 +30,11 @@ const JobOpportunitySelected = () => {
 	}
 
 	const handlePostulate = () => {
+		setIsLoading(true);
 		const obj = {
             oferta: jobOpp.job_offer__id,
 			empleado: 1,
-			acepta: 1
+			acepta: option
         }
         axiosEmployeeGaps
             .post("gaps/acceptOrDeclineJobOfferPreRegistered", obj)
@@ -70,7 +73,10 @@ const JobOpportunitySelected = () => {
 										{/* <div className='job-area'>Área de desarrollo de software</div> */}
 									</div>
 									<div className="col-6 d-flex justify-content-end align-items-center">
-										<button type="button" className="btn btn-primary mx-2" onClick={() => handleSubmit()}>
+									<button type="button" className="btn btn-primary mx-2" onClick={() => handleSubmit(0)}>
+											Declinar postulación
+										</button>
+										<button type="button" className="btn btn-primary mx-2" onClick={() => handleSubmit(1)}>
 											Aceptar postulación
 										</button>
 									</div>
