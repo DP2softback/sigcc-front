@@ -449,7 +449,9 @@ function ConfigProcesoSeleccion(props: any) {
 		createPS();
 		setShowSaveModal(false);
 		console.log("guardado final");
-		navigate(0);
+		setTimeout(() => {
+			navigate(0);
+		}, 1000);
 	};
 
 	useEffect(() => {
