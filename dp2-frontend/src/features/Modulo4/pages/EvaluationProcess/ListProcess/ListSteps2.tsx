@@ -1,6 +1,8 @@
 import { navigateBack } from "@features/Modulo3/utils/functions";
 import React, { useState } from "react";
 import { Container, Form, Table, Button, Row, Col } from "react-bootstrap";
+import {LOCAL_CONNECTION, SAMPLE_TOKEN}  from '../../../utils/constants';
+import axios from 'axios';
 
 interface Applicant {
 	firstName: string;
@@ -29,6 +31,8 @@ const ApplicantList: React.FC = () => {
 	]);
 	const [nameFilter, setNameFilter] = useState("");
 	const [percentageFilter, setPercentageFilter] = useState("");
+	var value = localStorage.getItem("screen");
+	var id = localStorage.getItem("id");
 
 	// Función para filtrar los postulantes
 	const filterApplicants = () => {
@@ -65,13 +69,33 @@ const ApplicantList: React.FC = () => {
 		// Realizar acciones adicionales con los resultados filtrados si es necesario
 	};
 
+	async function realizarPost() {
+
+		const json = {  
+			"successful_applicant_ids":[1,2,3],
+			"unsuccessful_applicant_ids":[]
+		}
+		axios.put(`${LOCAL_CONNECTION}/process-stages/`+value, json, {
+			headers: {
+				Authorization: `Token ${SAMPLE_TOKEN}`
+			}
+		}).then((response) => {
+			console.log("FILTRADO COMPLETO")
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+		
+	}
+
+  const handleCloseStageButtonClick = () => {
+		realizarPost()
+		navigateBack()
+  };
+
 	const handleFilterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		filterApplicants();
-	};
-
-	const handleCloseStageButtonClick = () => {
-		navigateBack();
 	};
 
 	return (
@@ -104,7 +128,7 @@ const ApplicantList: React.FC = () => {
 							<Col>
 								<Form.Control
 									type="text"
-									placeholder="Competencia"
+									placeholder="Ingles"
 									value={percentageFilter}
 									onChange={handlePercentageFilterChange}
 									className="mt-2 mr-2"
@@ -113,7 +137,7 @@ const ApplicantList: React.FC = () => {
 							<Col>
 								<Form.Control
 									type="text"
-									placeholder="Competencia"
+									placeholder="Calificación"
 									value={nameFilter}
 									onChange={handleNameFilterChange}
 									className="mt-2"
