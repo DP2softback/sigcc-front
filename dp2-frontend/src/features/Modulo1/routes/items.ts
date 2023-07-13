@@ -1,6 +1,6 @@
 import { TSidebarItemGroup } from "@routes/types/sidebarItem";
 import { Roles } from "@routes/types/roles";
-import { ArrowRepeat, JournalCheck, FileEarmarkText, GraphUp } from "react-bootstrap-icons";
+import { ArrowRepeat, JournalCheck, FileEarmarkText, GraphUp, House } from "react-bootstrap-icons";
 import {
 	TRAINING_MANAGMENT_MODULE,
 	LEARNING_PATH_INDEX,
@@ -14,6 +14,13 @@ export const sideBarItemsGroup1: TSidebarItemGroup[] = [
 		groupName: "Gestión de capacitaciones",
 		roles: [Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.HEAD_OF_AREA, Roles.WORKER],
 		children: [
+			{
+				name: "Dashboard",
+				icon: House,
+				roles: [Roles.HR_ADMIN, Roles.HR_MANAGER, Roles.HEAD_OF_AREA],
+				hasChildren: false,
+                route: `/modulo1/test`
+			},
 			{
 				name: "Ruta de Aprendizaje",
 				icon: ArrowRepeat,
