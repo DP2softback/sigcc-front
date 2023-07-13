@@ -10,6 +10,7 @@ import cat from '@features/Modulo3/jsons/Categories';
 import { listAllCategorias } from '@features/Modulo3/services/categories';
 import { CATEGORIES_CREATE, CATEGORIES_INDEX } from '@features/Modulo3/routes/path';
 import '../EvaluacionContinua/EvaluacionContinua.css';
+import 'react-toastify/dist/ReactToastify.css'; 
 import { CONTINUOS_EVALUATION_TYPE } from '@features/Modulo3/utils/constants';
 import ModalAddCategorie from '@features/Modulo3/components/Modals/ModalAddCategorie';
 import { toast, ToastContainer } from 'react-toastify';
