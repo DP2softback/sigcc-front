@@ -7,6 +7,7 @@ import './ConsolidadoCompetencias.css';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL } from '@features/Modulo2/routes/path';
 
 import {TOKEN_SERVICE, URL_SERVICE} from '@features/Modulo2/services/ServicesApis'
+import { EventEmitter } from "stream";
 
 const PieChart = ({ title, labels, datasets }) => {
     ChartJS.register(ArcElement, Tooltip, Legend, Title);
@@ -34,7 +35,7 @@ const PieChart = ({ title, labels, datasets }) => {
   };
 
   const ConsolidadoCompetenciasAM = () => {
-    const navigate = useNavigate();
+      const navigate = useNavigate();
       const [data1, setData1] = useState(null);
       const [data2, setData2] = useState(null);
       const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
@@ -59,7 +60,6 @@ const PieChart = ({ title, labels, datasets }) => {
             if (response.ok) {
               const data = await response.json();
               setTipoCompetencias(data);
-              setAreasActivas(data);
             } else {
               console.log('Error al obtener los datos de competencias');
             }
@@ -69,17 +69,24 @@ const PieChart = ({ title, labels, datasets }) => {
         };
 
         const fetchAreasActivas = async () => {
+          const body = {
+            "area": 2		//id de area
+          }
           const requestOptions = {
-            method: 'GET',
+            method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               'Authorization': TOKEN_SERVICE,
-            }
+            },
+            body: JSON.stringify({ 
+              area: 1,
+            }),
           }
           try {
-            const response = await fetch(URL_SERVICE + '/positions', requestOptions);
+            const response = await fetch(URL_SERVICE + '/gaps/employeePosition', requestOptions);
             if (response.ok) {
               const data = await response.json();
+              console.log(data)
               setAreasActivas(data);
             }
           }
@@ -177,11 +184,11 @@ const PieChart = ({ title, labels, datasets }) => {
       }, []);
       
 
-      const handleCompetenciaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {    
-        const tipo  = tipoCompetencias.find((tipo) => tipo.id.toString() === event.target.value)
+      const handleCompetenciaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {   
+        console.log(areasActivas) 
+        console.log(event.target.value)
         setTipoCompetencia(areasActivas[parseInt(event.target.value)-1])
-        console.log(tipoCompetencia)
-        setAbbreviation(areasActivas.find((area) => area.id.toString() === event.target.value)?.name || '')
+        setAbbreviation(areasActivas.find((area) => area.position__id == parseInt(event.target.value))?.position__name || '')
         //setAbbreviation(tipo.abbreviation)
         setData1(data1);
         setData2(data2);
@@ -211,7 +218,7 @@ const PieChart = ({ title, labels, datasets }) => {
                 onChange={handleCompetenciaChange}
               ><option value="">Todas</option>
                 {areasActivas.map((hard) => (
-                  <option key={hard.id} value={hard.id}>{hard.name}</option>
+                  <option key={hard.position__id} value={hard.position__id}>{hard.position__name}</option>
                 ))}
               </select>
             </div>

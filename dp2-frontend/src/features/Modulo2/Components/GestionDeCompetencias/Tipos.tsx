@@ -36,8 +36,8 @@ export type EmpleadoDeArea = {
 }
 
 export type AreaActiva = {
-  id: number,
-  name: string
+  position__id: number,
+  position__name: string
 }
 
 export type Posicion = {
