@@ -281,7 +281,7 @@ const SelectDemandCourses: React.FC = () => {
                 <Button variant="outline-secondary" className='Search' onClick={handleLimpiarFiltros}>
                   Limpiar filtros
                 </Button>{' '}
-                <Button variant="primary" className='Search' onClick={()=>{handleBuscarClick(posicionSeleccionada,areaSeleccionada)}}>
+                <Button variant="primary" className='Search1' onClick={()=>{handleBuscarClick(posicionSeleccionada,areaSeleccionada)}}>
                   Buscar
                 </Button>{' '}
               </div>              

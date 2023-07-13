@@ -294,8 +294,6 @@ const SelectDemandCourses: React.FC = () => {
                 Aceptar
               </Button>
 
-  
-
               <Button variant="secondary" className='Search2' onClick={handleCerrarPopUpGenerar}>
               Cancelar
               </Button>
@@ -317,13 +315,12 @@ const SelectDemandCourses: React.FC = () => {
             <Button className="botones2" onClick={()=>{}}>
               Aceptar
             </Button>
+            <Button variant="secondary" className='botones2' onClick={handleCerrarPopUpGenerar}>
+            Cancelar
+            </Button>
           </div>
         </div>
-        <div className='botonCerrar2'>
-        <Button variant="secondary" onClick={handleCerrarPopUpGenerar}>
-          Cancelar
-        </Button>
-        </div>
+
       </Modal.Body>
   </Modal> 
 )
@@ -361,8 +358,8 @@ const SelectDemandCourses: React.FC = () => {
                 Generar lista
                 </Button>{' '}
               </div>
-              <div className="col-md-9  justify-content-right">          
-                <Button variant="primary" className='Search2' onClick={handleMostrarPopUpGenerar}>
+              <div className="col-md-9  justify-content-center">          
+                <Button variant="primary" className='Search3' onClick={handleMostrarPopUpGenerar}>
                 Generar demanda
                 </Button>
               </div>  
