@@ -9,22 +9,14 @@ export const baseUrl = 'http://localhost:8000/api/';
 // export const baseUrl = 'http://ec2-44-195-104-181.compute-1.amazonaws.com/api/';
 // export const baseUrl = 'http://44.195.104.181/api/';
 
-// const baseUrl = 'http://127.0.0.1:8000/api/';
-// const axiosInt = axios.create({
-//   baseURL: baseUrl,
-//   headers: {
-//     'Content-Type': 'application/json',
-//     'Authorization': localStorage.getItem('accessToken')
-//     ? 'Token ' + localStorage.getItem('accessToken')
-//     : null,
-// }
-// });
 
 const axiosInt = axios.create({
   baseURL: baseUrl,
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': localStorage.getItem('dp2-access-token')
+  //   'Authorization': 'Token 23312d0da3020030290809572eb0114c98f61d58',
+  // }
+      'Authorization': localStorage.getItem('dp2-access-token')
       ? 'Token ' + localStorage.getItem('dp2-access-token')
       : null,
   }

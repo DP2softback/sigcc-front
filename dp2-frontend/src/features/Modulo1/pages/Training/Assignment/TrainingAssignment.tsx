@@ -18,8 +18,12 @@ type Employee = {
         last_name: string;
         email: string;
     }
-    area: string;
-    position: string;
+    area:{
+        name: string;
+    }
+    position: {
+        name: string;
+    }
     image: string;
 }
 
@@ -34,119 +38,6 @@ let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/def
 const pathname = window.location.pathname;
 const partesRuta = pathname.split("/");
 const valor = partesRuta[partesRuta.length - 1];
-
-// const datos = {
-//     id: 1,
-//     name: "Seguridad de Información",
-//     photoURL: 'https://cdn-blog.hegel.edu.pe/blog/wp-content/uploads/2021/01/seguridad-y-salud-en-el-trabajo.jpg',
-//     description: "Lorem ipsum",
-//     startDate: "06/05/2023",
-//     endDate: "06/05/2023",
-//     numEmployees: 10,
-//     type: "Presencial",
-//     capacity: 20,
-//     location: "Av. Universitaria 1305 - San Miguel"
-// }
-
-// const employees: Employee[] = [
-//     {
-//         id: "1",
-//         name: "John Doe Johnson",
-//         code: "123456789",
-//         area: "Área de Base de datos",
-//         position: "Manager",
-//         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-//     },
-//     {
-//         id: "2",
-//         name: "Jane Smith Jackson",
-//         code: "123456789",
-//         area: "Área de Base de datos",
-//         position: "Developer",
-//         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-//     },
-//     {
-//         id: "3",
-//         name: "Bob Johnson Doe",
-//         code: "123456789",
-//         area: "Área de Base de datos",
-//         position: "Designer",
-//         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-//     },
-//     {
-//         id: "4",
-//         name: "Sarah Lee Lee",
-//         code: "123456789",
-//         area: "Área de Base de datos",
-//         position: "Tester",
-//         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-//     },
-//     {
-//         id: "5",
-//         name: "Tom Jackson Smith",
-//         code: "123456789",
-//         area: "Área de Base de datos",
-//         position: "Analyst",
-//         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-//     },
-//     {
-//         id: "6",
-//         name: "Rodrigo Alonso Ortega Bocanegra",
-//         code: "123456789",
-//         area: "Área de Base de datos",
-//         position: "Analyst",
-//         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-//     },
-//     {
-//         id: "7",
-//         name: "John Doe Johnson 2",
-//         code: "123456789",
-//         area: "Área de Base de datos",
-//         position: "Manager",
-//         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-//     },
-//     {
-//         id: "8",
-//         name: "Jane Smith Jackson 2",
-//         code: "123456789",
-//         area: "Área de Base de datos",
-//         position: "Developer",
-//         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-//     },
-//     {
-//         id: "9",
-//         name: "Bob Johnson Doe 2",
-//         code: "123456789",
-//         area: "Área de Base de datos",
-//         position: "Designer",
-//         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-//     },
-//     {
-//         id: "10",
-//         name: "Sarah Lee Lee 2",
-//         code: "123456789",
-//         area: "Área de Base de datos",
-//         position: "Tester",
-//         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-//     },
-//     {
-//         id: "11",
-//         name: "Tom Jackson Smith 2",
-//         code: "123456789",
-//         area: "Área de Base de datos",
-//         position: "Analyst",
-//         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-//     },
-//     {
-//         id: "12",
-//         name: "Rodrigo Ortega Bocanegra 2",
-//         code: "123456789",
-//         area: "Área de Base de datos",
-//         position: "Analyst",
-//         image: "https://mipropiojefe.com/wp-content/uploads/2021/08/se_va_mejor_colaborador.jpg",
-//     }
-
-// ];
 
 type EmployeeId = number[]
 
@@ -223,15 +114,15 @@ const TrainingAssignment = () => {
         }
     }
 
-    const assignEmployees = () => {       
+    const assignEmployees = () => {
         let fecha_limite
-        
+
         if (training.tipo == "A")
             fecha_limite = moment.tz(refTrDateStart.current?.value, 'America/Lima').format('YYYY-MM-DDTHH:mm:ssZ');
-        else    
+        else
             fecha_limite = moment.tz(training.fecha_ultima_sesion, 'America/Lima').format('YYYY-MM-DDTHH:mm:ssZ');
-            console.log(fecha_limite)
-            axiosInt.post(`capacitaciones/curso_empresa_empleados/`, {
+        console.log(fecha_limite)
+        axiosInt.post(`capacitaciones/curso_empresa_empleados/`, {
             "id_curso": trainingID,
             "empleados": addedEmployeesId,
             "porcentaje_asistencia_aprobacion": 70,
@@ -264,6 +155,7 @@ const TrainingAssignment = () => {
                                 return added != item.id;
                             })
                         })
+                        console.log(response.data)
                         setEmployees(filtered2)
                         setEmployeeFilter(filtered2)
                         setLoading(false);
@@ -328,21 +220,21 @@ const TrainingAssignment = () => {
     return (
         <>
             {/* <Sidebar items={sidebarItems} active='/modulo1/cursoempresa'> */}
-                {
-                    loading ?
-                        (
-                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)', display: "flex", alignItems: "center", justifyContent: "center"  }}>
-                                <div className='vertical-align-child'>
-                                    <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
-                                        <span className="visually-hidden">Loading...</span>
-                                    </div>
+            {
+                loading ?
+                    (
+                        <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)', display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <div className='vertical-align-child'>
+                                <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                    <span className="visually-hidden">Loading...</span>
                                 </div>
                             </div>
-                        )
-                        :
-                        <>
+                        </div>
+                    )
+                    :
+                    <>
+                        <div>
                             <div className='row'>
-
                                 <div style={{ display: "flex", alignItems: "center", paddingLeft: "10px" }}>
                                     <div className='text-end' style={{ paddingRight: "1.5rem", flex: "0 0 auto" }}>
                                         <Link to={`/modulo1/cursoempresa/detalle/${trainingID}`} className="float-right"><ArrowLeftCircleFill style={{ height: "32px", width: "32px", color: "black" }} /></Link>
@@ -368,132 +260,146 @@ const TrainingAssignment = () => {
                                         <p><small className='subtitle'>Lista de empleados disponibles para asignar a la Capacitación</small></p>
                                     </div>
                                 </div>
+                            </div>
 
-
-                                <div className='col' style={{ marginLeft: "60px" }}>
-                                    <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
-                                        <div className='col-5'>
-                                            <input className='form-control' type='text' placeholder='Buscar empleados' onChange={handleFilter} />
-                                        </div>
-                                        <div className='col-2'>
-                                            <select className="form-select" aria-label=".form-select-sm example" onChange={handleChangeType}>
-                                                <option hidden>Área</option>
-                                                {typeTra.map((t) => {
-                                                    return (
-                                                        <option key={t.id} value={t.type}>{t.type}</option>
-                                                    )
-                                                })}
-                                            </select>
-                                        </div>
-                                        <div className='col-1 text-end'>
-                                            <button className='btn btn-primary' type='button' onClick={search}>Buscar</button>
-                                        </div>
+                            <div className='row row-search' style={{ marginLeft: "60px" }}>
+                                <div className='row' style={{ display: "flex", justifyContent: "flex-end", paddingBottom: "32px" }}>
+                                    <div className='col-5'>
+                                        <input className='form-control' type='text' placeholder='Buscar empleados' onChange={handleFilter} />
                                     </div>
+                                    <div className='col-2'>
+                                        <select className="form-select" aria-label=".form-select-sm example" onChange={handleChangeType}>
+                                            <option hidden>Área</option>
+                                            {typeTra.map((t) => {
+                                                return (
+                                                    <option key={t.id} value={t.type}>{t.type}</option>
+                                                )
+                                            })}
+                                        </select>
+                                    </div>
+                                    <div className='col-1 text-end'>
+                                        <button className='btn btn-primary' type='button' onClick={search}>Buscar</button>
+                                    </div>
+                                </div>
 
-                                    <div className='row'>
+                                <div className='row'>
 
-                                        <div style={{ display: "flex" }}>
-                                            {employeeFilter.length ?
-                                                <div>
-                                                    <div className="employees-list cards">
-                                                        {employeesShow.map((employee) => (
-                                                            <EmployeeCard2 key={employee.id}
-                                                                id={employee.id}
-                                                                name={employee.user.first_name + ' ' + employee.user.last_name}
-                                                                photoURL={url_foto_default}
-                                                                area={employee.area}
-                                                                puesto={employee.position}
-                                                                codigo={employee.user.email}
-                                                                boton1={botonEmployee}
-                                                                boton1Color={"#084298"}
-                                                                option={setAddedEmployee}
-                                                            />
-                                                        ))}
-                                                    </div>
+                                    <div style={{ display: "flex" }}>
+                                        {employeeFilter.length ?
+                                            <div>
+                                                <div className="employees-list cards">
+                                                    {employeesShow.map((employee) => (
+                                                        // <Fragment key={employee.id}>
+                                                        //     <div className="col">
+                                                        //         <div className="card h-100 px-0">
+                                                        //             <img src={url_foto_default} className="card-img-top" alt="" />
+                                                        //             <div className="card-body">
+                                                        //                 <h5 style={{ height: "4rem" }} className="card-title">{employee.user.first_name + ' ' + employee.user.last_name}</h5>
+                                                        //                 <p style={{ height: "5.5rem" }} className="card-text">{employee.position.name}</p>
+                                                        //             </div>
+                                                        //             <div className="card-body">                                                                        
+                                                        //             </div>
+                                                        //         </div>
+                                                        //     </div>
+                                                        // </Fragment>
+                                                        <EmployeeCard2 key={employee.id}
+                                                            id={employee.id}
+                                                            name={employee.user.first_name + ' ' + employee.user.last_name}
+                                                            photoURL={url_foto_default}
+                                                            area={employee.area.name}
+                                                            puesto={employee.position.name}
+                                                            codigo={employee.user.email}
+                                                            boton1={botonEmployee}
+                                                            boton1Color={"#084298"}
+                                                            option={setAddedEmployee}
+                                                        />
 
-                                                    {employeeFilter.length > mostrar &&
+                                                    ))}
+                                                </div>
+
+                                                {employeeFilter.length > mostrar &&
+                                                    <div>
                                                         <div>
-                                                            <div>
-                                                                <Pagination
-                                                                    page={page}
-                                                                    totalPages={totalPages}
-                                                                    handlePagination={setPage}
-                                                                    setPosition={setPosition}
-                                                                    position={position}
-                                                                    mostrar={mostrar}
-                                                                />
-                                                            </div>
+                                                            <Pagination
+                                                                page={page}
+                                                                totalPages={totalPages}
+                                                                handlePagination={setPage}
+                                                                setPosition={setPosition}
+                                                                position={position}
+                                                                mostrar={mostrar}
+                                                            />
                                                         </div>
-                                                    }
-
-                                                </div>
-                                                :
-                                                <div>
-                                                    <h5 style={{ paddingTop: "20px", paddingLeft: "20rem" }}>Sin empleados para asignar</h5>
-                                                </div>
-                                            }
-
-                                            <div style={{ paddingLeft: "1rem", position: employeeFilter.length == 0 ? 'relative' : 'static', right: employeeFilter.length == 0 ? '-20rem' : '', }}>
-                                                {addedEmployees.length ?
-                                                    <>
-                                                        <div style={{ backgroundColor: "#D8E0E8", width: "17.3rem", borderRadius: "4px", overflow: "hidden", boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}>
-
-                                                            <h4 style={{ display: "flex", justifyContent: "center", marginTop: "0.25rem" }}>Empleados asignados</h4>
-
-                                                            <div>
-                                                                {addedEmployees.map((employee) => (
-                                                                    <div key={employee[0].id} style={{ display: "flex", alignItems: "center", paddingLeft: "0.5rem", paddingRight: " 0.5rem", paddingBottom: "0.5rem", justifyContent: "space-between" }}>
-                                                                        <h4 style={{ fontSize: "13px", paddingTop: "0.35rem" }}>{employee[0].name}</h4>
-                                                                        <button style={{ backgroundColor: '#B02A37', color: 'white', border: "none", fontSize: "12px" }} onClick={() => handleRemove(employee[0].id)}>Quitar</button>
-                                                                    </div>
-                                                                ))
-
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                    </>
-                                                    :
-                                                    <></>
+                                                    </div>
                                                 }
-                                            </div>
 
+                                            </div>
+                                            :
+                                            <div>
+                                                <h5 style={{ paddingTop: "20px", paddingLeft: "20rem" }}>Sin empleados para asignar</h5>
+                                            </div>
+                                        }
+
+                                        <div style={{ paddingLeft: "1rem", position: employeeFilter.length == 0 ? 'relative' : 'static', right: employeeFilter.length == 0 ? '-20rem' : '', }}>
+                                            {addedEmployees.length ?
+                                                <>
+                                                    <div style={{ backgroundColor: "#D8E0E8", width: "17.3rem", borderRadius: "4px", overflow: "hidden", boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}>
+
+                                                        <h4 style={{ display: "flex", justifyContent: "center", marginTop: "0.25rem" }}>Empleados asignados</h4>
+
+                                                        <div>
+                                                            {addedEmployees.map((employee) => (
+                                                                <div key={employee[0].id} style={{ display: "flex", alignItems: "center", paddingLeft: "0.5rem", paddingRight: " 0.5rem", paddingBottom: "0.5rem", justifyContent: "space-between" }}>
+                                                                    <h4 style={{ fontSize: "13px", paddingTop: "0.35rem" }}>{employee[0].name}</h4>
+                                                                    <button style={{ backgroundColor: '#B02A37', color: 'white', border: "none", fontSize: "12px" }} onClick={() => handleRemove(employee[0].id)}>Quitar</button>
+                                                                </div>
+                                                            ))
+
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </>
+                                                :
+                                                <></>
+                                            }
                                         </div>
 
                                     </div>
+
                                 </div>
-
-
-
-
-
                             </div>
 
-                            {/* SET DEADLINE MODAL */}
-                            <div className="modal fade" id="setDeadlineModal" aria-hidden="true" aria-labelledby="setDeadlineModal" tabIndex={-1}>
-                                <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                    <div className="modal-content">
-                                        <div className="modal-header">
-                                            <h1 className="modal-title fs-5" id="createSessionModal">Definir fecha límite</h1>
-                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div className="modal-body">
 
-                                            <div className='row mb-3'>
-                                                <div className='col'>
-                                                    <label className="form-label">Fecha máxima para culminar el curso</label>
-                                                    <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
-                                                </div>
+
+
+
+                        </div>
+
+                        {/* SET DEADLINE MODAL */}
+                        <div className="modal fade" id="setDeadlineModal" aria-hidden="true" aria-labelledby="setDeadlineModal" tabIndex={-1}>
+                            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h1 className="modal-title fs-5" id="createSessionModal">Definir fecha límite</h1>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div className="modal-body">
+
+                                        <div className='row mb-3'>
+                                            <div className='col'>
+                                                <label className="form-label">Fecha máxima para culminar el curso</label>
+                                                <input className='form-control' type='date' id='start_date_creation' ref={refTrDateStart} />
                                             </div>
                                         </div>
-                                        <div className="modal-footer">
-                                            <button className='btn btn-primary' data-bs-dismiss="modal" style={{ marginTop: "15px", marginBottom: "15px" }} onClick={assignEmployees}>Asignar empleados</button>
-                                        </div>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button className='btn btn-primary' data-bs-dismiss="modal" style={{ marginTop: "15px", marginBottom: "15px" }} onClick={assignEmployees}>Asignar empleados</button>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                        </>
-                }
+                    </>
+            }
 
 
 

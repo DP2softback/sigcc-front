@@ -62,11 +62,11 @@ function AddCourseCE(props: any) {
 
     const loadTrainings = () => {
         setLoading(true);
-        axiosInt.get('capacitaciones/course_company_course/')
+        axiosInt.get('capacitaciones/course_company/asynchronous/')
             .then(function (response) {
                 console.log(response.data)
-                setTraining(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now) || item.tipo == 'A'))
-                setTrainingFilter(response.data.filter((item: any) => compararFechas(item.fecha_primera_sesion === null ? (moment(item.fecha_creacion).format("DD-MM-YYYY")) : (moment(item.fecha_primera_sesion).format("DD-MM-YYYY")), now) || item.tipo == 'A'))
+                setTraining(response.data)
+                setTrainingFilter(response.data)
                 setLoading(false);
             })
             .catch(function (error) {
