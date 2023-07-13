@@ -16,7 +16,7 @@ const GenerateSomePDF = (data: object) => {
     responseType: 'blob'
   })
 }
-
+//testing from remote
 export {
   GetAllExamples,
   GenerateSomePDF
