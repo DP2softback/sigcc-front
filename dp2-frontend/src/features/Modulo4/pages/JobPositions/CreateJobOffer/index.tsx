@@ -7,13 +7,11 @@ const CreateJobOffer = () => {
 	return (
 		<>
 			<EnhancedHeaderTitle pageTitle="Registro en oferta laboral">
-				A continuacion, ingresa tus datos para crearte un perfil en nuestro sistema
+				A continuacion, completa los siguientes datos
 			</EnhancedHeaderTitle>
-			
+
 			<main>
-				<CreateJobOfferProvider>
-					<CandidateRegisterForm />
-				</CreateJobOfferProvider>
+				
 			</main>
 		</>
 	);

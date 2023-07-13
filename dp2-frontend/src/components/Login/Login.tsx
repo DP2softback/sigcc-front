@@ -50,10 +50,12 @@ const Login: React.FC = () => {
 						password: password,
 						roles: [
 							Roles.HR_ADMIN,
+							Roles.HEAD_OF_AREA,
 							Roles.HR_WORKER,
 							Roles.CANDIDATE,
 							Roles.HR_MANAGER,
-							Roles.WORKER
+							Roles.WORKER,
+							Roles.GENERAL_MANAGER
 						]
 					},
 					token: userResponse.token
