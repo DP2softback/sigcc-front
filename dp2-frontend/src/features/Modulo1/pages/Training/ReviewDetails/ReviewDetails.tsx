@@ -13,7 +13,7 @@ type DetailObj = {
     descripcion?: string
     suma_valoraciones: number
     cant_valoraciones: number
-    cant_empleados: number
+    cantidad_empleados: number
     url_foto?: string
 }
 
@@ -24,31 +24,30 @@ type ReviewObj = {
 }
 
 function ReviewDetails() {
-    const { courseID } = useParams();
+    const { trainingID } = useParams();
     const [loading, setLoading] = useState(false);
     const [loadingCourseReviews, setLoadingCourseReviews] = useState(false);
-    const [lpDetails, setLPDetails] = useState<DetailObj>({nombre: "", descripcion: "", suma_valoraciones: 0, cant_valoraciones: 0, cant_empleados: 0, url_foto: null})
-    const [courseDetails, setCourseDetails] = useState<DetailObj>({nombre: "", descripcion: "", suma_valoraciones: 0, cant_valoraciones: 0, cant_empleados: 0, url_foto: null})
+    const [lpDetails, setLPDetails] = useState<DetailObj>({nombre: "", descripcion: "", suma_valoraciones: 0, cant_valoraciones: 0, cantidad_empleados: 0, url_foto: null})
+    const [courseDetails, setCourseDetails] = useState<DetailObj>({nombre: "", descripcion: "", suma_valoraciones: 0, cant_valoraciones: 0, cantidad_empleados: 0, url_foto: null})
     const [reviewCourseDetails, setReviewCourseDetails] = useState<ReviewObj[]>([])
 
     const loadReviewsLP = () => {
         setLoading(true);
-        axiosInt.get(``)
+        axiosInt.get(`capacitaciones/course_company_course/${trainingID}`)
             .then(function (response) {
                 console.log(response.data)
-                setLPDetails(response.data.datos_learning_path)
-                setLoadingCourseReviews(true)
+                setLPDetails(response.data)
         
-                axiosInt.get(`capacitaciones/valorar_curso/${courseID}/`)
+                axiosInt.get(`capacitaciones/valorar_curso/${trainingID}/`)
                     .then(function (response) {
                         console.log(response.data)
                         setCourseDetails(response.data.datos_curso)
                         setReviewCourseDetails(response.data.valoraciones)
-                        setLoadingCourseReviews(false);
+                        setLoading(false);
                     })
                     .catch(function (error) {
                         console.log(error);
-                        setLoadingCourseReviews(false);
+                        setLoading(false);
                     });
             })
             .catch(function (error) {
@@ -126,8 +125,7 @@ function ReviewDetails() {
                                                     <div className="card-body card-body-gi">
                                                         <div className='col-4 general-info-brs'>
                                                             <h6>Empleados asignados</h6>
-                                                            {/*<h5>{courseDetails.cant_empleados}</h5>*/}
-                                                            <h5>{lpDetails.cant_empleados}</h5>
+                                                            <h5>{lpDetails.cantidad_empleados}</h5>
                                                         </div>
                                                         <div className='col-4 general-info-brs'>
                                                             <h6>Valoraciones realizadas</h6>
@@ -135,8 +133,7 @@ function ReviewDetails() {
                                                         </div>
                                                         <div className='col-4 general-info'>
                                                             <h6>Valoración promedio</h6>
-                                                            {/*<h5>{courseDetails.cant_empleados === 0 ? ("-") : (courseDetails.suma_valoraciones/courseDetails.cant_empleados)}</h5>*/}
-                                                            <h5>{lpDetails.cant_empleados === 0 ? ("-") : (courseDetails.suma_valoraciones/lpDetails.cant_empleados)}</h5>
+                                                            <h5>{lpDetails.cantidad_empleados === 0 ? ("-") : (courseDetails.suma_valoraciones/lpDetails.cantidad_empleados)}</h5>
                                                         </div>
                                                     </div>
                                                 </div>

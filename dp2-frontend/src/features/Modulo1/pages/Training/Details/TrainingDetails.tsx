@@ -236,12 +236,7 @@ const TrainingDetails = () => {
                                                 competencies.map((comp, index) => {
                                                     return(
                                                         <div className='row' key={comp.id}>
-                                                            <div className='col-1'>
-                                                                <h6><b>{index + 1}.</b></h6>
-                                                            </div>
-                                                            <div className='col-10'>
-                                                                <p>{comp.name}</p>
-                                                            </div>
+                                                            <p><b>{index + 1}. </b>{comp.name}</p>
                                                         </div>
                                                     )
                                                 })

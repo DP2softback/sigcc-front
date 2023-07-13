@@ -1,3 +1,5 @@
+import { number } from "zod"
+
 export type Score = {
         id: number,
         name: string,
@@ -6,12 +8,13 @@ export type Score = {
 export type Criteria = {
     id: number,
     name: string,
-    score: Score,
+    choice: Score,
 }
 
 export type PropsRubricCriterias = {
     criterias: Array<Criteria>,
-    disabled: boolean
+    disabled: boolean,
+    action?: any
 }
 
 export type StateRubricCriterias = {
