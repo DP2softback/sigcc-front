@@ -166,7 +166,7 @@ const Read = () => {
                             </select>
                         </Form.Group>
 
-                        <div className="col-3">
+                        <div className="col-3 d-flex">
                             <Button variant="outline-secondary" className="me-2" onClick={limpiarFiltros}>
                                 Limpiar Filtros
                             </Button>

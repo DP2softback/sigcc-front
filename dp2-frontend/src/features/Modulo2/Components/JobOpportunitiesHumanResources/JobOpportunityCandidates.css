@@ -1,0 +1,9 @@
+.table-overflow{
+    max-height: 500px;
+    overflow: scroll;
+}
+
+tr.header-candidates{
+    position: sticky;
+    top: 0;
+}
