@@ -53,7 +53,9 @@ const Login: React.FC = () => {
 							Roles.HR_WORKER,
 							Roles.CANDIDATE,
 							Roles.HR_MANAGER,
-							Roles.WORKER
+							Roles.WORKER,
+							Roles.GENERAL_MANAGER,
+							Roles.HEAD_OF_AREA,
 						]
 					},
 					token: userResponse.token

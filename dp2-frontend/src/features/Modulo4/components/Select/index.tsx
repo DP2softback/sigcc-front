@@ -3,8 +3,8 @@ import Choices from 'choices.js';
 
 type MultiSelectProps<T> = {
   options: T[];
-  value: Extract<keyof T, string | number>;
-  label: Extract<keyof T, string | number>;
+  value: keyof T & (string | number);
+  label: keyof T & (string | number);
   placeholder?: string;
   handleSelectItem: (value: number) => void;
 }

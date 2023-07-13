@@ -7,13 +7,14 @@ type MultiSelectProps<T> = {
   label: keyof T & (string | number);
   placeholder?: string;
   handleSelect: (values: number[]) => void;
+  disabled?: boolean;
 }
 
 const MultiSelect = <T extends {}>(
 	props: MultiSelectProps<T>
 ): JSX.Element => {
 
-  const { label, options, value, placeholder, handleSelect } = props;
+  const { label, options, value, placeholder, handleSelect, disabled } = props;
 
   const tagsInput = useRef(null);
 
@@ -40,7 +41,7 @@ const MultiSelect = <T extends {}>(
 
   return (
     <>
-      <select multiple ref={tagsInput} onChange={handleSelectChange}>
+      <select multiple ref={tagsInput} onChange={handleSelectChange} disabled={disabled}>
       {
         options.map((opt, index) => {
           return (
