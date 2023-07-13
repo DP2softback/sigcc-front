@@ -182,7 +182,7 @@ const Read = () => {
                         <div className="table-container">
                             {employeeCompetences && employeeCompetences.length === 0 ? <p>No se encontraron resultados.</p> :
                                 <Table striped bordered className='tableGapsEmployees'>
-                                    <thead>
+                                    <thead style={{position: "sticky", top: 0,background: 'white'}}>
                                         <tr>
                                             <th onClick={() => handleOrdenarPorCampo('competence_name')}>
                                                 Nombre

@@ -152,9 +152,8 @@ const GestionCompetenciaAM = (state) => {
             const observacion = item.levelCurrent < item.levelRequired ? 'Necesidad de curso de capacitación' : 'Nivel requerido es alcanzado';
             return (
               <tr key={index}>
-                <td>{item.competence__name}</td>
-                <td>{item.competence__type__name}</td>
-                {/*item.competence_type==1?'Blando':'Tecnico'*/}
+                <td>{item.competence_name}</td>
+                <td>{item.competence_type==1?'Blando':'Tecnico'}</td>
                 <td>{returnLevel(item.levelCurrent)}</td>
                 <td>{returnLevel(item.levelRequired)}</td>
                 <td>{item.likeness + ' %'}</td>

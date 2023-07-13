@@ -12,7 +12,8 @@ import {TOKEN_SERVICE, URL_SERVICE} from '@features/Modulo2/services/ServicesApi
 const DetalleCompetenciasArea = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { tipoCompetencia } = location.state;
+  const { posicion } = location.state;
+  console.log(posicion)
     const [campoOrdenamiento, setCampoOrdenamiento] = useState('');
     const [tipoOrden, setTipoOrden] = useState('ascendente');
     const [position__name, setposition__name] = useState('');
@@ -33,8 +34,8 @@ const DetalleCompetenciasArea = () => {
               'Authorization': TOKEN_SERVICE,
             },
             body: JSON.stringify({ 
-              area: 2,
-              posicion:  2,
+              area: 1,
+              posicion:  posicion.position__id,
             }),
           };
           const response = await fetch(URL_SERVICE + '/gaps/employeeArea', requestOptions);
@@ -194,7 +195,7 @@ const DetalleCompetenciasArea = () => {
   return (
     <div className="pantalla">
       <div className='titles'>
-      <h2 className='Head'>Empleados del puesto de {tipoCompetencia.name}</h2>
+      <h2 className='Head'>Empleados del puesto de {posicion.position__name}</h2>
       <p className="text-muted subtitle">Consultar competencias de los empleados.</p>
       </div>
 

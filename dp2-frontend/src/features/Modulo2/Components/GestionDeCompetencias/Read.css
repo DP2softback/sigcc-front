@@ -97,6 +97,7 @@ top: 335px;
 
 .tabla{
     overflow-x: auto;
+    height: 25em;
 }
 
 
@@ -111,3 +112,11 @@ top: 335px;
         width: 100%;
     }
 }
+
+table{
+    overflow-x: auto;
+    overflow-y: auto;
+    display: table;
+    white-space: nowrap; 
+}
+

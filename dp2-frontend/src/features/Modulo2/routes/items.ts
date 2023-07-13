@@ -50,19 +50,19 @@ export const sideBarItemsGroup2: TSidebarItemGroup[] = [
 	},
 	{
 		groupName: "Brechas y oportunidades",
-		roles: [Roles.WORKER],
+		roles: [Roles.HR_ADMIN,Roles.WORKER],
 		children: [
 			{
 				name: "Mis brechas",
 				icon: People,
-				roles: [Roles.WORKER],
+				roles: [Roles.HR_ADMIN,Roles.WORKER],
 				hasChildren: false,
 				route: `/${GAPS_ANALYSIS_MODULE}/${GAPS_EMPLOYEE_EMP}/${INDEX}`
 			},
 			{
 				name: "Mis oportunidades laborales",
 				icon: People,
-				roles: [Roles.WORKER],
+				roles: [Roles.HR_ADMIN,Roles.WORKER],
 				hasChildren: false,
 				route: `/${GAPS_ANALYSIS_MODULE}/${MY_JOB_OPPORTUNITIES}/${INDEX}`
 			}
