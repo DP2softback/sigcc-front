@@ -285,7 +285,7 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 				evaluationId={evaluationId}
 				show={show}
 				setShow={setShow}
-				compromisos={evaluation?.additionalComments}
+				evaluationComment={evaluation?.additionalComments}
 			/>
 			<Layout
 				title={`Evaluación de desempeño - ${employee.name}`}
