@@ -15,6 +15,9 @@ export interface QuizComponentProps
 {
     questions: Question[];
     courseId?: number;
+    employeeId?: number;
+    lp?: number;
+    lpId?: string;
 }
 
 export interface QuizComponentState

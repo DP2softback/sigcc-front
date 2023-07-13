@@ -8,8 +8,9 @@ import EmployeeCard from '@features/Modulo1/components/EmployeeCard/EmployeeCard
 import '../../../../basic.css';
 import '../trainingE.css';
 import SessionAccordion from '@features/Modulo1/components/SessionAccordion/SessionAccordionEmployee';
-import { CalendarCheck, JournalBookmarkFill } from 'react-bootstrap-icons'
+import { CalendarCheck, JournalBookmarkFill, JournalCheck } from 'react-bootstrap-icons'
 import Layout from "@layout/default/index";
+import QuizFill from '@features/Modulo1/pages/LearningPath/QuizFill/QuizFill';
 
 let url_foto_default = 'https://fagorelectrodomestico.com.vn/template/images/default-post-image.jpg'
 
@@ -188,6 +189,10 @@ const TrainingDetails = () => {
     const employeesToShow = employees.slice(position, position + 3);
     const botonEmployee = "Quitar";
 
+    const [loading1, setLoading1] = useState(false);
+    const [question, setQuestion] = useState([])
+    const [quizID, setQuizId] = useState(0);
+
     const handlePrevious = () => {
         if (position > 0) {
             setPosition(position - 3);
@@ -203,7 +208,7 @@ const TrainingDetails = () => {
     const loadTrainingDetails = () => {
         setLoading(true);
         console.log(trainingID)
-        axiosInt.get(`capacitaciones/course_company_course/${trainingID}`)
+        axiosInt.get(`capacitaciones/course_company_course_employee/${trainingID}/1/`)
             .then(function (response) {
                 console.log(response.data)
                 setTraining(response.data);
@@ -215,6 +220,38 @@ const TrainingDetails = () => {
                 setLoading(false);
             });
     }
+
+    const handleQuiz = (course: any) => {
+        setQuizId(course.id)
+        setLoading1(true)
+
+        axiosInt.get(`capacitaciones/curso_empresa/${course.id}/evaluacion/`)
+            .then((response) => {
+                setQuestion(response.data.preguntas)
+            })
+
+        setTimeout(() => {
+            setLoading1(false);
+            // handleState(id)
+        }, 500);
+    }
+
+    const handleState = (curso: any) => {
+
+        axiosInt.post(`capacitaciones/course_employee_advance/`,
+            {
+                "curso_id": curso.id,
+                "empleado_id": 1
+            })
+            .then((response) => {
+                console.log(response)
+                window.location.reload()
+            })
+            .catch(function (error) {
+
+            });
+    }
+
 
     useEffect(() => {
         loadTrainingDetails();
@@ -297,20 +334,68 @@ const TrainingDetails = () => {
                             </div>
                         </div>
 
-                        {training.tipo == 'A' &&
-                            <div className='row' style={{marginTop: "1rem"}}>
+
+                        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+
+                            {training.estado == 0 &&
+                                <div className='text-end'>
+                                    <button type='button' className='btn btn-danger' data-bs-target='#confirmModalCourse' data-bs-toggle='modal'>
+                                        <div style={{ display: "flex", alignItems: "center" }}>
+                                            <span className='me-3'>Finalizar curso</span>
+                                            <JournalCheck />
+                                        </div>
+                                    </button>
+                                </div>
+                            }
+
+                            {training.estado == 1 &&
+                                <>
+                                    <button className='btn btn-primary' data-bs-target='#quizModal' data-bs-toggle='modal' onClick={() => handleQuiz(training)}>Rendir Evaluación</button>
+                                </>
+                            }
+
+                            {training.estado == 2 &&
+                                <>
+                                    <h1>
+                                        Finalizado
+                                    </h1>
+                                </>
+                            }
+
+                        </div>
+
+
+                        {/* <div style={{ display: "flex", justifyContent: "space-around" }}>
+
+                            <div className='row' style={{ marginTop: "1rem" }}>
                                 <div className="accordion-footer">
                                     <div style={{ flex: '0 0 15rem' }} className='col text-end'>
-                                        <button type='button' className='btn' data-bs-target='#confirmModalCourse' data-bs-toggle='modal' style={{backgroundColor: "#198754", color: "white", border: "none"}}>
+                                        <button type='button' className='btn' data-bs-target='#quizModal' data-bs-toggle='modal' style={{ backgroundColor: "#ba1919", color: "white", border: "none" }} onClick={() => handleQuiz(training)}>
                                             <div style={{ display: "flex", alignItems: "center" }}>
-                                                <span className='me-3'>Finalizar curso</span>
-                                                <JournalBookmarkFill />
+                                                <span className='me-3'>Rendir Evaluación</span>
+                                                <JournalCheck />
                                             </div>
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                        }
+
+
+                            {training.tipo == 'A' &&
+                                <div className='row' style={{ marginTop: "1rem" }}>
+                                    <div className="accordion-footer">
+                                        <div style={{ flex: '0 0 15rem' }} className='col text-end'>
+                                            <button type='button' className='btn' data-bs-target='#confirmModalCourse' data-bs-toggle='modal' style={{ backgroundColor: "#198754", color: "white", border: "none" }}>
+                                                <div style={{ display: "flex", alignItems: "center" }}>
+                                                    <span className='me-3'>Finalizar curso</span>
+                                                    <JournalBookmarkFill />
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div> */}
 
                         {/* CONFIRM MODAL */}
                         <div className="modal fade" id="confirmModalCourse" aria-hidden="true" aria-labelledby="confirmModalCourse" tabIndex={-1}>
@@ -326,12 +411,44 @@ const TrainingDetails = () => {
                                         </div>
                                     </div>
                                     <div className="modal-footer confirm-footer">
-                                        <button className="btn btn-primary" data-bs-dismiss="modal">Si</button>
+                                        <button onClick={() => handleState(training)} className="btn btn-primary" data-bs-dismiss="modal">Si</button>
                                         <button className="btn btn-danger" data-bs-dismiss="modal">No</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        {/* Quiz */}
+                        <div className="modal fade" id="quizModal" aria-hidden="true" aria-labelledby="quizModal" tabIndex={-1}>
+                            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <div className="modal-content">
+
+                                    <div className="modal-header">
+                                        <h1 className="modal-title fs-5" id="createTrainingModal">Cuestionario</h1>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+
+                                    {loading1 ?
+                                        <>
+                                            <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)', paddingTop: "3rem" }}>
+                                                <div className='vertical-align-child'>
+                                                    <div className="spinner-border" role="status" style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}>
+                                                        <span className="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </>
+                                        :
+                                        <>
+                                            <QuizFill questions={question} courseId={quizID} employeeId={1} lp={0} />
+                                        </>
+
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+
 
                     </>
                     )

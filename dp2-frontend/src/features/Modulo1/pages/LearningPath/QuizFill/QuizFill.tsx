@@ -18,11 +18,48 @@ class QuizFill extends Component<QuizComponentProps, QuizComponentState> {
         }));
     };
 
-
     handleSubmit = () => {
-        axiosInt.post(`capacitaciones/course_lp_employee_advance/${this.props.courseId}/10/1/`)
+
+        console.log(this.state.answers)
+
+        const { answers } = this.state;
+        const answers_formated = Object.entries(answers).reduce((formattedObj, [question_id, option_id]) => {
+            formattedObj[question_id] = option_id;
+            return formattedObj;
+        }, {});
+
+        // Generar el archivo JSON con las respuestas
+        const jsonData = JSON.stringify({
+            respuestas: answers_formated
+        }, null, 2);
+        console.log(jsonData);
+
+        axiosInt.post(`capacitaciones/curso/form/${this.props.courseId}/1/`,
+            jsonData
+        )
             .then((response) => {
                 console.log(response)
+                if (this.props.lp) {
+                    axiosInt.post(`capacitaciones/course_lp_employee_advance/${this.props.courseId}/${this.props.lpId}/1/`)
+                        .then((response) => {
+                            console.log(response)
+                        })
+                        .catch(function (error) {
+
+                        });
+                } else {
+                    axiosInt.post(`capacitaciones/course_employee_advance/`,
+                        {
+                            "curso_id": this.props.courseId,
+                            "empleado_id": 1
+                        })
+                        .then((response) => {
+                            console.log(response)      
+                        })
+                        .catch(function (error) {
+
+                        });
+                }
                 window.location.reload()
             })
             .catch(function (error) {
@@ -59,7 +96,7 @@ class QuizFill extends Component<QuizComponentProps, QuizComponentState> {
             <>
                 <div className="modal-body">
                     {questions.map((question) => (
-                        <div key={question.id_pregunta} style={{marginTop: "1rem"}}>
+                        <div key={question.id_pregunta} style={{ marginTop: "1rem" }}>
                             <h4>{question.pregunta}</h4>
                             {question.opciones.map((option) => (
                                 <div key={option.id_opcion}>

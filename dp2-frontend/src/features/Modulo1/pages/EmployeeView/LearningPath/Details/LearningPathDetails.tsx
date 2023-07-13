@@ -65,18 +65,26 @@ function LearningPathDetails(props: any) {
             });
     }
 
-    const handleQuiz = (id: number) => {
-        setQuizId(id)
+    const handleQuiz = (course: any) => {
+        setQuizId(course.id)
         setLoading1(true)
-        // axiosInt.get(`capacitaciones/udemy_course/questionary/${id}/`)
-        //     .then((response) => {
-        //         console.log(response)
-        //         setQuestion(response.data.evaluacion)
-        //         setLoading1(false)
-        //     })
-        //     .catch(function (error) {
-        //         setLoading1(false);
-        //     });
+
+        if (course.tipo_curso == "U") {
+            axiosInt.get(`capacitaciones/udemy_course/questionary/${course.id}/`)
+                .then((response) => {
+                    console.log(response)
+                    setQuestion(response.data.evaluacion)
+                    setLoading1(false)
+                })
+                .catch(function (error) {
+                    setLoading1(false);
+                });
+        } else {
+            axiosInt.get(`capacitaciones/curso_empresa/${course.id}/evaluacion/`)
+                .then((response) => {
+                    setQuestion(response.data.preguntas)
+                })
+        }
 
         setTimeout(() => {
             setLoading1(false);
@@ -139,7 +147,7 @@ function LearningPathDetails(props: any) {
 
     const refCourseComment = useRef<HTMLTextAreaElement>(null);
     const refCourseRate = useRef(null);
-    
+
     const saveRate = () => {
         //setLoading(true)
 
@@ -161,7 +169,7 @@ function LearningPathDetails(props: any) {
                 console.log(error);
                 //setLoading(false)
             })
-            
+
     }
 
     return (
@@ -260,7 +268,7 @@ function LearningPathDetails(props: any) {
 
                                                                 {courses[activo - 1].datos_extras[0].estado == 2 &&
                                                                     <>
-                                                                        <button className='btn btn-primary' data-bs-target='#quizModal' data-bs-toggle='modal' onClick={() => handleQuiz(courses[activo - 1].id)}>Rendir Evaluación</button>
+                                                                        <button className='btn btn-primary' data-bs-target='#quizModal' data-bs-toggle='modal' onClick={() => handleQuiz(courses[activo - 1])}>Rendir Evaluación</button>
                                                                     </>
                                                                 }
 
@@ -274,7 +282,36 @@ function LearningPathDetails(props: any) {
                                                             </div>
 
                                                             :
-                                                            <SessionAccordion trainingType={courses[activo - 1].tipo} sessions={courses[activo - 1].sesiones} mode={"detailEmp"} />
+                                                            <>
+                                                                <SessionAccordion trainingType={courses[activo - 1].tipo} sessions={courses[activo - 1].sesiones} mode={"detailEmp"} />
+
+                                                                <div style={{ display: "flex", justifyContent: "space-between" }}>
+
+                                                                    {courses[activo - 1].datos_extras[0].estado == 0 &&
+                                                                        <div className='text-end'>
+                                                                            <button type='button' className='btn btn-danger' data-bs-target='#confirmModalCourse' data-bs-toggle='modal'>
+                                                                                <div style={{ display: "flex", alignItems: "center" }}>
+                                                                                    <span className='me-3'>Finalizar curso</span>
+                                                                                    <JournalCheck />
+                                                                                </div>
+                                                                            </button>
+                                                                        </div>
+                                                                    }
+
+                                                                    {courses[activo - 1].datos_extras[0].estado == 1 &&
+                                                                        <>
+                                                                            <button className='btn btn-primary' data-bs-target='#quizModal' data-bs-toggle='modal' onClick={() => handleQuiz(courses[activo - 1])}>Rendir Evaluación</button>
+                                                                        </>
+                                                                    }
+
+                                                                    {courses[activo - 1].datos_extras[0].estado >= 2 &&
+                                                                        <>
+                                                                            <button className='btn btn-primary' data-bs-target='#rateCourse' data-bs-toggle='modal'>Evaluar Curso</button>
+                                                                        </>
+                                                                    }
+
+                                                                </div>
+                                                            </>
                                                         }
 
                                                     </div>
@@ -282,39 +319,39 @@ function LearningPathDetails(props: any) {
                                             </div>
 
                                         </Fragment>
-                                        
+
                                     </div>
                                 </div>
 
-                                
+
                                 <div className='row' style={{ paddingTop: "1rem" }}>
                                     <div className="accordion-footer">
                                         {courses.length == activo &&
                                             <div style={{ display: "flex", flexDirection: "row-reverse", justifyContent: "space-around" }}>
                                                 <div>
                                                     {
-                                                        lpState === "0" || lpState === "1"? 
-                                                        (
-                                                            <button type='button' className='btn' data-bs-target='#confirmModalLP' data-bs-toggle='modal' style={{ backgroundColor: "#198754", border: "none", color: "white" }}>
-                                                                <div style={{ display: "flex", alignItems: "center" }}>
-                                                                    <span className='me-3'>Finalizar Ruta</span>
-                                                                    <JournalBookmarkFill />
-                                                                </div>
-                                                            </button>
-                                                        )
-                                                        :
-                                                        (
-                                                            <button type='button' className='btn' style={{ backgroundColor: "#198754", border: "none", color: "white" }} onClick={() => navigate('evaluacionintegral')}>
-                                                                <div style={{ display: "flex", alignItems: "center" }}>
-                                                                    <span className='me-3'>Ver evaluación</span>
-                                                                    <JournalBookmarkFill />
-                                                                </div>
-                                                            </button>
-                                                        )
+                                                        lpState === "0" || lpState === "1" ?
+                                                            (
+                                                                <button type='button' className='btn' data-bs-target='#confirmModalLP' data-bs-toggle='modal' style={{ backgroundColor: "#198754", border: "none", color: "white" }}>
+                                                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                                                        <span className='me-3'>Finalizar Ruta</span>
+                                                                        <JournalBookmarkFill />
+                                                                    </div>
+                                                                </button>
+                                                            )
+                                                            :
+                                                            (
+                                                                <button type='button' className='btn' style={{ backgroundColor: "#198754", border: "none", color: "white" }} onClick={() => navigate('evaluacionintegral')}>
+                                                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                                                        <span className='me-3'>Ver evaluación</span>
+                                                                        <JournalBookmarkFill />
+                                                                    </div>
+                                                                </button>
+                                                            )
                                                     }
-                                                    
+
                                                 </div>
-                                            </div>                                            
+                                            </div>
                                         }
 
 
@@ -368,6 +405,12 @@ function LearningPathDetails(props: any) {
                                 <div className="modal fade" id="quizModal" aria-hidden="true" aria-labelledby="quizModal" tabIndex={-1}>
                                     <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                         <div className="modal-content">
+
+                                            <div className="modal-header">
+                                                <h1 className="modal-title fs-5" id="createTrainingModal">Cuestionario</h1>
+                                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+
                                             {loading1 ?
                                                 <>
                                                     <div className='vertical-align-parent' style={{ height: 'calc(100vh - 4rem)' }}>
@@ -380,7 +423,7 @@ function LearningPathDetails(props: any) {
                                                 </>
                                                 :
 
-                                                <QuizFill questions={question} courseId={quizID} />
+                                                <QuizFill questions={question} courseId={quizID} employeeId={1} lp={1} lpId={learningPathId} />
 
 
                                             }
@@ -388,30 +431,30 @@ function LearningPathDetails(props: any) {
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 {/* MODAL RATE COURSE */}
                                 <div className="modal fade" id="rateCourse" aria-hidden="true" aria-labelledby="rateCourse" tabIndex={-1}>
                                     <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                    <div className="modal-content">
-                                        <div className="modal-header">
-                                            <h1 className="modal-title fs-5" id="rateCourse">Calificación del curso</h1>
-                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div className="modal-body">
-                                            <div className="d-flex justify-content-between align-items-baseline">
-                                                <label className="form-label">Valoración</label>
-                                                <RateValue ref={refCourseRate} />
+                                        <div className="modal-content">
+                                            <div className="modal-header">
+                                                <h1 className="modal-title fs-5" id="rateCourse">Calificación del curso</h1>
+                                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <div>
-                                                <label className="form-label">Comentarios</label>
-                                                <textarea ref={refCourseComment} className="form-control" />
+                                            <div className="modal-body">
+                                                <div className="d-flex justify-content-between align-items-baseline">
+                                                    <label className="form-label">Valoración</label>
+                                                    <RateValue ref={refCourseRate} />
+                                                </div>
+                                                <div>
+                                                    <label className="form-label">Comentarios</label>
+                                                    <textarea ref={refCourseComment} className="form-control" />
+                                                </div>
+                                            </div>
+                                            <div className="modal-footer">
+                                                <button className="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Omitir</button>
+                                                <button className="btn btn-primary" data-bs-dismiss="modal" onClick={() => saveRate()}>Enviar</button>
                                             </div>
                                         </div>
-                                        <div className="modal-footer">
-                                            <button className="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Omitir</button>
-                                            <button className="btn btn-primary" data-bs-dismiss="modal" onClick={() => saveRate()}>Enviar</button>
-                                        </div>
-                                    </div>
                                     </div>
                                 </div>
 

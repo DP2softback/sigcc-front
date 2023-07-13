@@ -81,15 +81,15 @@ const CourseReport = () => {
 
     const loadQuiz = () => {
         setLoading2(true);
-        // axiosInt.get(`capacitaciones/udemy_course/questionary/${id}/`)
-        //     .then((response) => {
-        //         console.log(response)
-        //         setQuestions(response.data.evaluacion)
-        //         setLoading2(false)
-        //     })
-        //     .catch(function (error) {
-        //         setLoading2(false);
-        //     });
+        axiosInt.get(`capacitaciones/curso/form/${trainingID}/1/`)
+            .then((response) => {
+                console.log(response)
+                setQuestions(response.data.form)
+                setLoading2(false)
+            })
+            .catch(function (error) {
+                setLoading2(false);
+            });
     }
 
     useEffect(() => {
@@ -165,7 +165,7 @@ const CourseReport = () => {
                             <div className='row' style={{ paddingTop: "1.25rem", display: "flex" }}>
 
                                 <div style={{ width: "34%" }}>
-                                    <div style={{ fontWeight: "bold" }}>Cursos</div>
+                                    <div style={{ fontWeight: "bold" }}>Empleados</div>
                                     <div style={{ display: "flex", flexDirection: "column", paddingTop: "0.75rem" }}>
                                         <div className='align-items-stretch g-3 px-0 mx-0'>
                                             {
@@ -174,7 +174,7 @@ const CourseReport = () => {
                                                         <div className='col mouseHover' key={course.id} style={{ paddingBottom: "1rem" }} onClick={() => handleCourseReporte(course, indexC)}>
                                                             <div className="card h-100" style={{ display: "flex", flexDirection: "row" }}>
                                                                 <img
-                                                                    src={course.tipo_curso == 'U' ? course.course_udemy_detail.image_480x270 == null ? url_foto_default : course.course_udemy_detail.image_480x270 : course.url_foto}
+                                                                    src={url_foto_default}
                                                                     className="card-img-top lp-card-img"
                                                                     alt="Card"
                                                                     style={{ width: "50%" }}
@@ -228,7 +228,7 @@ const CourseReport = () => {
                                                             </>
                                                             :
                                                             <>
-                                                                <div style={{ display: "flex", alignItems: "center", paddingBottom: "1rem" }}>
+                                                                {/* <div style={{ display: "flex", alignItems: "center", paddingBottom: "1rem" }}>
                                                                     <div style={{ paddingRight: "1rem" }}>
                                                                         {
                                                                             statesCourse[0].url_foto === null ?
@@ -240,7 +240,7 @@ const CourseReport = () => {
                                                                     <div>
                                                                         <h1 className='screenTitle' style={{ fontSize: "20px" }}>Avance {statesCourse[0].nombre}</h1>
                                                                     </div>
-                                                                </div>
+                                                                </div> */}
 
                                                                 <div>
                                                                     {questions.map((question) => (
@@ -255,7 +255,7 @@ const CourseReport = () => {
                                                                                             className="form-check-input"
                                                                                             name={question.id_pregunta.toString()}
                                                                                             value={option.id_opcion.toString()}
-                                                                                            // checked={this.state.answers[question.id_pregunta] === option.id_opcion}                                                                                            
+                                                                                            checked={option.opcion_elegida}                                                                                            
                                                                                         />
                                                                                         <label className="form-check-label" htmlFor={`question${question.id_pregunta}-option${option.id_opcion}}`}>
                                                                                             {option.opcion}

@@ -99,6 +99,7 @@ const TrainingDetails = () => {
 
                         axiosInt.get(`capacitaciones/course_company_course_list_empployees/${trainingID}`)
                             .then(function (response) {
+                                console.log(response.data)
                                 setEmployees(response.data);
                                 setLoading(false);
                             })
@@ -184,8 +185,8 @@ const TrainingDetails = () => {
 
                                     <div className='col-xs-12 col-md-4 col-xl-2' style={{ paddingLeft: "2rem" }}>
                                         <div className='d-grid gap-2 mx-auto mb-3'>
-                                            <Link to={`evaluacion`} className='btn btn-primary'>Ver evaluaciones</Link>
-                                            <Link to={`valoraciones`} className='btn btn-primary'>Ver valoraciones</Link>
+                                            <Link to={`evaluaciones`} className='btn btn-primary'>Ver evaluaciones</Link>
+                                            {/* <Link to={`valoraciones`} className='btn btn-primary'>Ver valoraciones</Link> */}
                                         </div>
                                     </div>
                                 </div>

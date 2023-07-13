@@ -45,6 +45,7 @@ function LearningPathDetails(props: any) {
 
                 axiosInt.get(`capacitaciones/learning_path_from_template/${learningPathId}/`)
                     .then(function (response) {
+                        console.log(response.data)
                         setCourses(response.data.cursos);
                         setLoading(false);
                     })
