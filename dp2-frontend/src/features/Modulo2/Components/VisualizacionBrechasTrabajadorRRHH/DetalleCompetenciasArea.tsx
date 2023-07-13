@@ -145,8 +145,9 @@ const DetalleCompetenciasArea = () => {
             return <p>No se encontraron resultados.</p>;
           }
         return (
+          <div className="table-container">
             <Table striped bordered>
-            <thead>
+            <thead style={{position: "sticky", top: 0,background: 'white'}}>
                 <tr>
                     <th onClick={() => handleOrdenarPorCampo('user__first_name')}>
                     Nombres
@@ -209,6 +210,7 @@ const DetalleCompetenciasArea = () => {
               ))}
             </tbody>
           </Table>
+          </div>
         );
       };
 

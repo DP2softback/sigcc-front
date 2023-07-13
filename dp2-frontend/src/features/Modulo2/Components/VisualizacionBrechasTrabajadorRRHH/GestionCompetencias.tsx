@@ -106,7 +106,7 @@ const GestionCompetencia = (state) => {
       const datosOrdenados = datosFiltradosYOrdenados();
         return (
             <Table striped bordered>
-            <thead>
+            <thead style={{position: "sticky", top: 0,background: 'white'}}>
                 <tr>
 
                     <th onClick={() => handleOrdenarPorCampo('competence__name')}>

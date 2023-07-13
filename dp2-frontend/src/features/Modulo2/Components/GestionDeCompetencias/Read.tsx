@@ -256,7 +256,7 @@ const borrarCompetencia = async (id) => {
     return (
 
     <Table striped bordered hover>
-      <thead>
+      <thead style={{position: "sticky", top: 0,background: 'white'}}>
         <tr>
             <th onClick={() => handleOrdenarPorCampo('code')}>Código {campoOrdenamiento === 'code' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
             <th onClick={() => handleOrdenarPorCampo('name')}>Nombre {campoOrdenamiento === 'name' && (tipoOrden === 'ascendente' ? <ArrowRightCircleFill /> : <ArrowRightCircleFill className="flip" />)}</th>
