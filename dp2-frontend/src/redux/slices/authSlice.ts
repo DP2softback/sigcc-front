@@ -6,27 +6,29 @@ import { State } from "@redux/store";
 
 const initialState: AuthUser = {
 	user: null,
-	token: null
+	token: null,
+	applicant: null
 };
 
 const authSlice = createSlice({
 	name: "auth",
 	initialState: initialState,
 	reducers: {
-    getCredentials: (state) => {
-      state.user = getStorageItem("user", false);
-      state.token = getStorageItem("dp2-access-token", true);
-    },
+		getCredentials: (state) => {
+			state.user = getStorageItem("user", false);
+			state.token = getStorageItem("dp2-access-token", true);
+		},
 		setCredentials: (state: AuthUser, action: PayloadAction<Partial<AuthUser>>) => {
-			const { user, token } = action.payload;
+			const { user, token, applicant } = action.payload;
 			state.user = user;
 			state.token = token;
-      setStorage({ "user": JSON.stringify(user), "dp2-access-token": token })
+			state.applicant = applicant;
+			setStorage({ "user": JSON.stringify(user), "dp2-access-token": token, "applicant": JSON.stringify(applicant) })
 		},
 		logOut: (state: AuthUser) => {
 			state.user = null;
 			state.token = null;
-      cleanStorage();
+			cleanStorage();
 		}
 	}
 });

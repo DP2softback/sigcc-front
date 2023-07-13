@@ -16,6 +16,7 @@ export type Props = {
     options?: string,
     widthC?: string,
     option?: Function,
-    typeCard?: string
+    typeCard?: string,
+    index?: string
 }
 

@@ -43,13 +43,18 @@ const Login: React.FC = () => {
 
 		try {
 			const userResponse = await login(userCredentials).unwrap();
+			console.log(userResponse)
 			dispatch(
 				setCredentials({
 					user: {
-						email: username,
+						id: userResponse.user.id,
+						email: userResponse.user.email,
 						password: password,
+						first_name: userResponse.user.first_name,
+						last_name: userResponse.user.last_name,
 						roles: [
 							Roles.HR_ADMIN,
+							Roles.HEAD_OF_AREA,
 							Roles.HR_WORKER,
 							Roles.CANDIDATE,
 							Roles.HR_MANAGER,
@@ -58,7 +63,8 @@ const Login: React.FC = () => {
 							Roles.HEAD_OF_AREA,
 						]
 					},
-					token: userResponse.token
+					token: userResponse.token,
+					applicant: userResponse.applicant?.id
 				})
 			);
 			setUsername("");

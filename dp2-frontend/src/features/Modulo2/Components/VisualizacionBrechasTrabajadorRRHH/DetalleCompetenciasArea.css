@@ -33,3 +33,17 @@
 .subtitle{
     opacity: 50%;
 }
+
+.tabla{
+    overflow-x: auto;
+    overflow-y: auto;
+    height: 25em;
+}
+
+
+table{
+    overflow-x: auto;
+    overflow-y: auto;
+    display: table;
+    white-space: nowrap; 
+}

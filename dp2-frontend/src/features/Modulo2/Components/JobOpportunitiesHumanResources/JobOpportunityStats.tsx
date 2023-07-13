@@ -69,16 +69,14 @@ const JobOpportunityStats = () => {
                     })
                     .catch(function (error) {
                         console.log(error);
+                        setIsLoading(false);
                     })
 
             })
             .catch(function (error) {
                 console.log(error);
+                setIsLoading(false);
             })
-
-        
-
-        
     }, [])
 
     function onFiltersChange(e) {

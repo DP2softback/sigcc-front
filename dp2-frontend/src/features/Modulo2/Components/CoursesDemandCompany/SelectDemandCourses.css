@@ -74,3 +74,16 @@
     }
 
 }
+
+
+.tabla{
+    overflow-x: auto;
+    height: 25em;
+}
+
+table{
+    overflow-x: auto;
+    overflow-y: auto;
+    display: table;
+    white-space: nowrap; 
+}

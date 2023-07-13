@@ -7,3 +7,7 @@
     font-size: 16px;
     opacity: 50%;
 }
+
+.basicCard-container{
+    margin-right: 20px !important;
+}
