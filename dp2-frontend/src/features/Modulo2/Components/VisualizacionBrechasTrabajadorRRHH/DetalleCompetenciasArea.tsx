@@ -28,7 +28,7 @@ const DetalleCompetenciasArea = () => {
 
       useEffect(() => {
         const obj = {
-          area: 2,
+          area: tipoCompetencia.id,
           posicion:  0
         }
         axiosEmployeeGaps.post("gaps/employeeArea", obj)

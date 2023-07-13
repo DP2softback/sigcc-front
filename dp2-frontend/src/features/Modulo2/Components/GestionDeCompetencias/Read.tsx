@@ -306,8 +306,8 @@ const borrarCompetencia = async (id) => {
           </div>
           <div className='col-sm-3 botones'>
             <Form.Group className="mb-3" controlId="tipoFiltro">
-                <Form.Control as="select" value={tipoFiltro} onChange={(e) => setTipoFiltro(parseInt(e.target.value))}>
-                  <option value="">Todos los tipos</option>
+                <Form.Control as="select" value={tipoFiltro} onChange={(e) => {setTipoFiltro(parseInt(e.target.value));console.log(e.target.value)}}>
+                  <option value="2">Todos los tipos</option>
                   {tipoCompetencias.map((tipo) => (
                     <option key={tipo.id} value={tipo.id}>
                       {tipo.name}
