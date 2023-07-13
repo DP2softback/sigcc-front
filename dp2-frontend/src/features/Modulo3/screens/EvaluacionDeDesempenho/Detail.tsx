@@ -39,6 +39,7 @@ const Detail = () => {
       associatedEvaluation={associatedEvaluation}
       isLoading={isLoading}
       isReadOnly={true}
+      isAutoevaluation={false}
       evaluationId={parseInt(urlParams.get('evaluationId'))}
     />
   );
