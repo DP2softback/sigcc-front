@@ -28,6 +28,7 @@ interface Area {
 interface Stage {
   name: string;
   stage_type: string;
+  id: string
 }
 
 const TableComponent: React.FC = () => {
@@ -61,7 +62,9 @@ const TableComponent: React.FC = () => {
   );
 
   const handleRowClick = (process: Process) => {
+    console.log(process.current_process_stage.id)
     localStorage.setItem('step', process.current_process_stage.stage_type);
+    localStorage.setItem('screen', process.current_process_stage.id);
     var value = process.current_process_stage.stage_type;
     navigate(`/selection-offers-and-positions/selection-process/step`+value+`/`);
   };
@@ -94,7 +97,7 @@ const TableComponent: React.FC = () => {
               <td>{process.id}</td>
               <td>{process.name}</td>
               <td>{process.areaxpositiondetail.area_name}</td>
-              <td>{process.current_process_stage.name}</td>
+              <td>{process.current_process_stage==null? "":process.current_process_stage.name}</td>
               <td>{process.available_positions_quantity}</td>
             </tr>
           ))}

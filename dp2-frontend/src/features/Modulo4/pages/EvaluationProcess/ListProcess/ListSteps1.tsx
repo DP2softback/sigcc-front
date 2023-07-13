@@ -16,6 +16,7 @@ interface Applicant {
 
 interface App{
 	user: User
+	id: string
 }
 interface User {
 	first_name: string;
@@ -25,12 +26,18 @@ interface Training{
 	id: number
 }
 
+
+
 const ApplicantList: React.FC = () => {
   const [applicants, setApplicants] = useState<Applicant[]>([]);
   const [nameFilter, setNameFilter] = useState("");
   const [percentageFilter, setPercentageFilter] = useState("");
 	const [training, setTraining] = useState();
 	const [loading, setLoading] = useState(true);
+	const [selectedCompetencias, setSelectedCompetencias] = useState<number[]>(
+		[]
+	);
+	var value = localStorage.getItem("screen");
 
   // Función para filtrar los postulantes
   
@@ -51,9 +58,10 @@ const ApplicantList: React.FC = () => {
 		console.log("afinidad:",percentageFilter)
 		const json = {
 			"hiring_process":1,    
+			"mandatory": selectedCompetencias,
 			"affinity":parseInt(percentageFilter)
 		}
-		axios.post(`${LOCAL_CONNECTION}/filter-second-step`, json, {
+		axios.post(`${LOCAL_CONNECTION}/filter-first-step`, json, {
 			headers: {
 				Authorization: `Token ${SAMPLE_TOKEN}`
 			}
@@ -72,9 +80,48 @@ const ApplicantList: React.FC = () => {
     event.preventDefault();
     
   };
+	async function filtrarIDs() {
+		const passArray = [];
+		const notPassArray = [];
+	
+		applicants.forEach(item => {
+			if (item.pass === 'PASS') {
+				passArray.push(item.applicant.id);
+			} else if (item.pass === 'NOT PASS') {
+				notPassArray.push(item.applicant.id);
+			}
+		});
+	
+		console.log('Pass Array:', passArray);
+		console.log('Not Pass Array:', notPassArray);
+	
+		// Llamar a la función para realizar el POST con Axios
+		await realizarPost(passArray, notPassArray);
+	}
+	
+	// Función para realizar el POST con Axios
+	async function realizarPost(passArray, notPassArray) {
+
+			const json = {  
+				"successful_applicant_ids":passArray,
+    		"unsuccessful_applicant_ids":notPassArray
+			}
+			axios.put(`${LOCAL_CONNECTION}/process-stages/`+value, json, {
+				headers: {
+					Authorization: `Token ${SAMPLE_TOKEN}`
+				}
+			}).then((response) => {
+				console.log("FILTRADO COMPLETO")
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+		
+	}
 
   const handleCloseStageButtonClick = () => {
-    navigateBack();
+
+		filtrarIDs();
   };
 
 	const fetchData = async () => {
@@ -111,7 +158,7 @@ const ApplicantList: React.FC = () => {
   }, []);
 
 	const handleSelectCompetencias = (ids: number[]) => {
-
+		setSelectedCompetencias(ids);
 	}
 
   return (
@@ -149,19 +196,20 @@ const ApplicantList: React.FC = () => {
               onChange={handlePercentageFilterChange}
               className="mt-2"
             />
+							
             <MultiSelect
 							options={training}
-							label="name"
+							label="training_literal"
 							value="id"
-							placeholder="Seleccionar Competencias"
+							placeholder="Training"
 							handleSelect={handleSelectCompetencias}
 						/>
+					
             <div style={{ textAlign: "right" }}>
               <Button
                 variant="primary"
                 type="submit"
                 onClick={handleFilterButtonClick}
-                className="mt-2"
                 style={{ float: "right" }}
               >
                 Filtrar
