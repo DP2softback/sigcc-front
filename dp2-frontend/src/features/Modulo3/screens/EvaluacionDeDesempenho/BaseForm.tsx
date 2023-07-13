@@ -251,7 +251,7 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 							navigateTo(PERFORMANCE_EVALUATION_AUTO, {
 								id: employee.id,
 								name: employee.name,
-								evaluationId: evaluationId
+								evaluationId: evaluation
 							});
 							setIsLoading(false);
 						}, 2000);
