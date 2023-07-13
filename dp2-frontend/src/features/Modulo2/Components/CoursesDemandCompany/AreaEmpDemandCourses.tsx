@@ -309,7 +309,7 @@ const SelectDemandCourses: React.FC = () => {
                 onChange={handleSelectAllRows}
           />
         </div>
-        <div className='container-fluid'>
+        <div className='container-fluid tabla'>
           {(posicionSeleccionada!==-1 && buscar) ? renderTablaCompetencias() : "Seleccione un AREA y/o POSICION"}
         </div>
       </div>

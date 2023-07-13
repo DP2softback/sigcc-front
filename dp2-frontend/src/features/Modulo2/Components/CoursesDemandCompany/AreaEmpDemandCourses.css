@@ -44,6 +44,19 @@
     width: 43%;
 }
 
+.tabla{
+    overflow-y: auto;
+    height: 25em;
+}
+
+table{
+    overflow-x: auto;
+    overflow-y: auto;
+    display: table;
+    white-space: nowrap; 
+}
+
+
 @media all and (max-width:40em){
     .botones{
         width: 80%;
