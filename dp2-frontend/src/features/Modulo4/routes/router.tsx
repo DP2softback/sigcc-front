@@ -11,6 +11,7 @@ import {
 	LIST_JOB_POSITION,
 	CREATE_JOB_POSITION,
 	SELECTION_PROCESS,
+	SELECTION_INDICADORES,
 	CREATE_SELECTION_PROCESS,
 	LIST_SELECTION_PROCESS,
 	DETAIL_JOB_OFFER,
@@ -57,11 +58,27 @@ const DetalleOfertaLaboral = Loader(
 );
 
 const RegisterInOferta = Loader(
-	lazy(() => import("@features/Modulo4/pages/JobPositions/CreateJobOffer/index"))
+	lazy(
+		() => import("@features/Modulo4/pages/JobPositions/CreateJobOffer/index")
+	)
 );
 
 const ListProcess = Loader(
-	lazy(() => import("@features/Modulo4/pages/EvaluationProcess/ListProcess/ListProcess"))
+	lazy(
+		() =>
+			import(
+				"@features/Modulo4/pages/EvaluationProcess/ListProcess/ListProcess"
+			)
+	)
+);
+
+const IndicadoresProcesoSeleccion = Loader(
+	lazy(
+		() =>
+			import(
+				"@features/Modulo4/pages/IndicadoresProcesoSeleccion/IndicadoresProcesoSeleccion"
+			)
+	)
 );
 
 const ListStep1 = Loader(
@@ -153,6 +170,19 @@ export const routes: RouteObject[] = [
 				path: SELECTION_PROCESS,
 				children: [
 					{
+						path: SELECTION_INDICADORES,
+						element: (
+							<AppLayout
+								allowedRoles={[
+									Roles.HR_ADMIN,
+									Roles.HR_MANAGER,
+									Roles.HR_WORKER
+								]}>
+								<IndicadoresProcesoSeleccion />
+							</AppLayout>
+						)
+					},
+					{
 						path: CREATE_SELECTION_PROCESS,
 						element: (
 							<AppLayout
@@ -176,7 +206,7 @@ export const routes: RouteObject[] = [
 									Roles.HR_WORKER,
 									Roles.CANDIDATE
 								]}>
-								<ListProcess/>
+								<ListProcess />
 							</AppLayout>
 						)
 					},

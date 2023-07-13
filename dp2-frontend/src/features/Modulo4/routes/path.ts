@@ -7,6 +7,7 @@ export const LIST_JOB_OFFERS = 'list';
 export const DETAIL_JOB_OFFER = 'detail';
 export const REGISTER_IN_JOB_OFFER = 'register';
 
+export const SELECTION_INDICADORES = 'selection-process-indicators';
 export const SELECTION_PROCESS = 'selection-process';
 export const CREATE_SELECTION_PROCESS = 'create';
 export const EDIT_SELECTION_PROCESS = 'edit';
