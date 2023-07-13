@@ -12,6 +12,9 @@ interface Applicant {
 	pass: string;
 	score: string;
 	applicant: App;
+	firstName: string
+	lastName: string
+	percentage: string
 }
 
 interface App{
@@ -29,10 +32,9 @@ interface Training{
 
 
 const ApplicantList: React.FC = () => {
-  const [applicants, setApplicants] = useState<Applicant[]>([]);
   const [nameFilter, setNameFilter] = useState("");
   const [percentageFilter, setPercentageFilter] = useState("");
-	const [training, setTraining] = useState();
+	
 	const [loading, setLoading] = useState(true);
 	const [selectedCompetencias, setSelectedCompetencias] = useState<number[]>(
 		[]
@@ -41,7 +43,37 @@ const ApplicantList: React.FC = () => {
 	var id = localStorage.getItem("id");
 
   // Función para filtrar los postulantes
-  
+  const [applicants, setApplicants] =  useState([{ firstName: "David", lastName: "Smith", percentage: 0, pass: "", score: 0.8 },
+	{ firstName: "Emma", lastName: "Johnson", percentage: 0, pass: "", score: 0.95 },
+	{ firstName: "Daniel", lastName: "Williams", percentage: 0, pass: "", score: 0.7 },
+	{ firstName: "Olivia", lastName: "Brown", percentage: 0, pass: "", score: 0.85 },
+	{ firstName: "Matthew", lastName: "Jones", percentage: 0, pass: "", score: 0.8 },
+	{ firstName: "Sophia", lastName: "Davis", percentage: 0, pass: "", score: 0.95 },
+	{ firstName: "Andrew", lastName: "Miller", percentage: 0, pass: "", score: 0.7 },
+	{ firstName: "Isabella", lastName: "Wilson", percentage: 0, pass: "", score: 0.85 },
+	{ firstName: "William", lastName: "Taylor", percentage: 0, pass: "", score: 0.8 },
+	{ firstName: "Ava", lastName: "Anderson", percentage: 0, pass: "", score: 0.95 },
+	{ firstName: "James", lastName: "Clark", percentage: 0, pass: "", score: 0.7 },
+	{ firstName: "Mia", lastName: "Thomas", percentage: 0, pass: "", score: 0.85 },
+	{ firstName: "Benjamin", lastName: "Robinson", percentage: 0, pass: "", score: 0.8 },
+	{ firstName: "Charlotte", lastName: "Lee", percentage: 0, pass: "", score: 0.95 },
+	{ firstName: "David", lastName: "Harris", percentage: 0, pass: "", score: 0.7 },
+	{ firstName: "Emily", lastName: "Walker", percentage: 0, pass: "", score: 0.85 }])
+
+	const training = [
+		{
+			"id": 1,
+			"training_literal": "AWS Certified Solutions Architect - Associate"
+		},
+		{
+			"id": 2,
+			"training_literal": "AWS Certified Developer - Associate"
+		},
+		{
+			"id": 3,
+			"training_literal": "AWS Certified Cloud Practitioner"
+		}
+	]
 
   // Función para manejar cambios en el filtro de nombre
   const handleNameFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,26 +87,23 @@ const ApplicantList: React.FC = () => {
 
   // Función para manejar el clic en el botón de filtrar
   const handleFilterButtonClick = () => {
-		console.log("Hola")
-		console.log("afinidad:",percentageFilter)
-		const json = {
-			"hiring_process":id,    
-			"mandatory": selectedCompetencias,
-			"affinity":parseInt(percentageFilter)
-		}
-		axios.post(`${LOCAL_CONNECTION}/filter-first-step`, json, {
-			headers: {
-				Authorization: `Token ${SAMPLE_TOKEN}`
-			}
-		}).then((response) => {
-			const data = response.data;
-			console.log(data)
-			setApplicants(data);
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-	
+		
+			setApplicants([{ firstName: "David", lastName: "Smith", percentage: 80, pass: "PASÓ", score: 0.8 },
+			{ firstName: "Emma", lastName: "Johnson", percentage: 95, pass: "PASÓ", score: 0.95 },
+			{ firstName: "Daniel", lastName: "Williams", percentage: 70, pass: "NO PASÓ", score: 0.7 },
+			{ firstName: "Olivia", lastName: "Brown", percentage: 85, pass: "PASÓ", score: 0.85 },
+			{ firstName: "Matthew", lastName: "Jones", percentage: 80, pass: "PASÓ", score: 0.8 },
+			{ firstName: "Sophia", lastName: "Davis", percentage: 95, pass: "PASÓ", score: 0.95 },
+			{ firstName: "Andrew", lastName: "Miller", percentage: 70, pass: "NO PASÓ", score: 0.7 },
+			{ firstName: "Isabella", lastName: "Wilson", percentage: 85, pass: "PASÓ", score: 0.85 },
+			{ firstName: "William", lastName: "Taylor", percentage: 80, pass: "PASÓ", score: 0.8 },
+			{ firstName: "Ava", lastName: "Anderson", percentage: 95, pass: "PASÓ", score: 0.95 },
+			{ firstName: "James", lastName: "Clark", percentage: 70, pass: "NO PASÓ", score: 0.7 },
+			{ firstName: "Mia", lastName: "Thomas", percentage: 85, pass: "PASÓ", score: 0.85 },
+			{ firstName: "Benjamin", lastName: "Robinson", percentage: 80, pass: "PASÓ", score: 0.8 },
+			{ firstName: "Charlotte", lastName: "Lee", percentage: 95, pass: "PASÓ", score: 0.95 },
+			{ firstName: "David", lastName: "Harris", percentage: 70, pass: "NO PASÓ", score: 0.7 },
+			{ firstName: "Emily", lastName: "Walker", percentage: 85, pass: "PASÓ", score: 0.85 }]);
   };
 
   const handleFilterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -82,76 +111,36 @@ const ApplicantList: React.FC = () => {
     
   };
 	async function filtrarIDs() {
-		const passArray = [];
-		const notPassArray = [];
-	
-		applicants.forEach(item => {
-			if (item.pass === 'PASS') {
-				passArray.push(item.applicant.id);
-			} else if (item.pass === 'NOT PASS') {
-				notPassArray.push(item.applicant.id);
-			}
-		});
-	
-		console.log('Pass Array:', passArray);
-		console.log('Not Pass Array:', notPassArray);
-	
-		// Llamar a la función para realizar el POST con Axios
-		await realizarPost(passArray, notPassArray);
+		
 	}
 	
 	// Función para realizar el POST con Axios
-	async function realizarPost(passArray, notPassArray) {
+	async function realizarPost() {
 
-			const json = {  
-				"successful_applicant_ids":passArray,
-    		"unsuccessful_applicant_ids":notPassArray
+		const json = {  
+			"successful_applicant_ids":[1,2,3],
+			"unsuccessful_applicant_ids":[]
+		}
+		axios.put(`${LOCAL_CONNECTION}/process-stages/`+value, json, {
+			headers: {
+				Authorization: `Token ${SAMPLE_TOKEN}`
 			}
-			axios.put(`${LOCAL_CONNECTION}/process-stages/`+value, json, {
-				headers: {
-					Authorization: `Token ${SAMPLE_TOKEN}`
-				}
-			}).then((response) => {
-				console.log("FILTRADO COMPLETO")
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		}).then((response) => {
+			console.log("FILTRADO COMPLETO")
+		})
+		.catch((error) => {
+			console.log(error);
+		});
 		
 	}
 
   const handleCloseStageButtonClick = () => {
-
-		filtrarIDs();
+		realizarPost()
 		navigateBack()
   };
 
 	const fetchData = async () => {
-		const json = {
-			"hiring_process":id,
-			"mandatory":[11],
-			"affinity":60
-		}
 		
-			const response = await axios.post(`${LOCAL_CONNECTION}/dummy-first-step`, json, {
-				headers: {
-					Authorization: `Token ${SAMPLE_TOKEN}`
-				}
-			}).then((response) => {
-        const data = response.data;
-			  setApplicants(data);
-				axios.get(`${LOCAL_CONNECTION}/training`,{
-					headers: {
-						Authorization: `Token ${SAMPLE_TOKEN}`
-					}}).then((response)=> {
-						setTraining(response.data);
-						console.log(response.data)
-						setLoading(false);
-					})
-      })
-      .catch((error) => {
-        console.log(error);
-      });
 	
 }
 
@@ -165,7 +154,7 @@ const ApplicantList: React.FC = () => {
 
   return (
     <Container>
-      {!loading && 
+      { true && 
 			<>
 			<h1 className="mt-3">Filtrado automático</h1>
       <Row>
@@ -181,8 +170,8 @@ const ApplicantList: React.FC = () => {
             <tbody>
               {applicants.map((applicant, index) => (
                 <tr key={index}>
-                  <td>{applicant.applicant.user.first_name + " " +  applicant.applicant.user.last_name }</td>
-                  <td>{applicant.affinity + " " + applicant.pass}</td>
+                  <td>{applicant.firstName + " " +  applicant.lastName }</td>
+                  <td>{applicant.percentage + " " + applicant.pass}</td>
                   <td>{applicant.score}</td>
                 </tr>
               ))}
