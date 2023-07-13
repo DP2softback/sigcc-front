@@ -1,7 +1,8 @@
 import React from 'react'
-import { Table } from 'react-bootstrap';
+import { Button, Modal, Table } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
-import detailTableIcon from '../../assets/icons/detail-table.svg'
+import detailTableIcon from '../../assets/icons/detail-table.svg';
+import bellIcon from '../../assets/icons/bell.svg';
 import { EMPLOYEES_JOB_OPPORTUNITIES, EMPLOYEES_JOB_STATISTICS, GAPS_ANALYSIS_MODULE } from '@features/Modulo2/routes/path';
 import axiosEmployeeGaps from '@features/Modulo2/services/EmployeeGapsServices';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
@@ -16,6 +17,9 @@ const JobOpportunityCandidates = () => {
     const [tipoOrden, setTipoOrden] = React.useState('ascendente');
     const [campoOrdenamiento, setCampoOrdenamiento] = React.useState('');
     const [isLoading, setIsLoading] = React.useState(true);
+    const [showNotify , setShowNotify] = React.useState(false);
+    const [candidateNotify, setCandidateNotify] = React.useState(null);
+    const [showConfirm, setShowConfirm] = React.useState(false);
 
     React.useEffect(() => {
         const obj = { oferta: jobOpp.id }
@@ -54,6 +58,43 @@ const JobOpportunityCandidates = () => {
                 candidate: cand
             }
         })
+    }
+
+    const handleShowNotify = (cand) => {
+        setCandidateNotify(cand);
+        setShowNotify(true);
+    }
+
+    const handleCloseModalNotify = () => {
+        setShowNotify(false);
+    }
+
+    const handleNotifyCandidate = () => {
+        setShowNotify(false);
+        setIsLoading(true);
+        const obj = {
+            oferta: jobOpp.id,
+            empleados: [
+                {
+                "empleado" : candidateNotify.id
+                }
+            ]
+        }
+        axiosEmployeeGaps
+            .post("gaps/saveListedEmployeeForOffer", obj)
+            .then(function (response) {
+                setIsLoading(false);
+                setShowConfirm(true);
+            })
+            .catch(function (error) {
+                console.log(error);
+                setShowConfirm(true);
+                setIsLoading(false);
+            })
+    }
+
+    const handleCloseConfirm = () => {
+        setShowConfirm(false);
     }
 
     return (
@@ -121,7 +162,9 @@ const JobOpportunityCandidates = () => {
                                                 <td>{Math.round(cand.adecuacion) + '%'}</td>
                                                 <td>{cand.email}</td>
                                                 <td className="text-center">
-                                                    <img src={detailTableIcon} title='Notificar' onClick={() => handleStats(cand)} style={{ cursor: "pointer" }}></img>
+                                                    <img src={detailTableIcon} title='Detalle' onClick={() => handleStats(cand)} style={{ cursor: "pointer" }} className='mx-2'></img>
+                                                    <img src={bellIcon} title='Notificar' onClick={() => handleShowNotify(cand)} style={{ cursor: "pointer" }} className='mx-2'></img>
+                                                    
                                                 </td>
                                             </tr>
                                         ))}
@@ -133,6 +176,38 @@ const JobOpportunityCandidates = () => {
                     </>
                 }
             </div>
+
+            <Modal show={showNotify} onHide={handleCloseModalNotify}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Mensaje de confirmación</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>  
+                    <p>¿Seguro que desea notificar la oferta laboral al empleado {candidateNotify?.first_name + ' ' + candidateNotify?.last_name}?</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseModalNotify}>
+                        Cancelar
+                    </Button>
+                    <Button variant="primary" onClick={handleNotifyCandidate}>
+                        Aceptar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={showConfirm} onHide={handleCloseConfirm}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Mensaje de alerta</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className='container-fluid'>   
+                        <p>Se notificó la oferta laboral al empleado {candidateNotify?.first_name + ' ' + candidateNotify?.last_name}?</p>
+                        <div className='espacio'>
+                            <Button variant="primary" onClick={handleCloseConfirm}>
+                                Aceptar
+                            </Button>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
         </>
     )
 }

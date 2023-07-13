@@ -3,7 +3,7 @@ import { BACKEND_URL, PERFORMANCE_EVALUATION_TYPE, TOKEN } from '../utils/consta
 import { getEmployeeEvaluationDashboardShared, getEmployeesEvaluationDashboardShared, getEmployeesShared, getEvaluationsHistoryShared } from './shared';
 
 export const getEmployees = async (params: any) => { 
-  return await getEmployeesShared(PERFORMANCE_EVALUATION_TYPE, params.bossId, params.fecha_inicio, params.fecha_fin);
+  return await getEmployeesShared(PERFORMANCE_EVALUATION_TYPE, params.bossId, params.fecha_inicio, params.fecha_fin, params.employeeName);
 }
 
 export const getEvaluationsHistory = async (params: any) => {
@@ -38,6 +38,18 @@ export const saveAutoevaluation = async (evaluation) => {
       Authorization: `Token ${TOKEN}`
     },
     data: evaluation
+  }
+  return await ajax(optionsRequest);
+}
+
+export const agregarCompromisos = async (data) => {
+  const optionsRequest = {
+    method: 'POST',
+    url: BACKEND_URL + 'Agregarcompromiso',
+    headers:{
+      Authorization: `Token ${TOKEN}`
+    },
+    data: data
   }
   return await ajax(optionsRequest);
 }
