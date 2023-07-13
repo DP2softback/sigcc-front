@@ -690,26 +690,25 @@ const TrainingCreate = () => {
                                 <div className='mt-3 mb-3' style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                     <h4>Competencias</h4>
                                 </div>
-                                {competencies.length ?
-                                    (
-                                        competencies.map((comp, index) => {
-                                            return(
-                                                <div className='row' key={comp.id}>
-                                                    <div className='col-1'>
-                                                        <h6><b>{index + 1}.</b></h6>
+                                <div className='card'>
+                                    <div className='card-body'>
+                                    {competencies.length ?
+                                        (
+                                            competencies.map((comp, index) => {
+                                                return(
+                                                    <div className='row' key={comp.id}>
+                                                        <p><b>{index + 1}. </b>{comp.name}</p>
                                                     </div>
-                                                    <div className='col-10'>
-                                                        <p>{comp.name}</p>
-                                                    </div>
-                                                </div>
-                                            )
-                                        })
-                                    )
-                                    :
-                                    (
-                                        <p>No se asignaron competencias</p>
-                                    )
-                                }   
+                                                )
+                                            })
+                                        )
+                                        :
+                                        (
+                                            <p>No se asignaron competencias</p>
+                                        )
+                                    }
+                                    </div>
+                                </div> 
                             </div>
                         </div>
 

@@ -57,6 +57,7 @@ const IntegralEvaluation = () => {
 
     const [fileName, setFileName] = useState<string>("")
     const [fileURL, setFileURL] = useState<string>("")
+    const [fileURLEval, setFileURLEval] = useState<string>("")
 
     const refLPFile = useRef(null);
     const refLPComment = useRef<HTMLTextAreaElement>(null);
@@ -69,6 +70,7 @@ const IntegralEvaluation = () => {
             .then(function (response) {
                 console.log(response.data)
                 setLPDetails(response.data.datos_learning_path)
+                setFileURLEval(response.data.datos_learning_path.archivo_eval.url_documento)
                 setLPCourses(response.data.cursos)
 
                 if(response.data.archivo_emp === null){
@@ -204,7 +206,7 @@ const IntegralEvaluation = () => {
                                                     <p className="card-text">{lpDetails.descripcion_evaluacion === null ? dataEvaluation.descripcion : lpDetails.descripcion_evaluacion}</p>
                                                     <div className='row mt-3'>
                                                         <div className='col'>
-                                                            <button className='btn btn-outline-primary'><Download /><span style={{ marginLeft: "1rem" }}>Especificaciones de la evaluación</span></button>
+                                                            <button className='btn btn-outline-primary'><a href={fileURLEval}><Download/><span style={{marginLeft: "1rem"}}>Especificaciones de la evaluación</span></a></button>
                                                         </div>
                                                     </div>
 
