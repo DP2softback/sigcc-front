@@ -3,6 +3,7 @@ import JobOpportunityCard from '../JobOpportunityCard/JobOpportunityCard';
 import axiosEmployeeGaps from '@features/Modulo2/services/EmployeeGapsServices';
 import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
 import { Button, Modal } from 'react-bootstrap';
+import JobOpportunityCardEmployee from '../JobOpportunityCard/JobOpportunityCardEmployee';
 
 const JobOpportunitiesRelatedToSkills = () => {
     const [isLoading, setIsLoading] = React.useState(false);
@@ -17,6 +18,7 @@ const JobOpportunitiesRelatedToSkills = () => {
         axiosEmployeeGaps
             .post("gaps/searchJobOfferxEmployeePreRegistered", obj)
             .then(function (response) {
+                console.log(response)
                 setJopOpportunities(response.data);
                 setIsLoading(false);
             })
@@ -42,7 +44,7 @@ const JobOpportunitiesRelatedToSkills = () => {
                         {jobOpportunities && jobOpportunities.length !== 0 ? jobOpportunities.map((jobOpt, index) => {
                             return (
                                 <div className='col-4'>
-                                    <JobOpportunityCard jobOpportunity={jobOpt} numBot={3} />
+                                    <JobOpportunityCardEmployee jobOpportunity={jobOpt} numBot={3} />
                                 </div>
                             )
                         })
