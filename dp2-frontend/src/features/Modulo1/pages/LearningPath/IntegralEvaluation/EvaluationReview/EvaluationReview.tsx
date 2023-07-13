@@ -2,7 +2,6 @@ import RubricGrade from '@features/Modulo1/components/Rubric/RubricGrade';
 import { useEffect, useState } from 'react'
 import { ArrowLeftCircleFill, Download } from 'react-bootstrap-icons';
 import { useNavigate, useParams } from 'react-router-dom';
-import gradeSample from '@features/Modulo1/components/Rubric/gradeSample.json'
 import axiosInt from '@config/axios';
 
 const dataHard = {

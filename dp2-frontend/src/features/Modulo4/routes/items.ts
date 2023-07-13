@@ -12,7 +12,8 @@ import {
 	SELECTION_PROCESS,
 	CREATE_SELECTION_PROCESS,
 	LIST_SELECTION_PROCESS,
-	REGISTER_IN_JOB_OFFER
+	REGISTER_IN_JOB_OFFER,
+	LIST_SELECTION_PROCESS_STEP
 } from "./path";
 
 export const sideBarItemsGroup4: TSidebarItemGroup[] = [
@@ -32,6 +33,13 @@ export const sideBarItemsGroup4: TSidebarItemGroup[] = [
 						roles: [Roles.HR_ADMIN, Roles.HR_MANAGER],
 						hasChildren: false,
 						route: `/${SELECTION_PROCESS_AND_JOB_OFFERS_MODULE}/${SELECTION_PROCESS}/${LIST_SELECTION_PROCESS}`
+					},
+					{
+						name: "Ver etapa",
+						icon: Table,
+						roles: [Roles.HR_ADMIN, Roles.HR_MANAGER],
+						hasChildren: false,
+						route: `/${SELECTION_PROCESS_AND_JOB_OFFERS_MODULE}/${SELECTION_PROCESS}/${LIST_SELECTION_PROCESS_STEP}`
 					},
 					{
 						name: "Nuevo Proceso",

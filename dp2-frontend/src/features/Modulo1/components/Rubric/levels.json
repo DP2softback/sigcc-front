@@ -1,26 +1,32 @@
 [
     {
         "id": 1,
-        "name": "No presenta"
+        "name": "No presenta",
+        "score": 0
     },
     {
         "id": 2,
-        "name": "Muy básico"
+        "name": "Muy básico",
+        "score": 20
     },
     {
         "id": 3,
-        "name": "Básico"
+        "name": "Básico",
+        "score": 40
     },
     {
         "id": 4,
-        "name": "Intermedio"
+        "name": "Intermedio",
+        "score": 60
     },
     {
         "id": 5,
-        "name": "Avanzado"
+        "name": "Avanzado",
+        "score": 80
     },
     {
         "id": 6,
-        "name": "Muy avanzado"
+        "name": "Muy avanzado",
+        "score": 100
     }
 ]

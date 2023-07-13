@@ -10,15 +10,22 @@ const Detail = () => {
     id: parseInt(urlParams.get('id')),
     name: urlParams.get('name')
   })
-  const [evaluation, setEvaluation] = useState({});
+  const [evaluation, setEvaluation] = useState({
+    categories: []
+  });
+  const [associatedEvaluation, setAssociatedEvaluation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoading(false);
     (async () => {
       const response = await getEvaluation(parseInt(urlParams.get('evaluationId')));
       if (response) {
         setEvaluation(response);
+        if (response.RelatedEvaluation) {
+          const associatedResponse = await getEvaluation(response.RelatedEvaluation);          
+          if (associatedResponse) setAssociatedEvaluation(associatedResponse);
+        }
       }
       setIsLoading(false);
     })();
@@ -27,8 +34,9 @@ const Detail = () => {
   return (
     <BaseForm
       employee={employee}
-      categories={[]}
+      categories={evaluation.categories}
       evaluation={evaluation}
+      associatedEvaluation={associatedEvaluation}
       isLoading={isLoading}
       isReadOnly={true}
     />

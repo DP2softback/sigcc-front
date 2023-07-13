@@ -63,7 +63,7 @@ const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 				id: id,
 				user: user
 			}));
-			console.log("arrEmpleados:", arrEmpleados);
+			//console.log("arrEmpleados:", arrEmpleados);
 			setSearchResults(arrEmpleados);
 		};
 
@@ -82,11 +82,17 @@ const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 	}, [searchQuery]);
 
 	const performSearch = (query) => {
-		setFilteredResults(
-			searchResults.filter((persona) =>
-				persona.user.last_name.toLowerCase().includes(query.toLowerCase())
-			)
-		);
+		if (query == "") {
+			setFilteredResults([]);
+		} else {
+			setFilteredResults(
+				searchResults.filter((persona) =>
+					(persona.user.last_name + persona.user.first_name)
+						.toLowerCase()
+						.includes(query.toLowerCase())
+				)
+			);
+		}
 	};
 
 	// TODOS LAS TABLAS ESTRUCTURA
@@ -100,45 +106,6 @@ const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 			selector: (row) => row.user.email
 		}
 	];
-
-	/*
-	const data = [
-		{
-			id: 1,
-			registro: "R123213",
-			user.last_name: "Jaime Lannister"
-		},
-		{
-			id: 2,
-			registro: "R333413",
-			user.last_name: "Eddard Stark"
-		},
-		{
-			id: 3,
-			registro: "R723513",
-			user.last_name: "Jon Snow"
-		},
-		{
-			id: 4,
-			registro: "R623513",
-			user.last_name: "Daenerys Targaryen"
-		},
-		{
-			id: 5,
-			registro: "R343513",
-			user.last_name: "Tyrion Lannister"
-		},
-		{
-			id: 6,
-			registro: "R323513",
-			user.last_name: "Sansa Stark"
-		},
-		{
-			id: 7,
-			registro: "R555513",
-			user.last_name: "Arya Stark"
-		}
-	];*/
 
 	interface TableRow {
 		id: number;
@@ -162,9 +129,6 @@ const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 	};
 
 	const handleAddResponsableToTable = () => {
-		//console.log("selectedTrabajador:", selectedTrabajador); // Verificar si selectedTrabajador está definido y es un array
-		//console.log("arrSelectedResponsables:", arrSelectedResponsables); // Verificar si selectedTrabajador está definido y es un array
-
 		setToggleClearedTrabajador(!toggleClearedTrabajador);
 		if (Array.isArray(selectedTrabajador) && selectedTrabajador.length > 0) {
 			forEach(selectedTrabajador, (trabajador) => {
@@ -278,6 +242,7 @@ const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 							<div style={{ height: "20rem" }}>
 								<FixedHeaderStory
 									title="Resultados de búsqueda"
+									noDataComponent="No hay resultados de búsqueda"
 									columns={columns}
 									data={filteredResults}
 									selectableRows
@@ -295,6 +260,7 @@ const SearchInput = ({ arrResponsables, onClose, onSelect }) => {
 							<div style={{ height: "20rem" }}>
 								<FixedHeaderStory
 									title="Responsables seleccionados"
+									noDataComponent="No hay responsables seleccionados"
 									columns={columns}
 									data={arrSelectedResponsables}
 									selectableRows

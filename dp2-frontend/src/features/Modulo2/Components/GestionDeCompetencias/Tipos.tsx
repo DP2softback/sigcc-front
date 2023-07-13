@@ -4,27 +4,25 @@ export  type Competencia = {
     name: string;
     description: string;
     type: number;
-    active: boolean;
+    isActive: boolean;
   };
-
 
 export  type tipoCompetencia = {
     id: number,
     abbreviation: string;
     name: string;
     description: string;
-    active: boolean;
+    isActive: boolean;
     upperType: boolean;
   }
 
 export type CompetenciaTrabajador = {
-  competence__code: string,
-  competence__name: string,
-  competence__type__name: string,
+  competence_code: string,
+  competence_name: string,
+  competence_type: string,
   levelCurrent: number,
   levelRequired: number,
-  levelGap: number,
-  description: string
+  likeness: number
 }
   
 export type EmpleadoDeArea = {
@@ -40,4 +38,9 @@ export type EmpleadoDeArea = {
 export type AreaActiva = {
   id: number,
   name: string
+}
+
+export type Posicion = {
+  position__id: number,
+  position__name: string
 }

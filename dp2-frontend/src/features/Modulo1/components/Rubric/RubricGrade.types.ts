@@ -1,13 +1,12 @@
-export type Level = {
-    id?: number,
-    name?: string,
+export type Score = {
+        id: number,
+        name: string,
+        score: number
 }
-
 export type Criteria = {
     id: number,
     name: string,
-    limit: number,
-    level: Level,
+    score: Score,
 }
 
 export type PropsRubricCriterias = {
@@ -21,10 +20,9 @@ export type StateRubricCriterias = {
 
 export type PropsChoiceBase = {
     name: string,
-    choice: Level,
     onChange: any,
     disabled: boolean,
-    limit: number,
+    choice: Score,
 }
 
 export type StateChoiceBase = {

@@ -19,8 +19,7 @@ export default function TableCategories({ rows, isReadOnly = false }) {
       <thead className={`bg-white${isReadOnly ? 'ReadOnly' : ''}`}>
         <tr>
           <th className='categorie_name'>Nombre</th>
-          <th>Tipo de evaluación</th>
-          <th className='text-end label'>Acciones</th>
+          <th className='text-end labelA'>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -29,16 +28,9 @@ export default function TableCategories({ rows, isReadOnly = false }) {
           return (
             <tr key={row.id} className={rowStyle}>
               <td className='categorie_name'>{row.name}</td>
-              <td>{row['evaluationType'].name}</td>
               <td className='text-center'>                
                 <div className='acciones'>
-                <Button variant="outline-danger" className='accion'>
-                  Eliminar
-                </Button>
-                <Button variant="outline-primary" className='accion'>
-                  Editar
-                </Button>
-                <Button variant="outline-secondary" className='accion' onClick={() => {
+                <Button variant="outline-primary" className='accion' onClick={() => {
                     navigateTo(CATEGORIES_DETAIL, {
                       id: row.id,
                       name: row.name,

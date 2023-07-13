@@ -24,12 +24,10 @@ const axiosInt = axios.create({
   baseURL: baseUrl,
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': 'Token b7f640fc5d833b0329e6b1045f088c0fcf5f191e',
+    'Authorization': localStorage.getItem('dp2-access-token')
+      ? 'Token ' + localStorage.getItem('dp2-access-token')
+      : null,
   }
-  //     'Authorization': localStorage.getItem('dp2-access-token')
-  //     ? 'Token ' + localStorage.getItem('dp2-access-token')
-  //     : null,
-  // }
 });
 
 // axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
@@ -37,11 +35,11 @@ const axiosInt = axios.create({
 axiosInt.interceptors.response.use(
   (response) => response,
   (error) =>
-    { 
-      return Promise.reject(
-        (error.response && error.response.data) || 'There is an error!'
-      )
-    }
+  {
+    return Promise.reject(
+      (error.response && error.response.data) || 'There is an error!'
+    )
+  }
 );
 
 export default axiosInt;
