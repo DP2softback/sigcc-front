@@ -52,11 +52,15 @@ const SelectDemandCourses: React.FC = () => {
   };
   const handleGenerar = async ()=>{
     const  a = posicionSeleccionada.toString(); 
+    const empleadosId = selectedRows.map(id => ({
+      empleado: id
+    }));
+    console.log(empleadosId)
     try {
       const body = {
         "area": areaSeleccionada,
         "posicion": parseInt(a),
-        "empleados": selectedRows.length > 0 ? selectedRows.map((competencia)=>competencia.id) : [],
+        "empleados": selectedRows.length > 0 ? empleadosId : [],
       };
       console.log(body)
       const response = await fetch(
@@ -95,6 +99,7 @@ const SelectDemandCourses: React.FC = () => {
   const isRowSelected = (competenciaId) => selectedRows.includes(competenciaId);
 
   const handleAreaChange = async (value) => {
+    console.log(value)
     setAreaSeleccionada(value);
     if (value) {
       try {

@@ -2,7 +2,7 @@ import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { useEffect, useState } from "react";
 import { useLocation,  useNavigate  } from 'react-router-dom';
-import { Competencia, tipoCompetencia,AreaActiva } from "../GestionDeCompetencias/Tipos";
+import { Competencia, tipoCompetencia,AreaActiva, Posicion } from "../GestionDeCompetencias/Tipos";
 import './ConsolidadoCompetencias.css';
 import { GAPS_ANALYSIS_MODULE, GAPS_EMPLOYEES_AREA, GAPS_EMPLOYEES_AREA_DETAIL } from '@features/Modulo2/routes/path';
 
@@ -39,8 +39,8 @@ const PieChart = ({ title, labels, datasets }) => {
       const [data1, setData1] = useState(null);
       const [data2, setData2] = useState(null);
       const [tipoCompetencias, setTipoCompetencias] = useState<tipoCompetencia[]>([]);
-      const [tipoCompetencia, setTipoCompetencia] = useState<AreaActiva>(null);
-      const [areasActivas, setAreasActivas] = useState<AreaActiva[]>([]);
+      const [tipoCompetencia, setTipoCompetencia] = useState<Posicion>(null);
+      const [areasActivas, setAreasActivas] = useState<Posicion[]>([]);
       const [abbreviation, setAbbreviation] = useState('');
       const [hard, setHard] = useState(['Ingeniero de software', 'Desarrollador de aplicaciones', '	Arquitecto de software','Analista de sistemas', 'Asistente' ]);
       
