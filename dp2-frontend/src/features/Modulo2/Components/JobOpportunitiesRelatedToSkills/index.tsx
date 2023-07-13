@@ -49,7 +49,7 @@ const JobOpportunitiesRelatedToSkills = () => {
 		setIsLoading(true);
 		const obj = {
             oferta: jobOptSelected.job_offer__id,
-			empleado: 1,
+			empleado: 7,
 			acepta: option
         }
         axiosEmployeeGaps
@@ -60,6 +60,7 @@ const JobOpportunitiesRelatedToSkills = () => {
             })
             .catch(function (error) {
                 console.log(error);
+                setShowConfirm(true);
                 setIsLoading(false);
             })
 	}
