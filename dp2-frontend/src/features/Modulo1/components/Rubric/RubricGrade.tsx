@@ -12,8 +12,22 @@ export default class RubricGrade extends React.Component<PropsRubricCriterias, S
     constructor(props)
     {
         super(props);
+        let criterias = props.criterias;
+        if (props.disabled)
+        {
+            criterias = props.criterias.map((item: any) =>
+            {
+                const score = item.score;
+                const option = levels.find(op => op.score === score);
+                if (option)
+                {
+                    item.choice = { id: option.id, name: option.name, score: score };
+                }
+                return item;
+            });
+        }
         this.state = {
-            criterias: [],
+            criterias: criterias,
         }
     }
 
@@ -57,13 +71,11 @@ export default class RubricGrade extends React.Component<PropsRubricCriterias, S
                     const option = levels.find(op => op.score === score);
                     if (option)
                     {
-                        item.score = { id: option.id, name: option.name, score: score };
+                        item.choice = { id: option.id, name: option.name, score: score };
                     }
                     return item;
                 });
             }
-            console.log(criterias);
-
             this.setState({
                 criterias: criterias,
             })
@@ -89,8 +101,14 @@ export default class RubricGrade extends React.Component<PropsRubricCriterias, S
                                 return (
                                     <Fragment key={criteriaIndex}>
                                         <tr>
-                                            <ChoiceBase disabled={this.props.disabled} key={criteriaIndex} name={criteria.name} choice={criteria.choice}
-                                                onChange={criteriaState => this.handleCriteriaChange(criteriaIndex, criteriaState)}
+                                            <ChoiceBase
+                                                disabled={this.props.disabled}
+                                                key={criteriaIndex}
+                                                name={criteria.name}
+                                                choice={criteria.choice}
+                                                onChange={criteriaState =>
+                                                    this.handleCriteriaChange(criteriaIndex, criteriaState)
+                                                }
                                             />
                                         </tr>
                                     </Fragment>
@@ -127,14 +145,12 @@ class ChoiceBase extends React.Component<PropsChoiceBase, StateChoiceBase>
         this.props.onChange(selected);
     }
 
-    componentDidUpdate (prevProps: Readonly<PropsChoiceBase>)
+    componentDidUpdate (prevProps: Readonly<PropsChoiceBase>, prevState: Readonly<StateChoiceBase>, snapshot?: any): void
     {
-        if (this.props.choice && prevProps.choice !== this.props.choice)
-        {
-            this.forceUpdate();
-        }
+        console.log(prevProps);
+        console.log(this.props);
+        console.log("dfffdfdffd")
     }
-
 
     render ()
     {

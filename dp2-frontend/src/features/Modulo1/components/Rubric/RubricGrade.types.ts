@@ -1,3 +1,5 @@
+import { number } from "zod"
+
 export type Score = {
         id: number,
         name: string,
