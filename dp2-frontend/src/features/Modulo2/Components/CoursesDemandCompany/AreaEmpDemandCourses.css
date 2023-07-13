@@ -35,3 +35,26 @@
 .subtitle{
     opacity: 50%;
 }
+
+.Search2{
+    width: 80%;
+}
+
+.Search1{
+    width: 43%;
+}
+
+@media all and (max-width:40em){
+    .botones{
+        width: 80%;
+    }
+
+    .Search{
+        width: 39%;
+        margin-bottom:1em ;
+    }
+    .Search1{
+        width: 39%;
+        margin-bottom: 1em;
+    }
+}
