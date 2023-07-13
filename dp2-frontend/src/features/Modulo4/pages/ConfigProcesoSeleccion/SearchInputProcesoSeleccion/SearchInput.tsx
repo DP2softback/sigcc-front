@@ -108,7 +108,7 @@ const SearchInput = ({ onClose, onSelect }) => {
 					borderCollapse: "collapse"
 				}}>
 				<Modal.Header closeButton>
-					<Modal.Title>Buscar información</Modal.Title>
+					<Modal.Title>Buscar información puesto de trabajo</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<Form>
@@ -150,8 +150,8 @@ const SearchInput = ({ onClose, onSelect }) => {
 									backgroundColor: "white"
 								}}>
 								<tr>
-									<th style={{ minWidth: "7rem" }}>Área</th>
 									<th style={{ minWidth: "16rem" }}>Nombre del puesto</th>
+									<th style={{ minWidth: "14rem" }}>Área</th>
 									<th style={{ minWidth: "10rem" }}>Tipo de jornada</th>
 									<th style={{ minWidth: "10rem" }}>Modalidad</th>
 									<th style={{ minWidth: "5rem" }}>Cantidad actual</th>
@@ -165,8 +165,8 @@ const SearchInput = ({ onClose, onSelect }) => {
 										key={result.id}
 										onClick={() => selectOption(result)}
 										className={selectedResult === result.id ? "selected" : ""}>
-										<td>{result.area_name}</td>
 										<td>{result.position_name}</td>
+										<td>{result.area_name}</td>
 										<td>{result.position_detail.tipoJornada}</td>
 										<td>{result.position_detail.modalidadTrabajo}</td>
 										<td>{result.availableQuantity}</td>
