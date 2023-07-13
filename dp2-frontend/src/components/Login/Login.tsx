@@ -43,6 +43,7 @@ const Login: React.FC = () => {
 
 		try {
 			const userResponse = await login(userCredentials).unwrap();
+			console.log(userResponse)
 			dispatch(
 				setCredentials({
 					user: {
