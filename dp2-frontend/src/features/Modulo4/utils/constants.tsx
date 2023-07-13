@@ -12,7 +12,7 @@ DEPLOY: https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1
 */
 //export const LOCAL_CONNECTION = "http://localhost:8000/api/v1";
 export const LOCAL_CONNECTION =
-	"http://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1";
+	"https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1";
 
 // PROCESO SELECCION
 export const GET_POSICIONES_TRABAJO = "/areaxposition";

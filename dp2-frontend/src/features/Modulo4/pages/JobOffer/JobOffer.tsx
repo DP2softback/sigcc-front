@@ -2,7 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import OfferCard from "@features/Modulo4/components/OfferCard/OfferCard";
-import {LOCAL_CONNECTION}  from '../../utils/constants';
+import {LOCAL_CONNECTION, SAMPLE_TOKEN}  from '../../utils/constants';
+
 
 type JobOfferObj = {
   id: number;
@@ -20,7 +21,11 @@ const JobOffer = () => {
 
   const loadOffers = () => {
     axios
-      .get(`${LOCAL_CONNECTION}/job-offers`)
+      .get(`${LOCAL_CONNECTION}/job-offers`,{
+        headers: {
+          Authorization: `Token ${SAMPLE_TOKEN}`
+        }
+      })
       .then((response) => {
         setData(response.data);
       })
