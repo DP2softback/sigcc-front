@@ -72,19 +72,22 @@ const Edit = () => {
   }, []);
 
   useEffect(() => {
-    const aux = {
-      ...editar,
-      "plantilla-nombre": plantillaName,
-    };
-    (async () => { 
-      const response = await guardarEditar(aux, categorias);
-      if (response){
-        setShowNotification(true); 
-        toast.success("Se ha editado correctamente la plantilla");
-        closeNotification();
-      }
-    })();
+    if (confirmarEditar) {
+      const aux = {
+        ...editar,
+        "plantilla-nombre": plantillaName,
+      };
+      (async () => {
+        const response = await guardarEditar(aux, categorias);
+        if (response) {
+          setShowNotification(true);
+          toast.success("Se ha editado correctamente la plantilla");
+          closeNotification();
+        }
+      })();
+    }
   }, [confirmarEditar]);
+  
 
   function delay(ms: number): Promise<void> {
     return new Promise<void>((resolve) => {

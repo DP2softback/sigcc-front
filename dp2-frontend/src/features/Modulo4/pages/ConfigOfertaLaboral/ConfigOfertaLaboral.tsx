@@ -38,10 +38,10 @@ function ConfigOfertaLaboral(props: any) {
 
 	const createPS = async () => {
 		const dataPost = {
-			hiring_process: 1,
-			introduction: introduccionOferta,
-			offer_introduction: descripcionPuesto,
-			responsabilities_introduction: descripcionResponsa
+			hiring_process_id: procesoSeleccionId,
+			offer_introduction: introduccionOferta,
+			location: ubicacionOferta,
+			salary_range: salarioOferta
 		};
 
 		const optionsRequest = {
@@ -77,6 +77,7 @@ function ConfigOfertaLaboral(props: any) {
 	};
 
 	// NombreOferta
+	const [procesoSeleccionId, setProcesoSeleccionId] = useState("");
 	const [selectedNombreOferta, setSelectedNombreOferta] = useState("");
 	const [selectedNombreOfertaFijo, setSelectedNombreOfertaFijo] = useState("");
 	const [isSelectedNombreOfertaValid, setIsSelectedNombreOfertaValid] =
@@ -91,38 +92,37 @@ function ConfigOfertaLaboral(props: any) {
 		setSelectedNombreOferta(optionValue);
 	};
 
-	// DESCRIPCION 3 CON QUILL
-	const [introduccionOferta, setIntroduccionOferta] = useState("");
-	const [descripcionPuesto, setDescripcionPuesto] = useState("");
-	const [descripcionResponsa, setDescripcionResponsa] = useState("");
+	// UBICACION OFERTA LABORAL
+	const [ubicacionOferta, setUbicacionOferta] = useState("");
+	const handleUbicacionOferta = (event: any) => {
+		const optionValue = event.target.value;
+		setUbicacionOferta(optionValue);
+	};
 
+	// SALARIO OFERTA LABORAL
+	const [salarioOferta, setSalarioOferta] = useState("");
+	const [salarioOfertaValid, setSalarioOfertaValid] = useState(true);
+	const handleSalarioOferta = (event: any) => {
+		const optionValue = event.target.value;
+		setSalarioOferta(optionValue);
+		const numericValue = parseInt(optionValue);
+		if (
+			isNaN(numericValue) ||
+			!Number.isInteger(numericValue) ||
+			optionValue !== numericValue.toString() ||
+			numericValue <= 0
+		)
+			setSalarioOfertaValid(false);
+		else setSalarioOfertaValid(true);
+
+		setSalarioOferta(optionValue);
+	};
+
+	// DESCRIPCION CON QUILL
+	const [introduccionOferta, setIntroduccionOferta] = useState("");
 	const handleChangeIntroOferta = (html) => {
 		setIntroduccionOferta(html);
 	};
-
-	const handleChangeDescripPuesto = (html) => {
-		setDescripcionPuesto(html);
-	};
-
-	const handleChangeDescripResponsa = (html) => {
-		setDescripcionResponsa(html);
-	};
-
-	/*
-	// DESCRIPCIONES 3 CUSTOM INPUTS
-	const handleInputChangeIntroduccionOferta = (event: any) => {
-		const optionValue = event.target.value;
-		setIntroduccionOferta(optionValue);
-	};
-	const handleInputChangeDescripcion = (event: any) => {
-		const optionValue = event.target.value;
-		setDescripcionPuesto(optionValue);
-	};
-	const handleInputChangeResponsa = (event: any) => {
-		const optionValue = event.target.value;
-		setDescripcionResponsa(optionValue);
-	};
-	*/
 
 	// IMAGEN DE REFERENCIA
 	const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -163,6 +163,7 @@ function ConfigOfertaLaboral(props: any) {
 		console.log(selectedOption);
 		setSelectedNombreOferta("Oferta laboral - " + selectedOption.name);
 		setSelectedNombreOfertaFijo(selectedOption.name);
+		setProcesoSeleccionId(selectedOption.id);
 		setIsSelectedNombreOfertaValid(true);
 	};
 
@@ -210,12 +211,7 @@ function ConfigOfertaLaboral(props: any) {
 						data-bs-target="#createLPModalChoose"
 						data-bs-toggle="modal"
 						onClick={() => {
-							if (
-								selectedNombreOferta != "" &&
-								introduccionOferta != "" &&
-								descripcionPuesto != "" &&
-								descripcionResponsa != ""
-							) {
+							if (selectedNombreOferta != "" && introduccionOferta != "") {
 								setShowPublicarModal(true);
 							} else {
 								setIsSelectedNombreOfertaValid(false);
@@ -261,7 +257,7 @@ function ConfigOfertaLaboral(props: any) {
 					<Form.Group as={Row}>
 						<Form.Group as={Col} className="mb-3">
 							<Form.Label style={{ fontSize: "15px" }}>
-								Proceso de seleccion: (*)
+								Proceso de seleccion de oferta laboral: (*)
 							</Form.Label>
 							<Row>
 								<Col xs={10}>
@@ -293,7 +289,7 @@ function ConfigOfertaLaboral(props: any) {
 					<Row>
 						<Form.Group as={Col} className="mb-3">
 							<Form.Label style={{ fontSize: "15px" }}>
-								Nombre de la oferta laboral del proceso de seleccion: (*)
+								Nombre de la oferta laboral: (*)
 							</Form.Label>
 							<Form.Control
 								type="text"
@@ -305,8 +301,50 @@ function ConfigOfertaLaboral(props: any) {
 								//readOnly // Hace que el input sea de solo lectura
 								className={!isSelectedNombreOfertaValid ? "is-invalid" : ""}
 							/>
-							<Form.Control.Feedback></Form.Control.Feedback>
+							<Form.Control.Feedback type="invalid">
+								Seleccionar el proceso de selección y describir la introducción
+								a la oferta laboral.
+							</Form.Control.Feedback>{" "}
 						</Form.Group>
+					</Row>
+
+					<Row>
+						<Col>
+							<Form.Group xs={6} as={Col} className="mb-3">
+								<Form.Label style={{ fontSize: "15px" }}>
+									Ubicación de la oferta laboral: (*)
+								</Form.Label>
+								<Form.Control
+									type="text"
+									placeholder="Especificar la ubicación."
+									value={ubicacionOferta}
+									required
+									onChange={handleUbicacionOferta}
+								/>
+								<Form.Control.Feedback type="invalid">
+									Especificar la ubicación.
+								</Form.Control.Feedback>{" "}
+							</Form.Group>
+						</Col>
+						<Col>
+							<Form.Group xs={6} as={Col} className="mb-3">
+								<Form.Label style={{ fontSize: "15px" }}>
+									Salario oferta laboral en soles: (*)
+								</Form.Label>
+								<Form.Control
+									type="text"
+									placeholder="Especificar el salario."
+									value={salarioOferta}
+									required
+									onChange={handleSalarioOferta}
+									isInvalid={!salarioOfertaValid}
+									isValid={!salarioOfertaValid}
+								/>
+								<Form.Control.Feedback type="invalid">
+									Especificar el salario en formato numérico.
+								</Form.Control.Feedback>{" "}
+							</Form.Group>
+						</Col>
 					</Row>
 
 					<Row>
@@ -323,18 +361,6 @@ function ConfigOfertaLaboral(props: any) {
 									marginBottom: "3rem"
 								}}
 							/>
-							{/*
-							<Form.Control
-								as="textarea"
-								type="text"
-								placeholder="Introducción a la oferta laboral."
-								value={introduccionOferta}
-								onChange={handleInputChangeIntroduccionOferta}
-								rows={4}
-								required
-							/>
-							<Form.Control.Feedback type="invalid"></Form.Control.Feedback>
-							*/}
 						</Form.Group>
 						<Form.Group as={Col} className="mb-3">
 							<Form.Label>Imagen referencial:</Form.Label>
@@ -367,63 +393,7 @@ function ConfigOfertaLaboral(props: any) {
 							</div>
 						</Form.Group>
 					</Row>
-					<Row>
-						<Col>
-							<Form.Group
-								className="mb-3"
-								controlId="exampleForm.ControlTextarea1">
-								<Form.Label style={{ fontSize: "15px" }}>
-									Descripción del puesto:
-								</Form.Label>
 
-								<ReactQuill
-									theme="snow"
-									value={descripcionPuesto}
-									onChange={handleChangeDescripPuesto}
-									style={{
-										height: "8rem",
-										marginBottom: "3rem"
-									}}
-								/>
-								{/*<Form.Control
-									as="textarea"
-									placeholder="Descripción del puesto."
-									value={descripcionPuesto}
-									required
-									rows={4}
-									onChange={handleInputChangeDescripcion}
-								/>
-								<Form.Control.Feedback type="invalid"></Form.Control.Feedback> */}
-							</Form.Group>
-						</Col>
-						<Col>
-							<Form.Group
-								className="mb-3"
-								controlId="exampleForm.ControlTextarea1">
-								<Form.Label style={{ fontSize: "15px" }}>
-									Descripción de las responsabilidades:
-								</Form.Label>
-								<ReactQuill
-									theme="snow"
-									value={descripcionResponsa}
-									onChange={handleChangeDescripResponsa}
-									style={{
-										height: "8rem",
-										marginBottom: "3rem"
-									}}
-								/>
-								{/* <Form.Control
-									as="textarea"
-									placeholder="Descripción de las responsabilidades."
-									value={descripcionResponsa}
-									required
-									rows={4}
-									onChange={handleInputChangeResponsa}
-								/>
-								<Form.Control.Feedback type="invalid"></Form.Control.Feedback>*/}
-							</Form.Group>
-						</Col>
-					</Row>
 					<Row style={{ position: "static", borderTop: "10rem" }}>
 						<p></p> <p></p>
 						<Col>
@@ -441,12 +411,7 @@ function ConfigOfertaLaboral(props: any) {
 								type="submit"
 								variant="primary"
 								onClick={() => {
-									if (
-										selectedNombreOferta != "" &&
-										introduccionOferta != "" &&
-										descripcionPuesto != "" &&
-										descripcionResponsa != ""
-									) {
+									if (selectedNombreOferta != "" && introduccionOferta != "") {
 										setShowSaveModal(true);
 									} else {
 										setIsSelectedNombreOfertaValid(false);

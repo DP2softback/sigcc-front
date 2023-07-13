@@ -9,6 +9,8 @@ export const PERFORMANCE_EVALUATION_INDEX = '/skill-management/performance-evalu
 export const PERFORMANCE_EVALUATION_HISTORY = '/skill-management/performance-evaluation/history';
 export const PERFORMANCE_EVALUATION_CREATE = '/skill-management/performance-evaluation/create';
 export const PERFORMANCE_EVALUATION_DETAIL = '/skill-management/performance-evaluation/detail';
+export const PERFORMANCE_EVALUATION_AUTO = '/skill-management/auto-evaluation';
+
 
 /*----- Plantillas -----*/
 export const EVALUATION_TEMPLATE_INDEX = '/skill-management/evaluation-template/index';

@@ -427,3 +427,63 @@ export function checkIfAllNull(obj : any) : boolean {
   }
   return true;
 }
+
+export function formatDashboardJsonReport(jsonData: any[]): any {
+  if (!jsonData || jsonData.length < 0) return { months: [], data: [] };
+
+  const months: string[] = [];
+  const data: any[] = [];
+
+  function sortMonths(months: string[]) {
+    months.sort((a, b) => {
+      const [yearA, monthA] = a.split(' ');
+      const [yearB, monthB] = b.split(' ');
+
+      if (yearA !== yearB) {
+        return parseInt(yearA) - parseInt(yearB);
+      } else {
+        return MONTHS_NAMES.indexOf(monthA) - MONTHS_NAMES.indexOf(monthB);
+      }
+    });
+  }
+
+  function getMonthName(monthNumber: string): string {
+    const index = parseInt(monthNumber) - 1;
+    return MONTHS_NAMES[index];
+  }
+
+  jsonData.forEach((item) => {
+    const year = item.Year;
+    item.Month.forEach((monthItem) => {
+      const month = getMonthName(monthItem.month);
+      const subCategoryScores = monthItem.subCategory_scores;
+
+      subCategoryScores.forEach((scoreItem, index) => {
+        const subCategoryName = scoreItem.SubCategory;
+        const scoreAverage = scoreItem.ScoreAverage;
+
+        const existingData = data.find((d) => d.description === subCategoryName);
+
+        if (existingData) {
+          existingData.values.push(scoreAverage);
+        } else {
+          const values = Array(months.length).fill(null);
+          values.push(scoreAverage);
+
+          data.push({
+            description: subCategoryName,
+            values: values,
+          });
+        }
+      });
+      months.push(`${year} ${month}`);
+    });
+  });
+
+  sortMonths(months);
+
+  return {
+    months: months,
+    data: data,
+  };
+}
