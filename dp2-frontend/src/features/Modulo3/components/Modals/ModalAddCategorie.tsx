@@ -211,7 +211,6 @@ const ModalAddCategorie = (props) => {
   };
 
   const handleGuardar = () => {
-    console.log(subcategorias);
     const data = { nombre: categoriaName, Subcategorias: subcategorias };
     if(categoriaName!=''){
       if (subcategorias.length > 0) {

@@ -32,3 +32,9 @@
 .cursor-pointer{
   cursor: pointer;
 }
+
+.auto-32{
+  margin-left: 128px;
+  margin-right: 128px;
+  margin-top: 32px;
+}
