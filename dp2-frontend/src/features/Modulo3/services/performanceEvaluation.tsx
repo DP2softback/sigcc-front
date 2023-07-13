@@ -42,15 +42,14 @@ export const saveAutoevaluation = async (evaluation) => {
   return await ajax(optionsRequest);
 }
 
-export const agregarCompromisos = async (compromisos,evaluationId) => {
+export const agregarCompromisos = async (data) => {
   const optionsRequest = {
     method: 'POST',
-    url: BACKEND_URL + 'agregarcompromisos',
+    url: BACKEND_URL + 'Agregarcompromiso',
     headers:{
       Authorization: `Token ${TOKEN}`
     },
-    comentario: compromisos,
-    id: evaluationId
+    data: data
   }
   return await ajax(optionsRequest);
 }

@@ -8,7 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { PlusCircle } from "react-bootstrap-icons";
 
 const ModalCompromisos = (props) => {
-    const { show, setShow, evaluationId } = props;
+    const { evaluationId, show, setShow,  } = props;
     const [ compromisos, setCompromisos] = useState('');
 
     const handleClose = () => {
@@ -25,6 +25,7 @@ const ModalCompromisos = (props) => {
         //if (event.target.value.trim() !== '') {
         setCompromisos(event.target.value)
         //} 
+        console.log(evaluationId)
       };
 
     const closeNotification = async () => {
@@ -39,7 +40,8 @@ const ModalCompromisos = (props) => {
     const handleGuardar = () => {
         if (compromisos != '') {
             (async () => {
-                const response = await agregarCompromisos(compromisos,evaluationId);
+                const data={comentario:compromisos,id:evaluationId}
+                const response = await agregarCompromisos(data);
                 if (response) {
                     toast.success("Se ha añadido correctamente los compromisos");
                     setShow(false);
