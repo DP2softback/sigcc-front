@@ -19,9 +19,10 @@ const authSlice = createSlice({
 			state.token = getStorageItem("dp2-access-token", true);
 		},
 		setCredentials: (state: AuthUser, action: PayloadAction<Partial<AuthUser>>) => {
-			const { user, token } = action.payload;
+			const { user, token, applicant } = action.payload;
 			state.user = user;
 			state.token = token;
+			state.applicant = applicant;
 			setStorage({ "user": JSON.stringify(user), "dp2-access-token": token })
 		},
 		logOut: (state: AuthUser) => {

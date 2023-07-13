@@ -147,7 +147,7 @@ const CreateJobOffer = () => {
 
 	const handleClick = () => {
 		axios.post('https://jqikkqy40h.execute-api.us-east-1.amazonaws.com/dev/api/v1/register-applicants-info',{
-			"applicant": 1,
+			"applicant": getStorageItem("applicant", false) || 1,
 			"competencies": selectedCompetencias.concat(selectedCapacidades),    
 			"training": selectedFormaciones,
 			"experience": experience
