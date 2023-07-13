@@ -30,7 +30,7 @@ type BaseFormProps = {
 
 const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoading, setEvaluation, setIsLoading, isReadOnly, isAutoevaluation, evaluationId}: BaseFormProps) => {
 	const [showEvaluatedAnswers, setShowEvaluatedAnswers] = useState(false);
-	const [show,setShow] = useState(false);
+	const [show, setShow] = useState(false);
 
 	const evaluationMatrix = categories && (
 		categories.map((category, index) => {
@@ -189,7 +189,9 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 				</Button>
 			)}
 			{isAutoevaluation!==true && associatedEvaluation?.categories?.[0]?.subcategories?.[0]?.score !== 0 && (
-				<Button variant="primary" onClick={()=>setShow(true)}>Añadir compromisos</Button>
+				<Button variant="primary" onClick={()=>setShow(true)}>
+					{evaluation?.additionalComments ? <>Ver compromisos</> : <>Añadir compromisos</>}
+				</Button>
 			)}
 		</>
 	);
@@ -229,14 +231,16 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 		setIsLoading(true);
 		(async () => {
 			try {
-				const aux = {evaluationId: evaluationId, categories: categories}
-				isAutoevaluation ? result = await saveAutoevaluation(aux) : result = await saveEvaluation(evaluation);
+				const aux = { evaluationId: evaluationId, categories: categories };
+				isAutoevaluation 
+				? result = await saveAutoevaluation(aux) 
+				: result = await saveEvaluation(evaluation);
 			} catch (error) {
 				toast.error(`Ha ocurrido un error al guardar la evaluación.`);
 				setIsLoading(false);
 			} finally {
-				if (result === API_CREATE_PERFORMANCE_EVALUATION_SUCCESS){
-					if(isAutoevaluation){
+				if (result === API_CREATE_PERFORMANCE_EVALUATION_SUCCESS){					
+					if(!isAutoevaluation){
 						toast.success(EVALUACION_CREADA_CON_EXITO);
 						setTimeout(() => {
 							navigateTo(PERFORMANCE_EVALUATION_HISTORY, {
@@ -251,7 +255,7 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 							navigateTo(PERFORMANCE_EVALUATION_AUTO, {
 								id: employee.id,
 								name: employee.name,
-								evaluationId: evaluation
+								evaluationId: evaluationId
 							});
 							setIsLoading(false);
 						}, 2000);
@@ -266,12 +270,27 @@ const BaseForm = ({employee, categories, evaluation, associatedEvaluation, isLoa
 
 	return (
 		<div>
-			<ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
-			<ModalCompromisos evaluationId={evaluationId} show={show} setShow={setShow}></ModalCompromisos>
+			<ToastContainer
+				position="top-right"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+			/>
+			<ModalCompromisos
+				evaluationId={evaluationId}
+				show={show}
+				setShow={setShow}
+				compromisos={evaluation?.additionalComments}
+			/>
 			<Layout
 				title={`Evaluación de desempeño - ${employee.name}`}
 				subtitle={isReadOnly ? null : "Los campos con (*) son obligatorios."}
-				body={isLoading ? <LoadingScreen/> : body}
+				body={isLoading ? <LoadingScreen /> : body}
 				route={PERFORMANCE_EVALUATION_INDEX}
 				button={isReadOnly ? buttonsDetails : <></>}
 			/>
