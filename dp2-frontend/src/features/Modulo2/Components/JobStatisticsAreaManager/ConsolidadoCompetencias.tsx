@@ -141,34 +141,9 @@ const PieChart = ({ title, labels, datasets }) => {
                   },
                 ],
               };
-              
-              const newData2 = {
-                labels: labels,
-                datasets: [
-                  {
-                    label: '% de adecuación',
-                    data: [data.rango1, data.rango2, data.rango3, data.rango4, data.rango5],
-                    backgroundColor: [
-                      'rgba(255, 99, 132, 0.2)',
-                      'rgba(54, 162, 235, 0.2)',
-                      'rgba(255, 206, 86, 0.2)',
-                      'rgba(75, 192, 192, 0.2)',
-                      'rgba(153, 102, 255, 0.2)',
-                    ],
-                    borderColor: [
-                      'rgba(255, 99, 132, 1)',
-                      'rgba(54, 162, 235, 1)',
-                      'rgba(255, 206, 86, 1)',
-                      'rgba(75, 192, 192, 1)',
-                      'rgba(153, 102, 255, 1)',
-                    ],
-                    borderWidth: 1,
-                  },
-                ],
-              };
+
 
               setData1(newData1); 
-              setData2(newData2);
 
             } else {
               console.log('Error al obtener los datos desde el API');
@@ -184,14 +159,66 @@ const PieChart = ({ title, labels, datasets }) => {
       }, []);
       
 
-      const handleCompetenciaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {   
-        console.log(areasActivas) 
+      const handleCompetenciaChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {   
+        console.log(abbreviation) 
         console.log(event.target.value)
         setTipoCompetencia(areasActivas[parseInt(event.target.value)-1])
         setAbbreviation(areasActivas.find((area) => area.position__id == parseInt(event.target.value))?.position__name || '')
-        //setAbbreviation(tipo.abbreviation)
-        setData1(data1);
-        setData2(data2);
+        
+        const requestOptions = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': TOKEN_SERVICE,
+          },
+          // Poner 2 si es cualquiera, poner 0 o 1 si es inactivo o activo
+          // Poner 0 para toda la empresa, poner el <id> si es por área
+          body: JSON.stringify({ 
+              idArea: 1,
+              idPosicion: parseInt(event.target.value),
+              activo: 2
+          }),
+        };
+    
+        try {
+          const response = await fetch(URL_SERVICE + '/gaps/competenceConsolidateSearch', requestOptions);
+          if (response.ok) {
+            const data = await response.json();
+            console.log(data)
+            const newData2 = {
+              labels: labels,
+              datasets: [
+                {
+                  label: '% de adecuación',
+                  data: [data.rango1, data.rango2, data.rango3, data.rango4, data.rango5],
+                  backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                  ],
+                  borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                  ],
+                  borderWidth: 1,
+                },
+              ],
+            };
+            setData2(newData2);
+
+          } else {
+            console.log('Error al obtener los datos desde el API');
+          }
+        } catch (error) {
+          console.log('Error al obtener los datos desde el API:', error);
+        }
+
+
       }
 
       
