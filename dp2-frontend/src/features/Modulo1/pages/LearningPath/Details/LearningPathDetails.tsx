@@ -102,15 +102,15 @@ function LearningPathDetails(props: any) {
                         })
                 };
 
-                window.addEventListener('get-status', handleGetStatus);
-                quizStatusinterval = setInterval(() => {
-                    window.dispatchEvent(new Event('get-status'));
-                }, 5000);
+                // window.addEventListener('get-status', handleGetStatus);
+                // quizStatusinterval = setInterval(() => {
+                //     window.dispatchEvent(new Event('get-status'));
+                // }, 5000);
 
-                return () => {
-                    window.removeEventListener('get-status', handleGetStatus);
-                    clearInterval(quizStatusinterval);
-                };
+                // return () => {
+                //     window.removeEventListener('get-status', handleGetStatus);
+                //     clearInterval(quizStatusinterval);
+                // };
             }
         })
         setCoursesQuizStatuses(coursesQuizStat);

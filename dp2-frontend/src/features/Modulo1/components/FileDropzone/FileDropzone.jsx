@@ -35,7 +35,6 @@ export default class FileDropzone extends Component
 
     componentDidMount ()
     {
-        console.log(this.props.prevFiles);
         this.props.prevFiles && this.setState({
             prevFiles: this.props.prevFiles,
         })
@@ -201,7 +200,7 @@ export default class FileDropzone extends Component
         let upl = this.state.uploaded;
         if (event.target.dataset.file > -1)
         {
-            this.deleteFileFromServer(files[event.target.dataset.file].url);
+            this.deleteFileFromServer(files[event.target.dataset.file]);
             sFiles.splice(event.target.dataset.file, 1);
             prog.splice(event.target.dataset.file, 1);
             files.splice(event.target.dataset.file, 1);
@@ -222,21 +221,20 @@ export default class FileDropzone extends Component
         let pFiles = this.state.prevFiles;
         if (event.target.dataset.file > -1)
         {
-            this.deleteFileFromServer(pFiles[event.target.dataset.file].url);
+            this.deleteFileFromServer(pFiles[event.target.dataset.file]);
             pFiles.splice(event.target.dataset.file, 1);
             this.setState({
                 prevFiles: pFiles,
-            });
+            }, () => { console.log(this.prevFiles) });
         }
     }
 
     deleteFileFromServer (file_url)
     {
         console.log(file_url);
-        axiosInt.post('capacitaciones/delete_file/',
-            {
-                url: file_url
-            })
+        axiosInt.post('capacitaciones/delete_file/', {
+            url: file_url
+        })
             .then(
                 (response) =>
                 {
@@ -292,7 +290,7 @@ export default class FileDropzone extends Component
                                                             <i className={"dropzone-file-icon bi bi-file-earmark"} />
                                                         </Card.Title>
                                                         <Card.Subtitle className="dropzone-file-name mb-2 text-muted">{file.split('/').pop()}</Card.Subtitle>
-                                                        <a href={file.url} target="_blank" rel="noreferrer">Descargar</a>
+                                                        <a href={file} target="_blank" rel="noreferrer">Descargar</a>
                                                     </Card.Body>
                                                 </Card>
                                             )
