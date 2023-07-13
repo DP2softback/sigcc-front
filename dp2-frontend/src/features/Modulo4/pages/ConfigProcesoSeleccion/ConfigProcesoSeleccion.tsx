@@ -119,6 +119,7 @@ function ConfigProcesoSeleccion(props: any) {
 		const listaEtapas = rows.map(
 			({
 				idTipoEtapa,
+				porcenCalifica,
 				id,
 				fechaInicio,
 				fechaFin,
@@ -126,6 +127,7 @@ function ConfigProcesoSeleccion(props: any) {
 				descripcionEtapa
 			}) => ({
 				stage_type: idTipoEtapa,
+				position_similarity: porcenCalifica,
 				order: id,
 				start_date: moment(fechaInicio).format("YYYY-MM-DD"),
 				end_date: moment(fechaFin).format("YYYY-MM-DD"),
@@ -447,7 +449,9 @@ function ConfigProcesoSeleccion(props: any) {
 		createPS();
 		setShowSaveModal(false);
 		console.log("guardado final");
-		navigate(0);
+		setTimeout(() => {
+			navigate(0);
+		}, 1000);
 	};
 
 	useEffect(() => {
@@ -860,8 +864,8 @@ function ConfigProcesoSeleccion(props: any) {
 							</Form.Label>
 						</Form.Group>
 
-						{(newRow && newRow.idTipoEtapa == 2) ||
-						(selectedRow && selectedRow.idTipoEtapa == 2) ? (
+						{(newRow && newRow.idTipoEtapa == 1) ||
+						(selectedRow && selectedRow.idTipoEtapa == 1) ? (
 							<Form.Group>
 								<Row>
 									<Col xs="4" style={{ paddingTop: "0.5rem" }}>
