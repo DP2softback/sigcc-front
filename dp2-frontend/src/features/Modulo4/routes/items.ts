@@ -15,6 +15,7 @@ import {
 	LIST_SELECTION_PROCESS,
 	REGISTER_IN_JOB_OFFER,
 	LIST_SELECTION_PROCESS_STEP
+
 } from "./path";
 
 export const sideBarItemsGroup4: TSidebarItemGroup[] = [

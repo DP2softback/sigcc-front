@@ -13,6 +13,10 @@ export const CREATE_SELECTION_PROCESS = 'create';
 export const EDIT_SELECTION_PROCESS = 'edit';
 export const LIST_SELECTION_PROCESS = 'list';
 export const LIST_SELECTION_PROCESS_STEP = 'step';
+export const LIST_SELECTION_PROCESS_STEP1 = 'step1';
+export const LIST_SELECTION_PROCESS_STEP2 = 'step2';
+export const LIST_SELECTION_PROCESS_STEP3 = 'step3';
+export const LIST_SELECTION_PROCESS_STEP4 = 'step4';
 
 export const JOB_POSITIONS = 'job-positions';
 export const CREATE_JOB_POSITION = 'create';
