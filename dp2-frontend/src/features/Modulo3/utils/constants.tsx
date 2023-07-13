@@ -10,7 +10,7 @@ export const DAYS_UNIT = 'días';
 
 export const BACKEND_URL = 'https://payd6uk5t9.execute-api.us-east-1.amazonaws.com/dev-eval/api/v1/';
 
-export const TOKEN = 'e3ba078386774f179a337d6488668302e87ab131';
+export const TOKEN = localStorage.getItem("dp2-access-token") !== null ? localStorage.getItem("dp2-access-token") : "34031dadc39756c8f1d32f4a3bb7bea4f23da727";
 
 export const USER_ID = 5;
 
