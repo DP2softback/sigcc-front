@@ -141,7 +141,7 @@ const DetalleCompetenciasArea = () => {
           }
         return (
             <Table striped bordered>
-            <thead>
+            <thead style={{position: "sticky", top: 0,background: 'white'}}>
                 <tr>
                     <th onClick={() => handleOrdenarPorCampo('user__first_name')}>
                     Nombre

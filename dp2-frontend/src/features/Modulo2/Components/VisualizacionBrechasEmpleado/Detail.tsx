@@ -40,7 +40,7 @@ const TrainingNeeds = () => {
           estado: "",
           tipo: "",
           activo: 2,
-          idEmpleado: 1 // Cambiar idEmpleado logeado
+          idEmpleado: 7
         }
         axiosEmployeeGaps
           .post("gaps/trainingNeedSearch", obj)
@@ -70,12 +70,11 @@ const TrainingNeeds = () => {
   };
 
   const handleSearch = () => {
-    console.log(tipoCompetenciaSelected.id);
     const obj = {
       estado: 0,
       tipo: tipoCompetenciaSelected.id,
       activo: 2,
-      idEmpleado: 1 // Cambiar idEmpleado logeado
+      idEmpleado: 7
     }
     axiosEmployeeGaps
       .post("gaps/trainingNeedSearch", obj)
