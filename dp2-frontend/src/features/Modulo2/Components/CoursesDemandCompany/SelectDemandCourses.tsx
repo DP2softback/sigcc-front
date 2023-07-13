@@ -369,7 +369,9 @@ const SelectDemandCourses: React.FC = () => {
 
         <div className='col'>
           <h2 className='Head2'>Lista de cursos</h2>
+          <div className='container-fluid tabla'>
           {renderTablaCompetencias()}
+          </div>
         </div>
       </div>
       
