@@ -108,7 +108,7 @@ const CompetenciasRead: React.FC = () => {
   });
   const handleLimpiarFiltros = () => {
     setSearchQuery('');
-    setTipoFiltro(0);
+    setTipoFiltro(2);
     setEstadoFiltro('');
   };
   const handleMostrarPopUpCrear  = () => {
