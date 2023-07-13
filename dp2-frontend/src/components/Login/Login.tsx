@@ -55,12 +55,8 @@ const Login: React.FC = () => {
 							Roles.CANDIDATE,
 							Roles.HR_MANAGER,
 							Roles.WORKER,
-<<<<<<< HEAD
-							Roles.GENERAL_MANAGER
-=======
 							Roles.GENERAL_MANAGER,
 							Roles.HEAD_OF_AREA,
->>>>>>> dcd71cbc10be296c26ada7048387a2349ddaeb2e
 						]
 					},
 					token: userResponse.token
