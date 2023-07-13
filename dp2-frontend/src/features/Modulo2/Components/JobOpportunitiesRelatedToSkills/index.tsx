@@ -1,11 +1,13 @@
 import React from 'react'
 import JobOpportunityCard from '../JobOpportunityCard/JobOpportunityCard';
+import axiosEmployeeGaps from '@features/Modulo2/services/EmployeeGapsServices';
+import LoadingScreen from '@features/Modulo3/components/Shared/LoadingScreen/LoadingScreen';
+import { Button, Modal } from 'react-bootstrap';
 
 const JobOpportunitiesRelatedToSkills = () => {
-
-    const data = [{ image: "imagen 1", title: "UX/UI Designer", availability: "Disponible hace 10 días", description: "Profesional que se encarga de diseñar la experiencia de usuario (UX) y la interfaz de usuario (UI) de aplicaciones y sitios web.", labels: ['Creatividad', 'Comunicación', 'Trabajo en equipo'] },
-    { image: "imagen 2", title: "Líder técnico de arquitectura", availability: "Disponible hace 13 días", description: "Responsable de dar forma a la arquitectura planteada por el Arquitecto de software, haciendo énfasis en las especificaciones que  no se presentan en detalle.", labels: ['Liderazgo', 'Comunicación', 'Trabajo en equipo'] },
-    { image: "imagen 3", title: "Analista de sistemas", availability: "Disponible hace 15 días", description: "Identificar las necesidades de los sistemas TIC de una empresa y de elaborar un proyecto que ofrezca una solución integrada.", labels: ['Análisis de sistemas', 'Innovación', 'Creatividad'] }]
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [jobOpportunities, setJopOpportunities] = React.useState(null);
+    const [showAceptOpp, setShowAceptOpp] = React.useState(false);
 
     const JSONresponse =
         [
@@ -41,7 +43,7 @@ const JobOpportunitiesRelatedToSkills = () => {
                 "photo_url": "https://imagen.com/12345/Foto1.png",
                 "location": "Sede principal",
                 "salary_range": "Entre S/.3000 y S/.4000",
-                "labels": ["Liderazgo","Comunicación","Trabajo en equipo"],
+                "labels": ["Liderazgo", "Comunicación", "Trabajo en equipo"],
                 "responsibilities":
                     "1. Escribir y mantener el código de software utilizando lenguajes de programación como Java y Python.\n2. Participar en el diseño y desarrollo de nuevas funcionalidades.\n3. Colaborar con el equipo para resolver problemas técnicos y mejorar la eficiencia de los sistemas existentes.\n4. Realizar pruebas de software y depuración para garantizar la calidad y la funcionalidad adecuada.\n5. Documentar el código y los procesos técnicos.",
                 "requirements":
@@ -51,7 +53,7 @@ const JobOpportunitiesRelatedToSkills = () => {
                 "benefits":
                     "1. Planilla desde el primer día de trabajo.\n2. Beneficios de Ley\n 3.Aprendizaje continuo\n 4.Capacitación constante"
             },
-            
+
             {
                 "id": 3,
                 "hiring_process": 3,
@@ -63,7 +65,7 @@ const JobOpportunitiesRelatedToSkills = () => {
                 "photo_url": "https://imagen.com/12346/Foto2.png",
                 "location": "Sede principal",
                 "salary_range": "Entre S/.3000 y S/.4000",
-                "labels": ["Creatividad","Innovación"],
+                "labels": ["Creatividad", "Innovación"],
                 "responsibilities":
                     "1. Crear diseños gráficos, ilustraciones y otros elementos visuales utilizando herramientas como Adobe Photoshop e Illustrator.\n2. Colaborar con el equipo de marketing y otros departamentos para desarrollar diseños que cumplan con los objetivos del proyecto.\n3. Mantenerte actualizado(a) sobre las últimas tendencias y mejores prácticas en diseño gráfico.\n4. Asegurarte de que los diseños cumplan con los estándares de calidad y las pautas de la marca.\n5. Participar en reuniones de revisión y proporcionar retroalimentación constructiva.",
                 "requirements":
@@ -76,29 +78,60 @@ const JobOpportunitiesRelatedToSkills = () => {
 
         ]
 
-    /*
-    PAR EL API
-    Body:
-  {
-          "area": 0,
-          "posicion": 0,
-          "activo": 2
-  }
-  */
+    React.useEffect(() => {
+        setIsLoading(true);
+        const obj = {
+            empleado: 1
+        }
+        axiosEmployeeGaps
+            .post("gaps/searchJobOfferxEmployeePreRegistered", obj)
+            .then(function (response) {
+                setJopOpportunities(response);
+                setIsLoading(false);
+            })
+            .catch(function (error) {
+                console.log(error);
+                setIsLoading(false);
+            })
+    }, [])
+
+    const handleClose = () => {
+        setShowAceptOpp(false);
+    }
+
     return (
         <>
             <div className='row'>
                 <h2>Oportunidades laborales afines a competencias</h2>
                 <p className="text-muted">Puestos vacantes que son afines a tus competencias</p>
                 <br />
-                <h3>Puestos disponibles</h3>
-                {JSONresponse && JSONresponse.map((jobOpt, index) => {
-                    return (
-                        <div className='col-4'>
-                            <JobOpportunityCard jobOpportunity={jobOpt} numBot={3} />
+                {isLoading ? <LoadingScreen /> :
+                    <>
+                        <h3>Puestos disponibles</h3>
+                        {jobOpportunities && jobOpportunities.length !== 0 ? jobOpportunities.map((jobOpt, index) => {
+                            return (
+                                <div className='col-4'>
+                                    <JobOpportunityCard jobOpportunity={jobOpt} numBot={3} />
+                                </div>
+                            )
+                        })
+                            : <p>No se encontraron oportunidades laborales para ti</p>
+                        }
+                    </>
+                }
+                <Modal show={showAceptOpp} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Crear Competencia</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {/* {body} */}
+                        <div className='botonCerrar'>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Cerrar
+                            </Button>
                         </div>
-                    )
-                })}
+                    </Modal.Body>
+                </Modal>
             </div>
         </>
     )

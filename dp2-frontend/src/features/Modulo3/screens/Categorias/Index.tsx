@@ -10,6 +10,7 @@ import cat from '@features/Modulo3/jsons/Categories';
 import { listAllCategorias } from '@features/Modulo3/services/categories';
 import { CATEGORIES_CREATE, CATEGORIES_INDEX } from '@features/Modulo3/routes/path';
 import '../EvaluacionContinua/EvaluacionContinua.css';
+import 'react-toastify/dist/ReactToastify.css'; 
 import { CONTINUOS_EVALUATION_TYPE } from '@features/Modulo3/utils/constants';
 import ModalAddCategorie from '@features/Modulo3/components/Modals/ModalAddCategorie';
 import { toast, ToastContainer } from 'react-toastify';
@@ -22,6 +23,9 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [show,setShow] = useState(false);
 	const [showAS,setShowAS] = useState(false);
+  const [filterValue, setFilterValue] = useState('');
+  const [filteredCategories, setFilteredCategories] = useState(categories);
+
 
   useEffect(() => {
     setIsLoading(true);
@@ -29,26 +33,41 @@ const Index = () => {
       const response = await listAllCategorias(CONTINUOS_EVALUATION_TYPE);
       if(response){
         setCategories(response)
+
       }
         
       setIsLoading(false);
     })();
   }, []);
 
-  const filters = (
-		<Form.Group controlId="searchEmployees" className="d-flex justify-content">
-        <Form.Control
-		placeholder="Buscar categoría"
-		aria-describedby="ec-indexSearch"
-        className="me-2 w-90"
-		/><Button variant="primary">Buscar</Button>
-		</Form.Group>
+
+
+useEffect(() => {
+  const filteredData = categories.filter((category) =>
+    category.name.toLowerCase().includes(filterValue.toLowerCase())
   );
+  setFilteredCategories(filteredData);
+}, [filterValue, categories]);
+
+  
+  const filters = (
+    <Form.Group controlId="searchEmployees" className="d-flex justify-content">
+      <Form.Control
+        placeholder="Buscar categoría"
+        aria-describedby="ec-indexSearch"
+        className="me-2 w-90"
+        value={filterValue}
+        onChange={(e) => setFilterValue(e.target.value)}
+      />
+    </Form.Group>
+  );
+
+  
 
 
   const table =(
     <div>
-      <TableCategories rows ={categories}/>
+      <TableCategories rows ={filteredCategories}/>
     </div>
   );
 
@@ -79,6 +98,7 @@ const Index = () => {
 
   return (
     <div>
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />  
       <ModalAddCategorie show={showAS} setShow={setShowAS}></ModalAddCategorie>
       <Layout
         title={`Gestión de Categorías`}

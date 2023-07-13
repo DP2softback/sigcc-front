@@ -156,10 +156,6 @@ const EvaluationTemplateEdit = Loader(
   lazy(() => import("@features/Modulo3/screens/Plantillas/Edit"))
 );
 
-const AscensosCandidatos = Loader(
-  lazy(() => import("@features/Modulo3/screens/Ascensos/Candidates"))
-);
-
 const ReporteEvaluacionContinua = Loader(
   lazy(
     () => import("@features/Modulo3/screens/Reportes/IndexEvaluacionContinua")
@@ -431,15 +427,6 @@ const routes: RouteObject[] = [
           {
             path: "edit",
             element: <EvaluationTemplateEdit />,
-          },
-        ],
-      },
-      {
-        path: "promotions",
-        children: [
-          {
-            path: "candidates",
-            element: <AscensosCandidatos promotionPosition="UX/UI Designer" />,
           },
         ],
       },

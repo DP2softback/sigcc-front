@@ -160,8 +160,7 @@ const PieChart = ({ title, labels, datasets }) => {
       const handleCompetenciaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {    
         const tipo  = tipoCompetencias.find((tipo) => tipo.id.toString() === event.target.value)
         setAre(tipo)
-        setTipoCompetencia(tipoCompetencias[0]);
-        console.log(tipoCompetencias)
+        setTipoCompetencia(tipoCompetencias[parseInt(event.target.value)-1])
         setname(area.name)
         setData1(data1);
         setData2(data2);
@@ -173,9 +172,6 @@ const PieChart = ({ title, labels, datasets }) => {
       const handleClick = () => {        
       navigate(`/${GAPS_ANALYSIS_MODULE}/${GAPS_EMPLOYEES_ORG}/${GAPS_EMPLOYEES_ORG_DETAIL}`, { state: { tipoCompetencia } });
       };
-      const handleMostrarLineChartClick = () => {
-      };
-      
   
       const labels= ['80% - 100%', '60% - 79%', '40% - 59%', '20% - 39%', '0% - 19%'];
       
@@ -185,7 +181,7 @@ const PieChart = ({ title, labels, datasets }) => {
           
           <div className="row">
             <div className="col-md-6">
-              <label className="subtitle" htmlFor="competencia-select">Areas de la empresa:</label>
+              <label className="subtitle" htmlFor="competencia-select">Competencias por area de la empresa:</label>
               <select
                 id="competencia-select"
                 className="form-control"
@@ -196,9 +192,6 @@ const PieChart = ({ title, labels, datasets }) => {
                   <option key={area.id} value={area.id}>{area.name}</option>
                 ))}
               </select>
-            </div>
-            <div className="col-md-6 d-flex align-items-end">
-              <button className="btn btn-primary" onClick={handleBuscarClick}>Buscar</button>
             </div>
           </div>
 
@@ -212,7 +205,7 @@ const PieChart = ({ title, labels, datasets }) => {
                     <div className="chart-legend"> 
                       {/* Agregar aquí la leyenda del gráfico 1 */}
                     </div>
-                    <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
+
                   </div>
                 </div>
               </div>
@@ -225,7 +218,7 @@ const PieChart = ({ title, labels, datasets }) => {
                    <div className="chart-legend">
                      {/* Agregar aquí la leyenda del gráfico 2 */}
                    </div>
-                   <button className="btn btn-secondary" onClick={handleMostrarLineChartClick}>Mostrar en linechart</button>
+
                    <button className="btn btn-secondary" onClick={handleClick}>Ver detalle del área</button>
                    </div>
                </div>

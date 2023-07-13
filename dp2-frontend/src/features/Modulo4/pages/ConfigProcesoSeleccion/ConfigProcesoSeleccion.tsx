@@ -68,9 +68,9 @@ function ConfigProcesoSeleccion(props: any) {
 
 	/*
 	useEffect(() => {
-		setSelectedIdPuestoLaboral(1);
+		setSelectedPosicionID(1);
 		setCantVacantes(1);
-		setSelectedPuestoLaboral("Proceso en Nombre de prueb!!!a");
+		setNombreProcesoSeleccion("Proceso en Nombre de prueb!!!a");
 		setRows([
 			{
 				id: 1,
@@ -139,9 +139,9 @@ function ConfigProcesoSeleccion(props: any) {
 		}));
 
 		const dataPost = {
-			position: selectedIdPuestoLaboral,
+			position: selectedPosicionID,
 			available_positions_quantity: cantVacantes,
-			name: selectedPuestoLaboral,
+			name: nombreProcesoSeleccion,
 			process_stages: listaEtapas,
 			employees: listaIdResponsables
 		};
@@ -178,19 +178,22 @@ function ConfigProcesoSeleccion(props: any) {
 		marginBottom: "0.78rem"
 	};
 
+	// PUESTO DE TRABAJO FIJO
+	const handleSelectedPuestoLaboralFijo = (event: any) => {};
+
 	// PUESTO DE TRABAJO
-	const [selectedIdPuestoLaboral, setSelectedIdPuestoLaboral] = useState(null);
-	const [selectedPuestoLaboralFijo, setSelectedPuestoLaboralFijo] =
+	const [selectedPosicionID, setSelectedPosicionID] = useState(null);
+	const [selectedPosicionNombreFijo, setSelectedPosicionNombreFijo] =
 		useState("");
-	const [selectedPuestoLaboral, setSelectedPuestoLaboral] = useState("");
-	const [isSelectedNombreOfertaValid, setIsSelectedNombreOfertaValid] =
+	const [nombreProcesoSeleccion, setNombreProcesoSeleccion] = useState("");
+	const [nombreProcesoSeleccionValid, setNombreProcesoSeleccionValid] =
 		useState(true);
 
 	const handleNombrePuestoSeleccionado = (event: any) => {
 		const optionValue = event.target.value;
 		const isValid = optionValue.trim() !== "";
-		setIsSelectedNombreOfertaValid(isValid);
-		setSelectedPuestoLaboral(optionValue);
+		setNombreProcesoSeleccionValid(isValid);
+		setNombreProcesoSeleccion(optionValue);
 	};
 
 	// CANTIDAD DE VACANTES
@@ -199,10 +202,15 @@ function ConfigProcesoSeleccion(props: any) {
 	const handlecantVacantes = (event: any) => {
 		const optionValue = event.target.value;
 		setCantVacantes(optionValue);
-		if (optionValue <= 0) {
-			console.log("menor a 0");
+		const numericValue = parseInt(optionValue);
+		if (
+			isNaN(numericValue) ||
+			!Number.isInteger(numericValue) ||
+			optionValue !== numericValue.toString() ||
+			numericValue <= 0
+		)
 			setIsCantVacantesValid(false);
-		}
+		else setIsCantVacantesValid(true);
 	};
 
 	// CREAR TIPO ETAPA SELECCION
@@ -239,6 +247,7 @@ function ConfigProcesoSeleccion(props: any) {
 	interface TableRow {
 		id: number;
 		idTipoEtapa: number;
+		porcenCalifica: number;
 		nombreTipoEtapa: string;
 		nombreEtapa: string;
 		descripcionEtapa: string;
@@ -250,6 +259,7 @@ function ConfigProcesoSeleccion(props: any) {
 	const [newRow, setNewRow] = useState<TableRow>({
 		id: 0,
 		idTipoEtapa: 0,
+		porcenCalifica: 0,
 		nombreTipoEtapa: "",
 		nombreEtapa: "",
 		descripcionEtapa: "",
@@ -260,8 +270,22 @@ function ConfigProcesoSeleccion(props: any) {
 	const [selectedRow, setSelectedRow] = useState<TableRow | null>(null);
 	const [showModal, setShowModal] = useState(false);
 
+	const [isPorcenCalificaOk, setIsPorcenCalificaOk] = useState(true);
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
+		if (name === "porcenCalifica") {
+			const numericValue = parseInt(value);
+			if (
+				isNaN(numericValue) ||
+				!Number.isInteger(numericValue) ||
+				value !== numericValue.toString() ||
+				numericValue < 0 ||
+				numericValue > 100
+			)
+				setIsPorcenCalificaOk(false);
+			else setIsPorcenCalificaOk(true);
+		}
+
 		if (selectedRow) {
 			setSelectedRow((prevRow) => ({ ...prevRow, [name]: value }));
 		} else {
@@ -282,6 +306,7 @@ function ConfigProcesoSeleccion(props: any) {
 		event.preventDefault();
 	};
 
+	/*
 	useEffect(() => {
 		console.log("validatedModal", validatedModal);
 	}, [validatedModal]);
@@ -289,11 +314,12 @@ function ConfigProcesoSeleccion(props: any) {
 	useEffect(() => {
 		console.log("newRow", newRow);
 	}, [newRow]);
+	*/
 
 	const [idCounter, setIdCounter] = useState(0); // Contador para el ID
 	const handleAddRowEtapa = () => {
-		console.log("newRow", newRow);
-		console.log("selectedRow", selectedRow);
+		//console.log("newRow", newRow);
+		//console.log("selectedRow", selectedRow);
 		if (
 			siNuevaEtapa == true &&
 			(newRow.nombreTipoEtapa == "" ||
@@ -338,6 +364,7 @@ function ConfigProcesoSeleccion(props: any) {
 		setNewRow({
 			id: 0,
 			idTipoEtapa: 0,
+			porcenCalifica: 0,
 			nombreTipoEtapa: "",
 			nombreEtapa: "",
 			descripcionEtapa: "",
@@ -382,9 +409,9 @@ function ConfigProcesoSeleccion(props: any) {
 			" " +
 			selectedOptionPuesto.position_detail.modalidadTrabajo;
 
-		setSelectedIdPuestoLaboral(selectedOptionPuesto.id);
-		setSelectedPuestoLaboralFijo(nombrePosicionFijo);
-		setSelectedPuestoLaboral(
+		setSelectedPosicionID(selectedOptionPuesto.id);
+		setSelectedPosicionNombreFijo(nombrePosicionFijo);
+		setNombreProcesoSeleccion(
 			"Proc. selección en " + selectedOptionPuesto.position_name
 		);
 	};
@@ -423,6 +450,10 @@ function ConfigProcesoSeleccion(props: any) {
 		navigate(0);
 	};
 
+	useEffect(() => {
+		console.log("selectedRow", selectedRow);
+	}, [selectedRow]);
+
 	return (
 		<div
 			style={{
@@ -454,7 +485,8 @@ function ConfigProcesoSeleccion(props: any) {
 								as="textarea"
 								type="text"
 								placeholder="Seleccionar el nombre del puesto para el proceso de selección."
-								value={selectedPuestoLaboralFijo}
+								value={selectedPosicionNombreFijo}
+								onChange={handleSelectedPuestoLaboralFijo}
 								rows={2}
 								className="readonly-text"
 							/>
@@ -482,14 +514,17 @@ function ConfigProcesoSeleccion(props: any) {
 								<Form.Group xs={12} as={Col}>
 									<Form.Control
 										type="text"
-										placeholder="Especificar el puesto laboral para el proceso de selección."
-										value={selectedPuestoLaboral}
+										placeholder="Especificar el puesto de trabajo para el proceso de selección."
+										value={nombreProcesoSeleccion}
 										onChange={handleNombrePuestoSeleccionado}
-										disabled={selectedPuestoLaboral == "" ? true : false}
+										disabled={nombreProcesoSeleccion == "" ? true : false}
 										required
-										className={!isSelectedNombreOfertaValid ? "is-invalid" : ""}
+										className={!nombreProcesoSeleccionValid ? "is-invalid" : ""}
 									/>
-									<Form.Control.Feedback></Form.Control.Feedback>
+									<Form.Control.Feedback type="invalid">
+										Seleccionar el puesto de trabajo para el proceso de
+										selección.
+									</Form.Control.Feedback>
 								</Form.Group>
 							</Row>
 						</Col>
@@ -516,9 +551,12 @@ function ConfigProcesoSeleccion(props: any) {
 									value={cantVacantes}
 									onChange={handlecantVacantes}
 									required
-									className={!isCantVacantesValid ? "is-invalid" : ""}
+									isInvalid={!isCantVacantesValid}
+									isValid={!isCantVacantesValid}
 								/>
-								<Form.Control.Feedback></Form.Control.Feedback>
+								<Form.Control.Feedback type="invalid">
+									Valores enteros mayores a 0.
+								</Form.Control.Feedback>
 							</Form.Group>
 						</Form.Group>
 						<Form.Group className="mb-2" as={Col}>
@@ -624,11 +662,11 @@ function ConfigProcesoSeleccion(props: any) {
 										zIndex: "1"
 									}}>
 									<tr>
-										<th style={{ width: "4rem" }}>Orden</th>
-										<th style={{ width: "8rem" }}>Tipo de etapa</th>
-										<th style={{ width: "13rem" }}>Nombre de la etapa</th>
-										<th style={{ width: "9rem" }}>Fecha de Inicio</th>
-										<th style={{ width: "9rem" }}>Fecha de Fin</th>
+										<th style={{ width: "2rem" }}>N°</th>
+										<th style={{ width: "9rem" }}>Tipo de etapa</th>
+										<th style={{ width: "15rem" }}>Nombre de la etapa</th>
+										<th style={{ width: "8rem" }}>Fecha inicio</th>
+										<th style={{ width: "8rem" }}>Fecha fin</th>
 										<th>Estado</th>
 										<th style={{ width: "12rem" }}>Acciones</th>
 									</tr>
@@ -739,13 +777,13 @@ function ConfigProcesoSeleccion(props: any) {
 										style={{ width: "10rem", maxWidth: "10rem" }}
 										onClick={() => {
 											if (
-												selectedPuestoLaboral != "" &&
+												nombreProcesoSeleccion != "" &&
 												typeof +cantVacantes == "number" &&
 												+cantVacantes > 0
 											) {
 												setShowSaveModal(true);
 											} else {
-												setIsSelectedNombreOfertaValid(false);
+												setNombreProcesoSeleccionValid(false);
 											}
 										}}>
 										Guardar proceso
@@ -772,27 +810,31 @@ function ConfigProcesoSeleccion(props: any) {
 					<Modal.Body>
 						<Form.Group>
 							<Form.Label>Seleccionar el tipo de etapa:</Form.Label>
-							<Dropdown drop="down-centered" align="end" className="mb-2">
-								<Dropdown.Toggle
-									variant="secondary"
-									id="dropdown-basic"
-									style={{ width: "100%", textAlign: "center" }}>
-									{"Seleccionar el tipo de etapa:   \u00A0"}
-								</Dropdown.Toggle>
-								<Dropdown.Menu style={{ width: "100%", textAlign: "center" }}>
-									{optionsTipoEtapaSelec
-										? optionsTipoEtapaSelec.map((optionRow) => (
-												<Dropdown.Item
-													key={optionRow.id}
-													onClick={() =>
-														handleOptionsTipoEtapaSelec(optionRow)
-													}>
-													{optionRow.name}
-												</Dropdown.Item>
-										  ))
-										: []}
-								</Dropdown.Menu>
-							</Dropdown>
+							{selectedRow == null ? (
+								<Dropdown drop="down-centered" align="end" className="mb-2">
+									<Dropdown.Toggle
+										variant="secondary"
+										id="dropdown-basic"
+										style={{ width: "100%", textAlign: "center" }}>
+										{"Seleccionar el tipo de etapa:   \u00A0"}
+									</Dropdown.Toggle>
+									<Dropdown.Menu style={{ width: "100%", textAlign: "center" }}>
+										{optionsTipoEtapaSelec
+											? optionsTipoEtapaSelec.map((optionRow) => (
+													<Dropdown.Item
+														key={optionRow.id}
+														onClick={() =>
+															handleOptionsTipoEtapaSelec(optionRow)
+														}>
+														{optionRow.name}
+													</Dropdown.Item>
+											  ))
+											: []}
+									</Dropdown.Menu>
+								</Dropdown>
+							) : (
+								""
+							)}
 							<Form.Control
 								type="text"
 								name="nombreTipoEtapa"
@@ -806,6 +848,7 @@ function ConfigProcesoSeleccion(props: any) {
 									maxHeight: "8rem",
 									textAlign: "center"
 								}}
+								onChange={() => {}}
 								className="readonly-text"
 								required
 							/>
@@ -813,9 +856,42 @@ function ConfigProcesoSeleccion(props: any) {
 								id="passwordHelpBlock"
 								muted
 								style={{ fontSize: "0.8rem", maxHeight: "2rem" }}>
-								* Una vez seleccionado no se puede modificar el tipo de etapa.
+								* Al guardar el tipo de etapa no se puede modificar.
 							</Form.Label>
 						</Form.Group>
+
+						{(newRow && newRow.idTipoEtapa == 2) ||
+						(selectedRow && selectedRow.idTipoEtapa == 2) ? (
+							<Form.Group>
+								<Row>
+									<Col xs="4" style={{ paddingTop: "0.5rem" }}>
+										<Form.Label>Porcentaje a calificar:</Form.Label>
+									</Col>
+									<Col xs="6">
+										<Form.Control
+											type="text"
+											name="porcenCalifica"
+											value={
+												selectedRow
+													? selectedRow.porcenCalifica
+													: newRow.porcenCalifica
+											}
+											placeholder="Escribir el porcentaje para la etapa."
+											onChange={handleInputChange}
+											style={stylesSelect}
+											isInvalid={!isPorcenCalificaOk}
+											isValid={!isPorcenCalificaOk}
+											required
+										/>
+										<Form.Control.Feedback type="invalid">
+											Valores enteros entre 0 y 100.
+										</Form.Control.Feedback>
+									</Col>
+									<Col style={{ paddingTop: "0.5rem" }}>%</Col>
+								</Row>
+							</Form.Group>
+						) : null}
+						<hr />
 						<Form.Group>
 							<Form.Label>Nombre de la etapa:</Form.Label>
 							<Form.Control
@@ -867,7 +943,7 @@ function ConfigProcesoSeleccion(props: any) {
 							/>
 						</Form.Group>
 						<Form.Group>
-							<Form.Label>Fecha fin:</Form.Label>
+							<Form.Label>Fecha de fin:</Form.Label>
 							<Form.Control
 								type="date"
 								name="fechaFin"
@@ -893,7 +969,7 @@ function ConfigProcesoSeleccion(props: any) {
 							type="submit"
 							variant="primary"
 							onClick={handleAddRowEtapa}>
-							{selectedRow ? "Guardar Cambios" : "Agregar etapa"}
+							{selectedRow ? "Guardar etapa" : "Agregar etapa"}
 						</Button>
 					</Modal.Footer>
 				</Form>

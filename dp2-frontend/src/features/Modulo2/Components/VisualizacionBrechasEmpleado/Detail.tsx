@@ -23,7 +23,7 @@ const TrainingNeeds = () => {
       .then(function (response) {
         let temp = {
           id: -1,
-          name: "Tipos de capacidad"
+          name: "Tipos de competencias"
         }
         let temp2 = {
           id: 0,
@@ -37,8 +37,8 @@ const TrainingNeeds = () => {
         setTipoCompetenciaSelected(temp);
         setTiposCompetencia(tipoCom);
         const obj = {
-          estado: 0,
-          tipo: 0,
+          estado: "",
+          tipo: "",
           activo: 2,
           idEmpleado: 1 // Cambiar idEmpleado logeado
         }
@@ -93,20 +93,25 @@ const TrainingNeeds = () => {
     }
   };
 
-  const returnLevel = (number) => {
-    if (number === 1) return "Muy bajo";
-    if (number === 2) return "Bajo";
-    if (number === 3) return "Medio";
-    if (number === 4) return "Alto";
-    return "Muy alto"
-  }
+  const returnCompetenceType = (type) => {
+    if (type === 0) return "Técnica";
+    return "Blanda";
+}
+
+  const returnLevel = (level) => {
+    if (level === 0) return "No iniciado";
+    if (level === 1) return "En proceso";
+    if (level === 2) return "Logrado";
+    if (level === 3) return "Sobresaliente";
+    return "Experto"
+}
 
   return (
     <>
       <div className='row'>
         <h2>Necesidades de capacitación</h2>
         <p className="text-muted">Necesidades de capacitación del empleado</p>
-        {isLoading ? <></> : 
+        {/* {isLoading ? <></> : 
         <Form className="row align-items-center mb-4">
           <Form.Group className="col-6">
             <FormControl
@@ -137,7 +142,7 @@ const TrainingNeeds = () => {
             <Button variant="primary" onClick={handleSearch}>Buscar</Button>
           </div>
         </Form>
-        }
+        } */}
 
         {isLoading ? <LoadingScreen/> :     
         <div className='row align-items-start'>
@@ -147,15 +152,15 @@ const TrainingNeeds = () => {
               <Table striped bordered className='table-need'>
                 <thead>
                   <tr>
-                    <th onClick={() => handleOrdenarPorCampo('competence__name')}>
-                      Capacidad
-                      {campoOrdenamiento === 'competence__name' && (
+                    <th onClick={() => handleOrdenarPorCampo('competence_name')}>
+                      Competencia
+                      {campoOrdenamiento === 'competence_name' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                       )}
                     </th>
-                    <th onClick={() => handleOrdenarPorCampo('competence__type__name')}>
-                      Tipo de capacidad
-                      {campoOrdenamiento === 'competence__type__name' && (
+                    <th onClick={() => handleOrdenarPorCampo('competence_type')}>
+                      Tipo de competencia
+                      {campoOrdenamiento === 'competence_type' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                       )}
                     </th>
@@ -172,7 +177,7 @@ const TrainingNeeds = () => {
                       )}
                     </th>
                     <th onClick={() => handleOrdenarPorCampo('levelGap')}>
-                      Niveles faltanes
+                      Niveles faltantes
                       {campoOrdenamiento === 'levelGap' && (
                         <i className={`bi bi-caret-${tipoOrden === 'ascendente' ? 'up' : 'down'}`}></i>
                       )}
@@ -188,8 +193,8 @@ const TrainingNeeds = () => {
                 <tbody className='table-need'>
                   {trainingNeed && trainingNeed.map((competence, index) => (
                     <tr key={index} className={index % 0 === 0 ? "evenRow" : "oddRow"}>
-                      <td>{competence.competence__name}</td>
-                      <td>{competence.competence__type__name}</td>
+                      <td>{competence.competence_name}</td>
+                      <td>{returnCompetenceType(competence.competence_type)}</td>
                       <td>{returnLevel(competence.levelCurrent)}</td>
                       <td>{returnLevel(competence.levelRequired)}</td>
                       <td>{competence.levelGap}</td>
