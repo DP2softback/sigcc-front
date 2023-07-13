@@ -149,8 +149,8 @@ class QuizGenerator extends Component<QuizGeneratorProps, QuizGeneratorState> {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                {questions.map((question) => (
-                                    <Fragment key={question.id_pregunta}>
+                                {questions.map((question, index) => (
+                                    <Fragment key={index}>
                                         <div className='d-flex justify-content-between'>
                                             <div></div>
                                             <button className='btn btn-danger mb-3' onClick={this.handleRemoveQuestion.bind(this, question.id_pregunta)}>
@@ -170,8 +170,8 @@ class QuizGenerator extends Component<QuizGeneratorProps, QuizGeneratorState> {
                                             <label htmlFor={`questionInput${question.id_pregunta}`}>Escriba una pregunta</label>
                                         </div>
                                         <div className='mb-4'>
-                                            {question.opciones.map((option) => (
-                                                <div className='row mb-2' key={option.id_opcion}>
+                                            {question.opciones.map((option, index) => (
+                                                <div className='row mb-2' key={index}>
                                                     <div className='col pe-0' style={{ flex: '0 0 .7rem' }}>
                                                         <input
                                                             className="form-check-input"

@@ -1,9 +1,6 @@
-import ReactDOM from 'react-dom';
-import React, { Fragment, createRef } from 'react';
+import React, { Fragment } from 'react';
 import { PropsRubricCriterias, StateRubricCriterias, PropsChoiceBase, StateChoiceBase, Criteria } from './RubricCriterias.types';
-import { v4 as uuid } from 'uuid';
 import proficiencies from './proficiencies.json';
-import levelsCriterias from './levelsCriterias.json';
 
 export default class RubricCriterias extends React.Component<PropsRubricCriterias, StateRubricCriterias>
 {
@@ -49,14 +46,6 @@ export default class RubricCriterias extends React.Component<PropsRubricCriteria
 
     get ()
     {
-        const criterias = this.state.criterias.map((criteria, index) =>
-        {
-            criteria.level = {}
-            criteria.level.id = 1
-            criteria.level.name = "No presenta"
-            return criteria;
-        })
-
         return this.state.criterias;
     }
 
@@ -114,14 +103,6 @@ class ChoiceBase extends React.Component<PropsChoiceBase, StateChoiceBase>
         this.props.onChange(selected);
     }
 
-    handleLimitChange (e)
-    {
-        let choice = this.props.choice;
-        choice.limit = parseInt(e.target.value)
-        this.props.onChange(choice);
-    }
-
-
     handleDelete ()
     {
         this.props.onDelete();
@@ -136,23 +117,6 @@ class ChoiceBase extends React.Component<PropsChoiceBase, StateChoiceBase>
                         <select className="form-select" value={this.props.choice.id} onChange={this.handleSelectChange.bind(this)}>
                             {
                                 proficiencies.map((item: {
-                                    id: number,
-                                    name: string,
-                                }, index) =>
-                                {
-                                    return (
-                                        <Fragment key={index}>
-                                            <option value={item.id}>{item.name}</option>
-                                        </Fragment>
-                                    )
-                                })
-                            }
-                        </select>
-                    </div>
-                    <div className='col' style={{ flex: '0 0 8rem' }}>
-                        <select className="form-select" value={this.props.choice.limit} onChange={this.handleLimitChange.bind(this)}>
-                            {
-                                levelsCriterias.map((item: {
                                     id: number,
                                     name: string,
                                 }, index) =>

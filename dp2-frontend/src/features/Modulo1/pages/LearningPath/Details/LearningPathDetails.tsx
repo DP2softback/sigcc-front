@@ -196,10 +196,6 @@ function LearningPathDetails(props: any) {
                                 </div>
                             </div>
                         </div>
-                        <div className='pt-3'>
-                            <h4>Acciones</h4>
-                            <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#comprehensiveEvaluationModal">Configurar evaluación integral</button>
-                        </div>
                         <div className='pt-3 d-flex g-2 w-100 justify-content-between'>
                             <h4>Cursos seleccionados</h4>
                             <div className="dropdown">
@@ -208,7 +204,7 @@ function LearningPathDetails(props: any) {
                                 </button>
                                 <ul className="dropdown-menu">
                                     <li><Link to={`/modulo1/curso/agregar/${learningPathId}`} className="dropdown-item">Curso de Udemy</Link></li>
-                                    <li><Link to={`/modulo1/curso/agregar/ce/${learningPathId}`} className="dropdown-item">Curso Empresa</Link></li>
+                                    <li><Link to={`/modulo1/curso/agregar/ce/${learningPathId}`} className="dropdown-item">Curso de empresa asíncrono</Link></li>
                                 </ul>
                             </div>
                         </div>
@@ -317,6 +313,10 @@ function LearningPathDetails(props: any) {
                                     </div>
                                 </>
                             }
+                        </div>
+                        <div className='pt-3'>
+                            <h4>Acciones</h4>
+                            <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#comprehensiveEvaluationModal">Configurar evaluación integral</button>
                         </div>
                     </>
             }

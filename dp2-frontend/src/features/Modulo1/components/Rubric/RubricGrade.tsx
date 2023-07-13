@@ -1,21 +1,37 @@
-import ReactDOM from 'react-dom';
-import React, { Fragment, createRef } from 'react';
+import React, { Fragment } from 'react';
 import { PropsRubricCriterias, StateRubricCriterias, PropsChoiceBase, StateChoiceBase, Criteria } from './RubricGrade.types';
-import { v4 as uuid } from 'uuid';
 import levels from './levels.json';
 
 export default class RubricGrade extends React.Component<PropsRubricCriterias, StateRubricCriterias>
 {
     static defaultProps = {
-        criterias: [],
+        criterias: [
+            {
+                "id": 1,
+                "name": "Capacidad para crear aplicaciones y sitios web utilizando tecnologías como HTML, CSS, JavaScript, y frameworks populares como React, Angular o Vue.js.",
+                "score": 20
+            }
+        ],
         disabled: false,
     }
 
     constructor(props)
     {
         super(props);
+        let criterias = props.criterias;
+        if (props.disabled)
+        {
+            criterias = props.criterias.map(item => {
+                const score = item.score;
+                const option = levels.find(op => op.score === score);
+                if (option) {
+                    item.score = { id: option.id, name: option.name, score: score };
+                }
+                return item;
+            });
+        }
         this.state = {
-            criterias: props.criterias,
+            criterias: criterias,
         }
     }
 
@@ -24,14 +40,22 @@ export default class RubricGrade extends React.Component<PropsRubricCriterias, S
         this.setState(prevState =>
         {
             const criterias = [...prevState.criterias];
-            criterias[criteriaIndex].level = criteriaState;
+            criterias[criteriaIndex].score = criteriaState;
             return { criterias };
         });
     };
 
     get ()
     {
-        return this.state.criterias;
+        const criterias = this.state.criterias.map(obj => {
+            const score = obj.score ? obj.score.score : 0;
+            return {
+              id: obj.id,
+              name: obj.name,
+              score: score
+            };
+          });
+        return criterias;
     }
 
     componentDidUpdate (prevProps: Readonly<PropsRubricCriterias>)
@@ -42,10 +66,6 @@ export default class RubricGrade extends React.Component<PropsRubricCriterias, S
                 criterias: this.props.criterias,
             })
         }
-    }
-
-    generate() {
-        console.log(this.props.criterias)
     }
 
     render ()
@@ -67,7 +87,7 @@ export default class RubricGrade extends React.Component<PropsRubricCriterias, S
                                 return (
                                     <Fragment key={criteriaIndex}>
                                         <tr>
-                                            <ChoiceBase disabled={this.props.disabled} key={criteriaIndex} name={criteria.name} choice={criteria.level} limit={criteria.limit}
+                                            <ChoiceBase disabled={this.props.disabled} key={criteriaIndex} name={criteria.name} choice={criteria.score}
                                                 onChange={criteriaState => this.handleCriteriaChange(criteriaIndex, criteriaState)}
                                             />
                                         </tr>
@@ -78,14 +98,14 @@ export default class RubricGrade extends React.Component<PropsRubricCriterias, S
                     </tbody>
                 </table>
                 {
-                    this.props.disabled === false ? 
-                    (
-                        <div className='text-end'>
-                            <button className='btn btn-primary' onClick={() => this.generate()}>Guardar</button>
-                        </div>
-                    )
-                    :
-                    (<></>)
+                    this.props.disabled === false ?
+                        (
+                            <div className='text-end'>
+                                <button className='btn btn-primary' onClick={() => console.log(this.get())}>Guardar</button>
+                            </div>
+                        )
+                        :
+                        (<></>)
                 }
             </Fragment>
         )
@@ -127,12 +147,7 @@ class ChoiceBase extends React.Component<PropsChoiceBase, StateChoiceBase>
                                         {
                                             return (
                                                 <Fragment key={index}>
-                                                    {
-                                                        (item.id <= this.props.limit) ? <>
-                                                            <option value={item.id}>{item.name}</option>
-
-                                                        </> : <></>
-                                                    }
+                                                    <option value={item.id}>{item.name}</option>
                                                 </Fragment>
                                             )
                                         })
