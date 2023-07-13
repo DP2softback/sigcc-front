@@ -103,10 +103,10 @@ function LearningPathDetails(props: any) {
                         })
                 };
 
-                // window.addEventListener('get-status', handleGetStatus);
-                // quizStatusinterval = setInterval(() => {
-                //     window.dispatchEvent(new Event('get-status'));
-                // }, 5000);
+                window.addEventListener('get-status', handleGetStatus);
+                quizStatusinterval = setInterval(() => {
+                    window.dispatchEvent(new Event('get-status'));
+                }, 10000);
 
                 // return () => {
                 //     window.removeEventListener('get-status', handleGetStatus);
