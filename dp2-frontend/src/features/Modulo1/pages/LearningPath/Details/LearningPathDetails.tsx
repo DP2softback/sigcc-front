@@ -65,6 +65,7 @@ function LearningPathDetails(props: any) {
     const loadEmployees = () => {
         axiosInt.get(`capacitaciones/learning_path/${learningPathId}/employees/`)
             .then(function (response) {
+                console.log(response.data)
                 setEmployees(response.data);
             })
             .catch(function (error) {

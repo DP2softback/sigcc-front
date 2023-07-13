@@ -63,10 +63,14 @@ const IntegralEvaluation = () => {
     const refLPComment = useRef<HTMLTextAreaElement>(null);
     const refLPRate = useRef(null);
 
+    const [rubric, setRubric] = useState<any>([])
+    const employeeID = 1
+    const userID = 7
+
     const loadIntegralEval = () => {
         setLoading(true);
         
-        axiosInt.get(`capacitaciones/learning_path/${learningPathId}/empleado/1/evaluacion/`)
+        axiosInt.get(`capacitaciones/learning_path/${learningPathId}/empleado/${employeeID}/evaluacion/`)
             .then(function (response) {
                 console.log(response.data)
                 setLPDetails(response.data.datos_learning_path)
@@ -82,7 +86,20 @@ const IntegralEvaluation = () => {
                     const parts_url = url.split("/");
                     setFileName(parts_url[4])
                 }
-                setLoading(false);
+
+                axiosInt.get(`capacitaciones/learning_path/rubrica/${learningPathId}/empleado/${employeeID}/`)
+                    .then(function (response) {
+                        console.log(response.data)
+                        if(response.data.criterias[0].rubrica_calificada_evaluacion ==! null){
+                            setRubric(response.data.criterias[0].rubrica_calificada_evaluacion)
+                        }
+
+                        setLoading(false);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        setLoading(false);
+                    });
             })
             .catch(function (error) {
                 console.log(error);
@@ -213,7 +230,12 @@ const IntegralEvaluation = () => {
                                                     <h5 className='card-title mt-3'>Rúbrica de evaluación:</h5>
                                                     <div className='row mt-3'>
                                                         <div className='col'>
-                                                            <RubricGrade criterias={lpDetails.rubrica} disabled={true}/>
+                                                        {
+                                                            rubric.length > 0 ?
+                                                            (<RubricGrade criterias={rubric} disabled={true}/>)
+                                                            :
+                                                            (<RubricGrade criterias={lpDetails.rubrica} disabled={true}/>)
+                                                        }
                                                         </div>
                                                     </div>
 
@@ -230,26 +252,40 @@ const IntegralEvaluation = () => {
                                                                     <div className='col-10'>
                                                                         <button className='btn btn-outline-primary'><a href={fileURL} download={fileName}><FileEarmarkZip /><span style={{ marginLeft: "1rem" }}>{fileName}</span></a></button>
                                                                     </div>
-                                                                    <div className='col-2 text-end'>
-                                                                        <button className='btn btn-outline-secondary' onClick={() => setFileUploaded(false)}><Pencil /></button>
-                                                                    </div>
+                                                                    {
+                                                                        rubric.length > 0 ? 
+                                                                        (<></>)
+                                                                        :
+                                                                        (
+                                                                            <div className='col-2 text-end'>
+                                                                                <button className='btn btn-outline-secondary' onClick={() => setFileUploaded(false)}><Pencil /></button>
+                                                                            </div>
+                                                                        )
+                                                                    }
                                                                 </div>
                                                             </>)
                                                     }
                                                 </div>
-                                                <div className="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
-                                                    {
-                                                        fileUploaded === false ?
-                                                            (<>
-                                                                <button className="btn btn-outline-primary me-md-2" type="button" data-bs-target='#cancelIntegralEval' data-bs-toggle='modal'>Cancelar</button>
-                                                                <button className="btn btn-primary" type="button" data-bs-target='#confirmIntegralEval' data-bs-toggle='modal'>Guardar</button>
-                                                            </>)
-                                                            :
-                                                            (
-                                                                <button className="btn btn-primary" type="button" data-bs-target='#rateLP' data-bs-toggle='modal'>Finalizar</button>
-                                                            )
-                                                    }
-                                                </div>
+                                                {
+                                                    rubric.length > 0 ?
+                                                    (<></>)
+                                                    :
+                                                    (
+                                                        <div className="card-footer d-grid gap-2 d-md-flex justify-content-md-end">
+                                                            {
+                                                                fileUploaded === false ?
+                                                                    (<>
+                                                                        <button className="btn btn-outline-primary me-md-2" type="button" data-bs-target='#cancelIntegralEval' data-bs-toggle='modal'>Cancelar</button>
+                                                                        <button className="btn btn-primary" type="button" data-bs-target='#confirmIntegralEval' data-bs-toggle='modal'>Guardar</button>
+                                                                    </>)
+                                                                    :
+                                                                    (
+                                                                        <button className="btn btn-primary" type="button" data-bs-target='#rateLP' data-bs-toggle='modal'>Finalizar</button>
+                                                                    )
+                                                            }
+                                                        </div>
+                                                    )
+                                                }
                                             </div>
                                         </div>
                                     </div>

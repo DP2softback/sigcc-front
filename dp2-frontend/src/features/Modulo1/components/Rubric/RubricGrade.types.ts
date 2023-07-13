@@ -11,7 +11,8 @@ export type Criteria = {
 
 export type PropsRubricCriterias = {
     criterias: Array<Criteria>,
-    disabled: boolean
+    disabled: boolean,
+    action?: any
 }
 
 export type StateRubricCriterias = {

@@ -1,5 +1,5 @@
 import RubricGrade from '@features/Modulo1/components/Rubric/RubricGrade';
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowLeftCircleFill, Download } from 'react-bootstrap-icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import axiosInt from '@config/axios';
@@ -24,6 +24,8 @@ function EvaluationReview() {
     const [fileURLEval, setFileURLEval] = useState<string>("")
     const [rubric, setRubric] = useState<any>([])
 
+    const refCalification = useRef(null)
+
     const loadEvalReview = () => {
         setLoading(true);
         axiosInt.get(`capacitaciones/learning_path/${learningPathId}/empleado/${employeeID}/`)
@@ -45,9 +47,20 @@ function EvaluationReview() {
                     setFileURLEval(response.data.archivo_eval.url_documento)
                 }
 
-                setRubric(response.data.rubrica_calificada)
+                axiosInt.get(`capacitaciones/learning_path/rubrica/${learningPathId}/empleado/${employeeID}/`)
+                    .then(function (response) {
+                        console.log(response.data)
+                        if(response.data.criterias[0].rubrica_calificada_evaluacion ==! null){
+                            setRubric(response.data.criterias[0].rubrica_calificada_evaluacion)
+                        }
 
-                setLoading(false);
+                        setLoading(false);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        setLoading(false);
+                    });
+
             })
             .catch(function (error) {
                 console.log(error);
@@ -64,7 +77,28 @@ function EvaluationReview() {
     const goBack = () =>{
         navigate(-1);
     };
-    
+
+    const saveCalification = (refRC: any) => {
+        setLoading(true);
+
+        const data = {
+            criterias: refRC
+        }
+        
+        console.log(data)
+/*
+        axiosInt.post(`capacitaciones/learning_path/rubrica/${learningPathId}/empleado/${employeeID}/`, data)
+            .then(function (response) {
+                console.log(response.data)
+                setLoading(false);
+            })
+            .catch(function (error) {
+                console.log(error);
+                setLoading(false);
+            });
+            */
+    }
+
     return (
         <>
             {
@@ -91,7 +125,7 @@ function EvaluationReview() {
                                 <div>
                                     <h1 className='screenTitle'>{lpName}</h1>
                                     <h2>Evaluación Integral</h2>
-                                    <p><small className='subtitle'>{lpDescription}</small></p>
+                                    <p>{lpDescription}</p>
                                 </div>
                             </div>
                         </div>
@@ -131,12 +165,15 @@ function EvaluationReview() {
                             <div className='row mt-3'>
                                 <h5>Rúbrica de evaluación:</h5>
                                 <div className='col'>
-                                    <RubricGrade criterias={rubric}/>
+                                    {
+                                        rubric.length > 0 ?
+                                        (<RubricGrade criterias={rubric} disabled={true}/>)
+                                        :
+                                        (<RubricGrade criterias={rubric} action={saveCalification.bind(refCalification)} disabled={false}/>)
+                                    }
                                 </div>
                             </div>
                         </div>
-                        
-
                     </div>
                 </>
                 )

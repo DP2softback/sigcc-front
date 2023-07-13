@@ -55,6 +55,9 @@ export default class RubricGrade extends React.Component<PropsRubricCriterias, S
               score: score
             };
           });
+          
+        this.props.action(criterias)
+
         return criterias;
     }
 
@@ -138,7 +141,7 @@ class ChoiceBase extends React.Component<PropsChoiceBase, StateChoiceBase>
                             <>
                                 <p className="mb-0"><small>{this.props.choice.name}</small></p>
                             </> : <>
-                                <select style={{ width: '8rem' }} className="form-select" value={this.props.choice.id} onChange={this.handleSelectChange.bind(this)}>
+                                <select style={{ width: '10rem' }} className="form-select" value={this.props.choice.id} onChange={this.handleSelectChange.bind(this)}>
                                     {
                                         levels.map((item: {
                                             id: number,

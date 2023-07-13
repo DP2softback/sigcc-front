@@ -24,6 +24,9 @@ function TableDataEmployees(Props: Props) {
         
                             if(headerItems.value.includes('.')){
                                 const itemSplit = headerItems.value.split('.')
+                                if(itemSplit[2] === undefined){
+                                    return <td key={indexH}>{obj[itemSplit[0]][itemSplit[1]]}</td>
+                                }
                                 return <td key={indexH}>{obj[itemSplit[0]][itemSplit[1]][itemSplit[2]]}</td>
                             }
                             else if(headerItems.value === "num"){
@@ -33,7 +36,7 @@ function TableDataEmployees(Props: Props) {
                                 return <td key={indexH}>{"-"}</td>
                             }
                             else if(headerItems.value === "acciones"){
-                                return <td className='text-center' key={indexH}><ArrowRightCircleFill onClick={() => {obj && Props.action(obj.empleado.usuario.id)}}/></td>
+                                return <td className='text-center' key={indexH}><ArrowRightCircleFill onClick={() => {obj && Props.action(obj.empleado.id)}}/></td>
                             }
                             else if(headerItems.value === "estado"){
                                 if(obj[`${headerItems.value}`] === "0"){

@@ -45,7 +45,7 @@ const headerTable = [
     },
     {
         heading: "Código",
-        value: "empleado.usuario.id"
+        value: "empleado.id"
     },
     {
         heading: "Nombre(s)",
