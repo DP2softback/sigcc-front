@@ -995,7 +995,7 @@ const Training = () => {
                                                             </div>
                                                         }
                                                     <div className='mt-3' style={{fontSize: "10px" }}>
-                                                        <strong>Capacidades seleccionadas:</strong> {`${checkedItems}`}
+                                                        <strong>Competencias seleccionadas:</strong> {`${checkedItems}`}
                                                     </div>
                                                 </div>
                                             )
