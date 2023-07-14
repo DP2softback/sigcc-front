@@ -51,7 +51,7 @@ const JobOpportunityStats = () => {
                         setEmployeeInfo(response.data);
                         console.log(response.data);
                         const obj3 = {
-                            id: candidate.id,
+                            id: 18,
                             evaluationType: "Evaluación Continua",
                             fecha_inicio: filters.fecha_inicio,
                             fecha_fin: filters.fecha_fin
