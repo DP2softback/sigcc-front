@@ -20,7 +20,7 @@ const DATAVACIA = {
     descripcion_evaluacion: null,
     archivo_eval: null,
     archivo_emp: null,
-    rubrica: null
+    rubrica: null,
 }
 
 const dataEvaluation: EvaluationObj = {
