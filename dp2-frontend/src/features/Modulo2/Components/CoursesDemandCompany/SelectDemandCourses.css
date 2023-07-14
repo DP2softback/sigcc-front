@@ -47,7 +47,7 @@
 .card{
     padding-top: 0.5em;
     padding-bottom: 0.5em;
-    padding-left: 2em;
+    padding-left: 1.5em;
     margin-top: 0.5em;
     background-color: #A9F4D0;
 }
@@ -85,5 +85,5 @@ table{
     overflow-x: auto;
     overflow-y: auto;
     display: table;
-    white-space: nowrap; 
+
 }
